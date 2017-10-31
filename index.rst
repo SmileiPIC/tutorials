@@ -5,8 +5,6 @@ Hands-on environment
 
 I. Station
 ^^^^^^^^^^
-* login : ``training``
-* password : ``s@clay``
 
 1. Download from github
 
