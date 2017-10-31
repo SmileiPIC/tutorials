@@ -6,4 +6,5 @@ Smilei training workshop, Nov. 2017
 .. toctree::
    :maxdepth: 1
    
-   tutorial
+   setup
+   practical1
