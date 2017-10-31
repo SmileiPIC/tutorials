@@ -1,0 +1,30 @@
+os: linux
+
+install: make get-deps
+
+language: cpp
+
+sudo: required
+
+dist: trusty
+
+git:
+  depth: 9999999
+
+before_install:
+  - sudo apt-get -qq update
+  - git fetch -t
+  - sudo apt-get install -y python-pip
+  - pip install --user travis-sphinx Sphinx alabaster pint
+  - export PATH=$HOME/.local/bin:$PATH
+
+script:
+  - travis-sphinx --nowarn --source=. build
+
+after_success:
+  - travis-sphinx deploy
+    
+install:
+
+
+
