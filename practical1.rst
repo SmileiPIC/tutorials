@@ -237,4 +237,8 @@ Overlay the previous plot of the laser profile and compare
 Testing the CFL condition
 ---------------------------
 
-Now change the `input file` and increase the time-step e.g. using: ... to be continued
+Now change the `input file` and increase the time-step e.g. using :math:`\Delta t = 0.95\,\Delta x`.
+
+Re-run :program:`Smilei` and check the total energy and/or energy balance.
+
+What is going on?
