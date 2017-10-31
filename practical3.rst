@@ -1,9 +1,6 @@
 Practical 3: Streaming instabilities: Two-stream and Weibel instabilities
 ================================================================================
 
-Presentation
---------------------------------------------------------------------------------
-
 Goal of the tutorial
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -53,7 +50,7 @@ Setup the tutorial
 
 
 Check input file and run the simulation
----------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The first step is to check that your `input file` is correct.
 To do so, you will run (locally) :program:`SMILEI` in test mode:
@@ -73,7 +70,7 @@ Before going to the analysis of your simulation, check your ``log`` file!
 
 
 Analysing the simulation
-------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Preparing the post-processing tool
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

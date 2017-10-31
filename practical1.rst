@@ -1,8 +1,6 @@
 Practical 1: Laser Propagation in a vacuum
-================================================================================
+------------------------------------------
 
-Goal of the tutorial
---------------------
 
 The goal of this tutorial is to run your first simulation with :program:`Smilei`.
 The following points will be addressed:
@@ -12,27 +10,29 @@ The following points will be addressed:
 * How to access your simulation results and use the :program:`happi` Python Package for post-processing (in particular using the ``plot``, ``animate`` and ``saveAs`` tools),
 * get familiar with the `Courant-Friedrich-Lewy` (CFL) condition.
 
+----
+
 Physical configuration
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 A Gaussian (in both space and time) laser pulse enters in the simulation box from the ``xmin`` side, 
 and propagates through the box.
 
 Content of the tutorial
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 This tutorial consist in a single directory :program:`Practical1` containing:
  
 * `laser_propagation.py`: the input file for the simulation.
 
 Setup the tutorial
-------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 * Copy the content of this tutorial in your `$SCRATCHDIR`, and go to this new folder:
 
 .. code-block:: bash
 
-    cp -r Smilei/HandsOn/Practical1 $SCRATCHDIR
+    cp -r ~/Smilei/HandsOn/Practical1 $SCRATCHDIR
     cd $SCRATCHDIR/Practical1
 
 * Copy the executable files in the new folder:
@@ -44,7 +44,7 @@ Setup the tutorial
 
 
 Checking your input file in test mode
--------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The first step is to check that your `input file` is correct.
 To do so, you will run (locally) :program:`SMILEI` in test mode:
@@ -65,7 +65,7 @@ Once you have no more ``ERROR`` message. Do you get ``WARNING`` messages?
 
 
 Running the simulation
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 Once your simulation `input file` is correct, you can run your simulation
 in :ref:`interactive mode <interactivemode>`:
@@ -84,7 +84,7 @@ Before going to the analysis of your simulation, check your ``log`` file.
 
 
 Preparing the post-processing tool
-----------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let's now turn to analysing the output of your run with the :program:`happi` Python post-processing package.
 To do so, open a new terminal window & login again (via ssh) to your machine.
@@ -104,7 +104,7 @@ Start ipython
     ipython
 
 Get basic info on the simulation
---------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Import the happi module:
 
@@ -131,7 +131,7 @@ See what is available from the simulation:
 
 
 Obtain the laser profile
-------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Get the Laser block from the namelist:
 
@@ -155,7 +155,7 @@ Note that this quantity is a python function: what function is it?
 Some help is available `here <http://www.maisondelasimulation.fr/smilei/namelist.html#profiles>`_.
 
 Plot the laser profile
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 To plot the laser profile as a function of time, a list of times is necessary.
 In the following, we use the package *numpy* to generate a list of times from 0 to
@@ -176,7 +176,7 @@ Plot the profile using the usual *matplotlib* package:
    In [14]: plt.plot( times, laser_profile )
 
 Check laser using Scalar
-------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Obtain a list of Scalar diagnostics:
 
@@ -193,7 +193,7 @@ Open the Uelm scalar and plot:
 
 
 More ``Scalar`` diagnostics
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Check the evolution of the ``total energy`` in the simulation box:
 
@@ -209,7 +209,7 @@ Check the evolution of the ``energy balance`` in the simulation box:
 
 
 Plot laser using Field
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
 Open the Ey field and plot:
 
@@ -235,7 +235,7 @@ Overlay the previous plot of the laser profile and compare
 
 
 Testing the CFL condition
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now change the `input file` and increase the time-step e.g. using :math:`\Delta t = 0.95\,\Delta x`.
 

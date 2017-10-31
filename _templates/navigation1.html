@@ -16,11 +16,9 @@
     {% set el = element.split("%") %}
     {% set url = el[0] | trim | safe %}
     {% set entry = el[1] | trim | safe %}
-    {% if entry in ["Units", "Install", "Publications"] %}
-    <hr />
-    {% endif %}
-    {% if entry == title %}
-        {{ toc }}
+    {% if url == "" and entry != "" %}
+        {% set mytext = ' href="#">' | safe + entry + '</a></ul><!--' | safe %}
+        {{ toc | replace(" href=\"#\">", mytext) | replace("</a><ul>", "-->") }}
     {% else %}
       <ul>
       <li>

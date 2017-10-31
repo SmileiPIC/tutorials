@@ -1,8 +1,5 @@
 Practical 2: Thermal plasma (infinite size using periodic)
-================================================================================
-
-Presentation
---------------------------------------------------------------------------------
+----------------------------------------------------------
 
 Goal of the tutorial
 ^^^^^^^^^^^^^^^^^^^^
@@ -51,7 +48,7 @@ Setup the tutorial
 
 
 Check input file and run the simulation
----------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The first step is to check that your `input file` is correct.
 To do so, you will run (locally) :program:`SMILEI` in test mode:
@@ -69,9 +66,6 @@ As a first step, you will do this in `interactive mode`, that is directly runnin
 
 Before going to the analysis of your simulation, check your ``log`` file!
 
-
-Analysing the simulation
-------------------------
 
 Preparing the post-processing tool
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
