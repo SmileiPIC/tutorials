@@ -67,8 +67,8 @@ Once you have no more ``ERROR`` message. Do you get ``WARNING`` messages?
 Running the simulation
 ----------------------
 
-Once your simulation `input file` is correct, you can `submit your first job`.
-As a first step, you will do this in :ref:`interactive mode`, that is directly running:
+Once your simulation `input file` is correct, you can run your simulation
+in :ref:`interactive mode <interactivemode>`:
 
 .. code-block:: bash
 

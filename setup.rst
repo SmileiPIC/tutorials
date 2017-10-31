@@ -64,7 +64,7 @@ Compile Smilei
    [poincare] $ make –j 8
 
 
-.. interactivemode:
+.. _interactivemode:
 
 How to run a simulation
 ^^^^^^^^^^^^^^^^^^^^^^^
