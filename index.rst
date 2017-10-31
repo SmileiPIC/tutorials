@@ -1,5 +1,7 @@
-Numerical Hands-On
-------------------
+.. title:: Smilei training workshop, Nov. 2017
+
+Smilei training workshop, Nov. 2017
+===================================
 
 
 Morning session
@@ -7,8 +9,8 @@ Morning session
 
 .. toctree::
    :maxdepth: 1
-
-   first_steps
+   
+   setup
    practical1
    practical2
    practical3
