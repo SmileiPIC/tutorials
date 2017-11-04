@@ -32,7 +32,7 @@ Setup the tutorial
 
 .. code-block:: bash
 
-    cp -r ~/Smilei/HandsOn/Practical1 $SCRATCHDIR
+    cp -r ~/Smilei/handson/Practical1 $SCRATCHDIR
     cd $SCRATCHDIR/Practical1
 
 * Copy the executable files in the new folder:
