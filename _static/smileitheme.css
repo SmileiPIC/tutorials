@@ -22,8 +22,8 @@
 	text-align:center;
 	padding:5px;
 	margin:0 30%;
-	background-color: #FCF2E8;
-	border: 1px solid #ea5b09;
+	background-color: #e3f7f2;
+	border: 1px solid #06a379;
 }
 
 /* Style for an emphasized link */
@@ -51,7 +51,7 @@ table.noborder, table.noborder td {
 }
 /* Make nicer table header */
 table.docutils thead {
-	background-color: #fff8f2;
+	background-color: #e3f7f2;
 }
 
 /* --------------------------------------------------------------------*/
@@ -89,10 +89,10 @@ div.sphinxsidebarwrapper p.logo {
 	color:#333;
 }
 .icon:hover {
-	background-color:#FCF2E8;
+	background-color:#e3f7f2;
 }
 .icon:active {
-	background-color:#BBDDFA;
+	background-color:#d7f4ec;
 }
 
 /* --------------------------------------------------------------------*/
@@ -114,7 +114,7 @@ div.toctree-smilei > ul > li > a {
 	font-size: 100%;
 	font-weight: bold;
 	text-decoration: none;
-	color: #ea5b09;
+	color: #06a379;
 	border:0;
 }
 div.toctree-smilei > ul, div.toctree-smilei > li {
@@ -124,7 +124,7 @@ div.toctree-smilei > ul, div.toctree-smilei > li {
 /* Adjust the sidebar color for small screens */
 @media screen and (max-width: 875px) {
 	div.sphinxsidebar {
-		background: #FCF2E8;
+		background: #e3f7f2;
 		padding: 10px 30px;
 		width: 100%;
 	}
@@ -179,18 +179,18 @@ div.highlight > pre {
 /* Adjust horizontal lines */
 hr {
 	margin-top:1em;
-	border-color: #ea5b09;
+	border-color: #06a379;
 }
 .toctree-smilei hr {
 	margin: 0.2em 0;
-	background: #ea5b09 !important;
+	background: #06a379 !important;
 	width:60% !important;
 }
 
 /* --------------------------------------------------------------------*/
 /* Color for titles */
 h1, h2, h3, h4, h5, h6 {
-	color: #ea5b09;
+	color: #06a379;
 	font-weight:bold !important;
 }
 
@@ -199,8 +199,8 @@ h1, h2, h3, h4, h5, h6 {
 div.admonition {
 	padding:7px !important;
 	margin:0px 30px !important;
-	background-color: #FCF2E8;
-	border: 1px solid #ea5b09;
+	background-color: #e3f7f2;
+	border: 1px solid #06a379;
 	overflow: hidden;
 }
 div.admonition p.admonition-title {
@@ -261,10 +261,10 @@ div.related {
 	text-decoration:none;
 }
 #backToTopDiv:hover {
-	background-color:#FCF2E8;
+	background-color:#e3f7f2;
 }
 #backToTopDiv:active {
-	background-color:#BBDDFA;
+	background-color:#d7f4ec;
 }
 
 @media screen and (max-width: 875px) {
