@@ -4,24 +4,39 @@ Practical 4: Field ionization
 Goal of the tutorial
 ^^^^^^^^^^^^^^^^^^^^
 
-The goal of this tutorial is 
+The goal of this tutorial is to present a simulation using an advanced physics module, namely the field (tunnel) ionization module.
+In the presence of tunnel ionization, one needs to fixe the reference time/spatial scale.
+In :program:`Smilei`, this is done by defining in SI units, the reference angular frequency parameter: ``reference_angular_frequency_SI``.
+
+Briefly, this practical will help you:
+
+* get familiar with the use of an `advanced physics module` and with the use of ``reference_angular_frequency_SI``,
+
+* use the ``.getData()`` tool of :program:`Happi` to analyse your data and make your own figures.
 
 Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^
+
+In a 1D cartesian geometry, a thin layer of neutral Carbon is set-up in the simulation box.
+It is irradiated and thus ionized by a linearly polarized light pulse with intensity :math:`I = 5\times 10^{16}~{\rm W/cm^2}` with Gaussian time profile.
 
 
 
 Content of the tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^
-This tutorial consist in a single directory :program:`Practical3` containing:
+This tutorial consist in a single directory :program:`Practical4` containing:
  
-* `field_ionization_1d.py`: the input file for the simulation.
+* `tunnel_ionization_1d.py`: the input file for the simulation,
+
+* `analysis.py`: a Python file that will be executed to analyse the simulation,
+
+* `solve_rate_eqs.py`: a Python file called by ``analysis.py`` to solve the system of rate equations numerically.
 
 
 Setup the tutorial
 ^^^^^^^^^^^^^^^^^^
 
-* Connect on `Poincare` via `ssh` using the `-X` option:
+* If you're not yet there, connect on `Poincare` via `ssh` using the `-X` option:
 
 .. code-block:: bash
 
@@ -31,20 +46,20 @@ Setup the tutorial
 
 .. code-block:: bash
 
-    cp -r Smilei/HandsOn/Practical2 $SCRATCHDIR/.
+    cp -r Smilei/handson/Practical4 $SCRATCHDIR/.
 
 * Copy the executable files in the new folder:
 
 .. code-block:: bash
 
-    cp -r Smilei/smilei $SCRATCHDIR/Practical3/.
-    cp -r Smilei/smilei_test $SCRATCHDIR/Practical3/.
+    cp -r Smilei/smilei $SCRATCHDIR/Practical4/.
+    cp -r Smilei/smilei_test $SCRATCHDIR/Practical4/.
 
 * Go the tutorial directory:
 
 .. code-block:: bash
 
-    cd $SCRATCHDIR/Practical3
+    cd $SCRATCHDIR/Practical4
 
 
 
@@ -56,14 +71,19 @@ To do so, you will run (locally) :program:`SMILEI` in test mode:
 
 .. code-block:: bash
 
-    ./smilei_test 2 2 thermal_plasma_1d.py
+    ./smilei_test 1 1 tunnel_ionization_1d.py
+
+.. warning::
+
+    For this simulation, we have specified in the input file that only 1 patch is created.
+    Therefore, this simulation can be run using a single processor only!
 
 If your simulation `input file` is correct, you can `submit your first job`.
 As a first step, you will do this in `interactive mode`, that is directly running:
 
 .. code-block:: bash
 
-    ./smilei 2 2 thermal_plasma_1d.py
+    ./smilei 1 1 tunnel_ionization_1d.py
 
 Before going to the analysis of your simulation, check your ``log`` file!
 
@@ -71,46 +91,27 @@ Before going to the analysis of your simulation, check your ``log`` file!
 Analysing the simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Preparing the post-processing tool
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You can access the various data of the simulation as done before.
+However, for this particular practical, we have preparer a Python script that will do the work for you.
+Open the ``analysis.py`` file and have look at what it does.
+Note that it calls for the ``solve_rate_eqs.py`` file that is used to compute the rate equations (obtained theoretically).
 
-First, check what output files have been generated: what are they?
-
-Let's now turn to analysing the output of your run with :program:`Happi` Python post-processing package.
-To do so, open an ``ipython`` session:
+Then open an :program:`ipython` terminal 
 
 .. code-block:: bash
 
-    ipython
+    ./smilei 1 1 tunnel_ionization_1d.py
 
-In the python session:
-
-* import the :program:`Happi` package:
+and run the ``analysis.py`` file:
 
 .. code-block:: python
 
-    import happi
+    %run analysis.py
 
-* open your simulation:
-
-.. code-block:: python
-
-    S = happi.Open('/gpfsdata/training[01-30]/Practical2/')
+What do you obtain? Check also if any .eps file is generated.
 
 .. warning::
 
-    Use your correct `training` identification number!
-
-Having a look at the ``Scalar`` diagnostics
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-
-Having a look at the ``Field`` diagnostics
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
- 
-Effect of spatial resolution
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
+    Note that in ``analysis.py`` some lines containing LateX commands have been commented.
+    This is because no LateX package is available on :program:`Poincare`.
+    However, if such a package is available on your machine or super-computer, it might be useful to have higher quality figures.
