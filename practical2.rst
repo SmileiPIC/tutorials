@@ -182,6 +182,11 @@ Effect of spatial resolution
 Before checking the effect of spatial resolution, first have a look at the total energy and energy balance in your simulation.
 Note the level of energy imbalance at the end of this simulation for which :math:`\Delta x = \lambda_{\rm De}`.
 
+.. warning::
+    
+    Note that you can run your program interactively if you want to!
+    No need to go with the launcher from now on.
+
 Then, increase your spatial resolution to :math:`\Delta x = 16 \times \lambda_{\rm De}`.
 Check again, from the ``Scalar`` diagnostics the level of energy imbalance at the end of the simulation.
 What do you observe?

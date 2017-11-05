@@ -1,28 +1,45 @@
-Practical 3: Streaming instabilities: Two-stream and Weibel instabilities
-================================================================================
+Practical 3: Weibel and two-stream instabilities
+================================================
 
 Goal of the tutorial
 ^^^^^^^^^^^^^^^^^^^^
 
-The goal of this tutorial is 
+The goal of this tutorial is to run to physics simulation relating to streaming instabilities,
+and in particular to the electron Weibel and two-stream instabilities.
+
+This tutorial will also allow you to:
+
+* get familiar to the ``streak`` tool of :program:`Happi` that allows to plot quantities as a function of both time and space,
+
+* extract instability growth rates,
+
+* construct and extract phase-space distribution using the ``ParticleBinning`` diagnostics.
 
 Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^
 
+In both simulations, a plasma with density :math:`n_0` is initialized (:math:`n_0 = 1` so that code units are plasma
+units, i.e. times are normalized to the inverse of the electron plasma frequency 
+:math:`\omega_{p0} = \sqrt{e^2 n_0/(\epsilon_0 m_e)}`, distances to the electron skin-depth :math:`c/\omega_{p0}`, etc...).
+Ions are frozen during the whole simulation and just provide a neutralizing background.
+Two electron species are initialized with density :math:`n_0/2` and a mean velocity :math:`\pm \bf{v_0}`.
 
+* for the Weibel study, :math:`\bf{v_0} = v_0 \hat{\bf{z}}`,
+
+* for the two-stream study, :math:`\bf{v_0} = v_0 \hat{\bf{x}}`.
 
 Content of the tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^
 This tutorial consist in a single directory :program:`Practical3` containing:
  
-* `weibel_1d.py`: the input file for the simulation.
+* `weibel_1d.py`: the input file for the Weibel simulation.
 
-* `two_stream_1d.py`: the input file for the simulation.
+* `two_stream_1d.py`: the input file for the two-stream simulation.
 
 Setup the tutorial
 ^^^^^^^^^^^^^^^^^^
 
-* Connect on `Poincare` via `ssh` using the `-X` option:
+* If you're not yet there, connect on `Poincare` via `ssh` using the `-X` option:
 
 .. code-block:: bash
 
@@ -32,7 +49,7 @@ Setup the tutorial
 
 .. code-block:: bash
 
-    cp -r Smilei/HandsOn/Practical2 $SCRATCHDIR/.
+    cp -r Smilei/HandsOn/Practical3 $SCRATCHDIR/.
 
 * Copy the executable files in the new folder:
 
@@ -47,71 +64,91 @@ Setup the tutorial
 
     cd $SCRATCHDIR/Practical3
 
+* Create to distinct directories for the two different studies (Weibel and two-stream):
+
+.. code-block:: bash
+
+    mkdir weibel
+    mkdir two_stream
+
+and move the respective `input files` in their respectives directory:
+
+.. code-block:: bash
+
+    mv weibel_1d.py weibel/.
+    mv two_stream_1d.py two_stream/.
+
+Now, depending on which study you wanna consider, go to either the ``weibel`` or ``two_stream`` directory.
+All forthcoming information are given considering that you are either in one or the other directory.
 
 
 Check input file and run the simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first step is to check that your `input file` is correct.
+The first step is to check that your `input files` are correct.
 To do so, you will run (locally) :program:`SMILEI` in test mode:
 
 .. code-block:: bash
 
-    ./smilei_test 2 2 thermal_plasma_1d.py
+    ../smilei_test 2 2 weibel_1d.py
+    ../smilei_test 2 2 two_stream_1d.py
 
-If your simulation `input file` is correct, you can `submit your first job`.
-As a first step, you will do this in `interactive mode`, that is directly running:
+.. warning::
+
+    Pay attention in which directory you are!
+    At this point, you should be either in the ``weibel`` or ``two_stream`` directory.
+
+If your simulation `input files` are correct, you can run your job.
 
 .. code-block:: bash
 
-    ./smilei 2 2 thermal_plasma_1d.py
+    ../smilei 2 2 weibel_1d.py
+    ../smilei 2 2 two_stream.py
 
 Before going to the analysis of your simulation, check your ``log`` file!
 
 
-Analysing the simulation
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-Preparing the post-processing tool
+Weibel study: analysing your datas
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First, check what output files have been generated: what are they?
+First, in an :program:`ipython` terminal, open the simulation:
 
-Let's now turn to analysing the output of your run with :program:`Happi` Python post-processing package.
-To do so, open an ``ipython`` session:
+.. code-block:: ipython
 
-.. code-block:: bash
+    S = happi.Open('/gpfsdata/training[01-30]/Practical3/weibel/')
 
-    ipython
+then, using the ``streak`` tool of :program:`Happi`, have a look at the total current density :math:`J_z` and 
+magnetic field :math:`B_y` evolution in time:
 
-In the python session:
+.. code-block:: ipython
 
-* import the :program:`Happi` package:
+    S.Field(0,'Jz').streak()    
+    S.Field(0,'By_m').streak()
 
-.. code-block:: python
+Do you have any clue what is going on? 
+Do not hesitate to use the ``animate`` tool if you do not get it:
 
-    import happi
+.. code-block:: ipython
 
-* open your simulation:
+    jz = S.Field(0,'Jz')
+    by = S.Field(0,'By_m',vmin=-0.5,vmax=0.5)
+    happi.multiPlot(jz,by)
 
-.. code-block:: python
+Now, using the ``Scalar`` diagnostics, check the temporal evolution of the energies in the magnetic (:math:`B_y`)
+and electrostatic (:math:`E_z`) fields. Can you distinguish the linear and non-linear phase of the instability?
 
-    S = happi.Open('/gpfsdata/training[01-30]/Practical2/')
+Have a closer look at the growth rates. Use the ``data_log=True`` options when loading your diagnostics, 
+and the ``happi.multiPlot()`` tool and plot both energies as a function of time.
+Can you extract the growth rates? What do they tell you?
 
-.. warning::
+If you have time, run the simulation for different wavenumbers :math:`k`.
+Check the growth rate as a function of :math:`k`.
 
-    Use your correct `training` identification number!
-
-Having a look at the ``Scalar`` diagnostics
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-
-Having a look at the ``Field`` diagnostics
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+For those interested, you'll find more on: `Grassi et al., Phys. Rev. E 95, 023203 (2017) <https://journals.aps.org/pre/abstract/10.1103/PhysRevE.95.023203>`_.
 
 
- 
-Effect of spatial resolution
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Two-stream study: analysing your datas
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Under construction ;)

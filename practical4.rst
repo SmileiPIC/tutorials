@@ -96,6 +96,11 @@ However, for this particular practical, we have preparer a Python script that wi
 Open the ``analysis.py`` file and have look at what it does.
 Note that it calls for the ``solve_rate_eqs.py`` file that is used to compute the rate equations (obtained theoretically).
 
+.. warning::
+
+    Before running ``analysis.py``, pay attention to give the correct path to your simulation results by defining the
+    ``simulation_to_analyse`` variable!
+
 Then open an :program:`ipython` terminal 
 
 .. code-block:: bash
