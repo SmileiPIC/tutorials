@@ -1,3 +1,518 @@
-Advanced Practical 2: Multiphoton Breit-Wheeler pair creation process in SMILEI
---------------------------------------------------------------------------------
+Advanced Practical 2: Multiphoton Breit-Wheeler pair creation process
+-------------------------------------------------------------------------------
 
+Goal of the tutorial
+^^^^^^^^^^^^^^^^^^^^^
+
+The goal of this tutorial is to present how to use the multiphoton Breit-Wheeler pair creation process in :program:`Smilei`.
+The following points will be addressed:
+
+* How to prepare input files for this physical module
+* How to setup macro-photon species and the Monte-Carlo emission
+* How to setup the multiphoton Breit-Wheeler pair creation process
+* How to use diagnostics
+* How to read and understand produced outputs
+
+Physical configuration
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+A multi-GeV electron beam is made to collide with a counter-propagating plane wave.
+This configuration is one of the most efficient to trigger radiative and QED effects.
+It maximizes the value of the quantum parameter for a given electron energy and a
+given field strength.
+
+The simulation is 2D Cartesian with a simulation size of :math:`30 \lambda x 4 \lambda`
+where :math:`\lambda` is the laser wavelength. The laser is injected from the left side
+of the simulation domain while the electron beam is initialized at the extreme right.
+
+In this initial configuration, the laser has a wavelength of :math:`\lambda = 1 \mu m`,
+an amplitude of :math:`10^{23} W/cm^2` (:math:`a_0 \simeq 270`) and is linearly
+polarized in the `y` direction. The temporal profile is Gaussian (order 4). 
+he full width at half maximum (FWHM) is of 10 laser periods (approximately `33 fs`).
+
+The electron beam has an initial energy of `4 GeV` and propagates to the left.
+The beam density is of :math:`n_b = 10^{-5} n_c`. The electron beam is frozen the
+time for the laser to be fully injected and so that the collision occurred at
+the middle of the domain. This enables to have a shorter simulation box and
+therefore save computational time. The beam is initialized with 32 particles per cell for a total of 3648 macro-particles.
+
+Content of the tutorial
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+This tutorial is composed of 2 directories:
+
+* ``Analysis``
+* ``Execution``
+
+The directory ``Analysis`` contains `Python` scripts that will be used to analysis and visualize the simulation outputs. Each script has been designed to focus on a specific quantity:
+
+* ``show_energy_balance.py``: display the time evolution of the species kinetic energy, the photon species energy and the radiated energy (not in the photons).
+* ``show_particle_number.py``: display the time evolution of the number of macro-particles for each species.
+* ``show_2d_density.py``: display the 2D colormap of the electron, positron and photon density.
+* ``show_2d_average_energy.py``: display the 2D colormap of the electron, positron and photon average normalized energy.
+* ``show_2d_average_chi.py``: display the 2D colormap of the electron, positron and photon quantum parameter.
+* ``show_2d_fields.py``: display 2D colormaps  of the electric field $E_y$ and the magnetic field $B_z$.
+* ``show_energy_spectrum.py``: display the electron, positron and photon energy distribution at a given time.
+
+The ``Execution`` directory contains the files to launch the simulation on `Poincare`:
+
+* ``tst2d_electron_laser_collision.py``: initial simulation input file for :program:`Smilei`
+* ``launcher``: job script understandable by the `Poincare` scheduler
+* ``smilei_env``: ascii file containing the list of modules necessary for this tutorial
+
+Setup the tutorial environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Copy the content of this tutorial in the ``$SCRATCHDIR`` of `Poincare` via ``scp``.
+
+* Connect on `Poincare` via ``ssh`` using the ``-X`` option
+
+  .. code-block:: bash
+  
+    cd $SCRATCHDIR/Multiphoton_Breit_Wheeler_tutorial
+
+
+* Go the tutorial directory
+
+  .. code-block:: bash
+  
+    cd $SCRATCHDIR/Multiphoton_Breit_Wheeler_tutorial
+
+
+* Open the file ``Execution/smilei_env`` with your favorite editor.
+
+* Change the path to the :program:`Smilei` directory (environment variable `SMILEI=<path to smilei>`).
+
+  .. code-block:: bash
+  
+    # Modules
+    module load intel/15.0.0
+    module load intelmpi/5.0.1
+    module load hdf5/1.8.16_intel_intelmpi_mt
+    module load python/anaconda-2.1.0 gnu
+    
+    unset LD_PRELOAD
+    export PYTHONHOME=/gpfslocal/pub/python/anaconda/Anaconda-2.1.0
+    
+    # SMILEI directory
+    export SMILEI=<path to smilei>
+    
+    # Python paths
+    export PYTHONPATH=$SMILEI/scripts/PythonModule/Smilei/:$PYTHONPATH
+    export PYTHONPATH=$SMILEI/scripts/PythonModule/:$PYTHONPATH
+
+
+When the job will be launched, the :program:`Smilei` executable will be copied from this directory.
+
+* Load the environment by entering in your terminal:
+
+  .. code-block:: bash
+  
+    source smilei_env
+
+  in your terminal to setup the :program:`Smilei` environment.
+
+
+Simulation of the multiphoton Breit-Wheeler process
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We will first lean how to configure the input file for the Monte-Carlo process
+with macro-photon emission followed by the Multiphoton Breit-Wheeler
+pair creation process.
+For this simulation case, we will need to define three species: electrons, positrons and photons.
+After the configuration, we will then run our simulation test case.
+Finally, we will see how to read and exploit diagnostic outputs via Python script
+and the :program:`Smilei` post-processing library.
+
+* Make a copy of the directory ``Execution`` and name it
+  ``Multiphoton_Breit_Wheeler``. We will perform the simulation in this directory.
+
+  .. code-block:: bash
+  
+    cp -r Execution Multiphoton_Breit_Wheeler
+    cd Multiphoton_Breit_Wheeler
+
+
+* Open the input file ``tst2d_electron_laser_collision.py``.
+
+Configuration of the radiation reaction namelist
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Go to the ``RadiationReaction`` namelist.
+
+* The Monte-Carlo algorithm uses tabulated values.
+  The path needs to be specified in the namelist ``RadiationReaction`` via the parameter ``table_path``.
+  The tables are located in the directory ``databases`` at the root of the :program:`Smilei` repository.
+  Uncomment this parameter and update the path to the location of your :program:`Smilei` installation.
+
+* The parameter ``chipa_radiation_threshold`` corresponds to the minimal value
+  of the quantum parameter at which the radiation reaction process is applied.
+  Below this value, the particle does not undergo radiation reaction.
+  Uncomment the corresponding line.
+  Specifying this parameter is actually not compulsory since it is defined by default at `1e-3`.
+
+* Uncomment the line with the parameter ``chipa_disc_min_threshold``.
+  The Monte-Carlo model is built to work with
+  the continuous corrected Landau-Lifshitz approach when the particle quantum parameter is too low.
+  This parameter corresponds to this threshold.
+  Above this value, a particle undergoes radiation reaction via the Monte-Carlo engine.
+  Below the continuous approach is used.
+  This parameter is by default equal to `1e-2`
+
+* The ``RadiationReaction`` should now look like:
+
+  .. code-block:: python
+  
+    RadiationReaction(
+         chipa_radiation_threshold = 1e-3
+         chipa_disc_min_threshold = 1e-2,
+         table_path = "<path_to_smilei>/databases/"
+    )
+
+
+Configuration of the multiphoton Breit-Wheeler namelist
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Go to the ``MultiphotonBreitWheeler`` namelist.
+  This namelist controls the general parameters of the Multiphoton Breit-Wheeler process.
+
+* The Monte-Carlo algorithm for the Multiphoton Breit-Wheeler process uses tabulated values.
+  The path needs to be specified in the namelist ``MultiphotonBreitWheeler`` via the parameter ``table_path``.
+  The tables are located in the directory ``databases`` at the root of the :program:`Smilei` repository.
+  Uncomment this parameter and update the path to the location of your :program:`Smilei` installation.
+
+* The ``MultiphotonBreitWheeler`` should now look like:
+
+  .. code-block:: python
+  
+    MultiphotonBreitWheeler(
+         table_path = "<path_to_smilei>/databases/"
+    )
+
+Configuration of the electron species
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* We will first configure the ``electron`` species that composes the beam so that
+  it can radiate via the Monte-Carlo model and generate macro-photons
+  Go to the ``electron`` species namelist. you can see that the radiation parameters
+  are commented.
+
+* The parameter ``radiation_model`` corresponds to the type of radiation model to be used.
+  Uncomment the corresponding line. We use here the ``Monte-Carlo``.
+
+* When ``radiation_photon_species`` is present and not set to ``None``,
+  the possibility to generate macro-photons is activated. This parameter has to be set to
+  the name of the ``photon`` species that will receive the created macro-photons.
+  Uncomment the corresponding line. The photon species is called ``photon``.
+
+* The parameter ``radiation_photon_sampling`` enables to control the number of
+  macro-photons generated per emission even. By default, an emission yields a
+  single macro-photons of weight similar to the emitting particle. to increase
+  the emission statistics, you can decide to increase this number so that several
+  macro-photons are generated per even. In this case, the weight is equally
+  divided between macro-photons for quantity conservation.
+  Uncomment the corresponding line.
+
+* The parameter ``radiation_photon_gamma_threshold`` enables to control the
+  minimum threshold on the photon energy that allow macro-photon emission.
+  Below the specified value, the radiation reaction is taken into account
+  but no macro-photon is created.
+  Here, since photons of energy below twice the electron rest mass energy have
+  no chance to turn into electron-positron pairs, this threshold is set to 2.
+  This value is actually the default one.
+  Uncomment the corresponding line.
+
+* The radiation parameters of the ``electron`` species namelist are now:
+
+  .. code-block:: python
+  
+    Species(
+        name = "electron",
+    ...
+        radiation_model = "Monte-Carlo",
+        radiation_photon_species = "photon",
+        radiation_photon_sampling = 1,
+        radiation_photon_gamma_threshold = 2,
+    ...
+    )
+
+
+* The electron species is now configured.
+
+Configuration of the photon species
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* We will then configure the ``photon`` species that will receive the macro-photons
+  generated by the other species via the Monte-Carlo radiation model.
+  Go to the ``photon`` species namelist. you can see that the Multiphoton
+  Breit-Wheeler parameters are commented. They start by ``multiphoton_Breit_Wheeler``.
+
+* The parameter ``multiphoton_Breit_Wheeler`` is a list of two strings.
+  These strings respectively correspond
+  to the species name that will receive the created electron and the created positron.
+  Uncomment the corresponding line.
+  The electron and the positron species respectively correspond to ``electron`` and ``positron``.
+  When this parameter is commented, the multiphoton Breit-Wheeler is not activated.
+
+* The parameter ``multiphoton_Breit_Wheeler_sampling`` is the number of
+  macro-electron and macro-positron generated per Monte-Carlo event.
+  This parameter is a list of two integers.
+  By default, an electron and a positron are generated per event.
+  To improve the statistics, these numbers can be increased.
+  The macro-particle weight is then divided in consequence.
+  Uncomment the corresponding line.
+
+* The multiphoton Breit-Wheeler parameters for the ``photon`` species namelist are now:
+
+  .. code-block:: python
+  
+    Species(
+        name = "photon",
+    ...
+        multiphoton_Breit_Wheeler = ["electron","positron"],
+        multiphoton_Breit_Wheeler_sampling = [1,1],
+    ...
+    )
+
+
+Configuration of the positron species
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* We will then configure the ``positron`` species that will receive the macro-positrons
+  generated via the multiphoton Breit-Wheeler.
+  Go to the ``positron`` species namelist.
+
+* As for the ``electron`` species, uncomment the radiation parameters as follow:
+
+  .. code-block:: python
+  
+    Species(
+        name = "positron",
+    ...
+        radiation_model = "Monte-Carlo",
+        radiation_photon_species = "photon",
+        radiation_photon_sampling = 1,
+        radiation_photon_gamma_threshold = 2,
+    ...
+    )
+
+
+The positrons will also radiate with the Monte-Carlo model.
+
+Presentation of the diagnostics
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Several diagnostics are defined in the input file.
+
+* Time-evolution of scalar quantities are configured via the ``DiagScalar`` namelist.
+  Here, output of the radiated energy (not including the macro-photons)
+  is requested via ``Urad``. ``Ukin_<species>`` corresponds to the kinetic energy of ``<species>``
+  (total energy for the photons). ``Ntot_<species>`` is the number of macro-particles.
+
+  .. code-block:: python
+  
+    DiagScalar(
+        every = 10,
+        vars=['Uelm','Ukin','Utot','Uexp','Ubal',
+              'Urad',
+              'Ukin_electron',
+              'Ukin_positron',
+              'Ukin_photon',
+              'Ntot_electron',
+              'Ntot_positron',
+              'Ntot_photon']
+    )
+
+
+* The field grids are damped every 500 iterations via the namelist ``DiagFields``.
+
+* The ``DiagParticleBinning`` namelists enable to project the particle
+  quantities on specified multidimensional grids.
+  There are 4 types of diagnostics configured in the input file for each species:
+  
+  - 1. the species `weight` distribution
+  - 2. the kinetic energy times the weight (``weight_ekin``)
+  - 3. the quantum parameter time the weight (``weight_chi``)
+  - 4. the species energy distribution
+  
+  The particle binning diagnostics are damped every 500 iterations.
+
+Simulation run
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Run the simulation via the following command:
+
+  .. code-block:: bash
+  
+    llsubmit launcher
+
+
+The launcher file is a submission script that contains the scheduler configuration.
+The simulation is run on a single node of Poincare with 2 MPI ranks
+(1 MPI rank per socket) and 8 OpenMP threads per MPI rank.
+
+Simulation analysis
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Let us first analyze the time-evolution of the number of macro-particles
+  in the simulation.
+  Copy the file ``Analysis/show_particle_number.py`` in the working directory:
+  
+  .. code-block:: bash
+  
+    cp ../Analysis/show_particle_number.py .
+
+
+  Run the script using iPython:
+
+  .. code-block:: bash
+  
+    ipython
+    run show_particle_number.py
+
+
+* You should obtain the following graph:
+
+  .. image:: _extra/particle_number.png
+
+  When the laser starts to interact with the electron beam around :math:`t = 230 \omega_r^{-1}`,
+  the number of macro-photons rises rapidly due thanks to
+  the Monte-Carlo radiation model.
+  Later, these photons start to decay into electron-positron pairs
+  via the multiphoton Breit-Wheeler.
+  We can observe an increase of the number of macro-electrons and macro-positrons
+  from :math:`t = 235 \omega_r^{-1}`
+
+* Copy the file ``Analysis/show_energy_balance.py`` in the working directory
+  and run the script:
+  
+  .. code-block:: bash
+  
+    cp ../Analysis/show_energy_balance.py .
+    ipython
+    run show_energy_balance.py
+
+
+* You should obtain the following graph:
+
+  .. image:: _extra/energy_balance.png
+
+* We will now use the particle binning diagnostics.
+  Copy the file ``Analysis/show_2d_average_energy.py`` in the working directory
+  and run the script:
+  
+  .. code-block:: bash
+  
+    cp ../Analysis/show_2d_average_energy.py .
+    ipython
+    run show_2d_average_energy.py
+
+
+  You should obtain the following graph:
+  
+  .. image:: _extra/2d_average_energy_it5500.png
+
+  From the top to the bottom, you have respectively the electron, positron
+  normalized kinetic energy and the photon normalized energy.
+
+* Open the script ``show_2d_average_energy.py``. In the section `Parameters`,
+  you can play with the parameter ``timestep`` that plot the species average energy
+  at different iteration. Rerun the script at different timesteps.
+
+  .. code-block:: python
+  
+    # ______________________________________________________________________________
+    # Parameters
+    
+    # Path to the simulation directory
+    path = "./"
+    
+    # Time step for the diagnotics
+    timestep = 5500
+
+
+  Observe the evolution of the different species energy all along the simulation.
+
+* We will now do the same thing for the weight (normalized local density).
+  Copy the file ``Analysis/show_2d_density.py`` in the working directory
+  and run the script:
+  
+  .. code-block:: bash
+  
+    cp ../Analysis/show_2d_density.py .
+    ipython
+    run show_2d_density.py
+
+
+  You should obtain the following figure:
+  
+  .. image:: _extra/2d_density_it5500.png
+
+  Change the ``timestep`` parameter to see how the beam shape evolves during
+  the simulation and how the positron are created.
+
+* We can also look at the quantum parameter.
+  Copy the file ``Analysis/show_2d_average_chi.py`` in the working directory
+  and run the script:
+  
+  .. code-block:: bash
+  
+    cp ../Analysis/show_2d_average_chi.py .
+    ipython
+    run show_2d_average_chi.py
+
+
+  You should obtain the following figure:
+  
+  .. image:: _extra/2d_average_chi_it5500.png
+
+  The maximal value of the quantum parameter is printed in the terminal.
+  Change the ``timestep`` parameter to see how the electron, positron and photon
+  average quantum parameter evolve during
+  the simulation.
+
+* To get an idea of where in the laser field the beam is located,
+  you can use the script ``Analysis/show_2d_fields.py``
+  Copy and run it:
+  
+  .. code-block:: bash
+  
+    cp ../Analysis/show_2d_fields.py .
+    ipython
+    run show_2d_fields.py
+
+
+  You should obtain the following figure:
+  
+  .. image:: _extra/2d_fields_it5500.png
+
+  Change the ``timestep`` parameter as for the particle binning diagnostics.
+
+* Finally, we want to analysis the final energy spectra of the species.
+  For this aim, copy the script ``Analysis/show_energy_spectrum.py`` and run it.
+
+  .. code-block:: bash
+  
+    cp ../Analysis/show_energy_spectrum.py .
+    ipython
+    run show_energy_spectrum
+
+
+  You should obtain the following figure:
+  
+  .. image:: _extra/energy_spectrum_it8000.png
+
+
+To go beyond
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* **Optional exercice:** Change the laser and electron beam properties to see
+  how it affects the beam energy loss and the production of electron-positron pairs.
+
+* **Optional exercice:** Use the same input file to build a similar case in 3D.
+  You will have to increase the number of nodes in `launcher`.
+  Use a focused laser pulse instead a place wave and see how the pulse waist
+  affect the interaction (final positron energy, beam divergence...).
+
+* **Optional exercice:** Activate the load balancing and change the number of
+  patches to see how it affects the performances.

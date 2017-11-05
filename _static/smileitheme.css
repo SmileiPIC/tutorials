@@ -23,7 +23,7 @@
 	padding:5px;
 	margin:0 30%;
 	background-color: #e3f7f2;
-	border: 1px solid #b21e37;
+	border: 1px solid #db2e13;
 }
 
 /* Style for an emphasized link */
@@ -114,7 +114,7 @@ div.toctree-smilei > ul > li > a {
 	font-size: 100%;
 	font-weight: bold;
 	text-decoration: none;
-	color: #b21e37;
+	color: #db2e13;
 	border:0;
 }
 div.toctree-smilei > ul, div.toctree-smilei > li {
@@ -179,18 +179,18 @@ div.highlight > pre {
 /* Adjust horizontal lines */
 hr {
 	margin-top:1em;
-	border-color: #b21e37;
+	border-color: #db2e13;
 }
 .toctree-smilei hr {
 	margin: 0.2em 0;
-	background: #b21e37 !important;
+	background: #db2e13 !important;
 	width:60% !important;
 }
 
 /* --------------------------------------------------------------------*/
 /* Color for titles */
 h1, h2, h3, h4, h5, h6 {
-	color: #b21e37;
+	color: #db2e13;
 	font-weight:bold !important;
 }
 
@@ -199,8 +199,8 @@ h1, h2, h3, h4, h5, h6 {
 div.admonition {
 	padding:7px !important;
 	margin:0px 30px !important;
-	background-color: #f4d7dc;
-	border: 1px solid #b21e37;
+	background-color: #f7dad4;
+	border: 1px solid #db2e13;
 	overflow: hidden;
 }
 div.admonition p.admonition-title {
@@ -261,10 +261,10 @@ div.related {
 	text-decoration:none;
 }
 #backToTopDiv:hover {
-	background-color:#f7d4da;
+	background-color:#f7dad4;
 }
 #backToTopDiv:active {
-	background-color:#f7c8d0;
+	background-color:#fcd2cc;
 }
 
 @media screen and (max-width: 875px) {
