@@ -1,7 +1,10 @@
 .. title:: Smilei training workshop, Nov. 2017
 
-Smilei training workshop, Nov. 2017
-***********************************
+Smilei training workshop
+************************
+
+November 2017
+
 
 Morning session
 ===============
@@ -43,3 +46,17 @@ Afternoon session
 * :doc:`advanced_practical4`
 * :doc:`advanced_practical5`
 * :doc:`advanced_practical6`
+
+----
+
+
+
+Links
+^^^^^
+
+`Smilei documentation home <https://smileipic.github.io/Smilei>`_.
+
+`Smilei namelist docs <https://smileipic.github.io/Smilei/namelist.html>`_.
+
+`Happi documentation <https://smileipic.github.io/Smilei/post-processing.html>`_.
+
