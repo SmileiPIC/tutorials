@@ -151,4 +151,33 @@ For those interested, you'll find more on: `Grassi et al., Phys. Rev. E 95, 0232
 Two-stream study: analysing your datas
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Under construction ;)
+First, in an :program:`ipython` terminal, open the simulation:
+
+.. code-block:: ipython
+
+    S = happi.Open('/gpfsdata/training[01-30]/Practical3/two_stream/')
+
+then, have a first look at your simulation results:
+
+.. code-block:: ipython
+
+    ne  = S.Field(0,'-Rho_eon1-Rho_eon2',xmin=0,xmax=1.3)
+    ex  = S.Field(0,'Ex',xmin=0,xmax=1.3)
+    phs = S.ParticleBinning(0)
+    happi.multiPlot(ne,ex,phs)
+
+Any clue what's going on? 
+
+Now, let's have a look at the energy in the electrostatic field :math:`E_x`:
+
+* can you distinguish the linear and non-linear phase of the instability?
+
+* checking at the :math:`(x,p_x)`-phase-space distribution, can you get any clue on what leads the instability to saturate?
+
+Then, try changing the simulation box size (which is also the wavelength of the considered perturbation), e.g. taking: 
+:math:`L_x =` 0.69, 1.03 or 1.68 :math:`c/\omega_{p0}`. What do you observe?
+
+Now, take :math:`L_x =` 0.6, 0.31 or 0.16 :math:`c/\omega_{p0}`. What are the differences? Can you explain them?
+
+
+

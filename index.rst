@@ -3,11 +3,17 @@
 Smilei training workshop
 ************************
 
-November 2017
+November 6th and 7th (2017) Maison de la Simulation
 
 
 Morning session
 ===============
+
+During this morning session, you will get familier with installing and using the PIC code :program:`Smilei`
+and its post-processing tool :program:`Happi`.
+
+The first step will be to upload and install :program:`Smilei`.
+Then, 4 practicals will help you get familiar with the code and its post-processing tool.
 
 .. toctree::
    :maxdepth: 1
@@ -28,6 +34,16 @@ Morning session
 
 Afternoon session
 =================
+
+During this afternoon session, you can either:
+
+* follow one of these "`advanced`" tutorials,
+
+* pick up a ``benchmark`` of your choice in :program:`Smilei`'s benchmark list,
+
+* or build up your own input file.
+
+**List of advanced practicals**
 
 .. toctree::
    :maxdepth: 1
