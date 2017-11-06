@@ -6,7 +6,7 @@ Obtain Smilei
 
 .. code-block:: bash
 
-   $ git clone --depth=1 git@github.com:SmileiPIC/Smilei.git
+   $ git clone --depth=1 https://github.com/SmileiPIC/Smilei.git
    $ cd Smilei
 
 Compile the documentation
