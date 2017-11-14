@@ -16,7 +16,7 @@ before_install:
   - export PATH=$HOME/.local/bin:$PATH
 
 script:
-  - travis-sphinx -s . build
+  - travis-sphinx build -s . 
 
 after_success:
   - travis-sphinx deploy
