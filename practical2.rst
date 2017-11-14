@@ -1,194 +1,126 @@
-Practical 2: Thermal plasma (infinite size using periodic)
-----------------------------------------------------------
-
-Goal of the tutorial
-^^^^^^^^^^^^^^^^^^^^
+Practical 2: Thermal plasma
+---------------------------
 
 The goal of this tutorial is to get familiar with:
 
-* how to submit a job on a super-computer (here the :program:`Poincare` machine) using its queuing system,
-
-* the ``Species`` block that allows you to define a particle species in :program:`Smilei`,
-
-* the ``ParticleBinning`` diagnostics to build up (e.g.) particle energy spectra,
-
-* the :program:`Happi` ``multiPlot`` tool,
-
+* the ``Species`` block that allows you to define a particle species,
+* the ``ParticleBinning`` diagnostics to obtain particle energy spectra,
+* the ``happi.multiPlot`` tool,
 * the problem of `numerical heating` and the necessity to correctly `resolve the electron dynamics` in explicit PIC codes.
+
+
+----
 
 Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^
 
-An `infinite` electron-ion plasma is let free to evolve in a 1D cartesian geometry with periodic boundary conditions.
+Download the input file `thermal_plasma_1d.py <thermal_plasma_1d.py>`_.
+
+An `infinite` electron-ion plasma is let free to evolve in a 1D cartesian
+geometry with periodic boundary conditions.
 
 
-Content of the tutorial
-^^^^^^^^^^^^^^^^^^^^^^^
-This tutorial consist in a single directory :program:`Practical2` containing:
- 
-* `thermal_plasma_1d.py`: the input file for the simulation,
 
-* `launcher.sh`: the submission script to launch your job on :program:`Poincare`.
-
-Setup the tutorial
-^^^^^^^^^^^^^^^^^^
-
-* If you're not yet there, connect on `Poincare` via `ssh` using the `-X` option:
-
-.. code-block:: bash
-
-    ssh -X poincare
-
-* Copy the content of this tutorial in the `$SCRATCHDIR` of `Poincare`:
-
-.. code-block:: bash
-
-    cp -r Smilei/handson/Practical2 $SCRATCHDIR/.
-
-* Copy the executable files in the new folder:
-
-.. code-block:: bash
-
-    cp -r Smilei/smilei $SCRATCHDIR/Practical2/.
-    cp -r Smilei/smilei_test $SCRATCHDIR/Practical2/.
-
-* Go the tutorial directory:
-
-.. code-block:: bash
-
-    cd $SCRATCHDIR/Practical2
-
-
+----
 
 Check input file and run the simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The first step is to check that your `input file` is correct.
-To do so, you will run (locally) :program:`SMILEI` in test mode:
+To do so, you will run (locally) :program:`Smilei` in test mode:
 
 .. code-block:: bash
 
-    ./smilei_test 2 2 thermal_plasma_1d.py
+    ./smilei_test thermal_plasma_1d.py
 
-If your simulation `input file` is correct, you can now `submit your job`.
-In the previous practical, this was done `interactively`.
-Now, we will proceed by submitting the job to the ``queuing system``.
+If your simulation `input file` is correct, you can now run the simulation.
+Before going to the analysis of your simulation, check your *log* and/or
+*error* output.
 
-Have a look at the ``submission script``:
+Check what output files have been generated: what are they?
 
-.. code-block:: bash
-
-    vim launcher
-
-Once you've understand what's in the ``launcher``, just submit your job:
-
-.. code-block:: bash
-
-    llsubmit launcher
-
-To check if your job is running:
-
-.. code-block:: bash
-
-    llq
-
-Before going to the analysis of your simulation, check your ``log`` and ``err`` files `smilei.out` and `smilei.err`!
-
+----
 
 Preparing the post-processing tool
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First, check what output files have been generated: what are they?
-
-Let's now turn to analysing the output of your run with :program:`Happi` Python post-processing package.
+Let's now turn to analysing the output of your run with :program:`happi`.
 To do so, open an ``ipython`` session:
 
 .. code-block:: bash
 
     ipython
 
-In the python session:
-
-* import the :program:`Happi` package:
+In *ipython*, import the :program:`happi` package:
 
 .. code-block:: python
 
     import happi
 
-* open your simulation:
+then open your simulation:
 
 .. code-block:: python
 
-    S = happi.Open('/gpfsdata/training[01-30]/Practical2/')
+    S = happi.Open('/path/to/the/simulation')
 
 .. warning::
 
-    Use your correct `training` identification number!
+    Use the correct simulation path.
 
 You are now ready to take a look at your simulation's results.
 
-Having a look at the ``Field`` diagnostics using ``happi.multiPlot``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----
 
-First, to have a quick access at your data and `check` what is going on, you will plot the electron and ion densities 
-together with the electrostatic field :math:`E_x`.
+The ``Field`` diagnostics using ``happi.multiPlot``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-First, you have to load the data:
+To have a quick access at your data and `check` what is going on, you will plot
+the electron and ion densities together with the electrostatic field :math:`E_x`.
 
-.. code-block:: python
-
-    ne = S.Field(0,'-Rho_eon',vmin=-0.25,vmax=2)
-    ni = S.Field(0,'Rho_ion')
-    ex = S.Field(0,'Ex')
-
-Now, you can plot all these quantities independently, e.g., using:
+First, `prepare` the data:
 
 .. code-block:: python
 
-    ex.plot()
+    ne = S.Field(0,'-Rho_eon',vmin=-0.25,vmax=2) # minus the electron density
+    ni = S.Field(0,'Rho_ion')                    # the ion density
+    ex = S.Field(0,'Ex')                         # the Ex field
 
-or 
-
-.. code-block:: python
-
-    ex.animate()
-
-But you can also use the ``multiPlot`` function of :program:`Happi`:
+You may plot all these quantities independently using ``ex.plot()`` or ``ex.animate()``,
+but you can also use the ``multiPlot`` function of :program:`happi`:
 
 .. code-block:: python
 
     happi.multiPlot(ne,ni,ex)
 
 
-Having a look at the ``ParticleBinning`` diagnostics
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----
 
-Now, have a look at the ``ParticleBinning`` diagnostics, and in particular at the electron energy distribution at initial and latest timesteps:
+The ``ParticleBinning`` diagnostics
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now, have a look at the ``ParticleBinning`` diagnostics, and in particular
+at the electron energy distribution at initial and latest timesteps:
 
 .. code-block:: python
 
     Nt    = int(S.namelist.tsim / S.namelist.dt)
-    f_ini = S.ParticleBinning(0,data_log=True,timesteps=0)
-    f_fin = S.ParticleBinning(0,data_log=True,timesteps=Nt)
-    happi.multiPlot(f_ini,f_fin)
+    f_ini = S.ParticleBinning(0, data_log=True, timesteps=0)
+    f_fin = S.ParticleBinning(0, data_log=True, timesteps=Nt)
+    happi.multiPlot(f_ini, f_fin)
 
 
+----
 
-
- 
 Effect of spatial resolution
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Before checking the effect of spatial resolution, first have a look at the total energy and energy balance in your simulation.
-Note the level of energy imbalance at the end of this simulation for which :math:`\Delta x = \lambda_{\rm De}`.
+Have a look at the total energy and energy balance in your simulation
+(remember the ``Utot`` and ``Ubal`` scalars).
+Note the level of energy imbalance at the end of this simulation for which
+the spatial resolution is equal to the Debye Length (:math:`\Delta x = \lambda_{\rm De}`).
 
-.. warning::
-    
-    Note that you can run your program interactively if you want to!
-    No need to go with the launcher from now on.
-
-Then, increase your spatial resolution to :math:`\Delta x = 16 \times \lambda_{\rm De}`.
-Check again, from the ``Scalar`` diagnostics the level of energy imbalance at the end of the simulation.
+Increase your spatial resolution to :math:`\Delta x = 16 \times \lambda_{\rm De}`.
+Run the simulation again, and check the energy imbalance at the end of the simulation.
 What do you observe?
 Can you check the electron spectrum at the beginning and end of the simulation?
 What is going on?

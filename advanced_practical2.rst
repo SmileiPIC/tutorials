@@ -1,10 +1,8 @@
 Advanced Practical 2: Multiphoton Breit-Wheeler pair creation process
 -------------------------------------------------------------------------------
 
-Goal of the tutorial
-^^^^^^^^^^^^^^^^^^^^^
-
-The goal of this tutorial is to present how to use the multiphoton Breit-Wheeler pair creation process in :program:`Smilei`.
+The goal of this tutorial is to present how to use the multiphoton Breit-Wheeler
+pair creation process in :program:`Smilei`.
 The following points will be addressed:
 
 * How to prepare input files for this physical module
@@ -12,6 +10,8 @@ The following points will be addressed:
 * How to setup the multiphoton Breit-Wheeler pair creation process
 * How to use diagnostics
 * How to read and understand produced outputs
+
+----
 
 Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -34,84 +34,43 @@ The electron beam has an initial energy of `4 GeV` and propagates to the left.
 The beam density is of :math:`n_b = 10^{-5} n_c`. The electron beam is frozen the
 time for the laser to be fully injected and so that the collision occurred at
 the middle of the domain. This enables to have a shorter simulation box and
-therefore save computational time. The beam is initialized with 32 particles per cell for a total of 3648 macro-particles.
+therefore save computational time. The beam is initialized with 32 particles
+per cell for a total of 3648 macro-particles.
+
+----
 
 Content of the tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-This tutorial is composed of 2 directories:
+Download `AdvancedPractical2.tar.gz <AdvancedPractical2.tar.gz>`_ and extract it.
+It contains 2 directories:
 
 * ``Analysis``
 * ``Execution``
 
-The directory ``Analysis`` contains `Python` scripts that will be used to analysis and visualize the simulation outputs. Each script has been designed to focus on a specific quantity:
+The directory ``Analysis`` contains `Python` scripts that will be used to analysis
+and visualize the simulation outputs. Each script has been designed to focus on a
+specific quantity:
 
-* ``show_energy_balance.py``: display the time evolution of the species kinetic energy, the photon species energy and the radiated energy (not in the photons).
-* ``show_particle_number.py``: display the time evolution of the number of macro-particles for each species.
+* ``show_energy_balance.py``: display the time evolution of the species kinetic energy,
+  the photon species energy and the radiated energy (not in the photons).
+* ``show_particle_number.py``: display the time evolution of the number of macro-particles
+  for each species.
 * ``show_2d_density.py``: display the 2D colormap of the electron, positron and photon density.
-* ``show_2d_average_energy.py``: display the 2D colormap of the electron, positron and photon average normalized energy.
-* ``show_2d_average_chi.py``: display the 2D colormap of the electron, positron and photon quantum parameter.
-* ``show_2d_fields.py``: display 2D colormaps  of the electric field $E_y$ and the magnetic field $B_z$.
-* ``show_energy_spectrum.py``: display the electron, positron and photon energy distribution at a given time.
+* ``show_2d_average_energy.py``: display the 2D colormap of the electron, positron and
+  photon average normalized energy.
+* ``show_2d_average_chi.py``: display the 2D colormap of the electron, positron and
+  photon quantum parameter.
+* ``show_2d_fields.py``: display 2D colormaps  of the electric field :math:`E_y`
+  and the magnetic field :math:`B_z`.
+* ``show_energy_spectrum.py``: display the electron, positron and photon energy
+  distribution at a given time.
 
-The ``Execution`` directory contains the files to launch the simulation on `Poincare`:
+The ``Execution`` directory contains the input file:
 
-* ``tst2d_electron_laser_collision.py``: initial simulation input file for :program:`Smilei`
-* ``launcher``: job script understandable by the `Poincare` scheduler
-* ``smilei_env``: ascii file containing the list of modules necessary for this tutorial
+* ``tst2d_electron_laser_collision.py``
 
-Setup the tutorial environment
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-* Copy the content of this tutorial in the ``$SCRATCHDIR`` of `Poincare` via ``scp``.
-
-* Connect on `Poincare` via ``ssh`` using the ``-X`` option
-
-  .. code-block:: bash
-  
-    cd $SCRATCHDIR/Multiphoton_Breit_Wheeler_tutorial
-
-
-* Go the tutorial directory
-
-  .. code-block:: bash
-  
-    cd $SCRATCHDIR/Multiphoton_Breit_Wheeler_tutorial
-
-
-* Open the file ``Execution/smilei_env`` with your favorite editor.
-
-* Change the path to the :program:`Smilei` directory (environment variable `SMILEI=<path to smilei>`).
-
-  .. code-block:: bash
-  
-    # Modules
-    module load intel/15.0.0
-    module load intelmpi/5.0.1
-    module load hdf5/1.8.16_intel_intelmpi_mt
-    module load python/anaconda-2.1.0 gnu
-    
-    unset LD_PRELOAD
-    export PYTHONHOME=/gpfslocal/pub/python/anaconda/Anaconda-2.1.0
-    
-    # SMILEI directory
-    export SMILEI=<path to smilei>
-    
-    # Python paths
-    export PYTHONPATH=$SMILEI/scripts/PythonModule/Smilei/:$PYTHONPATH
-    export PYTHONPATH=$SMILEI/scripts/PythonModule/:$PYTHONPATH
-
-
-When the job will be launched, the :program:`Smilei` executable will be copied from this directory.
-
-* Load the environment by entering in your terminal:
-
-  .. code-block:: bash
-  
-    source smilei_env
-
-  in your terminal to setup the :program:`Smilei` environment.
-
+----
 
 Simulation of the multiphoton Breit-Wheeler process
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -122,7 +81,7 @@ pair creation process.
 For this simulation case, we will need to define three species: electrons, positrons and photons.
 After the configuration, we will then run our simulation test case.
 Finally, we will see how to read and exploit diagnostic outputs via Python script
-and the :program:`Smilei` post-processing library.
+and the :program:`happi` post-processing module.
 
 * Make a copy of the directory ``Execution`` and name it
   ``Multiphoton_Breit_Wheeler``. We will perform the simulation in this directory.
@@ -135,13 +94,15 @@ and the :program:`Smilei` post-processing library.
 
 * Open the input file ``tst2d_electron_laser_collision.py``.
 
-Configuration of the radiation reaction namelist
+----
+
+Configuration of the radiation reaction block
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Go to the ``RadiationReaction`` namelist.
+* Go to the ``RadiationReaction`` block.
 
 * The Monte-Carlo algorithm uses tabulated values.
-  The path needs to be specified in the namelist ``RadiationReaction`` via the parameter ``table_path``.
+  The path needs to be specified in the block ``RadiationReaction`` via the parameter ``table_path``.
   The tables are located in the directory ``databases`` at the root of the :program:`Smilei` repository.
   Uncomment this parameter and update the path to the location of your :program:`Smilei` installation.
 
@@ -170,14 +131,16 @@ Configuration of the radiation reaction namelist
     )
 
 
-Configuration of the multiphoton Breit-Wheeler namelist
+----
+
+Configuration of the multiphoton Breit-Wheeler block
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Go to the ``MultiphotonBreitWheeler`` namelist.
-  This namelist controls the general parameters of the Multiphoton Breit-Wheeler process.
+* Go to the ``MultiphotonBreitWheeler`` block.
+  This block controls the general parameters of the Multiphoton Breit-Wheeler process.
 
 * The Monte-Carlo algorithm for the Multiphoton Breit-Wheeler process uses tabulated values.
-  The path needs to be specified in the namelist ``MultiphotonBreitWheeler`` via the parameter ``table_path``.
+  The path needs to be specified in the block ``MultiphotonBreitWheeler`` via the parameter ``table_path``.
   The tables are located in the directory ``databases`` at the root of the :program:`Smilei` repository.
   Uncomment this parameter and update the path to the location of your :program:`Smilei` installation.
 
@@ -189,12 +152,14 @@ Configuration of the multiphoton Breit-Wheeler namelist
          table_path = "<path_to_smilei>/databases/"
     )
 
+----
+
 Configuration of the electron species
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * We will first configure the ``electron`` species that composes the beam so that
   it can radiate via the Monte-Carlo model and generate macro-photons
-  Go to the ``electron`` species namelist. you can see that the radiation parameters
+  Go to the ``electron`` species block. you can see that the radiation parameters
   are commented.
 
 * The parameter ``radiation_model`` corresponds to the type of radiation model to be used.
@@ -222,7 +187,7 @@ Configuration of the electron species
   This value is actually the default one.
   Uncomment the corresponding line.
 
-* The radiation parameters of the ``electron`` species namelist are now:
+* The radiation parameters of the ``electron`` species block are now:
 
   .. code-block:: python
   
@@ -239,12 +204,14 @@ Configuration of the electron species
 
 * The electron species is now configured.
 
+----
+
 Configuration of the photon species
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * We will then configure the ``photon`` species that will receive the macro-photons
   generated by the other species via the Monte-Carlo radiation model.
-  Go to the ``photon`` species namelist. you can see that the Multiphoton
+  Go to the ``photon`` species block. you can see that the Multiphoton
   Breit-Wheeler parameters are commented. They start by ``multiphoton_Breit_Wheeler``.
 
 * The parameter ``multiphoton_Breit_Wheeler`` is a list of two strings.
@@ -262,7 +229,7 @@ Configuration of the photon species
   The macro-particle weight is then divided in consequence.
   Uncomment the corresponding line.
 
-* The multiphoton Breit-Wheeler parameters for the ``photon`` species namelist are now:
+* The multiphoton Breit-Wheeler parameters for the ``photon`` species block are now:
 
   .. code-block:: python
   
@@ -275,12 +242,14 @@ Configuration of the photon species
     )
 
 
+----
+
 Configuration of the positron species
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * We will then configure the ``positron`` species that will receive the macro-positrons
   generated via the multiphoton Breit-Wheeler.
-  Go to the ``positron`` species namelist.
+  Go to the ``positron`` species block.
 
 * As for the ``electron`` species, uncomment the radiation parameters as follow:
 
@@ -299,12 +268,14 @@ Configuration of the positron species
 
 The positrons will also radiate with the Monte-Carlo model.
 
+----
+
 Presentation of the diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Several diagnostics are defined in the input file.
 
-* Time-evolution of scalar quantities are configured via the ``DiagScalar`` namelist.
+* Time-evolution of scalar quantities are configured via the ``DiagScalar`` block.
   Here, output of the radiated energy (not including the macro-photons)
   is requested via ``Urad``. ``Ukin_<species>`` corresponds to the kinetic energy of ``<species>``
   (total energy for the photons). ``Ntot_<species>`` is the number of macro-particles.
@@ -324,9 +295,9 @@ Several diagnostics are defined in the input file.
     )
 
 
-* The field grids are damped every 500 iterations via the namelist ``DiagFields``.
+* The field grids are damped every 500 iterations via the block ``DiagFields``.
 
-* The ``DiagParticleBinning`` namelists enable to project the particle
+* The ``DiagParticleBinning`` blocks enable to project the particle
   quantities on specified multidimensional grids.
   There are 4 types of diagnostics configured in the input file for each species:
   
@@ -337,22 +308,12 @@ Several diagnostics are defined in the input file.
   
   The particle binning diagnostics are damped every 500 iterations.
 
-Simulation run
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-* Run the simulation via the following command:
-
-  .. code-block:: bash
-  
-    llsubmit launcher
-
-
-The launcher file is a submission script that contains the scheduler configuration.
-The simulation is run on a single node of Poincare with 2 MPI ranks
-(1 MPI rank per socket) and 8 OpenMP threads per MPI rank.
+----
 
 Simulation analysis
 ^^^^^^^^^^^^^^^^^^^^^^^^
+
+After you have run the simulation, you may start analyzing its results.
 
 * Let us first analyze the time-evolution of the number of macro-particles
   in the simulation.
@@ -503,6 +464,8 @@ Simulation analysis
   .. image:: _extra/energy_spectrum_it8000.png
 
 
+----
+
 To go beyond
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -510,7 +473,7 @@ To go beyond
   how it affects the beam energy loss and the production of electron-positron pairs.
 
 * **Optional exercice:** Use the same input file to build a similar case in 3D.
-  You will have to increase the number of nodes in `launcher`.
+  You will have to increase the number of nodes.
   Use a focused laser pulse instead a place wave and see how the pulse waist
   affect the interaction (final positron energy, beam divergence...).
 

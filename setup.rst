@@ -1,95 +1,128 @@
 Setup 
---------
+-----
+
+In these tutorials, we assume you are running on a UNIX machine that has access to internet
+and can run simulation jobs on several cores. Ideally, it would run on 16 to 32 cores.
+If you are, instead, using a home computer or workstation, we recommend you scale the
+simulations down in order to reduce their execution time.
+
+We recommend getting some `basic understanding of parallel computing
+<http://www.maisondelasimulation.fr/smilei/parallelization.html>`_ and some basic knowledge
+on UNIX commands.
+
+You should first open a `terminal` or a `console`, then ``cd`` to the directory of your
+choice.
+
+----
 
 Obtain Smilei
 ^^^^^^^^^^^^^
+
+The following ``git`` command downloads the code into the ``Smilei`` directory, located
+in the current working directory.
 
 .. code-block:: bash
 
    $ git clone --depth=1 https://github.com/SmileiPIC/Smilei.git
    $ cd Smilei
 
-Compile the documentation
+Now that you are in the main ``Smilei`` folder, you may compile the documentation using
+the `sphinx` python package. If you do not have `sphinx` installed with your `python`
+environment, `check this out <http://www.sphinx-doc.org/en/stable/install.html>`_.
    
 .. code-block:: bash
 
    $ make doc
    $ firefox build/html/index.html &
-                 
+
+Change ``firefox`` to your favorite web browser.
 
 
-Prepare the environment on Poincare
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----
 
-Upload Smilei on Poincare
-
-.. code-block:: bash
-   
-   $ scp -r . poincare:~/
-   $ ssh poincare –X
-   [poincare] $ 
-
-Description of Poincare
+Prepare the environment
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-https://groupes.renater.fr/wiki/poincare/public/description_de_poincare
+The environment should be ready to accomodate for Smilei's installation. The dependencies
+that are required for Smilei are listed in
+`this page <http://www.maisondelasimulation.fr/smilei/installation.html>`_.
 
-Node :
+In short, you need a `C++11` compiler, a compatible `MPI` library, a compatible `HDF5`
+library, and `python 2.7+`. We do not provide a full explanation on how to install these
+on all systems, but the link above gives a few examples. 
 
-* Compute : 2 Xeon Sandy Bridge of 8 cores
-* Memory : 32 Go
-
-Software environment :
-
-* compiler : Intel
-* MPI : IntelMPI (``MPI_THREAD_MULTIPLE``)
-* HDF5 : compiled using IntelMPI
-* GNU : C++11 compatible
-* Anaconda : rich Python distribution for post-processing 
-
-Look at the environment
+We recommend that your `C++` compiler supports `OpenMP`, which allows for several threads
+to operate in each process. This makes simulations potentially much faster.
+Note that this requires the ``MPI_THREAD_MULTIPLE`` option
+when the MPI library is compiled. In order to setup the `OpenMP` environment, we
+recommend the following commands, that you may include in your ``.bash_profile`` or
+``.bashrc`` configuration files (or the relevant one on your system).
 
 .. code-block:: bash
-   
-   [poincare] $ cat .bash_profile
-   [poincare] $ module list
 
+   export OMP_NUM_THREADS=8
+   export OMP_SCHEDULE=dynamic
+   export OMP_PROC_BIND=true
+
+The number ``8`` above indicates the number of threads per process. For most systems, 
+the ideal number is equal to the number of cores contained in one `node` or `socket`.
+For example, if your machine has 12 cores that share the same memory, we recommend using
+``OMP_NUM_THREADS=12``.
+
+----
 
 Compile Smilei
 ^^^^^^^^^^^^^^
 
+Once all dependencies are installed, go to the ``Smilei`` directory. You should be able
+to run the following command to compile `Smilei`.
+
 .. code-block:: bash
    
-   [poincare] $ cd Smilei
    [poincare] $ make –j 8
 
+The option ``-j 8`` simply indicates that the compilation with use 8 threads (faster).
+When the compilation has succeeded, two executables are created: ``smilei``
+and ``smilei_test``.
 
-.. _interactivemode:
+.. _runsimulation:
+
+----
 
 How to run a simulation
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Set a minimal OpenMP runtime environment :
+When running `Smilei` on your own computer, you may use the following commands:
 
 .. code-block:: bash
 
-   [poincare] $ cat scripts/set_omp_env.sh
-   #!/bin/bash
+  # Make a new folder and go inside
+  mkdir mysimulation
+  cd mysimulation
+  # Copy necessary executables to the new folder
+  cp /path/to/Smilei/smilei .
+  cp /path/to/Smilei/smilei_test .
+  # Copy the input file as well
+  cp /path/to/my_input.py .
+  # Run the simulation on 4 processes
+  mpirun -n 4 smilei my_input.py
 
-   export OMP_NUM_THREADS=$1
-   export OMP_SCHEDULE=dynamic
-   export OMP_PROC_BIND=true
+In this example, the simulation will use 4 processes, but remember that the option above
+``OMP_NUM_THREADS=8`` will set 8 threads in each process, so a total of 24 threads.
+As a consequence, this example is ideal for 4 nodes containing each 8 cores.
 
-   [poincare] $ . scripts/set_omp_env.sh 4
+Most supercomputers provide two different options to run a simulation. Both are relevant
+to this tutorial. You may choose either.
 
-Start an interactive session for computation
+1. Run in *interactive* mode: you may request a few nodes of the machine for a given amount
+   of time. You will have access interactively to the processes, so that the commands above
+   can be directly written in the command line to run the simulation. You may also put
+   them in a script in order to save time.
    
-.. code-block:: bash
+2. Prepare a *submission file* to submit a "job". You machine administrator should provide
+   you with a typical job submission file. It defines the number of nodes and cores that
+   you want to reserve. The command lines above have to be included in this file.
 
-   [poincare]  $ llinteractive 2 clallmds+ 3
-   
-   [interactive] mpirun -np 4 -ppn 2 ~/Smilei/smilei mysimulation.py
-   ...
-   [interactive] ls
+
 
 

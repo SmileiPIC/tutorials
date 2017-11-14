@@ -1,19 +1,11 @@
-.. title:: Smilei training workshop, Nov. 2017
-
-Smilei training workshop
-************************
-
-November 6th and 7th (2017) Maison de la Simulation
+.. title:: Smilei practicals
 
 
-Morning session
-===============
+The basics
+==========
 
-During this morning session, you will get familier with installing and using the PIC code :program:`Smilei`
-and its post-processing tool :program:`Happi`.
-
-The first step will be to upload and install :program:`Smilei`.
-Then, 4 practicals will help you get familiar with the code and its post-processing tool.
+Get familiar with installing and using the PIC code :program:`Smilei`
+and its post-processing tool :program:`happi`.
 
 .. toctree::
    :maxdepth: 1
@@ -32,18 +24,8 @@ Then, 4 practicals will help you get familiar with the code and its post-process
 * :doc:`practical4`
 
 
-Afternoon session
-=================
-
-During this afternoon session, you can either:
-
-* follow one of these "`advanced`" tutorials,
-
-* pick up a ``benchmark`` of your choice in :program:`Smilei`'s benchmark list,
-
-* or build up your own input file.
-
-**List of advanced practicals**
+Specific applications
+=====================
 
 .. toctree::
    :maxdepth: 1
@@ -65,16 +47,11 @@ During this afternoon session, you can either:
 .. * :doc:`advanced_practical5`
 .. * :doc:`advanced_practical6`
 
-----
-
-
 
 Links
 ^^^^^
 
-`Smilei documentation home <https://smileipic.github.io/Smilei>`_.
-
-`Smilei namelist docs <https://smileipic.github.io/Smilei/namelist.html>`_.
-
-`Happi documentation <https://smileipic.github.io/Smilei/post-processing.html>`_.
+* `Smilei units <https://smileipic.github.io/Smilei/units.html>`_
+* `Smilei input syntax <https://smileipic.github.io/Smilei/namelist.html>`_
+* `Smilei post-processing <https://smileipic.github.io/Smilei/post-processing.html>`_
 
