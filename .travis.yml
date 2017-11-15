@@ -17,6 +17,8 @@ before_install:
 
 script:
   - travis-sphinx build -s . 
+  - echo "###########################################################################"
+  - find .
 
 after_success:
   - travis-sphinx deploy
