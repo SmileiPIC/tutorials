@@ -79,7 +79,7 @@ to run the following command to compile `Smilei`.
 
 .. code-block:: bash
    
-   [poincare] $ make –j 8
+   $ make -j 8
 
 The option ``-j 8`` simply indicates that the compilation with use 8 threads (faster).
 When the compilation has succeeded, two executables are created: ``smilei``
@@ -114,15 +114,46 @@ As a consequence, this example is ideal for 4 nodes containing each 8 cores.
 Most supercomputers provide two different options to run a simulation. Both are relevant
 to this tutorial. You may choose either.
 
-1. Run in *interactive* mode: you may request a few nodes of the machine for a given amount
+1. **Run in interactive mode:** you may request a few nodes of the machine for a given amount
    of time. You will have access interactively to the processes, so that the commands above
-   can be directly written in the command line to run the simulation. You may also put
-   them in a script in order to save time.
-   
-2. Prepare a *submission file* to submit a "job". You machine administrator should provide
+   can be directly written in the command line to run the simulation. Instead of copying
+   the commands each time, **you may use the script** ``smilei.sh``
+   **already available in** ``/path/to/Smilei/``.
+   See `help here <http://www.maisondelasimulation.fr/smilei/run.html#using-the-provided-script>`_.
+    
+2. **Prepare a submission file** to submit a "job". You machine administrator should provide
    you with a typical job submission file. It defines the number of nodes and cores that
    you want to reserve. The command lines above have to be included in this file.
 
 
+----
 
+Tips
+^^^^
 
+* Launch a parallel interactive session:
+  
+  One hour with 2 nodes, 8 processors per node, on the ``default`` queue:
+
+  * with the *torque* scheduler: 
+  
+    .. code-block:: bash
+      
+      qsub -I -l walltime=01:00:00,nodes=2:ppn=8 -q default
+  
+  * with the *slurm* scheduler:
+    
+    .. code-block:: bash
+      
+      srun -p default -I -N 2 -c 8 --pty -t 0-01:00 
+   
+    ``llinteractive 2 clallmds+ 3``
+
+* Download a file from this webpage to your machine
+
+  .. code-block:: bash
+    
+    curl -O http://URL/for/the/file
+  
+  
+  

@@ -66,12 +66,20 @@ Running the simulation
 
 Once your simulation `input file` is correct, you can
 :ref:`run the simulation <runsimulation>`.
-Typically, you will use the following command in a job submission file, or in an
-interactive mode, or maybe directly on your console.
+
+First, remember to set the number of threads per processor to the number you intend:
 
 .. code-block:: bash
 
-   mpirun -n 8 ./smilei laser_propagation.py
+  export OMP_NUM_THREADS=8
+
+To run the simulation, typically, you will use the following command in a
+job submission file, or in an interactive mode, or maybe directly on your terminal.
+
+.. code-block:: bash
+
+   cd /path/to/my/simulation
+   mpirun -n 8 ./smilei laser_propagation_2d.py
 
 Before going to the analysis of your simulation, check your ``log`` file.
 
@@ -111,13 +119,13 @@ From *ipython*, import the happi module:
 .. code-block:: python
 
    In [1]: import happi
-    
+
 Open the simulation that you have just run:
 
 .. code-block:: python
 
    In [2]: S=happi.Open("/path/to/the/simulation")
-   
+
 .. warning::
 
   Use the correct path to the simulation folder.
@@ -189,7 +197,8 @@ Plot the profile using the usual *matplotlib* package:
 .. code-block:: python
 
    In [14]: import matplotlib.pyplot as plt
-   In [15]: plt.plot( times, laser_profile )
+   In [15]: %matplotlib
+   In [16]: plt.plot( times, laser_profile )
 
 ----
 
@@ -204,14 +213,14 @@ Obtain a list of ``Scalar`` diagnostics:
 
 .. code-block:: python
 
-   In [15]: S.Scalar. # then press <tab>
+   In [17]: S.Scalar. # then press <tab>
 
 Open the ``Uelm`` scalar and plot:
 
 .. code-block:: python
 
-   In [16]: diag = S.Scalar('Uelm')
-   In [17]: diag.plot()
+   In [18]: diag = S.Scalar('Uelm')
+   In [19]: diag.plot()
 
 This scalar represents the electromagnetic energy in the box. The plot we just obtained
 should represent its evolution with time. Note that we used a different type of ``plot()``
@@ -229,13 +238,13 @@ Check the evolution of the ``total energy`` in the simulation box:
 
 .. code-block:: python
 
-    In [18]: S.Scalar('Utot').plot()
+    In [20]: S.Scalar('Utot').plot()
 
 Check the evolution of the ``energy balance`` in the simulation box:
 
 .. code-block:: python
 
-    In [19]: S.Scalar('Ubal').plot()
+    In [21]: S.Scalar('Ubal').plot()
 
 
 ----
@@ -249,8 +258,8 @@ Open the ``Ey`` field and plot:
 
 .. code-block:: python
 
-   In [20]: diag = S.Field.Field0("Ey")
-   In [11]: diag.animate(vmin=-1, vmax=1, cmap="smileiD")
+   In [22]: diag = S.Field.Field0("Ey")
+   In [23]: diag.animate(vmin=-1, vmax=1, cmap="smileiD")
 
 This new function ``animate()`` can animate the plot of any diagnostic when several
 timesteps are available.
@@ -262,13 +271,13 @@ close to 0 and y around 200.
 
 .. code-block:: python
 
-   In [22]: S.Field.Field0("(2.*(Ex**2+Ey**2))**(0.5)", average={"x":[0,5],"y":[190,210]}).plot()
+   In [24]: S.Field.Field0("2*(Ex**2+Ey**2)**0.5", average={"x":[0,5],"y":[190,210]}).plot()
 
 Overlay the previous plot of the laser profile and compare
 
 .. code-block:: python
 
-   In [23]: plt.plot( times, laser_profile )
+   In [25]: plt.plot( times, laser_profile )
 
 
 ----

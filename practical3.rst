@@ -66,7 +66,7 @@ evolution in time:
     S.Field(0,'By_m').streak()
 
 Do you have any clue what is going on? 
-Do not hesitate to use the ``animate`` function:
+You can get another view using an animation:
 
 .. code-block:: python
 
@@ -97,13 +97,13 @@ Two-stream instability: analysis
 
 In an :program:`ipython` terminal, open the simulation:
 
-.. code-block:: ipython
+.. code-block:: python
 
     S = happi.Open('/path/to/your/simulation/two_stream_1d')
 
 then, have a first look at your simulation results:
 
-.. code-block:: ipython
+.. code-block:: python
 
     ne  = S.Field(0,'-Rho_eon1-Rho_eon2',xmin=0,xmax=1.3)
     ex  = S.Field(0,'Ex',xmin=0,xmax=1.3)

@@ -80,10 +80,14 @@ the electron and ion densities together with the electrostatic field :math:`E_x`
 First, `prepare` the data:
 
 .. code-block:: python
-
-    ne = S.Field(0,'-Rho_eon',vmin=-0.25,vmax=2) # minus the electron density
-    ni = S.Field(0,'Rho_ion')                    # the ion density
-    ex = S.Field(0,'Ex')                         # the Ex field
+    # minus the electron density
+    ne = S.Field(0,'-Rho_eon',vmin=-0.25,vmax=2, label="e- density")
+    
+    # ion density
+    ni = S.Field(0,'Rho_ion', label="ion density")
+    
+    # Ex field
+    ex = S.Field(0,'Ex', label="Ex field")
 
 You may plot all these quantities independently using ``ex.plot()`` or ``ex.animate()``,
 but you can also use the ``multiPlot`` function of :program:`happi`:
@@ -103,10 +107,10 @@ at the electron energy distribution at initial and latest timesteps:
 
 .. code-block:: python
 
-    Nt    = int(S.namelist.tsim / S.namelist.dt)
-    f_ini = S.ParticleBinning(0, data_log=True, timesteps=0)
-    f_fin = S.ParticleBinning(0, data_log=True, timesteps=Nt)
-    happi.multiPlot(f_ini, f_fin)
+    Nt        = int(S.namelist.tsim / S.namelist.dt)
+    f_initial = S.ParticleBinning(0, data_log=True, timesteps=0 , label="initial")
+    f_final   = S.ParticleBinning(0, data_log=True, timesteps=Nt, label="final")
+    happi.multiPlot(f_initial, f_final)
 
 
 ----
