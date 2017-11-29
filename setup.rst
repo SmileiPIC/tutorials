@@ -135,25 +135,20 @@ Tips
   
   One hour with 2 nodes, 8 processors per node, on the ``default`` queue:
 
-  * with the *torque* scheduler: 
+  * | with the *torque* (PBS) scheduler:
+    | ``qsub -I -l walltime=01:00:00,nodes=2:ppn=8 -q default``
   
-    .. code-block:: bash
+  * | with the *slurm* scheduler:
+    | ``srun -p default -I -N 2 -c 8 --pty -t 0-01:00``
       
-      qsub -I -l walltime=01:00:00,nodes=2:ppn=8 -q default
+  * with `intel's LoadLeveler <https://www.ibm.com/support/knowledgecenter/SSFJTW_5.1.0/com.ibm.cluster.loadl.v5r1.load500.doc/am2cr_llrun.htm>`_
   
-  * with the *slurm* scheduler:
-    
-    .. code-block:: bash
-      
-      srun -p default -I -N 2 -c 8 --pty -t 0-01:00 
-   
-    ``llinteractive 2 clallmds+ 3``
 
 * Download a file from this webpage to your machine
 
   .. code-block:: bash
     
-    curl -O http://URL/for/the/file
+    curl -O http://URL/of/the/file
   
   
   
