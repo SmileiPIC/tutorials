@@ -24,12 +24,12 @@ The simulation is 2D Cartesian with a simulation size of :math:`30 \lambda \time
 where :math:`\lambda` is the laser wavelength. The laser is injected from the left side
 of the simulation domain while the electron beam is initialized at the extreme right.
 
-In this initial configuration, the laser has a wavelength of :math:`\lambda = 1 \mu m`,
-an amplitude of :math:`10^{22} W/cm^2` (:math:`a_0 \simeq 100`) and is linearly polarized
+In this initial configuration, the laser has a wavelength of :math:`\lambda = 1\ \mu \mathrm{m}`,
+an amplitude of :math:`10^{22}\ \mathrm{W/cm}^2` (:math:`a_0 \simeq 100`) and is linearly polarized
 in the :math:`y` direction. The temporal profile is Gaussian (order 4).
-The full width at half maximum (FWHM) is of 10 laser periods (approximately `33 fs`).
+The full width at half maximum (FWHM) is of 10 laser periods (approximately 33 fs).
 
-The electron beam has an initial energy of `1 GeV` and propagates to the left.
+The electron beam has an initial energy of 1 GeV and propagates to the left.
 The beam density is of :math:`n_b = 10^{-5} n_c`. The electron beam is frozen the
 time for the laser to be fully injected and so that the collision occurred at the
 middle of the domain. This enables to have a shorter simulation box and therefore
@@ -85,11 +85,11 @@ gamma factor that enables to simplify and remove some terms.
 
 * copy the directory ``Execution`` into a new directory called ``Radiation_Landau_Lifshitz``
   in which we will work:
-  
+
   .. code-block:: bash
-    
+
     cp -r Execution Radiation_Landau_Lifshitz
-  
+
 
 * Go into this directory and open the input file ``tst2d_electron_laser_collision.py``.
 
@@ -100,13 +100,13 @@ We will now setup the radiation reaction parameters.
   Uncomment it and the parameter called ``chipa_radiation_threshold``:
 
   .. code-block:: python
-    
+
     RadiationReaction(
          chipa_radiation_threshold = 1e-3
     #     chipa_disc_min_threshold = 1e-2,
     #     table_path = "/gpfshome/mds/staff/mlobet/smilei/databases/"
     )
-  
+
   This block is used to setup the general parameters. Only ``chipa_radiation_threshold``
   is useful for the moment. This parameter corresponds to the minimal value of the
   quantum parameter at which the radiation reaction process is applied.
@@ -122,12 +122,15 @@ We will now setup the radiation reaction parameters.
   To use the Landau-Lifshitz radiation model, use:
 
   .. code-block:: python
-    
+
     radiation_model = "Landau-Lifshitz"
-  
+
   The other commented parameters are not useful for the moment.
 
-* You may now run the simulation
+* You may now run the simulation. We recommend you to run it in parallel
+  with at least 4 cores. By default, 16 patches have been specified. If you want
+  to run this input file with more than 16 MPI tasks and OpenMP threads,
+  you have to increase the number of patches accordingly.
 
 
 At the end of the run, you can see that several files have been generated including
@@ -140,9 +143,9 @@ the scalar (``scalars.txt``) diagnostics.
   to the current one:
 
   .. code-block:: bash
-    
+
     cp ../Analysis/show_energy_balance.py .
-  
+
 
 * Open this file and take the time to read and understand it.
   You can see that the script is decomposed into several sections.
@@ -158,8 +161,14 @@ the scalar (``scalars.txt``) diagnostics.
 * Run the script in an *ipython* prompt:
 
   .. code-block:: python
-    
+
     %run show_energy_balance.py
+
+  Or you can also run it directly in your terminal by adding the interactive option:
+
+  .. code-block:: bash
+
+    python -i show_energy_balance.py
 
   You obtain a plot of the time evolution of the electron normalized energy and
   the radiated energy (purple). There is no positron or photons here.
@@ -171,11 +180,11 @@ the scalar (``scalars.txt``) diagnostics.
 * Estimate the maximal quantum parameter reached during the simulation.
   For this aim, you can use the python script ``Analysis/show_2d_average_chi.py``.
   Copy this script in the current working directory and run it in *ipython*:
-  
+
   .. code-block:: python
-    
+
     %run show_2d_average_chi.py
-  
+
   You obtain a 2D colormap of the beam.
   The color corresponds to the local value of the quantum parameter.
   The terminal gives the maximal value. What do you think about this value regarding the
@@ -207,7 +216,7 @@ to higher quantum parameters, around :math:`\chi \sim 10^{-1}`.
   called ``Radiation_corrected_Landau_Lifshitz`` in which we will now work:
 
 .. code-block:: bash
-  
+
   cp -r Radiation_Landau_Lifshitz Radiation_corrected_Landau_Lifshitz
   cd Radiation_corrected_Landau_Lifshitz
 
@@ -217,7 +226,7 @@ to higher quantum parameters, around :math:`\chi \sim 10^{-1}`.
   To use the ``corrected Landau-Lifshitz`` radiation model, simply use:
 
 .. code-block:: python
-  
+
   radiation_model = "corrected-Landau-Lifshitz"
 
 This radiative model requires the same global setup as the ``Landau-Lifshitz`` one.
@@ -229,7 +238,7 @@ This radiative model requires the same global setup as the ``Landau-Lifshitz`` o
   working directory and run it using ipython:
 
   .. code-block:: python
-  
+
     %run show_energy_balance.py
 
   Compare the generated plot with the one from the ``Landau-Lifshitz`` simulation.
@@ -239,7 +248,7 @@ This radiative model requires the same global setup as the ``Landau-Lifshitz`` o
   classical Landau-Lifshitz and the corrected Landau-Lifshitz model.
 
   **Solution:** See the Python script ``Analysis/compare_energy_balance_Landau-Lifshitz.py``.
-  
+
   .. image:: _extra/compare_energy_balance_Landau_Lifshitz.png
 
 * Question: What do you observe? You can see that the energy drops less rapidly
@@ -262,18 +271,18 @@ an additional stochastic operator derived from a Fokker-Planck approach.
 
 * Copy the previous working directory ``Radiation_Landau_Lifshitz`` into a new directory
   called ``Radiation_Niel`` in which we will now work:
-  
+
   .. code-block:: bash
-    
+
     cp -r Radiation_Landau_Lifshitz Radiation_Niel
     cd Radiation_Niel
 
 
 * Open the input file ``tst2d_electron_laser_collision.py`` and
   go to the ``electron`` species block. Modify the ``radiation_model`` by
-  
+
   .. code-block:: python
-    
+
     radiation_model = "Niel"
 
 
@@ -282,15 +291,15 @@ an additional stochastic operator derived from a Fokker-Planck approach.
   in the input file  where these tables are located, we have to modify the
   block ``RadiationReaction`` previously uncommented.
   Uncomment the table_path parameter as follow:
-  
+
   .. code-block:: python
-    
+
     RadiationReaction(
          chipa_radiation_threshold = 1e-3
     #     chipa_disc_min_threshold = 1e-2,
          table_path = "<path_to_smilei>/databases/"
     )
-  
+
   And update the path to :program:`Smilei` according to your installation configuration.
 
 * You can run the simulation
@@ -316,18 +325,18 @@ You can have more information about the model and its implementation on the page
 
 * copy the previous working directory ``Radiation_Niel`` into a new directory
   called ``Radiation_Monte-Carlo`` in which we will now work:
-  
+
   .. code-block:: bash
-    
+
     cp -r Radiation_Niel Radiation_Monte_Carlo
     cd Radiation_Monte_Carlo
 
 
 * Open the input file ``tst2d_electron_laser_collision.py`` and
   go to the ``electron`` species block. Modify the ``radiation_model`` by
-  
+
   .. code-block:: python
-    
+
     radiation_model = "Monte-Carlo"
 
 
@@ -340,15 +349,15 @@ You can have more information about the model and its implementation on the page
   This parameter corresponds to this threshold.
   Above this value, a particle undergoes radiation reaction via the Monte-Carlo engine.
   Below the continuous approach is used.
-  
+
   .. code-block:: python
-    
+
     RadiationReaction(
          chipa_radiation_threshold = 1e-3
-         chipa_disc_min_threshold = 1e-2,
+         chipa_disc_min_threshold = 1e-3,
          table_path = "<path_to_smilei>/databases/"
     )
-    
+
   In fact, the default value of ``chipa_disc_min_threshold`` is ``1e-2``.
   Therefore, it has to be specified only to change the default value.
   The Monte-Carlo radiation reaction is now fully set.
@@ -376,7 +385,7 @@ Comparison of the radiation reaction models
   ``Analysis/compare_energy_balance_radiation_models.py``.
   Go to the directory ``Analysis`` to run it.
   You should obtain the following figure:
-  
+
   .. image:: _extra/compare_energy_balance_radiation_models.png
 
 * **Optional exercice:** Using the script ``show_2d_density.py``, create a
@@ -393,8 +402,11 @@ Comparison of the radiation reaction models
   Go to the directory ``Analysis`` to run the solutions.
   The beam density at iteration 6500 at the end of the interaction should look
   like the following figure:
-  
-.. image:: _extra/compare_density_radiative_models.png
+
+  .. image:: _extra/compare_density_radiative_models.png
+
+  With the script to compare the quantum parameter space-distribution,
+  you can also have the maximum value of the quantum parameter.
 
 * **Optional exercice:** Activate the track particle option to follow trajectories
   of some particles in the corrected Landau-Lifshitz,
