@@ -34,7 +34,7 @@ The beam density is of :math:`n_b = 10^{-5} n_c`. The electron beam is frozen th
 time for the laser to be fully injected and so that the collision occurred at the
 middle of the domain. This enables to have a shorter simulation box and therefore
 save computational time. The beam is initialized with 32 particles per cell for a
-total of 3648 macro-particles.
+total of 12480 macro-particles.
 
 
 ----

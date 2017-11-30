@@ -21,16 +21,16 @@ This configuration is one of the most efficient to trigger radiative and QED eff
 It maximizes the value of the quantum parameter for a given electron energy and a
 given field strength.
 
-The simulation is 2D Cartesian with a simulation size of :math:`30 \lambda x 4 \lambda`
+The simulation is 2D Cartesian with a simulation size of :math:`30 \lambda \times 4 \lambda`
 where :math:`\lambda` is the laser wavelength. The laser is injected from the left side
 of the simulation domain while the electron beam is initialized at the extreme right.
 
-In this initial configuration, the laser has a wavelength of :math:`\lambda = 1 \mu m`,
-an amplitude of :math:`10^{23} W/cm^2` (:math:`a_0 \simeq 270`) and is linearly
-polarized in the `y` direction. The temporal profile is Gaussian (order 4). 
-he full width at half maximum (FWHM) is of 10 laser periods (approximately `33 fs`).
+In this initial configuration, the laser has a wavelength of :math:`\lambda = 1\ \mu \mathrm{m}`,
+an amplitude of :math:`10^{23}\ \mathrm{W/cm}^2` (:math:`a_0 \simeq 270`) and is linearly
+polarized in the `y` direction. The temporal profile is Gaussian (order 4).
+he full width at half maximum (FWHM) is of 10 laser periods (approximately 33 fs).
 
-The electron beam has an initial energy of `4 GeV` and propagates to the left.
+The electron beam has an initial energy of 4 GeV and propagates to the left.
 The beam density is of :math:`n_b = 10^{-5} n_c`. The electron beam is frozen the
 time for the laser to be fully injected and so that the collision occurred at
 the middle of the domain. This enables to have a shorter simulation box and
@@ -87,7 +87,7 @@ and the :program:`happi` post-processing module.
   ``Multiphoton_Breit_Wheeler``. We will perform the simulation in this directory.
 
   .. code-block:: bash
-  
+
     cp -r Execution Multiphoton_Breit_Wheeler
     cd Multiphoton_Breit_Wheeler
 
@@ -110,7 +110,8 @@ Configuration of the radiation reaction block
   of the quantum parameter at which the radiation reaction process is applied.
   Below this value, the particle does not undergo radiation reaction.
   Uncomment the corresponding line.
-  Specifying this parameter is actually not compulsory since it is defined by default at `1e-3`.
+  Specifying this parameter is actually not compulsory since it is defined
+  by default at :math:`10^{-3}`.
 
 * Uncomment the line with the parameter ``chipa_disc_min_threshold``.
   The Monte-Carlo model is built to work with
@@ -118,15 +119,16 @@ Configuration of the radiation reaction block
   This parameter corresponds to this threshold.
   Above this value, a particle undergoes radiation reaction via the Monte-Carlo engine.
   Below the continuous approach is used.
-  This parameter is by default equal to `1e-2`
+  This parameter is by default equal to :math:`10^{-2}`
+  but it is modified to be :math:`10^{-3}` here.
 
 * The ``RadiationReaction`` should now look like:
 
   .. code-block:: python
-  
+
     RadiationReaction(
          chipa_radiation_threshold = 1e-3
-         chipa_disc_min_threshold = 1e-2,
+         chipa_disc_min_threshold = 1e-3,
          table_path = "<path_to_smilei>/databases/"
     )
 
@@ -147,7 +149,7 @@ Configuration of the multiphoton Breit-Wheeler block
 * The ``MultiphotonBreitWheeler`` should now look like:
 
   .. code-block:: python
-  
+
     MultiphotonBreitWheeler(
          table_path = "<path_to_smilei>/databases/"
     )
@@ -190,7 +192,7 @@ Configuration of the electron species
 * The radiation parameters of the ``electron`` species block are now:
 
   .. code-block:: python
-  
+
     Species(
         name = "electron",
     ...
@@ -232,7 +234,7 @@ Configuration of the photon species
 * The multiphoton Breit-Wheeler parameters for the ``photon`` species block are now:
 
   .. code-block:: python
-  
+
     Species(
         name = "photon",
     ...
@@ -254,7 +256,7 @@ Configuration of the positron species
 * As for the ``electron`` species, uncomment the radiation parameters as follow:
 
   .. code-block:: python
-  
+
     Species(
         name = "positron",
     ...
@@ -281,7 +283,7 @@ Several diagnostics are defined in the input file.
   (total energy for the photons). ``Ntot_<species>`` is the number of macro-particles.
 
   .. code-block:: python
-  
+
     DiagScalar(
         every = 10,
         vars=['Uelm','Ukin','Utot','Uexp','Ubal',
@@ -300,12 +302,12 @@ Several diagnostics are defined in the input file.
 * The ``DiagParticleBinning`` blocks enable to project the particle
   quantities on specified multidimensional grids.
   There are 4 types of diagnostics configured in the input file for each species:
-  
+
   - 1. the species `weight` distribution
   - 2. the kinetic energy times the weight (``weight_ekin``)
   - 3. the quantum parameter time the weight (``weight_chi``)
   - 4. the species energy distribution
-  
+
   The particle binning diagnostics are damped every 500 iterations.
 
 ----
@@ -318,16 +320,16 @@ After you have run the simulation, you may start analyzing its results.
 * Let us first analyze the time-evolution of the number of macro-particles
   in the simulation.
   Copy the file ``Analysis/show_particle_number.py`` in the working directory:
-  
+
   .. code-block:: bash
-  
+
     cp ../Analysis/show_particle_number.py .
 
 
   Run the script using iPython:
 
   .. code-block:: bash
-  
+
     ipython
     run show_particle_number.py
 
@@ -346,9 +348,9 @@ After you have run the simulation, you may start analyzing its results.
 
 * Copy the file ``Analysis/show_energy_balance.py`` in the working directory
   and run the script:
-  
+
   .. code-block:: bash
-  
+
     cp ../Analysis/show_energy_balance.py .
     ipython
     run show_energy_balance.py
@@ -361,16 +363,16 @@ After you have run the simulation, you may start analyzing its results.
 * We will now use the particle binning diagnostics.
   Copy the file ``Analysis/show_2d_average_energy.py`` in the working directory
   and run the script:
-  
+
   .. code-block:: bash
-  
+
     cp ../Analysis/show_2d_average_energy.py .
     ipython
     run show_2d_average_energy.py
 
 
   You should obtain the following graph:
-  
+
   .. image:: _extra/2d_average_energy_it5500.png
 
   From the top to the bottom, you have respectively the electron, positron
@@ -381,13 +383,13 @@ After you have run the simulation, you may start analyzing its results.
   at different iteration. Rerun the script at different timesteps.
 
   .. code-block:: python
-  
+
     # ______________________________________________________________________________
     # Parameters
-    
+
     # Path to the simulation directory
     path = "./"
-    
+
     # Time step for the diagnotics
     timestep = 5500
 
@@ -397,16 +399,16 @@ After you have run the simulation, you may start analyzing its results.
 * We will now do the same thing for the weight (normalized local density).
   Copy the file ``Analysis/show_2d_density.py`` in the working directory
   and run the script:
-  
+
   .. code-block:: bash
-  
+
     cp ../Analysis/show_2d_density.py .
     ipython
     run show_2d_density.py
 
 
   You should obtain the following figure:
-  
+
   .. image:: _extra/2d_density_it5500.png
 
   Change the ``timestep`` parameter to see how the beam shape evolves during
@@ -415,16 +417,16 @@ After you have run the simulation, you may start analyzing its results.
 * We can also look at the quantum parameter.
   Copy the file ``Analysis/show_2d_average_chi.py`` in the working directory
   and run the script:
-  
+
   .. code-block:: bash
-  
+
     cp ../Analysis/show_2d_average_chi.py .
     ipython
     run show_2d_average_chi.py
 
 
   You should obtain the following figure:
-  
+
   .. image:: _extra/2d_average_chi_it5500.png
 
   The maximal value of the quantum parameter is printed in the terminal.
@@ -435,16 +437,16 @@ After you have run the simulation, you may start analyzing its results.
 * To get an idea of where in the laser field the beam is located,
   you can use the script ``Analysis/show_2d_fields.py``
   Copy and run it:
-  
+
   .. code-block:: bash
-  
+
     cp ../Analysis/show_2d_fields.py .
     ipython
     run show_2d_fields.py
 
 
   You should obtain the following figure:
-  
+
   .. image:: _extra/2d_fields_it5500.png
 
   Change the ``timestep`` parameter as for the particle binning diagnostics.
@@ -453,14 +455,14 @@ After you have run the simulation, you may start analyzing its results.
   For this aim, copy the script ``Analysis/show_energy_spectrum.py`` and run it.
 
   .. code-block:: bash
-  
+
     cp ../Analysis/show_energy_spectrum.py .
     ipython
     run show_energy_spectrum
 
 
   You should obtain the following figure:
-  
+
   .. image:: _extra/energy_spectrum_it8000.png
 
 
