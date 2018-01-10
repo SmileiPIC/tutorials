@@ -80,6 +80,7 @@ the electron and ion densities together with the electrostatic field :math:`E_x`
 First, `prepare` the data:
 
 .. code-block:: python
+
     # minus the electron density
     ne = S.Field(0,'-Rho_eon',vmin=-0.25,vmax=2, label="e- density")
     
