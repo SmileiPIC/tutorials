@@ -3,7 +3,7 @@
 .. image:: _static/smileiLogo_tutorials.svg
 
 This website provides tutorials for learning how to use the PIC code
-`Smilei <https://maisondelasimulation.fr/smilei>`_ and its post-processing
+`Smilei <http://www.maisondelasimulation.fr/smilei>`_ and its post-processing
 tool :program:`happi`.
 
 .. toctree::
