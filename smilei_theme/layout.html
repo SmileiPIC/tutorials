@@ -181,7 +181,7 @@
             </svg>
         </div>
         
-        <div id="smallScreenMenuButton" onclick="toggleSmallScreenMenu()" ontouchstart="event.preventDefault()">
+        <div id="smallScreenMenuButton" onclick="toggleSmallScreenMenu()">
             <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
                viewBox="-20 -20 140 140">
               <g  style="fill:#ffffff;stroke:none;">
@@ -325,6 +325,7 @@
         }
         
         function toggleSmallScreenMenu() {
+            event.preventDefault();
             if( smallScreenMenu.className != "on" ) {
                 smallScreenMenu.className = "on";
                 smallScreenMenuButton.className = "pushed";
