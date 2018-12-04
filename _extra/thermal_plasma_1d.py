@@ -1,11 +1,6 @@
-# ----------------------------------------------------------------------------------------
-#                     SIMULATION PARAMETERS FOR THE PIC-CODE SMILEI
-# ----------------------------------------------------------------------------------------
-
-
-# DEFINING MY OWN VARIABLES
-# Simple Python script
-# -------------------------
+# -------------------
+# MY PYTHON VARIABLES
+# -------------------
 
 import math 
 
@@ -15,7 +10,7 @@ Ld = 1./64.                # Debye length (in code units => i.e. in skin-depth a
 Te = ne*Ld**2              # Te normalised in mec^2 (code units)
 vth = math.sqrt(Te)        # normalised thermal velocity
 
-dx = 1.*Ld                # spatial resolution
+dx = 1.*Ld                 # spatial resolution
 dt = 0.95*dx               # timestep
 Lx = 512.                  # simulation length
 tsim = 1024.               # duration of the simulation
@@ -25,9 +20,9 @@ nppc = 16                  # number of particle-per-cell
 diagEvery   = int(64./dt)  # frequency of outputs for DiagField
 
 
-# DEFINING SMILEI's VARIABLES 
-# All in "blocks"
-# ---------------------------
+# --------------------------------------
+# SMILEI's VARIABLES (DEFINED IN BLOCKS)
+# --------------------------------------
 
 Main(
     geometry = "1Dcartesian",
@@ -83,7 +78,9 @@ LoadBalancing(
 
 ### DIAGNOSTICS
 
-DiagScalar(every = 2.5/dt)
+DiagScalar(
+    every = 2.5/dt
+)
 
 
 DiagFields(

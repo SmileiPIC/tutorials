@@ -1,22 +1,17 @@
-# ----------------------------------------------------------------------------------------
-#                  SIMULATION PARAMETERS FOR THE PIC-CODE SMILEI
-# ----------------------------------------------------------------------------------------
-
 # -------------------
 # MY PYTHON VARIABLES
 # -------------------
 
-output_every=25
-n_part=100
-velocity=0.1
-amplitude=0.001
-length = 1.03
+output_every = 25
+n_part       = 100
+velocity     = 0.1
+amplitude    = 0.001
+length       = 1.03
 
 # --------------------------------------
 # SMILEI's VARIABLES (DEFINED IN BLOCKS)
 # --------------------------------------
 
-# MAIN
 Main(
     geometry = "1Dcartesian",
     interpolation_order = 2,
@@ -82,8 +77,8 @@ DiagParticleBinning(
     every = output_every,
     species = ['eon1', 'eon2'],
     axes = [
-        ["x", 0., length, 100],
-        ["px", -4*velocity, 4*velocity, 100]
+        ["x", 0., length, 200],
+        ["px", -4*velocity, 4*velocity, 300]
     ]
 )
 

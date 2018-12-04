@@ -130,6 +130,7 @@ What do you observe?
 Can you check the electron spectrum at the beginning and end of the simulation?
 What is going on?
 
-Finally, increase your spatial resolution to :math:`\Delta x = 2\,c/\omega_{pe}`.
+Finally, increase your spatial resolution to
+:math:`\Delta x = 2\,c/\omega_{pe} = 2\,c\lambda_{\rm De}/v_{\rm th}`.
 Check the evolution of the total energy.
 What do you observe?

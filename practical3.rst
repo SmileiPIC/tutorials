@@ -57,12 +57,12 @@ In an :program:`ipython` terminal, open the simulation:
     S = happi.Open('/path/to/your/simulation/weibel_1d')
 
 The ``streak`` function of :program:`happi` can plot any 1D diagnostic as a function of time.
-Here, we look total the current density :math:`J_z` and magnetic field :math:`B_y`
-evolution in time:
+Let's look at the time evolution of the total the current density :math:`J_z` and
+the magnetic field :math:`B_y`:
 
 .. code-block:: python
 
-    S.Field(0,'Jz').streak()    
+    S.Field(0,'Jz'  ).streak()
     S.Field(0,'By_m').streak()
 
 Do you have any clue what is going on? 
@@ -105,10 +105,10 @@ then, have a first look at your simulation results:
 
 .. code-block:: python
 
-    ne  = S.Field(0,'-Rho_eon1-Rho_eon2',xmin=0,xmax=1.3)
-    ex  = S.Field(0,'Ex',xmin=0,xmax=1.3)
+    ne  = S.Field(0,'-Rho_eon1-Rho_eon2', xmin=0, xmax=1.05, vmin=0, vmax=2)
+    ex  = S.Field(0,'Ex', xmin=0, xmax=1.05, vmin=-0.2, vmax=0.2)
     phs = S.ParticleBinning(0)
-    happi.multiPlot(ne,ex,phs)
+    happi.multiPlot(ne,ex,phs,shape=[1,3])
 
 Any clue what's going on? 
 

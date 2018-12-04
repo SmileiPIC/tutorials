@@ -1,33 +1,29 @@
-# ----------------------------------------------------------------------------------------
-# 					SIMULATION PARAMETERS FOR THE PIC-CODE SMILEI
-# ----------------------------------------------------------------------------------------
-
 # -------------------
 # MY PYTHON VARIABLES
 # -------------------
 
-import math as m 
+from math import pi, sin, sqrt
 
 v0 = 0.9   # electron flow velocity
 k  = 2.    # seeded wave number 
 
-#T0  = 1.e-4                 # electron temperature
-#Lde = m.sqrt(T0)            # Debye length [non-relativistic for ne=1]
-g0  = 1./m.sqrt(1.-v0**2)   # Lorentz factor corresponding to v0
+#T0  = 1.e-4            # electron temperature
+#Lde = sqrt(T0)         # Debye length [non-relativistic for ne=1]
+g0  = 1./sqrt(1.-v0**2) # Lorentz factor corresponding to v0
 
-Lx  = 8*2*m.pi/k 	        # simulation length (8 seeded wavelength)
+Lx  = 4*2*pi/k 	        # simulation length (4 seeded wavelength)
 
-dx   = 2.*m.pi/k / 64.; resx = 1./dx   # spatial resolution in the x-direction = 500 punti per lunghezza d onda
-dt   = 0.95*dx                         # time-step
-t_sim     = 2000*dt                    # simulation time
-nt        = t_sim/dt                   # nb of timesteps
+dx   = 2.*pi/k / 64.    # spatial resolution in the x-direction = 500 punti per lunghezza d onda
+dt   = 0.95*dx          # time-step
+t_sim     = 800*dt      # simulation time
+nt        = t_sim/dt    # nb of timesteps
 
 nppc    = 200
 
 # define the function used to seed the Weibel unstable mode
 By0     = 0.001
 def By(x):
-	return By0*m.sin(k*x)
+	return By0*sin(k*x)
 
 # --------------------------------------
 # SMILEI's VARIABLES (defined in blocks)
@@ -107,7 +103,9 @@ ExternalField(
 # DIAGNOSTIC PARAMETERS
 # ---------------------
 
-DiagScalar(every=1)
+DiagScalar(
+    every=1
+)
 
 DiagFields(
     every = 4,
