@@ -1,4 +1,4 @@
-Advanced Practical 4: Binary collisions and impact ionization
+Advanced Tutorial 4: Binary collisions and impact ionization
 -------------------------------------------------------------
 
 Smilei includes binary collisions between various species, which can also generate

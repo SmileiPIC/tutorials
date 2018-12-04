@@ -1,4 +1,4 @@
-Advanced Practical 6: Radiation pressure acceleration of ions
+Advanced Tutorial 6: Radiation pressure acceleration of ions
 ------------------------------------------------------------------------------
 
 

@@ -1,4 +1,4 @@
-Advanced Practical 1: Synchrotron-like Radiation reaction processes
+Advanced Tutorial 1: Synchrotron-like Radiation reaction processes
 ------------------------------------------------------------------------------
 
 The goal of this tutorial is to present how to use the radiative and QED processes in
@@ -42,7 +42,7 @@ total of 12480 macro-particles.
 Content of the tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Download `AdvancedPractical1.tar.gz <AdvancedPractical1.tar.gz>`_ and extract it.
+Download `AdvancedTutorial1.tar.gz <AdvancedTutorial1.tar.gz>`_ and extract it.
 It contains 2 directories:
 
 * ``Analysis``

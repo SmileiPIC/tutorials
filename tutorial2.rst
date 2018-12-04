@@ -1,4 +1,4 @@
-Practical 2: Thermal plasma
+Tutorial 2: Thermal plasma
 ---------------------------
 
 The goal of this tutorial is to get familiar with:

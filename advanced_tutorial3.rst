@@ -1,4 +1,4 @@
-Advanced Practical 3: Electron Laser Wakefield Acceleration (in 2D)
+Advanced Tutorial 3: Electron Laser Wakefield Acceleration (in 2D)
 ------------------------------------------------------------------------------
 
 This tutorial is under prepration.

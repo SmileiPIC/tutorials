@@ -1,4 +1,4 @@
-Practical 3: Weibel and two-stream instabilities
+Tutorial 3: Weibel and two-stream instabilities
 ================================================
 
 The goal of this tutorial is to run to physics simulation relating to streaming instabilities,

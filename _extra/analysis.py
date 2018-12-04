@@ -1,5 +1,5 @@
 #
-#  ANALYSIS OF TUNNEL IONISATION SIMULATION (Practical 3)
+#  ANALYSIS OF TUNNEL IONISATION SIMULATION (Tutorial 3)
 #
 
 simulation_to_analyse = 'to be defined'

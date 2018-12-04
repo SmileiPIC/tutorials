@@ -1,4 +1,4 @@
-Practical 4: Field ionization
+Tutorial 4: Field ionization
 =============================
 
 The goal of this tutorial is to present a simulation using an advanced physics module,
@@ -7,9 +7,9 @@ In the presence of tunnel ionization, one needs to set a reference temporal/spat
 In :program:`Smilei`, this is done by defining, in SI units, the reference angular
 frequency parameter: ``reference_angular_frequency_SI``.
 
-Briefly, this practical will help you:
+Briefly, this tutorial will help you:
 
-* get familiar with an `advanced physics module` and with ``reference_angular_frequency_SI``
+* use the ``reference_angular_frequency_SI``
 * use the ``.getData()`` tool of :program:`happi` to analyse your data and make your own figures.
 
 ----
@@ -52,7 +52,7 @@ Analyse the simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can access the various data of the simulation as done before.
-However, for this particular practical, we have prepared a *python* script that will
+However, for this particular tutorial, we have prepared a *python* script that will
 do the work for you.
 Open the ``analysis.py`` file and have look at what it does.
 Note that it calls for the ``solve_rate_eqs.py`` file that is used to compute
