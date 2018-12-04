@@ -18,22 +18,25 @@ choice.
 Obtain Smilei
 ^^^^^^^^^^^^^
 
-The following ``git`` command downloads the code into the ``Smilei`` directory, located
-in the current working directory.
+Use ``git`` to download the code into a ``Smilei`` directory:
 
 .. code-block:: bash
 
-   $ git clone --depth=1 https://github.com/SmileiPIC/Smilei.git
-   $ cd Smilei
+  git clone --depth=1 https://github.com/SmileiPIC/Smilei.git
+  cd Smilei
 
-Now that you are in the main ``Smilei`` folder, you may compile the documentation using
-the `sphinx` python package. If you do not have `sphinx` installed with your `python`
-environment, `check this out <http://www.sphinx-doc.org/en/stable/install.html>`_.
-   
+----
+
+Compile the documentation
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In the main ``Smilei`` folder, use the `sphinx` python package to compile
+the documentation (`get sphinx here <http://www.sphinx-doc.org/en/stable/install.html>`_).
+
 .. code-block:: bash
 
-   $ make doc
-   $ firefox build/html/index.html &
+  make doc
+  firefox build/html/index.html &
 
 Change ``firefox`` to your favorite web browser.
 
@@ -43,20 +46,21 @@ Change ``firefox`` to your favorite web browser.
 Prepare the environment
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-The environment should be ready to accomodate for Smilei's installation. The dependencies
-that are required for Smilei are listed in
-`this page <http://www.maisondelasimulation.fr/smilei/installation.html>`_.
+The environment should be ready to accomodate for Smilei's installation.
+Check `this page <http://www.maisondelasimulation.fr/smilei/installation.html>`_
+for details.
 
-In short, you need a `C++11` compiler, a compatible `MPI` library, a compatible `HDF5`
-library, and `python 2.7+`. We do not provide a full explanation on how to install these
-on all systems, but the link above gives a few examples. 
+In short, you need:
 
-We recommend that your `C++` compiler supports `OpenMP`, which allows for several threads
-to operate in each process. This makes simulations potentially much faster.
-Note that this requires the ``MPI_THREAD_MULTIPLE`` option
-when the MPI library is compiled. In order to setup the `OpenMP` environment, we
-recommend the following commands, that you may include in your ``.bash_profile`` or
-``.bashrc`` configuration files (or the relevant one on your system).
+* a `C++11` compiler
+* a compatible `MPI` library (``MPI_THREAD_MULTIPLE`` support is strongly recommended)
+* a compatible `HDF5` library
+* `python 2.7+`
+
+We recommend that your `C++` compiler supports `OpenMP` for efficient
+multi-threading. For best performances, the following environment variables should
+be set, for instance in your ``.bash_profile`` or
+``.bashrc`` configuration files.
 
 .. code-block:: bash
 
@@ -64,9 +68,9 @@ recommend the following commands, that you may include in your ``.bash_profile``
    export OMP_SCHEDULE=dynamic
    export OMP_PROC_BIND=true
 
-The number ``8`` above indicates the number of threads per process. For most systems, 
+The number ``8`` indicates the number of threads per process. For most systems, 
 the ideal number is equal to the number of cores contained in one `node` or `socket`.
-For example, if your machine has 12 cores that share the same memory, we recommend using
+For example, if your machine has 12 cores that share the same memory, use
 ``OMP_NUM_THREADS=12``.
 
 ----
@@ -74,14 +78,13 @@ For example, if your machine has 12 cores that share the same memory, we recomme
 Compile Smilei
 ^^^^^^^^^^^^^^
 
-Once all dependencies are installed, go to the ``Smilei`` directory. You should be able
-to run the following command to compile `Smilei`.
+Once all dependencies are installed, go to the ``Smilei`` directory and compile:
 
 .. code-block:: bash
    
-   $ make -j 8
+  make -j 8
 
-The option ``-j 8`` simply indicates that the compilation with use 8 threads (faster).
+The option ``-j 8`` provides 8 threads for compilation (faster).
 When the compilation has succeeded, two executables are created: ``smilei``
 and ``smilei_test``.
 
@@ -89,8 +92,8 @@ and ``smilei_test``.
 
 ----
 
-How to run a simulation
-^^^^^^^^^^^^^^^^^^^^^^^
+Run a simulation on your machine
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When running `Smilei` on your own computer, you may use the following commands:
 
@@ -107,19 +110,26 @@ When running `Smilei` on your own computer, you may use the following commands:
   # Run the simulation on 4 processes
   mpirun -n 4 smilei my_input.py
 
+To facilitate this process, a script ``smilei.sh`` is already available.
+See `help here <http://www.maisondelasimulation.fr/smilei/run.html#using-the-provided-script>`_.
+
 In this example, the simulation will use 4 processes, but remember that the option above
 ``OMP_NUM_THREADS=8`` will set 8 threads in each process, so a total of 24 threads.
 As a consequence, this example is ideal for 4 nodes containing each 8 cores.
+
+
+
+----
+
+Run a simulation on a cluster
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Most supercomputers provide two different options to run a simulation. Both are relevant
 to this tutorial. You may choose either.
 
 1. **Run in interactive mode:** you may request a few nodes of the machine for a given amount
    of time. You will have access interactively to the processes, so that the commands above
-   can be directly written in the command line to run the simulation. Instead of copying
-   the commands each time, **you may use the script** ``smilei.sh``
-   **already available in** ``/path/to/Smilei/``.
-   See `help here <http://www.maisondelasimulation.fr/smilei/run.html#using-the-provided-script>`_.
+   can be directly written in the command line to run the simulation.
     
 2. **Prepare a submission file** to submit a "job". You machine administrator should provide
    you with a typical job submission file. It defines the number of nodes and cores that

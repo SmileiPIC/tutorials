@@ -6,6 +6,8 @@ This website provides tutorials for learning how to use the PIC code
 `Smilei <http://www.maisondelasimulation.fr/smilei>`_ and its post-processing
 tool :program:`happi`.
 
+Choose among the available tutorials in the top menu.
+
 .. toctree::
    :maxdepth: 1
    :hidden:

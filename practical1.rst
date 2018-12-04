@@ -79,7 +79,7 @@ job submission file, or in an interactive mode, or maybe directly on your termin
 .. code-block:: bash
 
    cd /path/to/my/simulation
-   mpirun -n 8 ./smilei laser_propagation_2d.py
+   mpirun -n 2 ./smilei laser_propagation_2d.py
 
 Before going to the analysis of your simulation, check your ``log`` file.
 
@@ -101,7 +101,7 @@ To do so, **open a new terminal window**, then install :program:`happi`:
 .. code-block:: bash
    
    cd /path/to/Smilei
-   make happi
+   make happi       # this is needed only once on a given computer
 
 Start *ipython*:
 
@@ -134,71 +134,11 @@ See what is available from the simulation:
 
 .. code-block:: python
 
-   In [4]: S.namelist.  # then press <tab>
+   In [3]: S.namelist.  # then press <tab>
 
 When pressing ``<tab>``, *ipython* display the content of the simulation.
 You can explore all these items. They should all be exactly the same as the ones
 that were defined earlier in the namelist ``laser_propagation_2d.py``.
-
-----
-
-Obtain the laser profile
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Get the ``Laser`` block from the namelist:
-
-.. code-block:: python
-   
-   In [5]: laser = S.namelist.Laser[0]
-   
-   In [6]: laser
-
-Note that the ``laser`` is an object of type ``<Smilei Laser>``.
-
-See what is available in this laser object:
-
-.. code-block:: python
-
-   In [7]: laser.  # then press <tab>
-                   # This should display all info on the laser
-   
-   In [8]: laser.time_envelope
-
-Note that this quantity is a python function: what function is it?
-Some help is available `here <http://www.maisondelasimulation.fr/smilei/namelist.html#profiles>`_.
-
-----
-
-Plot the laser profile
-^^^^^^^^^^^^^^^^^^^^^^
-
-To plot the laser profile as a function of time, a list of times is necessary.
-In the following, we use the package *numpy* to generate a list of times from 0 to
-the end of the simulation, separated by the timestep.
-
-.. code-block:: python
-
-   In [9]: import numpy as np
-   In [10]: tstop = S.namelist.Main.simulation_time # simulation end
-   In [11]: tstep = S.namelist.Main.timestep        # simuation timestep
-   In [12]: times = np.arange(0., tstop, tstep)
-
-You may type ``times`` in order to see what is the list of times that we have created.
-
-Now, we execute the laser time envelope function on each of this times that we just created.
-We this obtain a list of values of the laser envelope corresponding to each time.
-
-.. code-block:: python
-
-   In [13]: laser_profile = [laser.time_envelope(t) for t in times]
-
-Plot the profile using the usual *matplotlib* package:
-
-.. code-block:: python
-
-   In [14]: import matplotlib.pyplot as plt
-   In [15]: %matplotlib
-   In [16]: plt.plot( times, laser_profile )
 
 ----
 
@@ -213,21 +153,17 @@ Obtain a list of ``Scalar`` diagnostics:
 
 .. code-block:: python
 
-   In [17]: S.Scalar. # then press <tab>
+   In [4]: S.Scalar()
 
 Open the ``Uelm`` scalar and plot:
 
 .. code-block:: python
 
-   In [18]: diag = S.Scalar('Uelm')
-   In [19]: diag.plot()
+   In [5]: diag = S.Scalar('Uelm')
+   In [6]: diag.plot()
 
 This scalar represents the electromagnetic energy in the box. The plot we just obtained
-should represent its evolution with time. Note that we used a different type of ``plot()``
-than previously. This one corresponds to the utility from the ``happi`` package that
-prepares plots specifically for `Smilei`
-(`more info here <http://www.maisondelasimulation.fr/smilei/post-processing.html#plot-the-data-at-one-timestep>`_).
-
+should represent its evolution with time.
 
 ----
 
@@ -238,13 +174,13 @@ Check the evolution of the ``total energy`` in the simulation box:
 
 .. code-block:: python
 
-    In [20]: S.Scalar('Utot').plot()
+    In [7]: S.Scalar('Utot').plot()
 
 Check the evolution of the ``energy balance`` in the simulation box:
 
 .. code-block:: python
 
-    In [21]: S.Scalar('Ubal').plot()
+    In [8]: S.Scalar('Ubal').plot()
 
 
 ----
@@ -258,27 +194,78 @@ Open the ``Ey`` field and plot:
 
 .. code-block:: python
 
-   In [22]: diag = S.Field.Field0("Ey")
-   In [23]: diag.animate(vmin=-1, vmax=1, cmap="smileiD")
+   In [9]: diag = S.Field(0, "Ey")
+   In [10]: diag.animate(vmin=-1, vmax=1, cmap="smileiD")
 
 This new function ``animate()`` can animate the plot of any diagnostic when several
 timesteps are available.
 
 Now, open the field with an average, and compare to the previous profile.
-The following calculates the laser amplitude envelope using ``"(2.*(Ex**2+Ey**2))**(0.5)"``.
+The following calculates the laser amplitude envelope using ``"Ex**2+Ey**2"``.
 Then, using the argument ``average``, it makes an average of this envelope for x
-close to 0 and y around 200.
+close to 0 and y at 200.
 
 .. code-block:: python
 
-   In [24]: S.Field.Field0("2*(Ex**2+Ey**2)**0.5", average={"x":[0,5],"y":[190,210]}).plot()
+   In [11]: S.Field(0, "Ex**2+Ey**2", average={"x":[0,7],"y":200}).plot()
 
-Overlay the previous plot of the laser profile and compare
+
+----
+
+Compare the laser profile with the theory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We are going to overlay the previous plot of the laser profile with
+the theoretical laser profile.
+
+Get the ``Laser`` block from the namelist:
+
+.. code-block:: python
+   
+   In [12]: laser = S.namelist.Laser[0]
+   
+   In [13]: laser
+
+Note that the ``laser`` is an object of type ``<Smilei Laser>``.
+
+See what is available in this laser object:
 
 .. code-block:: python
 
-   In [25]: plt.plot( times, laser_profile )
+   In [14]: laser.  # then press <tab>
+                   # This should display all info on the laser
+   
+   In [14]: laser.time_envelope
 
+Note that this quantity is a python function: what function is it?
+Some help is available `here <http://www.maisondelasimulation.fr/smilei/namelist.html#profiles>`_.
+
+To plot the laser profile as a function of time, a list of times is necessary.
+In the following, we use the package *numpy* to generate a list of times from 0 to
+the end of the simulation, separated by the timestep.
+
+.. code-block:: python
+
+   In [15]: from numpy import array, arange
+   In [16]: tstop = S.namelist.Main.simulation_time # simulation end
+   In [17]: tstep = S.namelist.Main.timestep        # simuation timestep
+   In [18]: times = np.arange(0., tstop, tstep)
+
+You may type ``times`` in order to see what is the list of times that we have created.
+
+Now, we execute the laser time envelope function on each of this times that we just created.
+We this obtain a list of values of the laser envelope corresponding to each time.
+
+.. code-block:: python
+
+   In [19]: laser_profile = array([laser.time_envelope(t) for t in times])
+
+Plot the profile using the *matplotlib* package:
+
+.. code-block:: python
+
+   In [20]: %pylab
+   In [21]: plot( times+5, laser_profile**2 / 2 )
 
 ----
 

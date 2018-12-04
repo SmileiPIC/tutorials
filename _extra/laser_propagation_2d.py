@@ -2,14 +2,14 @@
 # 					SIMULATION PARAMETERS FOR THE PIC-CODE SMILEI
 # ----------------------------------------------------------------------------------------
 
-import math
+from math import pi, sqrt
 
-l0 = 2.0*math.pi                 # laser wavelength [in code units]
-t0 = l0                          # optical cycle
-Lsim = [32.*l0,64.*l0]           # length of the simulation
-Tsim = 98.*t0                    # duration of the simulation
-resx = 16.                       # nb of cells in on laser wavelength
-rest = resx*mat.sqrt(2.)/0.95   # time of timestep in one optical cycle 
+l0 = 2. * pi             # laser wavelength [in code units]
+t0 = l0                  # optical cycle
+Lsim = [32.*l0, 64.*l0]  # length of the simulation
+Tsim = 98.*t0            # duration of the simulation
+resx = 16.               # nb of cells in one laser wavelength
+rest = resx*sqt(2.)/0.95 # nb of timesteps in one optical cycle 
 
 Main(
     geometry = "2Dcartesian",
@@ -33,35 +33,37 @@ Main(
 )
 
 LaserGaussian2D(
-    a0              = 1.,
+    a0              = 1., # normalized amplitude
     omega           = 1.,
-    focus           = [Lsim[0]/2., Lsim[1]/2.],
+    focus           = [Lsim[0]/2., Lsim[1]/2.], # coordinates of laser focus
     waist           = 5.*l0,
     incidence_angle = 0.,
     time_envelope   = tgaussian(fwhm=4*t0)
 )
 
 
-globalEvery = int(rest)
-
-DiagScalar(every=globalEvery)
+DiagScalar(
+    every = rest
+)
 
 DiagFields(
-    every = globalEvery,
+    every = rest,
     fields = ['Ex','Ey','Ez','Bx','By','Bz']
 )
 
+# 2-dimensional grid diagnostic
 DiagProbe(
     every = 100,
-    number = [100, 100],
-    origin = [0., 10.*l0],
+    number = [100, 100], # number of points in the grid
+    origin = [0., 10.*l0], # coordinates of origin point
     corners = [
-        [20.*l0, 0.*l0],
-        [3.*l0 , 40.*l0],
+        [20.*l0, 0.*l0], # coordinates of first corner of the grid
+        [3.*l0 , 40.*l0], # coordinates of second corner of the grid
     ],
     fields = []
 )
 
+# probe diagnostic with 1 point
 DiagProbe(
     every = 10,
     origin = [0.1*Lsim[0], 0.5*Lsim[1]],
