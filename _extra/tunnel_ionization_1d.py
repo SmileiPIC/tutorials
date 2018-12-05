@@ -1,11 +1,9 @@
-# ----------------------------------------------------------------------------------------
-# 					SIMULATION PARAMETERS FOR THE PIC-CODE SMILEI
-# ----------------------------------------------------------------------------------------
 
-import math
-l0 = 2.0*math.pi	# wavelength in normalized units
-t0 = l0				# optical cycle in normalized units
-resx = 64.		    # nb cells in 1 wavelength
+from math import pi, sqrt
+
+l0  = 2.*pi         # wavelength in normalized units
+t0  = l0            # optical cycle in normalized units
+resx = 64.          # nb cells in 1 wavelength
 rest = resx/0.95    # temporal resolution
 Lv   = 2.*l0
 Lp   = l0/32.
@@ -13,20 +11,20 @@ Lx   = 2.*l0+Lp      # simulation length in x direction
 Ly   = 2.*l0+Lp      # simulation length in y direction
 
 tmax = 20.*t0
-Tsim = Lv+Lp+tmax  # duration of the simulation
+Tsim = Lv+Lp+tmax    # duration of the simulation
 nppc = 2048*4        # nb of particle per cells
 
 n0   = 1.e-2         # neutral density
 
 Lmu  = 0.8
 I18  = 5.0e-2
-aL   = math.sqrt(I18*Lmu**2/1.38)
+aL   = sqrt(I18*Lmu**2/1.38)
 
 def n_(x):
-	if (Lv<x<Lv+Lp):
-		return n0
-	else:
-		return 0.
+    if (Lv<x<Lv+Lp):
+        return n0
+    else:
+        return 0.
 
 Main(
     geometry = "1Dcartesian",
@@ -43,34 +41,34 @@ Main(
      
     EM_boundary_conditions = [['silver-muller']],
     
-    reference_angular_frequency_SI = 2.*math.pi * 3.e8/(Lmu*1.e-6),
+    reference_angular_frequency_SI = 2.*pi * 3.e8/(Lmu*1.e-6),
     
     random_seed = 0
 )
 
 Species(
-	name = 'carbon',
-	ionization_model = 'tunnel',
-	ionization_electrons = 'electron',
-	atomic_number = 6,
-	position_initialization = 'regular',
-	momentum_initialization = 'cold',
-	particles_per_cell = nppc,
-	mass = 12.*1836.0,
-	charge = 0.0,
-	number_density = n_,
-	boundary_conditions = [['reflective']]
+    name = 'carbon',
+    ionization_model = 'tunnel',
+    ionization_electrons = 'electron',
+    atomic_number = 6,
+    position_initialization = 'regular',
+    momentum_initialization = 'cold',
+    particles_per_cell = nppc,
+    mass = 12.*1836.0,
+    charge = 0.0,
+    number_density = n_,
+    boundary_conditions = [['reflective']]
 )
 
 Species(
-	name = 'electron',
-	position_initialization = 'regular',
-	momentum_initialization = 'cold',
-	particles_per_cell = 0,
-	mass = 1.0,
-	charge = -1.0,
-	charge_density = 0.0,
-	boundary_conditions = [['reflective']],
+    name = 'electron',
+    position_initialization = 'regular',
+    momentum_initialization = 'cold',
+    particles_per_cell = 0,
+    mass = 1.0,
+    charge = -1.0,
+    charge_density = 0.0,
+    boundary_conditions = [['reflective']],
 #   time_frozen = 2.*Tsim
 )
 
@@ -92,12 +90,12 @@ DiagFields(
 )
 
 DiagParticleBinning(
-	deposited_quantity = "weight",
-	every = 1,
-	species = ["carbon"],
-	axes = [
-		["charge",  -0.5, 6.5, 7]
-	]
+    deposited_quantity = "weight",
+    every = 1,
+    species = ["carbon"],
+    axes = [
+        ["charge", -0.5, 6.5, 7]
+    ]
 )
 
 

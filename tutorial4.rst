@@ -18,7 +18,7 @@ Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^
 
 Download the input file `tunnel_ionization_1d.py <tunnel_ionization_1d.py>`_ as well as
-the analysis scripts `analysis.py <analysis.py>`_ and `solve_rate_eqs.py <solve_rate_eqs.py>`_.
+the analysis scripts `analysis_tunnel_ionization_1d.py <analysis_tunnel_ionization_1d.py>`_ and `solve_rate_eqs.py <solve_rate_eqs.py>`_.
 
 In a 1D cartesian geometry, a thin layer of neutral carbon is irradiated (thus ionized)
 by a linearly-polarized laser pulse with intensity :math:`I = 5\times 10^{16}~{\rm W/cm^2}`
@@ -51,27 +51,26 @@ Before going to the analysis of your simulation, check your ``log`` file!
 Analyse the simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can access the various data of the simulation as done before.
-However, for this particular tutorial, we have prepared a *python* script that will
-do the work for you.
-Open the ``analysis.py`` file and have look at what it does.
+A *python* script has been prepared to analyse the simulations results.
+Open the file ``analysis_tunnel_ionization_1d.py`` and have look at what it does.
 Note that it calls for the ``solve_rate_eqs.py`` file that is used to compute
 the rate equations (obtained theoretically).
 
 .. warning::
 
-    Before running ``analysis.py``, give the correct path to your simulation results by defining the
+    Before running ``analysis_tunnel_ionization_1d.py``, give the
+    correct path to your simulation results by defining the
     ``simulation_to_analyse`` variable!
 
 In an *ipython* prompt, run the analysis file:
 
 .. code-block:: python
 
-    %run analysis.py
+    %run analysis_tunnel_ionization_1d.py
 
 What do you obtain? Check also if any ``.eps`` file is generated.
 
-.. warning::
+.. note::
 
-    Note that in ``analysis.py`` some lines containing LateX commands have been commented.
-    If your machine has LateX installed, it might be useful to have higher-quality figures.
+    Some lines containing LateX commands have been commented out.
+    If your machine has LateX installed, it may provide higher-quality figures.
