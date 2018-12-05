@@ -74,14 +74,16 @@ Species(
 
 LaserPlanar1D(
     box_side         = "xmin",
-    a0              = aL,
-    omega           = 1.,
+    a0               = aL,
+    omega            = 1.,
     polarization_phi = 0.,
-    ellipticity     = 0.,
-    time_envelope   = tgaussian(start=0., duration=None, fwhm=5.*t0, center=Lv+tmax/2., order=2)
+    ellipticity      = 0.,
+    time_envelope    = tgaussian(start=0., duration=None, fwhm=5.*t0, center=Lv+tmax/2., order=2)
 )
  
-DiagScalar(every = 1)
+DiagScalar(
+    every = 1
+)
 
 DiagFields(
     every = 1,

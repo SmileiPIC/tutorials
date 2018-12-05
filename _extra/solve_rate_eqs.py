@@ -63,15 +63,14 @@ def solve_rate_eqs_( namelist ):
             n[0,it]  = (1.-W*dt/2.)/(1.+W*dt/2.) * n[0,it-1]
     
         # from charge 1 to charge Zat-1
-        if (Zat!=1):
-            for Z in range(1,Zat):
-                deltam    = gamma[Z-1]/( abs(E[it])*Ec_to_au) 
-                deltap    = gamma[Z]  /( abs(E[it])*Ec_to_au) 
-                if (deltam>tiny) and (deltap>tiny):
-                    Wm       = beta[Z-1] * (deltam)**alpha[Z-1] * exp(-deltam/3.)
-                    Wp       = beta[Z  ] * (deltap)**alpha[Z  ] * exp(-deltap/3.)
-                    Wint[Z] += Wp
-                    n[Z,it]  = (1.-Wp*dt/2.)/(1.+Wp*dt/2.)*n[Z,it-1] + Wm*dt/(1.+Wm*dt/2.)*n[Z-1,it-1]
+        for Z in range(1,Zat):
+            deltam    = gamma[Z-1]/( abs(E[it])*Ec_to_au) 
+            deltap    = gamma[Z]  /( abs(E[it])*Ec_to_au) 
+            if (deltam>tiny) and (deltap>tiny):
+                Wm       = beta[Z-1] * (deltam)**alpha[Z-1] * exp(-deltam/3.)
+                Wp       = beta[Z  ] * (deltap)**alpha[Z  ] * exp(-deltap/3.)
+                Wint[Z] += Wp
+                n[Z,it]  = (1.-Wp*dt/2.)/(1.+Wp*dt/2.)*n[Z,it-1] + Wm*dt/(1.+Wm*dt/2.)*n[Z-1,it-1]
     
         # last charge state
         delta = gamma[Zat-1]/( abs(E[it])*Ec_to_au)
@@ -84,12 +83,10 @@ def solve_rate_eqs_( namelist ):
     for Z in range(Zat):
         print('- [theory] Z ='+str(Z)+'->'+str(Z+1)
               +'    Wadk='+str(Wadk[Z]* w_ref)
-              +'    W='+str(Wint[Z] * w_ref)
+              +'    W   ='+str(Wint[Z] * w_ref)
         )
     
-    nsum = 0.
-    for Z in range(Zat+1):
-        nsum += n[Z,nt-1]
+    nsum = sum( n[:,-1] )
     print(' ')
     print('- [theory] test cons. part. nb:'+str(nsum))
     print('********** ')

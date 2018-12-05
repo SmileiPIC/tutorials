@@ -2,7 +2,7 @@
 #  ANALYSIS OF TUNNEL IONISATION SIMULATION (Tutorial 4)
 #
 
-simulation_to_analyse = 'tunnel_ion*d'
+simulation_to_analyse = 'tunnel_ionization_1d'
 
 # IMPORT SMILEI's POST-PROCESSING TOOL
 # ------------------------------------
@@ -79,9 +79,7 @@ t    = dt * array(S.ParticleBinning(0).get()['times'])
 t    = t - Lv - Lp # centering time axis 
 
 # check conservation
-nsum = 0
-for Z in range(0, Zat+1):
-    nsum += n[n.shape[0]-1,Z]
+nsum = sum( n[-1,:] )
 print('- checking conservation of the particle number: should give 1, returns:'+str(nsum))
 
 
