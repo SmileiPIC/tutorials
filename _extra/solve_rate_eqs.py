@@ -20,8 +20,9 @@ def solve_rate_eqs_( namelist ):
     # laser
     aL  = max( namelist.Laser[0].space_envelope[0], namelist.Laser[0].space_envelope[1] )
     Eau = aL * Ec_to_au
+    delay = namelist.Laser[0].delay_phase[1] / namelist.Laser[0].omega
     laser_time_envelope = namelist.Laser[0].time_envelope
-    
+
     # PIC time-teps
     dt = namelist.Main.timestep
     nt = int(namelist.Main.simulation_time / dt)
@@ -51,9 +52,9 @@ def solve_rate_eqs_( namelist ):
     
     # Solving the rate equations numerically
     for it in range(1,nt):
-        t[it]   = it*dt
-        E[it]   = aL*sin(t[it]) * laser_time_envelope(t[it])
-        Env[it] = laser_time_envelope(t[it])
+        t[it]   = it*dt+delay
+        E[it]   = aL*sin(t[it]) * laser_time_envelope(t[it]-delay)
+        Env[it] = laser_time_envelope(t[it]-delay)
     
         # neutral atom
         delta  = gamma[0]/( abs(E[it])*Ec_to_au)
