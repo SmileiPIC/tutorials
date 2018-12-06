@@ -1,126 +1,136 @@
-Tutorial 3: Weibel and two-stream instabilities
-================================================
+Tutorial 3: Thermal plasma
+---------------------------
 
-The goal of this tutorial is to run to physics simulation relating to streaming instabilities,
-and in particular to the electron Weibel and two-stream instabilities.
+The goal of this tutorial is to get familiar with:
 
-This tutorial will also allow you to:
+* the ``Species`` block that allows you to define a particle species,
+* the ``ParticleBinning`` diagnostics to obtain particle energy spectra,
+* the ``happi.multiPlot`` tool,
+* the problem of `numerical heating` and the necessity to correctly `resolve the electron dynamics` in explicit PIC codes.
 
-* get familiar with the ``happi.streak`` tool
-* extract instability growth rates
-* construct and extract phase-space distribution using the ``ParticleBinning`` diagnostics
 
 ----
 
 Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Download the two input files `weibel_1d.py <weibel_1d.py>`_ and
-`two_stream_1d.py <two_stream_1d.py>`_.
+Download the input file `thermal_plasma_1d.py <thermal_plasma_1d.py>`_.
 
-In both simulations, a plasma with density :math:`n_0` is initialized (:math:`n_0 = 1`).
-This makes code units equal to plasma units, i.e. times are normalized to the inverse of
-the electron plasma frequency :math:`\omega_{p0} = \sqrt{e^2 n_0/(\epsilon_0 m_e)}`,
-distances to the electron skin-depth :math:`c/\omega_{p0}`, etc...
+An `infinite` electron-ion plasma is let free to evolve in a 1D cartesian
+geometry with periodic boundary conditions.
 
-Ions are frozen during the whole simulation and just provide a neutralizing background.
-Two electron species are initialized with density :math:`n_0/2` and
-a mean velocity :math:`\pm \bf{v_0}`.
+
 
 ----
 
 Check input file and run the simulation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first step is to check that your `input files` are correct.
+The first step is to check that your `input file` is correct.
 To do so, you will run (locally) :program:`Smilei` in test mode:
 
 .. code-block:: bash
 
-    ./smilei_test weibel_1d.py
-    ./smilei_test two_stream_1d.py
+    ./smilei_test thermal_plasma_1d.py
 
-If your simulation `input files` are correct, you can run the simulations.
+If your simulation `input file` is correct, you can now run the simulation.
+Before going to the analysis of your simulation, check your *log* and/or
+*error* output.
 
-Before going to the analysis, check your *logs*.
-
+Check what output files have been generated: what are they?
 
 ----
 
-Weibel instability: analysis
+Preparing the post-processing tool
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In an :program:`ipython` terminal, open the simulation:
+Let's now turn to analysing the output of your run with :program:`happi`.
+To do so, open an ``ipython`` session:
+
+.. code-block:: bash
+
+    ipython
+
+In *ipython*, import the :program:`happi` package:
 
 .. code-block:: python
 
-    S = happi.Open('/path/to/your/simulation/weibel_1d')
+    import happi
 
-The ``streak`` function of :program:`happi` can plot any 1D diagnostic as a function of time.
-Let's look at the time evolution of the total the current density :math:`J_z` and
-the magnetic field :math:`B_y`:
+then open your simulation:
 
 .. code-block:: python
 
-    S.Field(0,'Jz'  ).streak()
-    S.Field(0,'By_m').streak()
+    S = happi.Open('/path/to/the/simulation')
 
-Do you have any clue what is going on? 
-You can get another view using an animation:
+.. warning::
+
+    Use the correct simulation path.
+
+You are now ready to take a look at your simulation's results.
+
+----
+
+The ``Field`` diagnostics using ``happi.multiPlot``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To have a quick access at your data and `check` what is going on, you will plot
+the electron and ion densities together with the electrostatic field :math:`E_x`.
+
+First, `prepare` the data:
 
 .. code-block:: python
 
-    jz = S.Field(0,'Jz')
-    by = S.Field(0,'By_m',vmin=-0.5,vmax=0.5)
-    happi.multiPlot(jz,by)
+    # minus the electron density
+    ne = S.Field(0,'-Rho_eon',vmin=-0.25,vmax=2, label="e- density")
+    
+    # ion density
+    ni = S.Field(0,'Rho_ion', label="ion density")
+    
+    # Ex field
+    ex = S.Field(0,'Ex', label="Ex field")
 
-Now, using the ``Scalar`` diagnostics, check the temporal evolution of the energies
-in the magnetic (:math:`B_y`) and electrostatic (:math:`E_z`) fields.
-Can you distinguish the linear and non-linear phase of the instability?
+You may plot all these quantities independently using ``ex.plot()`` or ``ex.animate()``,
+but you can also use the ``multiPlot`` function of :program:`happi`:
 
-Have a closer look at the growth rates. Use the ``data_log=True`` options when loading
-your scalar diagnostics, then use ``happi.multiPlot()`` to plot both energies as a
-function of time. Can you extract the growth rates? What do they tell you?
+.. code-block:: python
 
-If you have time, run the simulation for different wavenumbers :math:`k`.
-Check the growth rate as a function of :math:`k`.
-
-For those interested, you will find more in:
-`Grassi et al., Phys. Rev. E 95, 023203 (2017) <https://journals.aps.org/pre/abstract/10.1103/PhysRevE.95.023203>`_.
-
+    happi.multiPlot(ne,ni,ex)
 
 
 ----
 
-Two-stream instability: analysis
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The ``ParticleBinning`` diagnostics
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In an :program:`ipython` terminal, open the simulation:
-
-.. code-block:: python
-
-    S = happi.Open('/path/to/your/simulation/two_stream_1d')
-
-then, have a first look at your simulation results:
+Now, have a look at the ``ParticleBinning`` diagnostics, and in particular
+at the electron energy distribution at initial and latest timesteps:
 
 .. code-block:: python
 
-    ne  = S.Field(0,'-Rho_eon1-Rho_eon2', xmin=0, xmax=1.05, vmin=0, vmax=2)
-    ex  = S.Field(0,'Ex', xmin=0, xmax=1.05, vmin=-0.2, vmax=0.2)
-    phs = S.ParticleBinning(0)
-    happi.multiPlot(ne,ex,phs,shape=[1,3])
-
-Any clue what's going on? 
-
-Let's have a look at the energy in the electrostatic field :math:`E_x`:
-
-* can you distinguish the linear and non-linear phase of the instability?
-* check the :math:`(x,p_x)`-phase-space distribution, can you get any clue on what leads the instability to saturate?
-
-Try changing the simulation box size (which is also the wavelength of the considered perturbation), e.g. taking: 
-:math:`L_x =` 0.69, 1.03 or 1.68 :math:`c/\omega_{p0}`. What do you observe?
-
-Now, take :math:`L_x =` 0.6, 0.31 or 0.16 :math:`c/\omega_{p0}`. What are the differences? Can you explain them?
+    Nt        = int(S.namelist.tsim / S.namelist.dt)
+    f_initial = S.ParticleBinning(0, data_log=True, timesteps=0 , label="initial")
+    f_final   = S.ParticleBinning(0, data_log=True, timesteps=Nt, label="final")
+    happi.multiPlot(f_initial, f_final)
 
 
+----
 
+Effect of spatial resolution
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Have a look at the total energy and energy balance in your simulation
+(remember the ``Utot`` and ``Ubal`` scalars).
+Note the level of energy imbalance at the end of this simulation for which
+the spatial resolution is equal to the Debye Length (:math:`\Delta x = \lambda_{\rm De}`).
+
+Increase your spatial resolution to :math:`\Delta x = 16 \times \lambda_{\rm De}`.
+Run the simulation again, and check the energy imbalance at the end of the simulation.
+What do you observe?
+Can you check the electron spectrum at the beginning and end of the simulation?
+What is going on?
+
+Finally, increase your spatial resolution to
+:math:`\Delta x = 2\,c/\omega_{pe} = 2\,c\lambda_{\rm De}/v_{\rm th}`.
+Check the evolution of the total energy.
+What do you observe?

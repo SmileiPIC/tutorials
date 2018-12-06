@@ -67,21 +67,11 @@ Running the simulation
 Once your simulation `input file` is correct, you can
 :ref:`run the simulation <runsimulation>`.
 
-First, remember to set the number of threads per processor to the number you intend:
-
 .. code-block:: bash
 
-  export OMP_NUM_THREADS=8
+  ./smilei laser_propagation_2d.py
 
-To run the simulation, typically, you will use the following command in a
-job submission file, or in an interactive mode, or maybe directly on your terminal.
-
-.. code-block:: bash
-
-   cd /path/to/my/simulation
-   mpirun -n 2 ./smilei laser_propagation_2d.py
-
-Before going to the analysis of your simulation, check your ``log`` file.
+Before going to the analysis of your simulation, check the ``log``.
 
 * What did change compared to the `test mode`?
 * Did your run complete correctly?
@@ -201,13 +191,13 @@ This new function ``animate()`` can animate the plot of any diagnostic when seve
 timesteps are available.
 
 Now, open the field with an average, and compare to the previous profile.
-The following calculates the laser amplitude envelope using ``"Ex**2+Ey**2"``.
+The following calculates the laser amplitude envelope using ``"Ey**2+Ez**2"``.
 Then, using the argument ``average``, it makes an average of this envelope for x
-close to 0 and y at 200.
+close to 0 and y at 100.
 
 .. code-block:: python
 
-   S.Field(0, "Ex**2+Ey**2", average={"x":[0,7],"y":200}).plot()
+   S.Field(0, "Ey**2+Ez**2", average={"x":[0,7],"y":100}).plot()
 
 
 ----

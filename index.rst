@@ -17,6 +17,7 @@ Choose among the available tutorials in the top menu.
    Tutorial 2 <tutorial2>
    Tutorial 3 <tutorial3>
    Tutorial 4 <tutorial4>
+   Tutorial 5 <tutorial5>
    Advanced tutorial 1 <advanced_tutorial1>
    Advanced tutorial 2 <advanced_tutorial2>
    Advanced tutorial 3 <advanced_tutorial3>

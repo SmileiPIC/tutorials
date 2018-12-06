@@ -95,18 +95,35 @@ and ``smilei_test``.
 Run a simulation on your machine
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When running `Smilei` on your own computer, you may use the following commands:
+The first step for any simulation is to create a new directory to
+contain all the simulation inputs and outputs. Otherwise, the many
+generated files would pollute your current directory.
 
 .. code-block:: bash
 
   # Make a new folder and go inside
   mkdir mysimulation
   cd mysimulation
+
   # Copy necessary executables to the new folder
   cp /path/to/Smilei/smilei .
   cp /path/to/Smilei/smilei_test .
+
   # Copy the input file as well
   cp /path/to/my_input.py .
+
+When running `Smilei` on your own computer, the first possibility
+is to run directly the code in the current terminal:
+
+.. code-block:: bash
+
+  ./smilei my_input.py
+
+If you want to use several computing units, you can use the relevant
+``MPI`` executable on your machine. For example, with ``mpirun``:
+
+.. code-block:: bash
+
   # Run the simulation on 4 processes
   mpirun -n 4 smilei my_input.py
 
@@ -116,7 +133,7 @@ See `help here <http://www.maisondelasimulation.fr/smilei/run.html#using-the-pro
 In this example, the simulation will use 4 processes, but remember that the option above
 ``OMP_NUM_THREADS=8`` will set 8 threads in each process, so a total of 24 threads.
 As a consequence, this example is ideal for 4 nodes containing each 8 cores.
-
+This parallel computing is studied in the :ref:`tutorial 2<tutorial2>`.
 
 
 ----
