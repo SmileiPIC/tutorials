@@ -42,7 +42,7 @@ per cell for a total of 3648 macro-particles.
 Content of the tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Download `AdvancedTutorial2.tar.gz <AdvancedTutorial2.tar.gz>`_ and extract it.
+Download `AdvancedPractical2.tar.gz <AdvancedPractical2.tar.gz>`_ and extract it.
 It contains 2 directories:
 
 * ``Analysis``
