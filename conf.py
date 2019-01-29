@@ -29,6 +29,7 @@ import shlex
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+mathjax_path = 'https://www.gitcdn.xyz/repo/mathjax/MathJax/master/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.mathjax'
@@ -50,7 +51,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Smilei'
-copyright = u'2017'
+copyright = u'2019'
 author = u''
 
 # The version info for the project you're documenting, acts as replacement for
