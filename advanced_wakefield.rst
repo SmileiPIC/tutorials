@@ -1,4 +1,4 @@
-Advanced Tutorial 3: Electron Laser Wakefield Acceleration (in 2D)
+Electron Laser Wakefield Acceleration (in 2D)
 ------------------------------------------------------------------------------
 
 The goal of this tutorial is to give an introduction to Laser Wakefield acceleration simulation with :program:`Smilei`.

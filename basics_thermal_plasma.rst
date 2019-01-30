@@ -1,4 +1,4 @@
-Tutorial 3: Thermal plasma
+Thermal plasma
 ---------------------------
 
 The goal of this tutorial is to get familiar with:

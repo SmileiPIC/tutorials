@@ -12,20 +12,17 @@ Choose among the available tutorials in the top menu.
    :maxdepth: 1
    :hidden:
    
-   setup
-   Tutorial 1 <tutorial1>
-   Tutorial 2 <tutorial2>
-   Tutorial 3 <tutorial3>
-   Tutorial 4 <tutorial4>
-   Tutorial 5 <tutorial5>
-   Advanced tutorial 1 <advanced_tutorial1>
-   Advanced tutorial 2 <advanced_tutorial2>
-   Advanced tutorial 3 <advanced_tutorial3>
-   Advanced tutorial 4 <advanced_tutorial4>
+   basics_setup
+   basics_laser_vacuum
+   basics_thermal_plasma
+   basics_weibel_twostream
+   perfs_parallel_computing
+   advanced_field_ionization
+   advanced_collisions
+   advanced_radiation_reaction
+   advanced_breit_wheeler
+   advanced_wakefield
    
-.. Advanced tutorial 5 <advanced_tutorial5>
-.. Advanced tutorial 6 <advanced_tutorial6>
-
 .. rubric:: Links to Smilei's documentation:
 
 * `Smilei units <https://smileipic.github.io/Smilei/units.html>`_
