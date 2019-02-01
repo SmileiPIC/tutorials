@@ -989,7 +989,9 @@ div.admonition p {
 	padding:{{ theme_head_height|float * 0.1 }}mm 0.6em;
 	margin:{{ theme_head_height|float * 0.05 }}mm 0;
 	border-radius:0.5em;
-	border:{{ theme_head_height|float * 0.05 }}mm solid #bbb;
+	border:0;
+	color: #555;
+	background-color: white;
 }
 #search-results {
 	padding-top: 5px;
@@ -1053,8 +1055,8 @@ div.admonition p {
 	}
 	#searchbox {
 		display:block !important;
-		left:{{ theme_head_height|float * 4.8 }}mm;
-		right:{{ theme_head_height|float * 1.8 }}mm;
+		left:{{ theme_head_height|float * 2.8 }}mm;
+		right:{{ theme_head_height|float * 1.9 }}mm;
 	}
 	#searchinput {
 		display:block !important;
