@@ -7,12 +7,12 @@ the memory is not shared between all the cores: the memory is split in several
 *nodes*.
 Each node contains several cores, which can all access the same
 data simultaneously. The cores belonging to two different nodes
-cannot use the same data directly; they must exchange chunks
+cannot use the same memory directly; they must exchange chunks
 of data that are communicated through a network.
 
 In Smilei, this communication between nodes is achieved using the
 Message Passing Interface (MPI). Within each node, the management 
-of cores (sharing the same memory) is handled by the OpenMP protocol.
+of cores (sharing the same memory) can be handled by the OpenMP protocol or using MPI.
 
 The goal of this tutorial is to understand how to setup a simulation that
 can ensure proper workload distribution between all the cores.
@@ -49,10 +49,12 @@ The simulation box is split in *patches*
 
 The computer memory is not all located in one place, but is split among
 in many nodes. We call a *process* the set of operations that occur within
+the piece of the simulation data associated to
 one given memory space. As the communication of data between processes
 is done with the *MPI* library, they are sometimes called *MPI processes*.
 Note that it is possible to assign several processes to one
-node. In this case, the memory of this node is sub-divided.
+node. In this case, the memory of each process is managed independetly
+even if it's located on the same place..
 
 To specify the number of processes for a simulation, you must use the
 correct MPI command on your machine. Usually, this command is ``mpirun``.
@@ -69,13 +71,17 @@ in the input file ``beam_2d.py``, the line::
     number_of_patches = [ 32, 32 ],
 
 It defines a splitting of the box in 32x32 patches.
-Each of these patches is a rectangular portion of the plasma.
+Each of these patches is a rectangular portion of the simulation box.
 
 .. warning::
 
-  In many PIC codes, there is 1 patch for 1 MPI process. This is different in
-  Smilei where there should be **many** patches for each MPI process, typically 16
-  to thousands.
+  In Smilei there is not 1 large domain for 1 MPI process.
+  The domain should be divided in **many** patches for each MPI process for two reasons :
+  1) to distribute the compute load to feed all threads associated to each process, 2) to 
+  be able to manage the load imbalance.
+
+  Note that too many patches will cost a time overhead, the size of the patch must be think
+  regarding the occupency and the evolution of the plasma in the box.
 
 ----
 
@@ -83,10 +89,11 @@ One process may handle several cores
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 One MPI process must compute the many patches it owns. 
-Fortunately, it has access to several *cores* to do that.
-Cores compute patches *in parallel* until all patches are done.
+In case of a multi-cores architecture coupled to the shared memory paradigm,
+processes can access to several *cores* to do that.
 
-The operations that are run sequentially, in a single core, are called a *thread*.
+In the most common model, for each core,
+a *thread* is associated to compute patches *in parallel* until all patches are done.
 These threads are managed with *OpenMP* to synchronize their advance.
 Very importantly, there should be **as many threads as cores**. If you specify
 less, then some cores will have no threads to run. If you specify more, then
