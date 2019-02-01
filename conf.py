@@ -146,8 +146,8 @@ html_theme_path = ["."]
 
 # Smilei's theme adds colors and menus
 html_context = dict(
-    menu_start_with = ["Setup", "Tutorial 1", "Advanced tutorial 1"],
-    menu_name = ["Info", "Basic", "Advanced"],
+    menu_start_with = ["Setup", "Parallel computing", "Field ionization"],
+    menu_name = ["PIC basics", "Performances", "Advanced"],
 )
 
 # The name for this set of Sphinx documents.  If None, it defaults to

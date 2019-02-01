@@ -1,4 +1,4 @@
-Advanced Tutorial 1: Synchrotron-like Radiation reaction processes
+Synchrotron-like Radiation reaction processes
 ------------------------------------------------------------------------------
 
 The goal of this tutorial is to present how to use the radiative and QED processes in

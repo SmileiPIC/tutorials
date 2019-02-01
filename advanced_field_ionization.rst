@@ -1,4 +1,4 @@
-Tutorial 5: Field ionization
+Field ionization
 =============================
 
 The goal of this tutorial is to present a simulation using an advanced physics module,

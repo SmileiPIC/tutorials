@@ -1,4 +1,4 @@
-Advanced Tutorial 2: Multiphoton Breit-Wheeler pair creation process
+Multiphoton Breit-Wheeler pair creation process
 -------------------------------------------------------------------------------
 
 The goal of this tutorial is to present how to use the multiphoton Breit-Wheeler

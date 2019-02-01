@@ -133,7 +133,7 @@ See `help here <http://www.maisondelasimulation.fr/smilei/run.html#using-the-pro
 In this example, the simulation will use 4 processes, but remember that the option above
 ``OMP_NUM_THREADS=8`` will set 8 threads in each process, so a total of 24 threads.
 As a consequence, this example is ideal for 4 nodes containing each 8 cores.
-This parallel computing is studied in the :ref:`tutorial 2<tutorial2>`.
+This parallel computing is studied in :doc:`this tutorial<perfs_parallel_computing>`.
 
 
 ----

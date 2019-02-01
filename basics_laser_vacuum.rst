@@ -1,4 +1,4 @@
-Tutorial 1: Laser Propagation in vacuum
+Laser Propagation in vacuum
 ------------------------------------------
 
 The goal of this tutorial is to run your first simulation with :program:`Smilei`.

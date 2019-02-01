@@ -1,4 +1,4 @@
-Tutorial 2: Parallel computing
+Parallel computing
 =================================
 
 On a personal computer, there may be one or several computing units (*cores*).
