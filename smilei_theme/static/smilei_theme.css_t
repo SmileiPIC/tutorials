@@ -992,7 +992,7 @@ div.admonition p {
 	width: 80mm;
 	font-size: 1em;
 	padding:{{ theme_head_height|float * 0.1 }}mm 0.6em;
-	margin:{{ theme_head_height|float * 0.05 }}mm 0;
+	margin:{{ theme_head_height|float * 0.1 }}mm 0;
 	border-radius:0.5em;
 	border:0;
 	color: #555;
@@ -1060,7 +1060,7 @@ div.admonition p {
 	}
 	#searchbox {
 		display:block !important;
-		left:{{ theme_head_height|float * 2.8 }}mm;
+		left:{{ theme_head_height|float * 3.5 }}mm;
 		right:{{ theme_head_height|float * 1.9 }}mm;
 	}
 	#searchinput {
