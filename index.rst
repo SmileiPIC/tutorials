@@ -1,6 +1,6 @@
 .. title:: Smilei tutorials
 
-.. image:: _static/smileiLogo_tutorials.svg
+.. image:: _static/smileiLogo_tutorials_large.svg
 
 This website provides tutorials for learning how to use the PIC code
 `Smilei <http://www.maisondelasimulation.fr/smilei>`_ and its post-processing

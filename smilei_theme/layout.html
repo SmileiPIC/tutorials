@@ -85,9 +85,13 @@
             </a>
         </div>
         
-    {# Loop through toctree #}
     {%- set menu_start = cycler(*menu_start_with) %}
+    {%- set menu_first = menu_start.next() %}
+    {%- set _ = menu_start.reset() %}
+    
     {%- set menu_title = cycler(*menu_name) %}
+    
+    {# Loop through toctree #}
     {%- for element in theTocTree %}
         {%- set el = element.split("%") %}
         {%- set url = el[0] | trim | safe %}
@@ -102,8 +106,9 @@
             
             {%- set menu_here = menu_start.current %}
             {%- set _ = menu_start.next() %}
+            {%- set menu_next = menu_start.current %}
         
-        <div class="menu" id="menu_{{ menu_here }}"{% if menu_start.current == this_menu[0] %} style="font-weight:bold"{% endif %}>
+        <div class="{% if menu_next == menu_first %}last {% endif %}menu" id="menu_{{ menu_here }}"{% if menu_start.current == this_menu[0] %} style="font-weight:bold"{% endif %}>
             <div id="menuButton_{{ menu_here }}" class="menuButton"
                  onmouseenter="prepareMenu('menu_{{ menu_here }}')"
                  onmousedown="event.preventDefault()"
