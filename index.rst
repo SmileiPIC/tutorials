@@ -9,19 +9,12 @@ tool :program:`happi`.
 Choose among the available tutorials in the top menu.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :hidden:
    
-   basics_setup
-   basics_laser_vacuum
-   basics_thermal_plasma
-   basics_weibel_twostream
-   perfs_parallel_computing
-   advanced_field_ionization
-   advanced_collisions
-   advanced_radiation_reaction
-   advanced_breit_wheeler
-   advanced_wakefield
+   basics
+   perfs
+   advanced
    
 .. rubric:: Links to Smilei's documentation:
 

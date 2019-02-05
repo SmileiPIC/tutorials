@@ -31,8 +31,9 @@ import shlex
 # ones.
 mathjax_path = 'https://www.gitcdn.xyz/repo/mathjax/MathJax/master/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 extensions = [
-    'sphinx.ext.todo',
-    'sphinx.ext.mathjax'
+    'sphinx.ext.mathjax',
+# In order to generate the doc in pdf:
+#    'rst2pdf.pdfbuilder'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -50,7 +51,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Smilei'
+project = u'Smilei tutorials'
 copyright = u'2019'
 author = u''
 
@@ -67,12 +68,8 @@ def get_version():
     """
     from subprocess import Popen, PIPE
     pipe = Popen('git describe --tags --always', stdout=PIPE, shell=True)
-    version = pipe.stdout.read()
 
-    if version:
-        return version
-    else:
-        return 'X.Y'
+    return str(pipe.stdout.read() or 'X.Y')
 
 version = get_version()
 
@@ -143,12 +140,6 @@ html_theme_options = dict(
 
 # Add any paths that contain custom themes here, relative to this directory.
 html_theme_path = ["."]
-
-# Smilei's theme adds colors and menus
-html_context = dict(
-    menu_start_with = ["Setup", "Parallel computing", "Field ionization"],
-    menu_name = ["PIC basics", "Performances", "Advanced"],
-)
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
