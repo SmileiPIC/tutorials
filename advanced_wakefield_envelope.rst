@@ -2,7 +2,7 @@ Laser Wakefield Acceleration with Laser Envelope (in 2D)
 ---------------------------------------------------------------------------------------
 
 The goal of this tutorial is to give an introduction to the use of the laser envelope model with :program:`Smilei`.
-Before starting with this tutorial, we recommend to first complete the Advanced Tutorial 3.
+Before starting with this tutorial, we recommend to complete first the tutorial on Laser Wakefield Acceleration (without envelope).
 In that Tutorial, Laser Wakefield Acceleration is simulated in a standard way, i.e. the laser is defined through its electromagnetic fields defined on the grid. 
 
 The following features will be addressed:
