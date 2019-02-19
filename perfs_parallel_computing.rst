@@ -44,6 +44,7 @@ and the executables ``smilei`` and ``smilei_test``.
 
 ----
 
+
 The simulation box is split in *patches*
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -109,18 +110,71 @@ the following command before running Smilei:
 
 ----
 
-Run the simulation with 12 processes
+First approach of number_of_patches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In a first test, we will use 12 processes, and 1 core per process:
+In a first test, we will use a single core to be focus on the patch division :
 
 .. code-block:: bash
 
   export OMP_NUM_THREADS=1
-  mpirun -np 12 smilei beam_2d.py
+  mpirun -np 1 smilei beam_2d.py
+
+The provided input file suggest to use 32 x 32 patches.
+Compare the simulation times of this simulation to the same run with :
+ * a single patch
+ * 16 x 16 patches
+ * and 8 x 8 patches
+
+.. code-block:: python
+
+  Main(
+       number_of_patches = [ 1, 1 ],
+  )
+
+Look at times provided at the end of the simulation :
+ * ``Time in time loop`` : the whole PIC loop
+ * ``Particles``         : all particles operations except collisions 
+ * ``Maxwell``           : Maxwell equations and the electromagnetic boundary conditions
+ * ``Diagnostics``       : all ``Diag`` blocks defined in the namelist
+ * ``Sync Particles``    : particles exchange between patches
+ * ``Sync Fields``       : ``E``, ``B`` exchange between patches
+ * ``Sync Densities``    : ``J`` exchange between patches
+
+**The** ``Sync`` **timers concern exchange between patches owned by a single MPI processes or by many.**
+In this  case, these timers could contain waiting times due to load imbalance inherent to PIC simulations.
+
+Whatever the case, ``Particles`` and  ``Maxwell`` do not contain waiting time,
+they only accumulate pure computation time.
+
+``Load balancing``, ``Mov window`` or ``Diagnostics`` (which can be seen like a disk synchronization)
+are global operations which require communications, they can contain waiting time.
+
+For many MPI processes simulation, these times are averaged on all processes. 
+Some detailed timing elements, such as minimum or maximum times on all processes
+are provided in a file ``profil.txt`` or in ``DiagPerformances``.
+It is usefull to note the imbalance cost.
+
+
+----
+
+Introduce parallelism
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In this step, parallelism is introduced naively to handle number_of_patches with parallelism.
+To do so, we'll first use only OpenMP threads on a single node on or out local supercomputer with a single MPI processes.
+
+Of course, we run it on the best patches configuration defined in the previous step : 8 x 8 patches.
+The single patch simulation is maybe slightly faster but it does not exhibit any parallelism (see above).
+
+.. code-block:: bash
+
+  source ${SMILEI_ROOT}/scripts/set_omp_env.sh 16
+  mpirun -np 1 smilei beam_2d.py
 
 Make sure that, in the output log, it specifies the correct number of
-processes and threads.
+processes and threads. 
+Even though 16 compute resources are used, the speed-up is very poor.
 
 Let us now use ``happi`` to analyse the simulation.
 Open an ``ipython`` prompt, then run::
@@ -132,7 +186,56 @@ You can have a quick understanding of what happens in the simulation using::
 
   S.ParticleBinning(0).animate()
 
-A ball of plasma is moving through the box.
+A ball of plasma is moving through the box. 
+The box size is described with a 256 x 256 points grid
+and the plasma ball is a 30 points radius circle.
+ * With the 8 x 8 patches configuration, the size of a patch is 32 x 32.
+   The plasma, which represents the main time cost, concerns only few patches of the simulation, 16 threads are useless.
+ * With the 16 x 16 patches configuration, the size of a patch is 16 x 16,
+   an order of magnitude is earned regarding the number of patches loaded with particles, almost 1 per thread. 
+ * With the 32 x 32 patches configuration, the size of a patch is 8 x 8,
+   there is more than 3 loaded patches per thread, but with a synchronization overhead.
+
+In the best case configuration, an additionnal speed-up of 2 is earned.
+This is modest, but accelerating computations needs particles. With a such local plasma, it's hard to achieve.
+Note that we are investigating new technics based on tasking to exhibit more parallelism.
+
+----
+
+Imbalance 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Without knowing it, you applied load balancing using OpenMP threading.
+Indeed, to achieve good performances using the shared memory parallelism, we apply a ``dynamic`` OpenMP scheduling in ``set_omp_env.sh``.
+
+You can observe the difference with the ``static`` scheduling :
+
+.. code-block:: bash
+
+  export OMP_NUM_THREADS=16
+  export OMP_SCHEDULE=static
+  mpirun -np 1 smilei beam_2d.py
+
+With the ``dynamic`` scheduling, threads operates patches one by one in the patches pool while patches are not treated.
+It's interesting, because the cost of 2 patches regarding particles operation can vary a lot.
+With the ``static`` scheduling, the pool is divided with the number of threads, then the first thread operate the first package and so on. 
+If all loaded patches are in the same package, the parallelism is annihilated.
+
+OpenMP offers intermediary solutions but regarding the granularity of the level of parallelism, we advice the ``dynamic`` scheduling.
+
+----
+
+Imbalance and distributed memory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Run the 16 x 16 patches simulation but with a MPI only configuration :
+
+.. code-block:: bash
+
+  source ${SMILEI_ROOT}/scripts/set_omp_env.sh 1
+  mpirun -np 16 smilei beam_2d.py
+
+You can observe that the time spent in the PIC loop is near to the 16 threads ``static`` scheduling time.
 
 We are now going to use the ``Performances`` diagnostic.
 The list of available quantities can be obtained with::
@@ -156,6 +259,20 @@ This is a typical situation where almost all processes have nothing to do
 and wait for a single process to finish its computation.
 
 
+.. warning::
+
+  Smilei timers are managed per MPI process, so timers include OpenMP imbalance due to implicit OpenMP barrier of ``#pragma omp for``.
+
+.. warning::
+
+  ``Sync`` timers are impacted by the imbalance of the algorithm part which precedes it :
+  
+   * ``Particles``
+   * ``Sync Densities``
+   * ``Maxwell``
+   * ``Sync Particles``
+   * ``Sync Fields``
+
 ----
 
 Balancing the load between processes
@@ -166,31 +283,32 @@ process to another in order to ensure they all have a similar load. Activate it
 in the input file using::
 
     LoadBalancing(
-        every = 100
+        every = 20
     )
 
-Then run the simulation again with 12 processes.
+Then run the simulation again with 16 processes and have a look to the ``Load balancing`` timer. 
+You can observe differences in the computation time and
+compare it to the time saved regarding the simulation without dynamic load balancing.
 
-How are the regions modified? Can you observe differences in the computation time?
+Have look to the performance diagnostic and especially to the regions distribution.
 
 
 ----
 
-Balancing the load inside one process
+Real life configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now, instead of splitting the simulation between 12 processes, let us
-use only 1 process, but put as many threads as possible by your machine
-in this process. We will suppose that the machine has 12 threads per process.
-In this case, run the simulation with:
+As it has been described in the begining of this page supercomputers should be adressed
+with both paradigm.
+ * MPI to go through nodes **and** processors for many socket nodes to handle memory affinity.
+ * OpenMP to minimize imbalance and to manage more efficiently diagnostics at large scale
 
 .. code-block:: bash
 
-  export OMP_NUM_THREADS=12
-  mpirun -np 1 smilei beam_2d.py
-
-There is now, obvioulsy, only one region. How is the computation speed affected ?
+  export OMP_NUM_THREADS=8
+  mpirun -np 2 smilei beam_2d.py
 
 Between processes, threads, and the number of patches, there are many ways the
 simulation performances can be modified. There is no general rule for finding
 the optimal configuration, so many tests are recommended.
+
