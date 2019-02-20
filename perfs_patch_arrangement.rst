@@ -1,38 +1,68 @@
 Patch arrangement
 =================================
 
+For some case such as very local plasmas, the dynamic load balancing could reach limits :
+ * it needs computational load to balance
+ * it fits dynamic problems
 
-Single node / Poincare (16 cores, 2 x 8 cores)
-Test case : tst2d_02_radiation_pressure_acc.py
+For weak particles dynamic it could be preferable to masterize the patch distribution over MPI.
+Using the `Hilbert curve <https://smileipic.github.io/Smilei/parallelization.html#load-balancing-between-mpi-regionsrunsimulation>`_
+could not be intuitive, a linearized per direcction distribution is proposed.
 
-Run in MPI only to enforce the phenomenon at that scale
+----
 
-.. code-block:: python
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^
 
-  + particles_per_cell = 16,
-  - Fields - Screen - Track
-  + Probes (to validate linearized_YX) :
-  DiagProbe(
-      number = [600, 1000],
-      origin = [0.*l0, 0.*l0],
-      corners = [
-      [6.*l0, 0.*l0],
-      [0.*l0, 10.*l0]
-      ],
-  )
+Starting case :  
+  `radiation_pressure_acc_hilbert.py <radiation_pressure_acc_hilbert.py>`_
+
+Linearized case :  
+  `radiation_pressure_acc_linearized.py <radiation_pressure_acc_linearized.py>`_
+
+To highlight the phenomenon and to simplify the environment we propose to run MPI only simulations here.
 
 ----
 
 Using appropriate patches arrangement
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Run in the default configuration
+Run in the default configuration :
 
-Add the dynamic load balancing  (every = 20)  
+.. code-block:: bash
 
-Test the linearized_YX (16% time saved regarding DLB)  
+  export OMP_NUM_THREADS=1  
+  mpirun -np 16 smilei radiation_pressure_acc_hilbert.py
 
-Test the linearized_XY  
+Observe timers and probes diagnostics.
+
+Activate the dynamical load balancing to absorb synchronizations overhead
+
+.. code-block:: python
+
+  LoadBalancing(
+      every = 20
+  )
+
+A look at the plasma shape shows that at the simulation initialization,
+the plasma is located in an one patch large strip in the Y axis. Then it is propagating along the X axis. 
+We propose here to enforce the distribution of patches over MPI along the Y axis to really provide computational load 
+to many MPI process.
+
+.. code-block:: python
+
+  Main(
+      patch_arrangement = "linearized_YX",
+  )
+
+Note that managing this along the X axis should be horrible in terms of CPU hours wasted !
+Do not run the full simulation in this configuration.
+  
+.. code-block:: python
+
+  Main(
+      patch_arrangement = "linearized_XY",
+  )
 
 
 ----
