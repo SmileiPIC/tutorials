@@ -36,6 +36,9 @@ Run in the default configuration :
 
 Observe timers and probes diagnostics.
 
+.. note::
+   Probes diagnostics are defined here, not fields diagnostics which do not works with some alternative ``patch_arrangement``.
+
 Activate the dynamical load balancing to absorb synchronizations overhead
 
 .. code-block:: python
@@ -71,13 +74,37 @@ Do not run the full simulation in this configuration.
 Tuning the patch arrangement
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Up to here, the 8 x 8 number of patches used limits the splitting in Y. Only 8 compute units are working.
+Unfortunatly the patch size, 75 x 125 cells, do not permit to split more in Y.
 
-Looking at the plasma shape → More patch along Y ?
+We propose here to slightly increase the spatial resolution in Y, to get a number of cells in Y divisible per 16. 
 
-Adjusted number of cells among Y : 1000 to 1024 (easier to divide on 16 cores)
+.. code-block:: python
 
-Continue to run with the 8 x 8 patches configuration
+  current_ncells_Y = Lsim[1] / (l0/resx)
+  target_ncells_Y = 1024.
+  target_cell_length_Y = (l0/resx*current_ncells_Y)/target_ncells_Y
 
-Continue to run with the 8 x 16 patches configuration
+  Main(
+      cell_length = [l0/resx,target_cell_length_Y],
+  )
 
-Back on hilbert arrangement with 8 x 16 patches (36% time saved regarding DLB)
+Re-run the ``linearized_YX`` configuration to note the related overhead of the new resolution.
+Increasing the spatial resolution increase the particles resolution, you can have a look at the nimber of particles created.
+
+You can now run the simulation with the 8 x 16 patches configuration :
+
+.. code-block:: python
+
+  Main(
+      number_of_patches = [ 8, 16 ],
+  )
+
+To be fair, we can re-run this configuration with the ``hilbertian`` mode (it's the default value of ``patch_arrangement``)
+with 8 x 16 patches. Indeed, in this mode, when the number of patches is not the same along all directions,
+the square pattern is reproduced many times in the larger direction (Y here). This will benefits here. 
+
+.. note::
+   The paramater ``number_of_patches`` is no more forced to be a power of 2 with ``linearized`` configuration.
+   We use here 16 patches in Y because, we run 16 MPI processes on a node of 16 cores.
+   
