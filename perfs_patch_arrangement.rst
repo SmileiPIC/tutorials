@@ -67,6 +67,10 @@ Do not run the full simulation in this configuration.
       patch_arrangement = "linearized_XY",
   )
 
+.. figure:: _extra/arrangement.png
+
+  Each numbered square represents a patch in an 8 x 8 patches configuration distributed over 16 MPI processes.
+
 
 ----
 
