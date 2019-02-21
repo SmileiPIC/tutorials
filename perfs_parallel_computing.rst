@@ -55,7 +55,7 @@ one given memory space. As the communication of data between processes
 is done with the *MPI* library, they are sometimes called *MPI processes*.
 Note that it is possible to assign several processes to one
 node. In this case, the memory of each process is managed independetly
-even if it's located on the same place..
+even if it's located on the same place.
 
 To specify the number of processes for a simulation, you must use the
 correct MPI command on your machine. Usually, this command is ``mpirun``.
@@ -73,6 +73,8 @@ in the input file ``beam_2d.py``, the line::
 
 It defines a splitting of the box in 32x32 patches.
 Each of these patches is a rectangular portion of the simulation box.
+
+.. _`warning about  patches for thread`:
 
 .. warning::
 
@@ -144,7 +146,7 @@ Look at times provided at the end of the simulation :
 **The** ``Sync`` **timers concern exchange between patches owned by a single MPI processes or by many.**
 In this  case, these timers could contain waiting times due to load imbalance inherent to PIC simulations.
 
-Whatever the case, ``Particles`` and  ``Maxwell`` do not contain waiting time,
+Whatever the case, ``Particles`` and  ``Maxwell`` do not contain MPI waiting time,
 they only accumulate pure computation time.
 
 ``Load balancing``, ``Mov window`` or ``Diagnostics`` (which can be seen like a disk synchronization)
@@ -158,14 +160,15 @@ It is usefull to note the imbalance cost.
 
 ----
 
-Introduce parallelism
+Introduce Smilei's parallelism
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In this step, parallelism is introduced naively to handle number_of_patches with parallelism.
-To do so, we'll first use only OpenMP threads on a single node on or out local supercomputer with a single MPI processes.
+In this step, parallelism is introduced naively to handle ``number_of_patches`` with parallelism.
+To do so, we'll first use only OpenMP threads on a single node on our local supercomputer with a single MPI processes.
 
+         
 Of course, we run it on the best patches configuration defined in the previous step : 8 x 8 patches.
-The single patch simulation is maybe slightly faster but it does not exhibit any parallelism (see above).
+The single patch simulation is maybe slightly faster but it does not exhibit any parallelism (see `warning about patches for thread`_).
 
 .. code-block:: bash
 
@@ -187,8 +190,8 @@ You can have a quick understanding of what happens in the simulation using::
   S.ParticleBinning(0).animate()
 
 A ball of plasma is moving through the box. 
-The box size is described with a 256 x 256 points grid
-and the plasma ball is a 30 points radius circle.
+The box size is described with a 256 x 256 cells grid
+and the plasma ball is a 30 cells radius circle.
  * With the 8 x 8 patches configuration, the size of a patch is 32 x 32.
    The plasma, which represents the main time cost, concerns only few patches of the simulation, 16 threads are useless.
  * With the 16 x 16 patches configuration, the size of a patch is 16 x 16,
@@ -196,9 +199,11 @@ and the plasma ball is a 30 points radius circle.
  * With the 32 x 32 patches configuration, the size of a patch is 8 x 8,
    there is more than 3 loaded patches per thread, but with a synchronization overhead.
 
-In the best case configuration, an additionnal speed-up of 2 is earned.
+For this test, in the best case configuration, an additionnal speed-up of 2 is earned.
 This is modest, but accelerating computations needs particles. With a such local plasma, it's hard to achieve.
-Note that we are investigating new technics based on tasking to exhibit more parallelism.
+
+.. note::
+    That we are investigating new technics based on tasking over species and  clusers of particles to exhibit more shared memory  parallelism.
 
 ----
 
@@ -206,7 +211,7 @@ Imbalance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Without knowing it, you applied load balancing using OpenMP threading.
-Indeed, to achieve good performances using the shared memory parallelism, we apply a ``dynamic`` OpenMP scheduling in ``set_omp_env.sh``.
+Indeed, to achieve good performances using the shared memory parallelism, we apply a ``dynamic`` OpenMP scheduling using the script ``set_omp_env.sh``.
 
 You can observe the difference with the ``static`` scheduling :
 
@@ -216,8 +221,9 @@ You can observe the difference with the ``static`` scheduling :
   export OMP_SCHEDULE=static
   mpirun -np 1 smilei beam_2d.py
 
-With the ``dynamic`` scheduling, threads operates patches one by one in the patches pool while patches are not treated.
+With the ``dynamic`` scheduling, threads operate patches one by one in the patches pool while all patches are not treated.
 It's interesting, because the cost of 2 patches regarding particles operation can vary a lot.
+
 With the ``static`` scheduling, the pool is divided with the number of threads, then the first thread operate the first package and so on. 
 If all loaded patches are in the same package, the parallelism is annihilated.
 
@@ -237,6 +243,12 @@ Run the 16 x 16 patches simulation but with a MPI only configuration :
 
 You can observe that the time spent in the PIC loop is near to the 16 threads ``static`` scheduling time.
 
+.. warning::
+
+   You also may have noticed major differences in sub timers.
+   This is explained by the Smilei's timers implementation which is managed per MPI process,
+   so timers include OpenMP imbalance due to implicit OpenMP barrier of ``#pragma omp for``.
+
 We are now going to use the ``Performances`` diagnostic.
 The list of available quantities can be obtained with::
 
@@ -247,31 +259,17 @@ Let us try::
   S.Perfomances(map="hindex").plot()
 
 You should obtain a map of the simulation box with one different color for
-each memory region (i.e. each MPI process). There are 12 regions, as we requested
+each memory region (i.e. each MPI process). There are 16 regions, as we requested
 initially. You can see that these regions do not have necessarily the same shape.
 
 Now plot the number of particles in each region::
 
   S.Performances(map="number_of_particles").animate(cmap="smilei_r", vmin=0)
 
-Clearly, at every given time, only one region contains all the particles.
+Clearly, at every given time, no more than only few regions contain particles.
 This is a typical situation where almost all processes have nothing to do
 and wait for a single process to finish its computation.
 
-
-.. warning::
-
-  Smilei timers are managed per MPI process, so timers include OpenMP imbalance due to implicit OpenMP barrier of ``#pragma omp for``.
-
-.. warning::
-
-  ``Sync`` timers are impacted by the imbalance of the algorithm part which precedes it :
-  
-   * ``Particles``
-   * ``Sync Densities``
-   * ``Maxwell``
-   * ``Sync Particles``
-   * ``Sync Fields``
 
 ----
 
@@ -289,6 +287,18 @@ in the input file using::
 Then run the simulation again with 16 processes and have a look to the ``Load balancing`` timer. 
 You can observe differences in the computation time and
 compare it to the time saved regarding the simulation without dynamic load balancing.
+
+
+.. warning::
+
+  ``Sync`` timers are impacted by the imbalance of the algorithm part which precedes it :
+  
+   * ``Particles``
+   * ``Sync Densities``
+   * ``Maxwell``
+   * ``Sync Particles``
+   * ``Sync Fields``
+
 
 Have look to the performance diagnostic and especially to the regions distribution.
 
