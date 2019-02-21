@@ -7,7 +7,7 @@ For some case such as very local plasmas, the dynamic load balancing could reach
 
 For weak particles dynamic it could be preferable to masterize the patch distribution over MPI.
 Using the `Hilbert curve <https://smileipic.github.io/Smilei/parallelization.html#load-balancing-between-mpi-regionsrunsimulation>`_
-could not be intuitive, a linearized per direcction distribution is proposed.
+could not be intuitive, a linearized per direction distribution is proposed.
 
 ----
 
@@ -70,6 +70,8 @@ Do not run the full simulation in this configuration.
 .. figure:: _extra/arrangement.png
 
   Each numbered square represents a patch in an 8 x 8 patches configuration distributed over 16 MPI processes.
+  In this test case, the plasma is located in the 2nd column of the box. It explains why MPI domain are so small
+  in this region.
 
 
 ----
@@ -94,7 +96,7 @@ We propose here to slightly increase the spatial resolution in Y, to get a numbe
   )
 
 Re-run the ``linearized_YX`` configuration to note the related overhead of the new resolution.
-Increasing the spatial resolution increase the particles resolution, you can have a look at the nimber of particles created.
+Increasing the spatial resolution increase the particles resolution, you can have a look at the number of particles created.
 
 You can now run the simulation with the 8 x 16 patches configuration :
 
