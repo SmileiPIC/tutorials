@@ -17,8 +17,8 @@ Configuration
 Starting case :  
   `radiation_pressure_acc_hilbert.py <radiation_pressure_acc_hilbert.py>`_
 
-Linearized case :  
-  `radiation_pressure_acc_linearized.py <radiation_pressure_acc_linearized.py>`_
+.. Linearized case :  
+..  `radiation_pressure_acc_linearized.py <radiation_pressure_acc_linearized.py>`_
 
 To highlight the phenomenon and to simplify the environment we propose to run MPI only simulations here.
 
