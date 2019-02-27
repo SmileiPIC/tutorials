@@ -239,7 +239,7 @@ the end of the simulation, separated by the timestep.
    from numpy import array, arange
    tstop = S.namelist.Main.simulation_time # simulation final time
    tstep = S.namelist.Main.timestep        # simulation timestep
-   times = np.arange(0., tstop, tstep)
+   times = arange(0., tstop, tstep)
 
 You may type ``times`` in order to see what is the list of times that we have created.
 
