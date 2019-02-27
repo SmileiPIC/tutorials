@@ -92,7 +92,7 @@ Through the diagnostic ``Fields`` and the option ``animate``, you can follow
 the envelope propagation during the simulation. As before, you can plot the
 absolute value of the envelope ``Env_E_abs``. Although the envelope represents
 a laser pulse, you won't see the laser oscillations at wavelength
-:math:`lambda_0`. In the language of signal processing, with this model the
+:math:`\lambda_0`. In the language of signal processing, with this model the
 laser is represented through the complex envelope of the vector potential
 component in the polarization direction. Indeed, the aim of the envelope model
 is to simulate laser-plasma interaction without needing to resolve these high
