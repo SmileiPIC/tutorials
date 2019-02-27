@@ -54,14 +54,7 @@ scheme that takes into account the envelope effect on the particles is called
 ``pusher="ponderomotive_boris"``. Check that the defined ``Species`` has the
 right ``ponderomotive_dynamics`` flag and the right ``pusher`` scheme.
 
-After these checks, run the simulation :
-
-.. code-block:: bash
-
-  source ${SMILEI_ROOT}/scripts/set_omp_env.sh 8
-  mpirun -np 2 smilei laser_wake_envelope.py
-
-And import the results ::
+After these checks, run the simulation and import the results::
 
   import happi
   S = happi.Open("/path/to/the/simulation")
@@ -139,4 +132,5 @@ Set the values of `a0` and `n0` to their original value (:math:`2.4`
 and :math:`0.002` respectively) and rerun the simulation. Now try to relaunch 
 the simulation with different values of `a0` (like :math:`0.01`, :math:`0.1`, 
 :math:`2.`). What happens to the waveform of ``Ex`` on the propagation axis? 
-And how changes the electron density on the 2D grid?
+And how changes the electron density on the 2D grid? Use the ``Probe`` and ``Field`` 
+diagnostics to study the changes in ``Ex`` and ``Rho``.
