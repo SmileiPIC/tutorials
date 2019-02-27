@@ -7,14 +7,14 @@ recommend to complete first the tutorial on :doc:`advanced_wakefield`. In that
 Tutorial, Laser Wakefield Acceleration is simulated in a standard way, i.e. the
 laser is defined through its electromagnetic fields defined on the grid.
 
-We also recommend to run the simulations of this tutorial with 1 MPI processes 
-(remember to set the number of OpenMP thread as explained in :doc:`basics_setup`).
+We also recommend to run the simulations of this tutorial with 1 MPI process 
+(remember to set the number of OpenMP threads as explained in :doc:`basics_setup`).
 
 The following features will be addressed:
 
 * Laser envelope initialization "in the box"
 * Initialization of the species interacting with the laser envelope
-* Observation of relativistic self-focusing through a DiagScalar on the envelope fields 
+* Observation of relativistic self-focusing
 * Analysis of the grid fields when an envelope is present
 
 .. note::
@@ -71,12 +71,9 @@ in order to follow the laser propagation.
 
 Plot the values on the grid of the fields called ``Env_A_abs`` and ``Env_E_abs``,
 with the same scale. For this, use the diagnostic ``Fields`` (if the timestep is 
-not provided, the last one is plotted by default): 
+not provided, the last one is plotted by default):: 
   
   S.Field.Field0("Env_A_abs").plot(figure=1, vmin = 0., vmax = 2.7)
-
-and
-
   S.Field.Field0("Env_E_abs").plot(figure=2, vmin = 0., vmax = 2.7)
 
 Do you see some differences?
@@ -102,11 +99,11 @@ in vacuum, the value of ``Env_E_absMax`` is increasing over time due to relativi
 self-focusing and then starts to decrease again due to laser diffraction. 
 
 To plot the evolution of the maximum of the absolute value of the envelope 
-(of the vector potential) on the grid, you can use:
+(of the vector potential) on the grid, you can use::
 
   S.Scalar("Env_A_absMax").plot(figure=2)
 
-To plot them in the same figure, you can use the command ``multiPlot`` of ``happi``:
+To plot them in the same figure, you can use the command ``multiPlot`` of ``happi``::
 
   env_E = S.Scalar("Env_E_absMax")
   env_A = S.Scalar("Env_A_absMax")
