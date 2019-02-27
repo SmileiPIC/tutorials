@@ -51,7 +51,14 @@ scheme that takes into account the envelope effect on the particles is called
 ``pusher="ponderomotive_boris"``. Check that the defined ``Species`` has the
 right ``ponderomotive_dynamics`` flag and the right ``pusher`` scheme.
 
-After these checks, run the simulation and import the results::
+After these checks, run the simulation :
+
+.. code-block:: bash
+
+  source ${SMILEI_ROOT}/scripts/set_omp_env.sh 8
+  mpirun -np 2 smilei laser_wake_envelope.py
+
+And import the results ::
 
   import happi
   S = happi.Open(".")
