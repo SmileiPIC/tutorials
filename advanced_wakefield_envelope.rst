@@ -116,8 +116,8 @@ Laser Wakefield Acceleration, can be plotted in this way, choosing the field
 Through the function ``animate``, follow the evolution of the envelope and the
 electron density on the axis. 
 
-Step by step tutorial
-^^^^^^^^^^^^^^^^^^^^^^^^
+Study of self-focusing and wakefield excitation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now let's try to change the laser and plasma parameters to see how self the 
 self-focusing and the wake excitation change.
