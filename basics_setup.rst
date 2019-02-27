@@ -38,7 +38,7 @@ the documentation (`get sphinx here <http://www.sphinx-doc.org/en/stable/install
   make doc
   firefox build/html/index.html &
 
-Change ``firefox`` to your favorite web browser.
+Replace ``firefox`` by your favorite web browser.
 
 
 ----
