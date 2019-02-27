@@ -74,9 +74,6 @@ with the same scale. For this, use the diagnostic ``Fields`` (if the timestep is
 not provided, the last one is plotted by default):: 
   
   S.Field.Field0("Env_A_abs").plot(figure=1, vmin = 0., vmax = 2.7)
-
-and
-
   S.Field.Field0("Env_E_abs").plot(figure=2, vmin = 0., vmax = 2.7)
 
 Do you see some differences?
