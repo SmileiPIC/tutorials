@@ -102,11 +102,11 @@ in vacuum, the value of ``Env_E_absMax`` is increasing over time due to relativi
 self-focusing and then starts to decrease again due to laser diffraction. 
 
 To plot the evolution of the maximum of the absolute value of the envelope 
-(of the vector potential) on the grid, you can use:
+(of the vector potential) on the grid, you can use::
 
   S.Scalar("Env_A_absMax").plot(figure=2)
 
-To plot them in the same figure, you can use the command ``multiPlot`` of ``happi``:
+To plot them in the same figure, you can use the command ``multiPlot`` of ``happi``::
 
   env_E = S.Scalar("Env_E_absMax")
   env_A = S.Scalar("Env_A_absMax")
