@@ -11,7 +11,7 @@ The following features will be addressed:
 
 * Laser envelope initialization "in the box"
 * Initialization of the species interacting with the laser envelope
-* Observe relativistic self-focusing through a DiagScalar on the envelope fields 
+* Observation of relativistic self-focusing through a DiagScalar on the envelope fields 
 * Analysis of the grid fields when an envelope is present
 
 .. note::
@@ -62,21 +62,22 @@ This allows the simulation domain to constantly shifts toward the `x` direction
 in order to follow the laser propagation.
 
 To follow the laser propagation, the diagnostic ``Scalar`` can be used to plot
-the evolution of ``Env_E_abs`` over time::
+the evolution of ``Env_E_absMax`` over time::
 
   S.Scalar("Env_E_absMax").plot(figure=1)
 
-This field is the envelope of the electric field, and it is defined to allow
-comparisons with the field of a standard laser. The envelope field used for
+The field ``Env_E_abs`` is the envelope of the electric field, and it is defined to allow
+comparisons with the field of a standard laser. The ``Max`` after the name of the field means
+that the maximum of that field on the grid will be plotted. The envelope field used for
 calculations is the envelope of the vector potential ``A``. With the ``Scalar``
-diagnostic, you can plot also the absolute value of the envelope field,
-``Env_A_abs``. Remember that as explained in the documentation, when the laser
+diagnostic, you can plot also the maximum of the absolute value of the envelope field on the grid,
+with ``Env_A_absMax``. Remember that as explained in the documentation, when the laser
 temporal variations are quick, the difference between the two fields will be
 sensitive. Both the fields are complex quantities, the `abs` means that their
 absolute value is plotted.
 
 You can see that after a brief diffraction in vacuum, the value of
-``Env_E_abs`` is increasing over time due to relativistic self-focusing and
+``Env_E_absMax`` is increasing over time due to relativistic self-focusing and
 then starts to decrease again due to laser diffraction. Try to repeat the
 simulation with different values of `a0` (the envelope initial peak value) and
 `n0` (the plasma plateau density). What changes in the process of
