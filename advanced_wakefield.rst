@@ -59,7 +59,7 @@ Notice the ``MovingWindow`` block in the documentation.
 This allows the simulation domain to constantly shifts toward the `x` direction in order to follow the laser propagation.
 
 **Action**: Give a proper velocity and start time to the moving window in order to follow the laser pulse and observe it enter the plasma.
-Increase the number of iterations from 2000 to 38000.
+Increase the number of iterations from 3000 to 38000.
 This is a rather long simulation so make sure to use at least 160 cores.
 
 **Hint**: Remember that a variable can be given as a function of variables from other blocks. For instance, the grid length along x can be called as
