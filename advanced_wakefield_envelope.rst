@@ -61,7 +61,7 @@ After these checks, run the simulation and import the results::
 
 First, let's study the laser propagation. Note the ``MovingWindow`` block and
 that the window starts moving since the very first iteration of the simulation.
-This allows the simulation domain to constantly shifts toward the `x` direction
+This allows the simulation domain to constantly shift toward the `x` direction
 in order to follow the laser propagation.
 
 To follow the laser propagation, the diagnostic ``Scalar`` can be used to plot
