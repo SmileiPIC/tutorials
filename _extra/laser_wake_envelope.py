@@ -87,21 +87,21 @@ Checkpoints(
     exit_after_dump = False,
 )
 
-list_fields = ['Ex','Ey','Rho','Jx','Env_A_abs','Env_Chi','Env_E_abs']
+list_fields = ['Ex','Ey','Rho','Env_A_abs','Env_E_abs']
 
 DiagFields(
-   every = 50,
+   every = 200,
         fields = list_fields
 )
 
 DiagProbe(
-        every = 50,
+        every = 200,
         origin = [0., Main.grid_length[1]/2.],
         corners = [
             [Main.grid_length[0], Main.grid_length[1]/2.]
         ],
         number = [nx],
-        fields = ['Ex','Ey','Rho','Env_A_abs','Env_Chi','Env_E_abs']
+        fields = ['Ex','Ey','Rho','Env_A_abs','Env_E_abs']
 )
 
 
