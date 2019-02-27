@@ -15,7 +15,7 @@ dt = 0.95*dx               # timestep
 Lx = 512.                  # simulation length
 tsim = 1024.               # duration of the simulation
 
-nppc = 16                  # number of particle-per-cell
+nppc = 8                   # number of particle-per-cell
 
 diagEvery   = int(64./dt)  # frequency of outputs for DiagField
 

@@ -38,7 +38,7 @@ the documentation (`get sphinx here <http://www.sphinx-doc.org/en/stable/install
   make doc
   firefox build/html/index.html &
 
-Change ``firefox`` to your favorite web browser.
+Replace ``firefox`` by your favorite web browser.
 
 
 ----
@@ -87,6 +87,14 @@ Once all dependencies are installed, go to the ``Smilei`` directory and compile:
 The option ``-j 8`` provides 8 threads for compilation (faster).
 When the compilation has succeeded, two executables are created: ``smilei``
 and ``smilei_test``.
+
+Install also, the post-processing package ``happi`` : 
+
+
+.. code-block:: bash
+   
+  make happi
+
 
 .. _runsimulation:
 
