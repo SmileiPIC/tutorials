@@ -7,6 +7,9 @@ recommend to complete first the tutorial on :doc:`advanced_wakefield`. In that
 Tutorial, Laser Wakefield Acceleration is simulated in a standard way, i.e. the
 laser is defined through its electromagnetic fields defined on the grid.
 
+We also recommend to run the simulations of this tutorial with 1 MPI processes 
+(remember to set the number of OpenMP thread as explained in :doc:`basics_setup`).
+
 The following features will be addressed:
 
 * Laser envelope initialization "in the box"
@@ -54,11 +57,11 @@ right ``ponderomotive_dynamics`` flag and the right ``pusher`` scheme.
 After these checks, run the simulation and import the results::
 
   import happi
-  S = happi.Open(".")
+  S = happi.Open("/path/to/the/simulation")
 
 First, let's study the laser propagation. Note the ``MovingWindow`` block and
 that the window starts moving since the very first iteration of the simulation.
-This allows the simulation domain to constantly shifts toward the `x` direction
+This allows the simulation domain to constantly shift toward the `x` direction
 in order to follow the laser propagation.
 
 To follow the laser propagation, the diagnostic ``Scalar`` can be used to plot
@@ -78,15 +81,10 @@ absolute value is plotted.
 
 You can see that after a brief diffraction in vacuum, the value of
 ``Env_E_absMax`` is increasing over time due to relativistic self-focusing and
-then starts to decrease again due to laser diffraction. Try to repeat the
-simulation with different values of `a0` (the envelope initial peak value) and
-`n0` (the plasma plateau density). What changes in the process of
-self-focusing? Try the values :math:`0.01`, :math:`0.1`, :math:`2.` for `a0`
-and :math:`0.003`, :math:`0.005` for `n0`.
+then starts to decrease again due to laser diffraction. 
 
 Now we are interested in the wakefield formation in the trail of the laser
-envelope. Set the values of `a0` and `n0` to their original value (:math:`2.4`
-and :math:`0.002` respectively) and rerun the simulation.
+envelope.
 
 Through the diagnostic ``Fields`` and the option ``animate``, you can follow
 the envelope propagation during the simulation. As before, you can plot the
@@ -116,7 +114,23 @@ Laser Wakefield Acceleration, can be plotted in this way, choosing the field
   S.Probe.Probe0("Ex").plot(figure=3)
 
 Through the function ``animate``, follow the evolution of the envelope and the
-electron density on the axis. Try to relaunch the simulation with different
-values of `a0` (like :math:`0.01`, :math:`0.1`, :math:`2.`). What happens to
-the waveform of ``Ex`` on the propagation axis? And how changes the electron
-density on the 2D grid?
+electron density on the axis. 
+
+Study of self-focusing and wakefield excitation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Now let's try to change the laser and plasma parameters to see how self the 
+self-focusing and the wake excitation change.
+
+Try to repeat the simulation with different values of `a0` (the envelope initial peak value) 
+and `n0` (the plasma plateau density). What changes in the process of
+self-focusing? Try the values :math:`0.01`, :math:`0.1`, :math:`2.` for `a0`
+and :math:`0.003`, :math:`0.005` for `n0`. Use the ``Scalar`` diagnostics to study the 
+evolution of ``Env_E_absMax``.
+
+Set the values of `a0` and `n0` to their original value (:math:`2.4`
+and :math:`0.002` respectively) and rerun the simulation. Now try to relaunch 
+the simulation with different values of `a0` (like :math:`0.01`, :math:`0.1`, 
+:math:`2.`). What happens to the waveform of ``Ex`` on the propagation axis? 
+And how changes the electron density on the 2D grid? Use the ``Probe`` and ``Field`` 
+diagnostics to study the changes in ``Ex`` and ``Rho``.
