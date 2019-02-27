@@ -54,7 +54,7 @@ right ``ponderomotive_dynamics`` flag and the right ``pusher`` scheme.
 After these checks, run the simulation and import the results::
 
   import happi
-  S = happi.Open(".")
+  S = happi.Open("/path/to/the/simulation")
 
 First, let's study the laser propagation. Note the ``MovingWindow`` block and
 that the window starts moving since the very first iteration of the simulation.
