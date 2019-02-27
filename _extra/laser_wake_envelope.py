@@ -18,7 +18,7 @@ Main(
     interpolation_order = 2,
 
     timestep = dt,
-    simulation_time = 4000.*dt,
+    simulation_time = 4600.*dt,
 
     cell_length  = [dx, dtrans],
     grid_length = [ Lx,  Ltrans],
