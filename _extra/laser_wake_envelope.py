@@ -6,7 +6,7 @@ nx = 384
 ntrans = 256 
 Lx = nx * dx
 Ltrans = ntrans*dtrans
-npatch_x = 32
+npatch_x = 64
 laser_fwhm = 70. 
 center_laser = Lx-2.*laser_fwhm # the temporal center here is the same as focus position, but in principle they can differ
 time_start_moving_window =  0.
@@ -18,7 +18,7 @@ Main(
     interpolation_order = 2,
 
     timestep = dt,
-    simulation_time = 4000.*dt,
+    simulation_time = 4600.*dt,
 
     cell_length  = [dx, dtrans],
     grid_length = [ Lx,  Ltrans],
@@ -54,7 +54,7 @@ Species(
     name = "electron",
     position_initialization = "regular",
     momentum_initialization = "cold",
-    particles_per_cell = 16,
+    particles_per_cell = 4,
     c_part_max = 1.0,
     ponderomotive_dynamics = True, # this species interacts with laser envelope
     mass = 1.0,
@@ -87,21 +87,21 @@ Checkpoints(
     exit_after_dump = False,
 )
 
-list_fields = ['Ex','Ey','Rho','Jx','Env_A_abs','Env_Chi','Env_E_abs']
+list_fields = ['Ex','Ey','Rho','Env_A_abs','Env_E_abs']
 
 DiagFields(
-   every = 50,
+   every = 200,
         fields = list_fields
 )
 
 DiagProbe(
-        every = 50,
+        every = 200,
         origin = [0., Main.grid_length[1]/2.],
         corners = [
             [Main.grid_length[0], Main.grid_length[1]/2.]
         ],
         number = [nx],
-        fields = ['Ex','Ey','Rho','Env_A_abs','Env_Chi','Env_E_abs']
+        fields = ['Ex','Ey','Rho','Env_A_abs','Env_E_abs']
 )
 
 

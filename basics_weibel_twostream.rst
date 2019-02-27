@@ -105,17 +105,18 @@ then, have a first look at your simulation results:
 
 .. code-block:: python
 
+    uel = S.Scalar('Uelm',data_log=True,vmin=-9,vmax=-2)
     ne  = S.Field(0,'-Rho_eon1-Rho_eon2', xmin=0, xmax=1.05, vmin=0, vmax=2)
     ex  = S.Field(0,'Ex', xmin=0, xmax=1.05, vmin=-0.2, vmax=0.2)
-    phs = S.ParticleBinning(0)
-    happi.multiPlot(ne,ex,phs,shape=[1,3])
+    phs = S.ParticleBinning(0,data_log=True)
+    happi.multiPlot(uelm,ne,ex,phs,shape=[1,4])
 
 Any clue what's going on? 
 
 Let's have a look at the energy in the electrostatic field :math:`E_x`:
 
-* can you distinguish the linear and non-linear phase of the instability?
-* check the :math:`(x,p_x)`-phase-space distribution, can you get any clue on what leads the instability to saturate?
+* can you distinguish the linear and non-linear phase of the instability? 
+* check the :math:`(x,p_x)`-phase-space distribution (and energy in the electromagnetic fields), can you get any clue on what leads the instability to saturate?
 
 Try changing the simulation box size (which is also the wavelength of the considered perturbation), e.g. taking: 
 :math:`L_x =` 0.69, 1.03 or 1.68 :math:`c/\omega_{p0}`. What do you observe?
