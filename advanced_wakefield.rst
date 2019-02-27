@@ -37,7 +37,7 @@ In other words, the laser will be optimally absorbed on the +X face.
 
 The box is initally empty of plasma.
 
-Action: Try to run the simulation and observe laser absorption on the Ymin and Ymax faces with the Probe diagnostic. Notice that a fraction of the laser
+:underline:`Action`: Try to run the simulation and observe laser absorption on the Ymin and Ymax faces with the Probe diagnostic. Notice that a fraction of the laser
 is reflected back into the simulation domain. This is a numerical artefact induced by non perfect absorbing boundary conditions. 
 
 Hint: In order to see more details, you can manually setup the color scale extrema in ``Happi`` by using the ``vmin`` and ``vmax`` optional arguments.
@@ -46,8 +46,9 @@ Hint: In order to see more details, you can manually setup the color scale extre
 
 In order to reduce these reflexions, one can tune the Silver-Muller boundary conditions.
 
-Action: Change the Silver-Muller absorption angle in order to smoothly handle the laser at the transverse boundary.
+:underline:`Action`: Change the Silver-Muller absorption angle in order to smoothly handle the laser at the transverse boundary.
 Refers to the documentation in order to fix a proper absorbing vector. 
+
 Hint: The absorbing vector :math:`k_{abs}` must be as much aligned as possible with the wave vector of the pulse you need to absorb but
 it must keep a non zero normal component.
 
@@ -57,9 +58,10 @@ Now that the laser propagates without interfering with the simulation too much, 
 Notice the ``MovingWindow`` block in the documentation.
 This allows the simulation domain to constantly shifts toward the `x` direction in order to follow the laser propagation.
 
-Action: Give a proper velocity and start time to the moving window in order to follow the laser pulse and observe it enter the plasma.
+:underline:`Action`: Give a proper velocity and start time to the moving window in order to follow the laser pulse and observe it enter the plasma.
 Increase the number of iterations from 2000 to 38000.
 This is a rather long simulation so make sure to use at least 160 cores.
+
 Hint: Remember that a variable can be given as a function of variables from other blocks. For instance, the grid length along x can be called as
 ``Main.grid_length[0]``.
 
@@ -68,19 +70,22 @@ Hint: Remember that a variable can be given as a function of variables from othe
 Some electrons have been trapped and accelerated in the wakefield of the laser. 
 We can use the particle binning diag in order to visualize them in phase space.
 
-Action: Visualize the particle binning diagnostic and evaluate the accelerated beam energy.
+:underline:`Action`: Visualize the particle binning diagnostic and evaluate the accelerated beam energy.
+
 Hint: Check the documentation in order to know the default normalization for energy.
 
 .. rubric:: 5. Performances diagnostic
 
 Do you feel like the load is correctly balance ? Check it via the performance diag !
 
-Action: Use the performance diag to observe imbalance.
+:underline:`Action`: Use the performance diag to observe imbalance.
+
 Hint: Pick a specific quantity like "timer_particles" in order to highlight the imbalance. The "timer_total" quantity is not relevent since it adds up all imbalances which compensate each other.
 
 .. rubric:: 6. Optimize simulation
 
-Action: Use the dynamic load balancing to improve the code performances. Make sure to run this new simulation in a different directory in order to compare your performance diagnostics. Check that imbalance is reduced. 
+:underline:`Action`: Use the dynamic load balancing to improve the code performances. Make sure to run this new simulation in a different directory in order to compare your performance diagnostics. Check that imbalance is reduced. 
+
 Hint: Does the gain in performance compensate the cost of the dynamic load balancing ? If not, you probably set a too frequent load balance.
 Comments: In that case load imbalance mostly builds up only at the end of the simulation. This is why performance gain is not spectacular.
 
