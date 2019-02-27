@@ -88,6 +88,14 @@ The option ``-j 8`` provides 8 threads for compilation (faster).
 When the compilation has succeeded, two executables are created: ``smilei``
 and ``smilei_test``.
 
+Install also, the post-processing package ``happi`` : 
+
+
+.. code-block:: bash
+   
+  make happi
+
+
 .. _runsimulation:
 
 ----
