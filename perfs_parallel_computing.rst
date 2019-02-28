@@ -1,31 +1,56 @@
 Parallel computing
 =================================
 
-On a personal computer, there may be several computing units (*cores*)
-which all have access to the same memory (the RAM). This is called
-*shared memory*.
+A look at the growing amount of resources available on supercomputers
+(but on local clusters or personal computers too), lead us to explore new fields of plasma physics
+thanks to expensive 3D high resolution models or cascade particles for instance.
 
-On a supercomputer, there are too many cores to share all the memory.
-Instead, cores are grouped into *nodes*: cores belonging to the same
-node access the same memory ; cores belonging to different nodes
-cannot use the same memory. This is called *distributed memory*.
+But matching parallel algorithm of models to the architecture of these resources is not so far trivial,
+computers complexity grows with the power resources :
 
-To communicate information between distinct nodes,
-they must exchange chunks of data through a network.
-In Smilei, this communication is achieved using the
-Message Passing Interface (MPI).
+* supercomputers are composed of nodes which communicates through a dedicated network : *distributed memory* parallelism
+* nodes are composed of computing units which must be synchronized : *shared memory* parallelism over many cores
+* cores access more and more advanced instructions set, such as *SIMD* (Single Instruction Multiple Data) instructions
 
-Within each node, the management of cores (sharing the same memory)
-is usually handled by the OpenMP protocol. It is also possible to
-fallback to MPI (in this case, the memory is artificially split).
+In Smilei, these three points are respectivly adressed with
+MPI, OpenMP and Intel's vectorization using ``#pragma omp simd``.
 
-The goal of this tutorial is to understand how to setup a simulation that
-can ensure proper workload distribution between all the cores.
-You will learn how to:
+Being efficient on each level of parallelism requires to understand constraints on 
+the memory intimatly related to them. We will be focused in this tutorial on distributed and
+shared memory paradigms in Smilei.
 
-* Launch a simulation on several nodes 
+.. rubric:: Distributed memory
+            
+To enable parallel simulations over nodes, which each have their own memory, we first have to split
+the simulation's data between them associating to each **MPI process** a piece (particles and fields)
+of the simulation box.
+To support computing load imbalance inherent to many particle-in-cell simulations,
+this domain decomposition is built at an intermadiate grain which consists in subdivising per process data
+into smaller regular pieces called `Patch` in Smilei.
+
+The main idea is to provide to each MPI process a number of `Patch` which will balance as much as possible the computational
+load mainly carried by particles (details about `parallelism <https://smileipic.github.io/Smilei/parallelization.html#decomposition-of-the-box>`_).
+
+.. rubric:: Shared memory
+
+Smilei benefits of this specific domain decomposition to apply **OpenMP threads** parallelism over this collection of `Patch` per process.
+This especially avoid fine grain memory concurrency between threads during the current deposition,
+while it preserves the OpenMP capacity to balance the computational load between cores associated to a MPI process.
+
+.. rubric:: Summary
+The domain should be divided in many `Patch` for each MPI process for two reasons :
+
+* to distribute the computational load to feed all threads associated to each process
+* to be able to manage the load imbalance
+  
+An attention will be paid on the limit of this approach,
+an over-splitted environment goes to produce large overhead due to synchronization (MPI and OpenMP).
+
+The goal of this tutorial is to understand how to setup a simulation to get good performances,
+the following features will be addressed :
+
+* Split the simulation box
 * Choose the number of MPI *processes* and OpenMP *threads*
-* Split the simulation in many *patches* to be distributed to the cores
 * Use Smilei's *load balancing* feature
 * Analyse these aspects with the ``DiagPerformances``
 
@@ -47,91 +72,32 @@ As explained in the :ref:`setup page <runsimulation>`, you should make a new dir
 to run your simulation. This directory should contain the input file that you just downloaded
 and the executables ``smilei`` and ``smilei_test``.
 
-----
-
-
-The simulation box is split in *patches*
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-As explained above, the computer memory is not all located in one place,
-but is split into nodes, or even artificially sub-split within each node.
-We call a *process* the set of operations that uses one of these memory spaces.
-As the communication of data between processes
-is done with the *MPI* library, they are sometimes called *MPI processes*.
-
-To specify the number of processes for a simulation, you must run Smilei
-using the correct MPI command on your machine. Usually, this command is ``mpirun``.
-For instance, the following command runs Smilei with 8 processes:
-
-.. code-block:: bash
-
-  mpirun -np 8 smilei beam_2d.py
-
-In order to run the simulation on these 8 processes, we must also divide
-the box in *patches* to distribute the data to them (at least 8 patches).
-This is specified in the input file ``beam_2d.py``::
-
-    number_of_patches = [ 32, 32 ],
-
-This line defines a splitting of the box in 32x32 patches.
-Each of these patches is a rectangular portion of the simulation box.
-
-.. warning::
-
-  Most PIC codes would split the box in 8 patches,
-  so that there is 1 patch for each process.
-  In Smilei, the box should be divided in **many** more patches, for two reasons:
-  
-  1. To distribute patches to all cores.
-  2. To exchange patches between processes so that the computational load is balanced.
-  
-  These two points will be investigated in this tutorial.
+We introduce this tutorial talking about supercomputers but we will run here single node simulations.
+It could seems out of context but the idea is to illustrate how works the code parallelism and its limits.
 
 ----
 
-One process may handle several cores
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-One MPI process must compute the many patches it owns.
-Knowing that each MPI process is composed of several cores,
-it must distribute patches to its cores so that they can work in parallel.
-
-We call a *thread* the operations to be executed by each core.
-The management of threads and their distribution to the cores is handled
-by the OpenMP protocol.
-
-.. note::
-
-  It is possible to request less threads than cores,
-  but this means some cores will do nothing.
-  It is also possible to request more threads than cores,
-  but this means some threads will keep waiting for the next available core.
-  Overall, it is strongly recommended to have **as many threads as cores**.
-
-To specify the number of threads per process, use the environment variable
-``OMP_NUM_THREADS``. For instance, if your machine has 8 cores per MPI process,
-we recommend the following command before running Smilei:
-
-.. code-block:: bash
-
-  export OMP_NUM_THREADS=8
-
-----
 
 Splitting the box
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In a first test, we will use a single core in a single node
-to focus on the box splitting:
+In a first test, we will use a single core to focus on the box splitting :
 
 .. code-block:: bash
 
   export OMP_NUM_THREADS=1
   mpirun -np 1 smilei beam_2d.py
 
-The input file suggests to use 32x32 patches.
+The input file suggests to use 32x32 patches :
+
+.. code-block:: python
+
+  Main(
+       number_of_patches = [ 32, 32 ],
+  )
+
 Run the simulation for various number of patches,
-and compare the computation time:
+and compare the computation time :
 
 * 32 x 32 patches
 * 16 x 16 patches
@@ -148,20 +114,25 @@ Computation times are provided at the end of the simulation:
 * ``Sync Fields``       : ``E``, ``B`` exchange between patches
 * ``Sync Densities``    : ``J`` exchange between patches
 
-.. warning::
+.. rubric:: Details about timers
+   
+The ``Sync`` timers concern exchange between patches owned by **a single MPI processes and/or by many**.
+In this case, these timers could contain waiting times due to load imbalance inherent to PIC simulations.
 
-  The ``Sync``, ``Load balancing``, ``Mov window`` and ``Diagnostics`` timers
-  may include *waiting* time. Indeed, processes must sometimes
-  wait until others are ready to communicate.
+Whatever the case, ``Particles`` and  ``Maxwell`` do not contain MPI waiting time,
+they only accumulate pure computation time.
 
-These times are averaged on all processes. 
-Some more detailed information is provided in the file ``profil.txt``,
-and a full report can be obtained using the ``DiagPerformances``.
+``Load balancing``, ``Mov window`` or ``Diagnostics`` (which can be seen like a disk synchronization)
+are global operations which require communications, they can contain waiting time.
+
+For many MPI processes simulation, these times are averaged on all processes. 
+Some detailed timing elements, such as minimum or maximum times on all processes
+are provided in the file ``profil.txt`` and a full report can be obtained using the ``DiagPerformances``.
 
 
 ----
 
-Using several threads in a single process
+Introduce Smilei’s parallelism
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let's make the first step to introduce parallel processing of all the patches.
@@ -192,17 +163,19 @@ You can have a quick understanding of what happens in the simulation using::
 
   S.ParticleBinning(0).animate()
 
-A ball of plasma (30 cells radius) is moving through the box (256x256 cells). 
+A ball of plasma (30 cells radius) is moving through the box (256x256 cells) :
 
 * With 8 x 8 patches, the size of a patch is 32 x 32 cells.
   The plasma, which represents the main time cost,
   occupies only a few patches of the simulation.
   This means many threads are doing nothing.
 * With 16 x 16 patches, the size of a patch is 16 x 16 cells,
-  more patches are occupied. Verify the speedup.
+  an order of magnitude is earned regarding the number of patches loaded with particles.
+  Verify the speedup.
 * With 32 x 32 patches, the size of a patch is 8 x 8 cells,
-  even more patches are occupied, but there is also a communication overhead.
-  Check whether this was useful.
+  even more patches are loaded with particles, but with a synchronization overhead.
+  
+Check the behavior of these three configurations running 16 threads.
 
 For this test, in the best case configuration,
 an additionnal speed-up of 2 is obtained.
@@ -211,17 +184,18 @@ With a such local plasma, it is hard to achieve.
 
 ----
 
-Thread scheduling 
+Imbalance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Without knowing it, you applied some load balancing using OpenMP threading.
-Indeed, the threads will keep working in parallel on all the available patches
+You applied some load balancing using OpenMP threading.
+Indeed, the threads will keep working patch after patch in parallel on all the available patches
 until all patches are done.
 This is called *dynamic scheduling*.
 
-The default *static scheduling*, instead, assigns an exclusive pool of patches
+The *static scheduling*, instead, assigns an exclusive pool of patches
 to each thread. In this situation, threads will only work on their own pool,
 even if it is an empty region. This obviously prevents load balancing between threads.
+It is used on grids computing function of Smilei which is naturraly balanced.
 
 To choose the type of OpenMP scheduling, you can use the environment
 variable ``OMP_SCHEDULE``, which was set to ``dynamic`` in the script
@@ -239,19 +213,18 @@ the level of parallelism, we advice the ``dynamic`` scheduling.
 
 ----
 
-Using several processes
+Imbalance and distributed memory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Run the 16 x 16 patches simulation with several processes,
-but only 1 thread per process:
+Run the 16 x 16 patches simulation but with a MPI only configuration :
 
 .. code-block:: bash
 
   source ${SMILEI_ROOT}/scripts/set_omp_env.sh 1
   mpirun -np 16 smilei beam_2d.py
 
-This is technically similar to the ``static`` scheduling of the previous section:
-processes are assigned, in advance, to a pool of patches.
+This is technically similar to the ``static`` scheduling of the previous section :
+the pool of patches is explicitly distributed over MPI processes starting the simulation.
 Compare the time spent in the PIC loop to that previous case.
 
 .. warning::
@@ -300,12 +273,12 @@ in the input file using::
 Then run the simulation again with 16 processes and
 have a look at the ``Load balancing`` timer. 
 Observe differences in the computation time,
-compared to the case without dynamic load balancing.
+compare it to the time saved regarding the simulation without dynamic load balancing.
 
 .. warning::
 
   ``Sync`` timers are impacted by the imbalance of the
-  algorithm part which precedes it:
+  algorithm part which precedes it :
   
   * ``Particles``
   * ``Sync Densities``
@@ -323,22 +296,27 @@ regions and their computational load.
 Realistic configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-With supercomputers, both MPI parallelization and OpenMP parallelization
-must be used:
+To get familiar with Smilei's domain decomposition, distribued and shared memory parallelism,
+we don't consider the NUMA (non uniform memory access) aspect of most of nodes which composed supercomputers.
+Indeed, a node is generally composed of some processors which owns itself many cores. The cores of each node
+has a privileged access to the memory associated to it processor.
 
-* MPI to communicate between large regions of the box
-  and exchange patches in order to achieve global load balancing.
-* OpenMP to handle patches locally and dynamically.
+As it has been described in the begining of this page supercomputers should be adressed with both paradigm :
 
+* MPI to go through nodes **and** processors for many processors nodes to handle memory affinity.
+* OpenMP to feed threads, minimize imbalance and to manage more efficiently diagnostics at large scale
 
-The following example uses 2 MPI processes with 8 threads each.
+The following example uses 2 MPI processes with 8 threads each :
 
 .. code-block:: bash
 
-  export OMP_NUM_THREADS=8
+  source ${SMILEI_ROOT}/scripts/set_omp_env.sh 8
   mpirun -np 2 smilei beam_2d.py
+
 
 Between processes, threads, and the number of patches, there are many ways the
 simulation performances can be modified. There is no general rule for finding
 the optimal configuration, so we recommend trying several options.
+
+
 
