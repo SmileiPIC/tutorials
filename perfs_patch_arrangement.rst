@@ -14,6 +14,8 @@ that divides the box in slabs of equal size.
 The goal of this tutorial is to learn about these various arrangements of patches,
 and test them in realistic cases.
 
+We recommand first to run the `parallel computing  <https://smileipic.github.io/tutorials/perfs_parallel_computing.html>`_ tutorial.
+
 ----
 
 Configuration
