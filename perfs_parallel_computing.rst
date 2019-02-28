@@ -1,22 +1,23 @@
 Parallel computing
 =================================
 
-The increasing  amount of resources available on supercomputers
-(but on local clusters or personal computers too) enables us to explore new fields of plasma physics
-thanks to expensive 3D high resolution models or cascade particles for instance.
+As supercomputers (as well as local clusters or personal computers)
+become larger and larger, we can explore more plasma physics
+with expensive, 3D, high-resolution models, or cascades of particles, etc.
 
-But matching parallel algorithms, steming from numerical  models, to the hardware architecture of these resources is far from trivial because
-as their computational power increases, so does their complexity:
+However, optimizing parallel algorithms on these new machines
+becomes increasingly difficult, because hardware architectures
+become increasingly complex as their computational power grows:
 
-* supercomputers are composed of nodes which communicate through a dedicated network : *distributed memory* parallelism
-* nodes are composed of computing units which must be synchronized : *shared memory* parallelism over many cores
+* supercomputers are composed of *nodes* which communicate through a dedicated network : see *distributed memory* parallelism below
+* nodes are composed of many *computing units* (for instance, *cores*) which must be synchronized : see *shared memory* parallelism below
 * cores access more and more advanced instructions sets, such as *SIMD* (Single Instruction Multiple Data) instructions
 
 In Smilei, these three points are respectivly adressed with
 MPI, OpenMP and Intel's vectorization using ``#pragma omp simd``.
 
 Being efficient at each level of parallelism requires to understand constraints on 
-the memory intimately related to them. this tutorial focuses on distributed and
+the memory intimately related to them. This tutorial focuses on distributed and
 shared memory paradigms in Smilei.
 
 .. rubric:: Distributed memory
