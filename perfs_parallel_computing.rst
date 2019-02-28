@@ -1,58 +1,58 @@
 Parallel computing
 =================================
 
-A look at the growing amount of resources available on supercomputers
-(but on local clusters or personal computers too), lead us to explore new fields of plasma physics
+The increasing  amount of resources available on supercomputers
+(but on local clusters or personal computers too) enables us to explore new fields of plasma physics
 thanks to expensive 3D high resolution models or cascade particles for instance.
 
-But matching parallel algorithm of models to the architecture of these resources is not so far trivial,
-computers complexity grows with the power resources :
+But matching parallel algorithms, steming from numerical  models, to the hardware architecture of these resources is far from trivial because
+as their computational power increases, so does their complexity:
 
-* supercomputers are composed of nodes which communicates through a dedicated network : *distributed memory* parallelism
+* supercomputers are composed of nodes which communicate through a dedicated network : *distributed memory* parallelism
 * nodes are composed of computing units which must be synchronized : *shared memory* parallelism over many cores
-* cores access more and more advanced instructions set, such as *SIMD* (Single Instruction Multiple Data) instructions
+* cores access more and more advanced instructions sets, such as *SIMD* (Single Instruction Multiple Data) instructions
 
 In Smilei, these three points are respectivly adressed with
 MPI, OpenMP and Intel's vectorization using ``#pragma omp simd``.
 
-Being efficient on each level of parallelism requires to understand constraints on 
-the memory intimatly related to them. We will be focused in this tutorial on distributed and
+Being efficient at each level of parallelism requires to understand constraints on 
+the memory intimately related to them. this tutorial focuses on distributed and
 shared memory paradigms in Smilei.
 
 .. rubric:: Distributed memory
             
-To enable parallel simulations over nodes, which each have their own memory, we first have to split
-the simulation's data between them associating to each **MPI process** a piece (particles and fields)
+To enable parallel simulations over several nodes which all have their own memory, we first have to perform a domain decomposition.
+This consists in distributing the simulation's data (particles and fields) between these memories and associate an **MPI process** to each of these pieces
 of the simulation box.
-To support computing load imbalance inherent to many particle-in-cell simulations,
-this domain decomposition is built at an intermadiate grain which consists in subdivising per process data
-into smaller regular pieces called `Patch` in Smilei.
+In order to combat computational load imbalance, inherent to many particle-in-cell simulations,
+the domain decomposition in Smilei creates many more sub-domains than processes.
+These sub-domains are called `Patch` in Smilei.
 
-The main idea is to provide to each MPI process a number of `Patch` which will balance as much as possible the computational
-load mainly carried by particles (details about `parallelism <https://smileipic.github.io/Smilei/parallelization.html#decomposition-of-the-box>`_).
+The main idea is to provide to each MPI process a variable number of `Patch` which will balance as much as possible the computational
+load carried by each process (details about `parallelism <https://smileipic.github.io/Smilei/parallelization.html#decomposition-of-the-box>`_).
 
 .. rubric:: Shared memory
 
-Smilei benefits of this specific domain decomposition to apply **OpenMP threads** parallelism over this collection of `Patch` per process.
-This especially avoid fine grain memory concurrency between threads during the current deposition,
-while it preserves the OpenMP capacity to balance the computational load between cores associated to a MPI process.
+This specific domain decomposition is also well adapted to the application of **OpenMP threads** parallelism over this collection of `Patch` per process.
+In particular, having threads always treating different `Patch` avoids fine grain memory concurrency between them during the current deposition,
+while preserving the OpenMP capacity to balance the computational load between cores associated to the same MPI process.
 
 .. rubric:: Summary
-The domain should be divided in many `Patch` for each MPI process for two reasons :
+The domain should be divided into many `Patch` for each MPI process for two reasons :
 
-* to distribute the computational load to feed all threads associated to each process
+* to distribute the computational load and feed all threads associated to each process
 * to be able to manage the load imbalance
   
-An attention will be paid on the limit of this approach,
-an over-splitted environment goes to produce large overhead due to synchronization (MPI and OpenMP).
+An attention must be paid to the limit of this approach.
+An excessively refined decomposition with too many and too small patches is going to produce a large overhead due to synchronization (MPI and OpenMP).
 
 The goal of this tutorial is to understand how to setup a simulation to get good performances,
 the following features will be addressed :
 
-* Split the simulation box
-* Choose the number of MPI *processes* and OpenMP *threads*
-* Use Smilei's *load balancing* feature
-* Analyse these aspects with the ``DiagPerformances``
+* Decomposition of the simulation box into patches
+* Choice of the number of MPI *processes* and OpenMP *threads*
+* Smilei's *load balancing* feature
+* Performance analysis with the ``DiagPerformances``
 
 ----
 
