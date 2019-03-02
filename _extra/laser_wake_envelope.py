@@ -8,7 +8,7 @@ Lx = nx * dx
 Ltrans = ntrans*dtrans
 npatch_x = 64
 laser_fwhm = 70. 
-center_laser = Lx-2.*laser_fwhm # the temporal center here is the same as focus position, but in principle they can differ
+center_laser = Lx-2.*laser_fwhm 
 time_start_moving_window =  0.
 
 
@@ -70,7 +70,7 @@ Species(
     ],
 )
 
-LaserEnvelopeGaussian2D( # linear regime of LWFA
+LaserEnvelopeGaussian2D( 
     a0              = 2.4,     
     focus           = [1.1*center_laser, Main.grid_length[1]/2.],
     waist           = 70.,
