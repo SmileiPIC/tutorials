@@ -57,11 +57,14 @@ Each script has been designed to focus on a specific quantity:
 * ``show_2d_average_energy.py``: display the 2d colormap of the electron average normalized energy.
 * ``show_2d_average_chi.py``: display the 2d colormap of the electron local quantum parameter.
 * ``show_2d_fields.py``: display 2D colormaps  of the electric field :math:`E_y` and the magnetic field :math:`B_z`.
+* ``animate_2d_average_chi.py``: animate the 2d colormap of the electron local quantum parameter
 * ``compare_energy_balance_Landau_Lifshitz.py``
 * ``compare_energy_balance_radiation_models.py``
 * ``compare_2d_density_radiation_models.py``
 * ``compare_2d_average_energy_radiation_models.py``
 * ``compare_2d_average_chi_radiation_models.py``
+
+All Python scripts uses Happi, the visualization framework for Smilei.
 
 The ``Execution`` directory contains the input file:
 
@@ -158,7 +161,7 @@ the scalar (``scalars.txt``) diagnostics.
   This method is another approach of using the :program:`Smilei` Python
   library and differs from what you may have seen before.
 
-* Run the script in an *ipython* prompt:
+* Run the script using Python. You can open an *ipython* prompt:
 
   .. code-block:: python
 
@@ -177,31 +180,46 @@ the scalar (``scalars.txt``) diagnostics.
   (starting from :math:`t = 240 \omega_r^{-1}`), the electron kinetic energy
   is rapidly converted into radiations via the radiative model.
 
-* Estimate the maximal quantum parameter reached during the simulation.
-  For this aim, you can use the python script ``Analysis/show_2d_average_chi.py``.
-  Copy this script in the current working directory and run it in *ipython*:
+* In order to estimate the maximal quantum parameter reached during the simulation.
+  you can use the python script ``Analysis/show_2d_average_chi.py``.
+  Copy this script in the current working directory and run it with Python:
 
   .. code-block:: python
 
-    %run show_2d_average_chi.py
+    python -i show_2d_average_chi.py
 
-  You obtain a 2D colormap of the beam.
+  You obtain a 2D colormap of the beam at timestep 5500 when the field is
+  almost maximum at the beam location.
   The color corresponds to the local value of the quantum parameter.
-  The terminal gives the maximal value. What do you think about this value regarding the
-  model validity?
+  The terminal gives the maximal value.
+  What do you think about this value regarding the model validity?
 
-* Open the python script ``show_2d_average_chi.py``.
-  Take the time to read it to understand. In the `parameters` section,
-  change the ``timestep`` value and run again the script to see how the quantum
-  parameter evolves. Particle binning diagnostics are output every 500 iterations.
+* You can change the timestep by specifing the number after ``show_2d_average_chi.py``:
+
+  .. code-block:: python
+
+    python -i show_2d_average_chi.py 6500
+
+  Particle binning diagnostics are output every 500 iterations.
   By this way you can see when the beam starts to radiate while entering the laser field.
   The maximal available iteration is 8000.
+
+  You can also generate an animation using the script ``animate_2d_average_chi.py``:
+
+  .. code-block:: python
+
+    python -i animate_2d_average_chi.py
 
 * Similarly, use the Python script ``show_2d_density.py`` (located in ``Analysis``)
   to plot a 2D colormap of the electron density and ``show_2d_average_energy.py``
   to plot the 2D colormap of the local average kinetic energy.
   Copy these scripts in the current working directory and use `ipython` to run them
-  as in the previous item. Open them and change the ``timestep`` parameter.
+  as in the previous item. Change the ``timestep`` to see how these quantities evolve.
+
+  .. code-block:: python
+
+    # For instance, to plot the density at timestep 6500
+    python -i show_2d_density.py
 
 ----
 
