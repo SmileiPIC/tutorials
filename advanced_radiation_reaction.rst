@@ -97,17 +97,17 @@ gamma factor that enables to simplify and remove some terms.
 We will now setup the radiation reaction parameters.
 
 * Go to the block called ``RadiationReaction``. This block is commented.
-  Uncomment it and the parameter called ``chipa_radiation_threshold``:
+  Uncomment it and the parameter called ``minimum_chi_continuous``:
 
   .. code-block:: python
 
     RadiationReaction(
-         chipa_radiation_threshold = 1e-3
-    #     chipa_disc_min_threshold = 1e-2,
+         minimum_chi_continuous = 1e-3
+    #     minimum_chi_discontinuous = 1e-2,
     #     table_path = "/gpfshome/mds/staff/mlobet/smilei/databases/"
     )
 
-  This block is used to setup the general parameters. Only ``chipa_radiation_threshold``
+  This block is used to setup the general parameters. Only ``minimum_chi_continuous``
   is useful for the moment. This parameter corresponds to the minimal value of the
   quantum parameter at which the radiation reaction process is applied.
   Below this value, the particle does not undergo radiation loss.
@@ -295,8 +295,8 @@ an additional stochastic operator derived from a Fokker-Planck approach.
   .. code-block:: python
 
     RadiationReaction(
-         chipa_radiation_threshold = 1e-3
-    #     chipa_disc_min_threshold = 1e-2,
+         minimum_chi_continuous = 1e-3
+    #     minimum_chi_discontinuous = 1e-2,
          table_path = "<path_to_smilei>/databases/"
     )
 
@@ -342,7 +342,7 @@ You can have more information about the model and its implementation on the page
 
 * Like the Niel radiation model, the Monte-Carlo algorithm uses tabulated values.
   The same path needs to be specified in the block ``RadiationReaction``.
-  In addition, set the parameter ``chipa_disc_min_threshold`` to ``1e-2``
+  In addition, set the parameter ``minimum_chi_discontinuous`` to ``1e-2``
   (uncomment the corresponding line).
   The Monte-Carlo model is built to work with the continuous corrected
   Landau-Lifshitz approach when the particle quantum parameter is too low.
@@ -353,12 +353,12 @@ You can have more information about the model and its implementation on the page
   .. code-block:: python
 
     RadiationReaction(
-         chipa_radiation_threshold = 1e-3
-         chipa_disc_min_threshold = 1e-3,
+         minimum_chi_continuous = 1e-3
+         minimum_chi_discontinuous = 1e-3,
          table_path = "<path_to_smilei>/databases/"
     )
 
-  In fact, the default value of ``chipa_disc_min_threshold`` is ``1e-2``.
+  In fact, the default value of ``minimum_chi_discontinuous`` is ``1e-2``.
   Therefore, it has to be specified only to change the default value.
   The Monte-Carlo radiation reaction is now fully set.
 

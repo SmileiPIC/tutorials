@@ -106,14 +106,14 @@ Configuration of the radiation reaction block
   The tables are located in the directory ``databases`` at the root of the :program:`Smilei` repository.
   Uncomment this parameter and update the path to the location of your :program:`Smilei` installation.
 
-* The parameter ``chipa_radiation_threshold`` corresponds to the minimal value
+* The parameter ``minimum_chi_continuous`` corresponds to the minimal value
   of the quantum parameter at which the radiation reaction process is applied.
   Below this value, the particle does not undergo radiation reaction.
   Uncomment the corresponding line.
   Specifying this parameter is actually not compulsory since it is defined
   by default at :math:`10^{-3}`.
 
-* Uncomment the line with the parameter ``chipa_disc_min_threshold``.
+* Uncomment the line with the parameter ``minimum_chi_discontinuous``.
   The Monte-Carlo model is built to work with
   the continuous corrected Landau-Lifshitz approach when the particle quantum parameter is too low.
   This parameter corresponds to this threshold.
@@ -127,8 +127,8 @@ Configuration of the radiation reaction block
   .. code-block:: python
 
     RadiationReaction(
-         chipa_radiation_threshold = 1e-3
-         chipa_disc_min_threshold = 1e-3,
+         minimum_chi_continuous = 1e-3
+         minimum_chi_discontinuous = 1e-3,
          table_path = "<path_to_smilei>/databases/"
     )
 
