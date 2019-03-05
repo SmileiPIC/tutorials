@@ -2,8 +2,8 @@ Parallel computing
 =================================
 
 As supercomputers (as well as local clusters or personal computers)
-become larger and larger, we can explore more plasma physics
-with expensive, 3D, high-resolution models, or cascades of particles, etc.
+become larger, we can explore new domains of plasma physics
+with expensive, 3D, high-resolution models.
 
 However, optimizing parallel algorithms on these new machines
 becomes increasingly difficult, because hardware architectures
@@ -14,7 +14,7 @@ become increasingly complex as their computational power grows:
 * cores access more and more advanced instructions sets, such as *SIMD* (Single Instruction Multiple Data) instructions
 
 In Smilei, these three points are respectivly adressed with
-MPI, OpenMP and Intel's vectorization using ``#pragma omp simd``.
+MPI, OpenMP and vectorization using ``#pragma omp simd`` on Intel architecture.
 
 Being efficient at each level of parallelism requires to understand constraints on 
 the memory intimately related to them. This tutorial focuses on distributed and
@@ -22,21 +22,27 @@ shared memory paradigms in Smilei.
 
 .. rubric:: Distributed memory
             
-To enable parallel simulations over several nodes which all have their own memory, we first have to perform a domain decomposition.
-This consists in distributing the simulation's data (particles and fields) between these memories and associate an **MPI process** to each of these pieces
-of the simulation box.
-In order to combat computational load imbalance, inherent to many particle-in-cell simulations,
-the domain decomposition in Smilei creates many more sub-domains than processes.
-These sub-domains are called `Patch` in Smilei.
+To enable parallel simulations over several nodes which all have their own memory, we first have to perform a domain decomposition:
+the simulation's data (particles and fields) is decomposed into small pieces, called `Patch`, and evenly distributed between the memories.
 
-The main idea is to provide to each MPI process a variable number of `Patch` which will balance as much as possible the computational
+Then, an **MPI process** is associated to each `Patch`. 
+A single process is usually associated to several `Patch`.
+Each process is also associated to computational ressources, a fraction of the supercomputer, which may have several processing units (cores) but has a single memory.
+The **MPI process** executes all the computation necessary to handle the patches he has been given using the ressources he has access to.
+
+In order to combat computational load imbalance, inherent to many particle-in-cell simulations,
+the domain decomposition in :program:`Smilei` creates many more `Patch` than processes.
+The main idea is to provide a variable number of `Patch` to each MPI process in order to balance the computational
 load carried by each process (details about `parallelism <https://smileipic.github.io/Smilei/parallelization.html#decomposition-of-the-box>`_).
 
 .. rubric:: Shared memory
 
 This specific domain decomposition is also well adapted to the application of **OpenMP threads** parallelism over this collection of `Patch` per process.
-In particular, having threads always treating different `Patch` avoids fine grain memory concurrency between them during the current deposition,
-while preserving the OpenMP capacity to balance the computational load between cores associated to the same MPI process.
+Indeed, the MPI process is able to spawn as many **openMP threads** as he has cores.
+These threads will be affected to successive `Patch` and will be able to efficiently deal with them in parallel.
+This is an effective way to balance the load since as soon as a thread is done with a given `Patch`, it can start executing the next one withtout having to
+synchronize with another thread that could have been slower and would have induced idle time.
+This method also guarantees that threads are always treating different `Patch` and thus avoid fine grain memory concurrency between them during the current deposition.
 
 .. rubric:: Summary
 The domain should be divided into many `Patch` for each MPI process for two reasons :
