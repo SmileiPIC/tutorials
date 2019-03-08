@@ -3,7 +3,7 @@ dx = 0.125
 dr = 2.
 dt = 0.124
 nx = 128*20
-nr = 160
+nr = 320
 Lx = nx * dx
 Lr = nr * dr
 npatch_x = 256
@@ -33,7 +33,7 @@ Species(
     name = "electron",
     position_initialization = "regular",
     momentum_initialization = "cold",
-    particles_per_cell = 9,
+    particles_per_cell = 32,
     c_part_max = 1.0,
     mass = 1.0,
     charge = -1.0,
