@@ -1,9 +1,9 @@
 
 dx = 0.125
-dr = 2.
-dt = 0.124
+dr = 1.5
+dt = 0.96*dx
 nx = 128*20
-nr = 320
+nr = 384
 Lx = nx * dx
 Lr = nr * dr
 npatch_x = 256
@@ -43,7 +43,7 @@ Species(
     time_frozen = 0.0,
     boundary_conditions = [
         ["remove", "remove"],
-        ["remove", "remove"],
+        ["reflective", "remove"],
     ],
 )
 
@@ -56,7 +56,7 @@ LaserGaussian2D(
 )
 
 MovingWindow(
-    time_start = 370.,
+    time_start = Main.grid_length[0],
     velocity_x = 1. 
 )
 
