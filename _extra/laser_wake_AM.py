@@ -55,6 +55,13 @@ LaserGaussian2D(
     time_envelope   = tgaussian(center=3*laser_fwhm, fwhm=laser_fwhm)
 )
 
+MovingWindow(
+    time_start = 370.,
+    velocity_x = 1. 
+)
+
+
+
 # Grid diagnostic
 DiagFields(
     every = 500,

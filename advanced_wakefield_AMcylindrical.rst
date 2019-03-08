@@ -65,3 +65,5 @@ Or, you can plot the sum of the two, performing the reconstruction of the modes:
 You can follow the evolution of any grid quantity (for example here the electron density) through the command ``animate()``::
 
   S.Field.Field0("-Rho",theta=0.,modes=0).animate(figure=1, vmin = 0., vmax = 0.01)
+
+Note that the moving window in the namelist has been set to contain the laser and the first wake period in the simulation window.
