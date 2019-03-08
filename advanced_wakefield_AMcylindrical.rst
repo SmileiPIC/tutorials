@@ -41,27 +41,27 @@ Note that no azimuthal mode is specified. Thus, by default, the reconstruction o
 In this simulation (see namelist), only two modes are present.
 To plot a specific mode (in this case the mode '0'), you can use::
 
-  S.Field.Field0("-Rho",timesteps=1000.,theta=0.,modes=0).plot(figure=1, vmin = 0., vmax = 0.03)
+  S.Field.Field0("-Rho",theta=0.,modes=0).plot(figure=1, vmin = 0., vmax = 0.03)
 
 The main azimuthal mode of the plasma wave in the wake of the laser is the mode 0.
 The azimuthal mode of the laser is the mode '1'. 
 To see its transverse field, we can plot the mode 1 of the transverse electric field (i.e. 'Er')::
 
-  S.Field.Field0("Er",timesteps=1000.,theta=0.,modes=1).plot(figure=2)
+  S.Field.Field0("Er",theta=0.,modes=1).plot(figure=2)
 
 The mode '0' will be instead the main mode of the electric field of the plasma wave::
   
-  S.Field.Field0("Er",timesteps=1000.,theta=0.,modes=0).plot(figure=3)
+  S.Field.Field0("Er",theta=0.,modes=0).plot(figure=3)
 
 Plot also the longitudinal electric field ('El') of the laser (mode '1') and of the wake (mode '0')::
 
-  S.Field.Field0("El",timesteps=1000.,theta=0.,modes=1).plot(figure=4)
-  S.Field.Field0("El",timesteps=1000.,theta=0.,modes=0).plot(figure=5)
+  S.Field.Field0("El",theta=0.,modes=1).plot(figure=4)
+  S.Field.Field0("El",theta=0.,modes=0).plot(figure=5)
 
 Or, you can plot the sum of the two, performing the reconstruction of the modes::
 
-  S.Field.Field0("El",timesteps=1000.,theta=0.).plot(figure=5)
+  S.Field.Field0("El",theta=0.).plot(figure=5)
 
 You can follow the evolution of any grid quantity (for example here the electron density) through the command 'animate()'::
 
-  S.Field.Field0("-Rho",timesteps=1000.,theta=0.,modes=0).animate(figure=1, vmin = 0., vmax = 0.03)
+  S.Field.Field0("-Rho",theta=0.,modes=0).animate(figure=1, vmin = 0., vmax = 0.03)
