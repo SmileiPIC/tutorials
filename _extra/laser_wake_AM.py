@@ -18,7 +18,7 @@ Main(
     simulation_time = Niterations*dt, 
     cell_length  = [dx, dr],
     grid_length = [ Lx, Lr ],
-    number_of_patches = [npatch_x, 16],
+    number_of_patches = [npatch_x, 32],
     clrw = nx/npatch_x,
     EM_boundary_conditions = [
         ["silver-muller","silver-muller"],
@@ -33,7 +33,7 @@ Species(
     name = "electron",
     position_initialization = "regular",
     momentum_initialization = "cold",
-    particles_per_cell = 32,
+    particles_per_cell = 36,
     c_part_max = 1.0,
     mass = 1.0,
     charge = -1.0,
@@ -50,7 +50,7 @@ Species(
 LaserGaussian2D(
     box_side         = "xmin",
     a0              = 4.,
-    focus           = [0., Main.grid_length[1]/2.],
+    focus           = [0., 0.],
     waist           = laser_waist,
     time_envelope   = tgaussian(center=3*laser_fwhm, fwhm=laser_fwhm)
 )
