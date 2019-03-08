@@ -6,7 +6,7 @@ The following feature will be addressed:
 
 * The analysis of the grid fields in AM cylindrical geometry
 
-The simulation used for this tutorial is relatively heavy so make sure to submit the job on X cores at least.
+The simulation used for this tutorial is relatively heavy so make sure to submit the job on 160 cores at least.
 
 
 ----
