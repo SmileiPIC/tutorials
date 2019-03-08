@@ -31,7 +31,7 @@ Now let's have a look at the grid fields, for example the electron density::
 
   S.Field.Field0("-Rho",theta = 0.).plot(figure=1, vmin = 0., vmax = 0.03)
 
-Note that we have specified a certain angle 'theta = 0.' (i.e. the demi-plane including the positive 'y' coordinates).
+Note that we have specified a certain angle ``theta = 0.`` (i.e. the demi-plane including the positive ``y`` coordinates).
 
 By default, this command will plot the last timestep available. You can also plot a specific timestep::
   
@@ -39,21 +39,21 @@ By default, this command will plot the last timestep available. You can also plo
 
 Note that no azimuthal mode is specified. Thus, by default, the reconstruction of the modes is performed.
 In this simulation (see namelist), only two modes are present.
-To plot a specific mode (in this case the mode '0'), you can use::
+To plot a specific mode (in this case the mode ``0``), you can use::
 
   S.Field.Field0("-Rho",theta=0.,modes=0).plot(figure=1, vmin = 0., vmax = 0.03)
 
 The main azimuthal mode of the plasma wave in the wake of the laser is the mode 0.
-The azimuthal mode of the laser is the mode '1'. 
-To see its transverse field, we can plot the mode 1 of the transverse electric field (i.e. 'Er')::
+The azimuthal mode of the laser is the mode ``1``. 
+To see its transverse field, we can plot the mode ``1`` of the transverse electric field (i.e. ``Er``)::
 
   S.Field.Field0("Er",theta=0.,modes=1).plot(figure=2)
 
-The mode '0' will be instead the main mode of the electric field of the plasma wave::
+The mode ``0`` will be instead the main mode of the electric field of the plasma wave::
   
   S.Field.Field0("Er",theta=0.,modes=0).plot(figure=3)
 
-Plot also the longitudinal electric field ('El') of the laser (mode '1') and of the wake (mode '0')::
+Plot also the longitudinal electric field (``El``) of the laser (mode ``1``) and of the wake (mode ``0``)::
 
   S.Field.Field0("El",theta=0.,modes=1).plot(figure=4)
   S.Field.Field0("El",theta=0.,modes=0).plot(figure=5)
@@ -62,6 +62,6 @@ Or, you can plot the sum of the two, performing the reconstruction of the modes:
 
   S.Field.Field0("El",theta=0.).plot(figure=5)
 
-You can follow the evolution of any grid quantity (for example here the electron density) through the command 'animate()'::
+You can follow the evolution of any grid quantity (for example here the electron density) through the command ``animate()``::
 
   S.Field.Field0("-Rho",theta=0.,modes=0).animate(figure=1, vmin = 0., vmax = 0.03)
