@@ -9,7 +9,7 @@ Lr = nr * dr
 npatch_x = 256
 laser_fwhm = 40.
 laser_waist = 200.
-Niterations = 3000
+Niterations = 12000
 
 Main(
     geometry = "AMcylindrical",
