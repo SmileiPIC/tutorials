@@ -14,7 +14,8 @@ The simulation used for this tutorial is relatively heavy so make sure to submit
 Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-An ultra high intensity laser enters an under dense plasma.
+An ultra high intensity laser enters an under dense plasma. 
+The laser is linearly polarized in the ``y`` direction.
 It propagates in the plasma and creates a non linear plasma wave in its wake.
 Electrons from the plasma are eventually trapped in this wave and accelerated to high energies.
 
@@ -35,34 +36,31 @@ Note that we have specified a certain angle ``theta = 0.`` (i.e. the demi-plane 
 
 By default, this command will plot the last timestep available. You can also plot a specific timestep::
   
-  S.Field.Field0("-Rho",timesteps=1000.,theta=0.).plot(figure=1, vmin = 0., vmax = 0.01)
+  S.Field.Field0("-Rho",timesteps=6000.,theta=0.).plot(figure=1, vmin = 0., vmax = 0.01)
 
-Note that no azimuthal mode is specified. Thus, by default, the reconstruction of the modes is performed.
+Note that no azimuthal mode is specified. Thus, by default, the reconstruction with all the modes is performed.
 In this simulation (see namelist), only two modes are present.
 To plot a specific mode (in this case the mode ``0``), you can use::
 
   S.Field.Field0("-Rho",theta=0.,modes=0).plot(figure=1, vmin = 0., vmax = 0.01)
 
 The main azimuthal mode of the plasma wave in the wake of the laser is the mode 0.
+Note that we specified that mode in the plot command.
+
 The azimuthal mode of the laser is the mode ``1``. 
-To see its transverse field, we can plot the mode ``1`` of the transverse electric field (i.e. ``Er``)::
+To see the transverse field of the laser, we can plot the mode ``1`` of 
+the transverse electric field (i.e. ``Er``)::
 
   S.Field.Field0("Er",theta=0.,modes=1).plot(figure=2)
 
-The mode ``0`` will be instead the main mode of the electric field of the plasma wave::
-  
-  S.Field.Field0("Er",theta=0.,modes=0).plot(figure=3)
+On ``theta=0.`` it will correspond ``Ey`` with our choice of laser polarization.
 
-Plot also the longitudinal electric field (``El``) of the laser (mode ``1``) and of the wake (mode ``0``)::
+You can plot the reconstruction of the whole longitudinal electric 
+field (laser and wake fields, modes ``1`` and ``0`` respectively) through::
 
-  S.Field.Field0("El",theta=0.,modes=1).plot(figure=4)
-  S.Field.Field0("El",theta=0.,modes=0).plot(figure=5)
+  S.Field.Field0("El",theta=0.).plot(figure=4)
 
-Or, you can plot the sum of the two, performing the reconstruction of the modes::
-
-  S.Field.Field0("El",theta=0.).plot(figure=5)
-
-You can follow the evolution of any grid quantity (for example here the electron density) through the command ``animate()``::
+You can also follow the evolution of any grid quantity (for example here the electron density) through the command ``animate()``::
 
   S.Field.Field0("-Rho",theta=0.,modes=0).animate(figure=1, vmin = 0., vmax = 0.01)
 
