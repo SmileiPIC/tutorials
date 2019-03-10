@@ -8,7 +8,7 @@ Lx = nx * dx
 Lr = nr * dr
 npatch_x = 256
 laser_fwhm = 40.
-laser_waist = 200.
+laser_waist = 100.
 Niterations = 12000
 
 Main(
