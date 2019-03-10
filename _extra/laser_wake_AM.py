@@ -37,7 +37,7 @@ Species(
     c_part_max = 1.0,
     mass = 1.0,
     charge = -1.0,
-    charge_density = trapezoidal(0.003, xvacuum=0., xplateau=1000000000, xslope1=1000.),
+    charge_density = trapezoidal(0.004, xvacuum=0., xplateau=1000000000, xslope1=1000.),
     mean_velocity = [0.0, 0.0, 0.0],
     pusher = "boris",    
     time_frozen = 0.0,
@@ -56,7 +56,7 @@ LaserGaussian2D(
 )
 
 MovingWindow(
-    time_start = Main.grid_length[0],
+    time_start = 380.,
     velocity_x = 1. 
 )
 
