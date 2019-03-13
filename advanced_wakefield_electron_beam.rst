@@ -72,20 +72,24 @@ As in the laser case, this will trigger a plasma oscillation (see for example th
 
 A subtlety: why ions are not present?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-From Maxwell's equations it is possible to demonstrate that, provided that the 
-continuity equation :math:`\nabla\cdot\mathbf{J}=-\partial_t\rho` is satisfied 
-(this is ensured by the Esirkepov method in :program:`Smilei`), the quantities 
+
+
+From Maxwell's equations it is possible to demonstrate that 
+(see `Smilei's website <http://www.maisondelasimulation.fr/smilei/relativistic_fields_initialization.html>`_ ), 
+provided that the continuity equation :math:`\nabla\cdot\mathbf{J}=-\partial_t\rho` is satisfied, the quantities 
 :math:`\nabla\cdot\mathbf{B}` and :math:`\nabla\cdot\mathbf{E}-\rho` will remain
-constant for all the simulation. Therefore, their value will be the same as it 
-was at ``t=0``. At that instant, in the zone of the plasma where the bunch is not present, 
+constant for all the simulation. The continuity equation ensured by Esirkepov's method in :program:`Smilei`.
+Therefore, the value of these quantities will be the same as it was at ``t=0``. 
+At that instant, in the zones of the plasma where the bunch is not present, 
 :math:`\mathbf{B}=0`, so its divergence is trivially zero.
-Also the field :math:`\mathbf{E}=0` is zero, so in that zone 
+Also the field :math:`\mathbf{E}` is zero, so in that zone 
 :math:`\nabla\cdot\mathbf{E}-\rho=-\rho_0` for all the simulation, 
 where :math:`\rho` is the deposited charge density and :math:`\rho_0` is the density 
 at the initial state (the charge density of the electron layer).
 In other words,  :math:`\nabla\cdot\mathbf{E}=\rho-\rho_0` for all the simulation. 
 Since at the initial state there was a layer of electrons with density :math:`\rho_0`,
-all the system will evolve as if there was also a layer of ions with density :math:`-\rho_0`. 
+all the system will evolve as if there was also a layer of ions with density :math:`-\rho_0`,
+without having a real ion ``Species``. 
 
 
 These "implicit" ions will not move, but they will influence the field.
@@ -100,6 +104,11 @@ In our case, we could have defined a ``Species`` for the ions, but we would have
 obtained the same results using a considerable amount of memory for a species whose 
 motion is trivial. Therefore in this case we can rely on the Esirkepov method to ensure 
 an "implicit" presence of ions neutralizing the electrons at ``t=0``.
+
+In the zones where the electron bunch its field are present, the electromagnetic field is computed, 
+ensuring the correct divergences of the fields :math:`\mathbf{E}` and :math:`\mathbf{B}` 
+according to the presence of the electron bunch. 
+Therefore here no "implicit" ions will be present.
 
 
 
