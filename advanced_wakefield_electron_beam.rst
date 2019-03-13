@@ -84,7 +84,7 @@ constant for all the simulation. The continuity equation ensured by Esirkepov's 
 Therefore, the value of these quantities will be the same as it was at ``t=0``. 
 At that instant, in the zones of the plasma where the bunch is not present, 
 :math:`\mathbf{B}=0`, so its divergence is trivially zero.
-Also the field :math:`\mathbf{E}` is zero, so in that zone 
+There, also the initial field :math:`\mathbf{E}` is zero, so in that zone 
 :math:`\nabla\cdot\mathbf{E}-\rho=-\rho_0` for all the simulation, 
 where :math:`\rho` is the deposited charge density and :math:`\rho_0` is the density 
 at the initial state (the charge density of the electron layer).
