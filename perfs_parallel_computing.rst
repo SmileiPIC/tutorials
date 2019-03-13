@@ -9,8 +9,8 @@ However, optimizing parallel algorithms on these new machines
 becomes increasingly difficult, because hardware architectures
 become increasingly complex as their computational power grows:
 
-* supercomputers are composed of *nodes* which communicate through a dedicated network : see *distributed memory* parallelism below
-* nodes are composed of many *computing units* (for instance, *cores*) which must be synchronized : see *shared memory* parallelism below
+* supercomputers are composed of *nodes* which communicate through a dedicated network: see *distributed memory* parallelism below
+* nodes are composed of many *computing units* (for instance, *cores*) which must be synchronized: see *shared memory* parallelism below
 * cores access more and more advanced instructions sets, such as *SIMD* (Single Instruction Multiple Data) instructions
 
 In Smilei, these three points are respectivly adressed with
@@ -45,7 +45,8 @@ synchronize with another thread that could have been slower and would have induc
 This method also guarantees that threads are always treating different `Patch` and thus avoid fine grain memory concurrency between them during the current deposition.
 
 .. rubric:: Summary
-The domain should be divided into many `Patch` for each MPI process for two reasons :
+
+The domain should be divided into many `Patch` for each MPI process for two reasons:
 
 * to distribute the computational load and feed all threads associated to each process
 * to be able to manage the load imbalance
@@ -54,7 +55,7 @@ An attention must be paid to the limit of this approach.
 An excessively refined decomposition with too many and too small patches is going to produce a large overhead due to synchronization (MPI and OpenMP).
 
 The goal of this tutorial is to understand how to setup a simulation to get good performances,
-the following features will be addressed :
+the following features will be addressed:
 
 * Decomposition of the simulation box into patches
 * Choice of the number of MPI *processes* and OpenMP *threads*
@@ -88,14 +89,14 @@ It could seems out of context but the idea is to illustrate how works the code p
 Splitting the box
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In a first test, we will use a single core to focus on the box splitting :
+In a first test, we will use a single core to focus on the box splitting:
 
 .. code-block:: bash
 
   export OMP_NUM_THREADS=1
   mpirun -np 1 smilei beam_2d.py
 
-The input file suggests to use 32x32 patches :
+The input file suggests to use 32x32 patches:
 
 .. code-block:: python
 
@@ -104,7 +105,7 @@ The input file suggests to use 32x32 patches :
   )
 
 Run the simulation for various number of patches,
-and compare the computation time :
+and compare the computation time:
 
 * 32 x 32 patches
 * 16 x 16 patches
@@ -113,13 +114,13 @@ and compare the computation time :
 
 Computation times are provided at the end of the simulation:
 
-* ``Time in time loop`` : the whole PIC loop
-* ``Particles``         : all particles operations except collisions 
-* ``Maxwell``           : Maxwell equations and the electromagnetic boundary conditions
-* ``Diagnostics``       : all ``Diag`` blocks defined in the namelist
-* ``Sync Particles``    : particle exchange between patches
-* ``Sync Fields``       : ``E``, ``B`` exchange between patches
-* ``Sync Densities``    : ``J`` exchange between patches
+* ``Time in time loop``: the whole PIC loop
+* ``Particles``        : all particles operations except collisions 
+* ``Maxwell``          : Maxwell equations and the electromagnetic boundary conditions
+* ``Diagnostics``      : all ``Diag`` blocks defined in the namelist
+* ``Sync Particles``   : particle exchange between patches
+* ``Sync Fields``      : ``E``, ``B`` exchange between patches
+* ``Sync Densities``   : ``J`` exchange between patches
 
 .. rubric:: Details about timers
    
@@ -170,7 +171,7 @@ You can have a quick understanding of what happens in the simulation using::
 
   S.ParticleBinning(0).animate()
 
-A ball of plasma (30 cells radius) is moving through the box (256x256 cells) :
+A ball of plasma (30 cells radius) is moving through the box (256x256 cells):
 
 * With 8 x 8 patches, the size of a patch is 32 x 32 cells.
   The plasma, which represents the main time cost,
@@ -223,14 +224,14 @@ the level of parallelism, we advice the ``dynamic`` scheduling.
 Imbalance and distributed memory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Run the 16 x 16 patches simulation but with a MPI only configuration :
+Run the 16 x 16 patches simulation but with a MPI only configuration:
 
 .. code-block:: bash
 
   source ${SMILEI_ROOT}/scripts/set_omp_env.sh 1
   mpirun -np 16 smilei beam_2d.py
 
-This is technically similar to the ``static`` scheduling of the previous section :
+This is technically similar to the ``static`` scheduling of the previous section:
 the pool of patches is explicitly distributed over MPI processes starting the simulation.
 Compare the time spent in the PIC loop to that previous case.
 
@@ -285,7 +286,7 @@ compare it to the time saved regarding the simulation without dynamic load balan
 .. warning::
 
   ``Sync`` timers are impacted by the imbalance of the
-  algorithm part which precedes it :
+  algorithm part which precedes it:
   
   * ``Particles``
   * ``Sync Densities``
@@ -308,12 +309,12 @@ we don't consider the NUMA (non uniform memory access) aspect of most of nodes w
 Indeed, a node is generally composed of some processors which owns itself many cores. The cores of each node
 has a privileged access to the memory associated to it processor.
 
-As it has been described in the begining of this page supercomputers should be adressed with both paradigm :
+As it has been described in the begining of this page supercomputers should be adressed with both paradigm:
 
 * MPI to go through nodes **and** processors for many processors nodes to handle memory affinity.
 * OpenMP to feed threads, minimize imbalance and to manage more efficiently diagnostics at large scale
 
-The following example uses 2 MPI processes with 8 threads each :
+The following example uses 2 MPI processes with 8 threads each:
 
 .. code-block:: bash
 
