@@ -100,7 +100,7 @@ of the plasma oscillations driven by a relativistic electron bunch the ions act 
 as an immobile positively-charged species.
 
 
-If we were interested in phenomena like ionization or partially ionized ions or 
+If we were interested in phenomena like ionization of partially ionized ions or 
 the motion of the ions, we would have needed to explicitly define a ``Species`` for the ions.
 In our case, we could have defined a ``Species`` for the ions, but we would have 
 obtained the same results using a considerable amount of memory for a species whose 
