@@ -4,7 +4,7 @@ Field initialization for a relativistic electron bunch
 The goal of this tutorial is to give an introduction to the use of the the 
 relativistic species field initialization with :program:`Smilei`. 
 
-We also recommend to run the simulations of this tutorial with 1 MPI process 
+We also recommend to run the simulations of this tutorial with 4 MPI process 
 (remember to set the number of OpenMP threads as explained in :doc:`basics_setup`).
 
 The following features will be addressed:
