@@ -30,6 +30,10 @@ Physical configuration
 An ultra high intensity laser enters an under dense plasma. It propagates in
 the plasma and creates a non linear plasma wave in its wake.
 
+
+----
+
+
 Preparing the case study
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -60,6 +64,9 @@ After these checks, run the simulation and import the results::
 
   import happi
   S = happi.Open("/path/to/the/simulation")
+
+
+----
 
 A subtlety: the envelope of the vector potential vs the envelope of the electric field
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -113,6 +120,10 @@ You can see through their maximum value that initially the two fields are equal 
 Then, when the self-focusing starts, the temporal variations of the envelope are not negligible 
 and the two fields start to differ.
 
+
+----
+
+
 Wakefield excitation
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -148,6 +159,10 @@ Laser Wakefield Acceleration, can be plotted in this way, choosing the field
 
 Through the function ``animate``, follow the evolution of the envelope and the
 electron density on the axis. 
+
+
+----
+
 
 Parametric study of self-focusing and wakefield excitation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

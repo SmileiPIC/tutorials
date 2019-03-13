@@ -1,5 +1,5 @@
 Electron Laser Wakefield Acceleration (in Azimuthal Modes cylindrical geometry)
-------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
 
 The goal of this tutorial is to give an introduction to Laser Wakefield acceleration simulation with :program:`Smilei`.
 The following feature will be addressed:
@@ -18,6 +18,10 @@ An ultra high intensity laser enters an under dense plasma.
 The laser is linearly polarized in the ``y`` direction.
 It propagates in the plasma and creates a non linear plasma wave in its wake.
 Electrons from the plasma are eventually trapped in this wave and accelerated to high energies.
+
+
+----
+
 
 Step by step tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^^
