@@ -22,6 +22,8 @@ The following features will be addressed:
 
   This tutorial is done with an ideal relativistic electron bunch (zero emittance, zero energy spread).
   A more realistic simulation would have an electron bunch with a spread in the transverse and longitudinal momentum.
+  This unrealistic set-up will trigger a sudden and exaggerate self-compression of the bunch by its own plasma wakefield
+  during its propagation.
 
 ----
 
@@ -105,7 +107,8 @@ obtained the same results using a considerable amount of memory for a species wh
 motion is trivial. Therefore in this case we can rely on the Esirkepov method to ensure 
 an "implicit" presence of ions neutralizing the electrons at ``t=0``.
 
-In the zones where the electron bunch its field are present, the electromagnetic field is computed, 
+
+In the zones where the electron bunch and its field are present, the electromagnetic field is computed, 
 ensuring the correct divergences of the fields :math:`\mathbf{E}` and :math:`\mathbf{B}` 
 according to the presence of the electron bunch. 
 Therefore here no "implicit" ions will be present.
