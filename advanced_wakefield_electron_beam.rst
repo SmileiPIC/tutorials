@@ -1,5 +1,5 @@
-Plasma Wakefield driven by an Electron Bunch (in 2D) with Field Initialization
----------------------------------------------------------------------------------------
+Field initialization for a relativistic electron bunch
+-----------------------------------------------------------
 
 The goal of this tutorial is to give an introduction to the use of the the 
 relativistic species field initialization with :program:`Smilei`. 

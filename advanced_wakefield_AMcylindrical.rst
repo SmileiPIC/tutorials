@@ -1,7 +1,8 @@
-Electron Laser Wakefield Acceleration (in Azimuthal Modes cylindrical geometry)
-----------------------------------------------------------------------------------
+Azimuthal-mode-decomposition cylindrical geometry
+------------------------------------------------------
 
-The goal of this tutorial is to give an introduction to Laser Wakefield acceleration simulation with :program:`Smilei`.
+The goal of this tutorial is to give an introduction to the use of the cylindrical geometry 
+with azimuthal Fourier decomposition in :program:`Smilei`.
 The following feature will be addressed:
 
 * The analysis of the grid fields in AM cylindrical geometry

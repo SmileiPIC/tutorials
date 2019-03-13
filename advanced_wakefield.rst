@@ -1,5 +1,5 @@
-Electron Laser Wakefield Acceleration (in 2D)
-------------------------------------------------------------------------------
+2D laser wakefield acceleration
+-------------------------------------
 
 The goal of this tutorial is to give an introduction to Laser Wakefield acceleration simulation with :program:`Smilei`.
 The following features will be addressed:

@@ -1,5 +1,5 @@
-Laser Wakefield Acceleration with Laser Envelope (in 2D)
----------------------------------------------------------------------------------------
+Envelope model for laser wakefield acceleration
+-----------------------------------------------------
 
 The goal of this tutorial is to give an introduction to the use of the laser
 envelope model with :program:`Smilei`. Before starting with this tutorial, we
