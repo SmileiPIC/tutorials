@@ -88,7 +88,7 @@ The complex envelope field used for calculations is the envelope of the vector p
 :math:`\tilde{A}`. In the diagnostics, you can plot its absolute value through ``Env_A_abs``.
 The field ``Env_E_abs`` is the absolute value of the envelope of the electric field :math:`\tilde{E}`, 
 the latter defined to allow comparisons with the field of a standard laser: 
-:math:`\tilde{E}=-(\partial_t-ik_0c)\tilde{A}` (see online documentation for the derivation). 
+:math:`\tilde{E}=-(\partial_t-ik_0c)\tilde{A}` (see `Smilei's website <http://www.maisondelasimulation.fr/smilei/laser_envelope.html>`_ for the derivation). 
 Remember that as explained in the documentation, when the laser
 temporal variations are quick, the difference between the two fields will be
 sensitive. Both the fields are complex quantities, the `abs` means that their
