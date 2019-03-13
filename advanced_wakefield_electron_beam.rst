@@ -89,7 +89,7 @@ There, also the initial field :math:`\mathbf{E}` is zero, so in that zone
 where :math:`\rho` is the deposited charge density and :math:`\rho_0` is the density 
 at the initial state (the charge density of the electron layer).
 In other words,  :math:`\nabla\cdot\mathbf{E}=\rho-\rho_0` for all the simulation. 
-Since at the initial state there was a layer of electrons with density :math:`\rho_0`,
+Since at the initial state there consisted in a layer of electrons with density :math:`\rho_0`,
 all the system will evolve as if there was also a layer of ions with density :math:`-\rho_0`,
 without having a real ion ``Species``. 
 
