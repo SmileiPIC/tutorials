@@ -1,4 +1,4 @@
-Laser Wakefield Acceleration with Laser Envelope (in 2D)
+Plasma Wakefield driven by an Electron Bunch (in 2D) with Field Initialization
 ---------------------------------------------------------------------------------------
 
 The goal of this tutorial is to give an introduction to the use of the the 
@@ -31,6 +31,10 @@ Physical configuration
 A relativistic electron bunch enters a plasma. It propagates in
 the plasma and creates a non linear plasma wave in its wake.
 
+
+----
+
+
 Preparing the case study
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -53,13 +57,50 @@ The procedure used in :program:`Smilei` for this initialization is detailed in t
 
 These electromagnetic fields will propagate with the bunch and will push away the plasma electrons
 as an intense laser pulse would do through its ponderomotive force.
-As in the laser case (see for example the tutorials :doc:`advanced_wakefield`, :doc:`advanced_wakefield_envelope`).
+As in the laser case, this will trigger a plasma oscillation (see for example the tutorials :doc:`advanced_wakefield`, :doc:`advanced_wakefield_envelope`).
 
 .. note::
 
   Since the perfectly matched layer boundary condition is still not available, 
   there will be some border effects due to the intense bunch electromagnetic fields arriving to the 
-  boundaries of the simulation window.
+  boundaries of the simulation window. A possible solution in a more accurate simulation consists in 
+  enlarging the transverse size of the window to let the fields decay at the border.
+
+
+----
+
+
+A subtlety: why ions are not present?
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+From Maxwell's equations it is possible to demonstrate that, provided that the 
+continuity equation :math:`\nabla\cdot\mathbf{J}=-\partial_t\rho` is satisfied 
+(this is ensured by the Esirkepov method in :program:`Smilei`), the quantities 
+:math:`\nabla\cdot\mathbf{B}` and :math:`\nabla\cdot\mathbf{E}-\rho` will remain
+constant for all the simulation. Therefore, their value will be the same as it 
+was at ``t=0``. At that instant, in the zone of the plasma where the bunch is not present, 
+:math:`\mathbf{B}=0`, so its divergence is trivially zero.
+Also the field :math:`\mathbf{E}=0` is zero, so in that zone 
+:math:`\nabla\cdot\mathbf{E}-\rho=-\rho_0` for all the simulation, 
+where :math:`\rho` is the deposited charge density and :math:`\rho_0` is the density 
+at the initial state (the charge density of the electron layer).
+In other words,  :math:`\nabla\cdot\mathbf{E}=\rho-\rho_0` for all the simulation. 
+Since at the initial state there was a layer of electrons with density :math:`\rho_0`,
+all the system will evolve as if there was also a layer of ions with density :math:`-\rho_0`. 
+
+
+These "implicit" ions will not move, but they will influence the field.
+This is a good approximation in our case: normally in the characteristic timescales 
+of the plasma oscillations driven by a relativistic electron bunch the ions act only 
+as an immobile positively-charged species.
+
+
+If we were interested in phenomena like ionization or partially ionized ions or 
+the motion of the ions, we would have needed to explicitly define a ``Species`` for the ions.
+In our case, we could have defined a ``Species`` for the ions, but we would have 
+obtained the same results using a considerable amount of memory for a species whose 
+motion is trivial. Therefore in this case we can rely on the Esirkepov method to ensure 
+an "implicit" presence of ions neutralizing the electrons at ``t=0``.
+
 
 
 ----
@@ -84,37 +125,17 @@ Note that the bunch is initially in vacuum. If a ``Species`` is initialized insi
 activating the initialization of its field creates non-physical forces.
 The bunch will move in the positive ``x`` (/longitudinal) direction towards the plasma.
 Note that the field ``Ex`` is much lower than the transverse field ``Ey`` as for a relativistic moving charge.
-The field ``Ey`` is the field that pushes the plasma electrons away and triggers the plasma oscillations
+The field ``Ey`` is the field that pushes the plasma electrons away from the bunch's path and triggers the plasma oscillations
 in the bunch wake.
 
 
 ----
 
 
-A subtlety: why ions are not present?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Remeber that, provided that the continuity equation :math:`\nabla\cdot\mathbf{J}=-\partial_t\rho` is satisfied 
-(this is ensured by the Esirkepov method in :program:`Smilei`), the quantities :math:`\nabla\cdot\mathbf{B}` and :math:`\nabla\cdot\mathbf{E}-\rho` will remain
-constant for all the simulation. In other words, their value will be the same as it was at ``t=0``.
-At that instant, in the zone of the plasma where the bunch is not present, :math:`\mathbf{B}=0`, so its divergence is trivially zero.
-Also the field :math:`\mathbf{E}=0` is zero, so in that zone :math:`\nabla\cdot\mathbf{E}-\rho=-\rho_0` for all the simulation, 
-where :math:`\rho` is the deposited charge density and :math:`\rho_0` is the density at the initial state.
-In other words,  :math:`\nabla\cdot\mathbf{E}=\rho-\rho_0` for all the simulation. Since at the initial state there was a layer of electrons with density :math:`\rho_0`,
-all the system will evolve as if there was also a layer of ions with density :math:`\rho_0`. Of course these "implicit" ions will not move, but they will influence the field.
-This is a good approximation in our case: normally in the characteristic timescales of the plasma oscillations driven by a relativistic electron bunch the ions act only as an immobile positively-charged species.
-If we were interested in phenomena like ionization injection or the motion of the ions, we would have needed to explicitly define a ``Species`` for the ions.
-In our case, we could have defined a ``Species`` for the ions, but we would have obtained the same results using a considerable amount of memory for a species whose motion is trivial.
-Therefore we can rely on the Esirkepov method to ensure an "implicit" presence of ions neutralizing the electrons at ``t=0``.
-
-
-----
-
-
-
 Nonlinear, beam-driven plasma oscillations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The plasma electrons pushed away from the bunch path will be attracted back to their original positions
-by the ions and start to oscillate.
+by the immobile ions and start to oscillate.
 
 Visualize the nonlinear plasma wave forming in the wake of the electron bunch::
 
