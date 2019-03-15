@@ -13,7 +13,7 @@ g0  = 1./sqrt(1.-v0**2) # Lorentz factor corresponding to v0
 
 Lx  = 4*2*pi/k 	        # simulation length (4 seeded wavelength)
 
-dx   = 2.*pi/k / 64.    # spatial resolution in the x-direction = 500 punti per lunghezza d onda
+dx   = 2.*pi/k / 64.    # spatial resolution in the x-direction = 500 points in one wavelength
 dt   = 0.95*dx          # time-step
 t_sim     = 800*dt      # simulation time
 nt        = t_sim/dt    # nb of timesteps
