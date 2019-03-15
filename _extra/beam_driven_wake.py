@@ -46,7 +46,7 @@ Main(
     interpolation_order = 2,
 
     timestep = dt,
-    simulation_time = dt*6000., #int(1*Lx/dt)*dt,
+    simulation_time = dt*4000., #int(1*Lx/dt)*dt,
 
     cell_length  = [dx, dtrans],
     grid_length = [ Lx,  Ltrans],
@@ -68,7 +68,7 @@ Main(
 
 MovingWindow(
     time_start = 0.,
-    velocity_x = beta
+    velocity_x = 1.
 )
 
 LoadBalancing(
@@ -78,6 +78,15 @@ LoadBalancing(
     frozen_particle_load = 0.1
 )
 
+
+Radius_plasma = 6.*bunch_sigma_r
+longitudinal_profile = polygonal(xpoints=[center_bunch+60.,center_bunch+110.,200.*bunch_sigma_x,225.*bunch_sigma_x],xvalues=[0.,n0,n0,0.])
+def nplasma(x,y):
+    profile_r = 0.
+    if ((y-Main.grid_length[1]/2.)**2<Radius_plasma**2):
+        profile_r = 1.
+    return profile_r*longitudinal_profile(x,y)
+
 Species(
     name = "electron",
     position_initialization = "regular",
@@ -86,7 +95,7 @@ Species(
     c_part_max = 1.0,
     mass = 1.0,
     charge = -1.0,
-    charge_density = polygonal(xpoints=[center_bunch+60.,center_bunch+110.,200.*bunch_sigma_x,225.*bunch_sigma_x],xvalues=[0.,n0,n0,0.]),
+    charge_density = nplasma,
     mean_velocity = [0.0, 0.0, 0.0],
     temperature = [0.,0.,0.],
     pusher = "boris",
