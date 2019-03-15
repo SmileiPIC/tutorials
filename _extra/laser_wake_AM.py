@@ -29,6 +29,15 @@ Main(
     random_seed = smilei_mpi_rank
 )
 
+
+Radius_plasma = 200.
+longitudinal_profile = trapezoidal(0.004, xvacuum=0., xplateau=1000000000, xslope1=1000.)
+def nplasma(x,r):
+    profile_r = 0.
+    if (r<Radius_plasma):
+        profile_r = 1.
+    return profile_r*longitudinal_profile(x,r)
+
 Species( 
     name = "electron",
     position_initialization = "regular",
@@ -37,7 +46,7 @@ Species(
     c_part_max = 1.0,
     mass = 1.0,
     charge = -1.0,
-    charge_density = trapezoidal(0.004, xvacuum=0., xplateau=1000000000, xslope1=1000.),
+    charge_density = nplasma,
     mean_velocity = [0.0, 0.0, 0.0],
     pusher = "boris",    
     time_frozen = 0.0,
