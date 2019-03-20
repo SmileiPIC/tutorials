@@ -58,7 +58,7 @@ no transverse momentum spread (or equivalently zero emittance).
 
 The special flag ``relativistic_field_initialization = True``
 means that its self-consistent electromagnetic fields will be computed at the time when
-this ``Species`` starts to move, in this case at ``t=0`` because ``time_frozen=0.``.
+this ``Species`` starts to move, in this case at ``t=0`` because ``time_frozen=0``.
 The procedure used in :program:`Smilei` for this initialization is detailed
 `here <http://www.maisondelasimulation.fr/smilei/relativistic_fields_initialization.html>`_.
 
