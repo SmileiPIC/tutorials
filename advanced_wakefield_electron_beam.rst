@@ -102,7 +102,7 @@ we have :math:`\nabla\cdot\mathbf{E}=\rho_e+\rho_{i0}` at all times.
 The system will evolve as if there were ions, without having a real ion ``Species``. 
 
 This is a good approximation in our case: plasma oscillations driven by a relativistic
-electron bunch do not move ions much. Discarding ions represents an important gain of
+electron bunch do not substantially move the ions. Indeed, the ion mass is at least 2000 times greater than the mass of an electron, so the characteristic timescales of the ion motion are much greater than those of the electron motion. Discarding ions represents an important gain of
 computational time.
 If we were interested in phenomena like ionization or ion motion,
 we would have needed to explicitly define an ion ``Species``.
