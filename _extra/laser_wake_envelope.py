@@ -59,7 +59,7 @@ Species(
     ponderomotive_dynamics = True, # this species interacts with laser envelope
     mass = 1.0,
     charge = -1.0,
-    charge_density = polygonal(xpoints=[center_laser+5.*laser_fwhm,center_laser+6.*laser_fwhm,15000,20000],xvalues=[0.,n0,n0,0.]),
+    charge_density = polygonal(xpoints=[center_laser+1.5*laser_fwhm,center_laser+2.*laser_fwhm,15000,20000],xvalues=[0.,n0,n0,0.]),
     mean_velocity = [0.0, 0.0, 0.0],
     temperature = [0.0],
     pusher = "ponderomotive_boris", # pusher to interact with envelope
@@ -71,7 +71,7 @@ Species(
 )
 
 LaserEnvelopeGaussian2D( 
-    a0              = 2.4,     
+    a0              = 2.7,     
     focus           = [1.1*center_laser, Main.grid_length[1]/2.],
     waist           = 70.,
     time_envelope   = tgaussian(center=center_laser, fwhm=laser_fwhm),

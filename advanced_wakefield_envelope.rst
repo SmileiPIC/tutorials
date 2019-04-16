@@ -80,8 +80,8 @@ Plot the values on the grid of the fields called ``Env_A_abs`` and ``Env_E_abs``
 with the same scale. For this, use the diagnostic ``Fields`` (if the timestep is 
 not provided, the last one is plotted by default):: 
   
-  S.Field.Field0("Env_A_abs").plot(figure=1, vmin = 0., vmax = 2.7)
-  S.Field.Field0("Env_E_abs").plot(figure=2, vmin = 0., vmax = 2.7)
+  S.Field.Field0("Env_A_abs").plot(figure=1, vmin = 0., vmax = 2.85)
+  S.Field.Field0("Env_E_abs").plot(figure=2, vmin = 0., vmax = 2.85)
 
 Do you see some differences?
 The complex envelope field used for calculations is the envelope of the vector potential 
@@ -176,7 +176,7 @@ self-focusing? Try the values :math:`0.01`, :math:`0.1`, :math:`2.` for `a0`
 and :math:`0.003`, :math:`0.005` for `n0`. Use the ``Scalar`` diagnostics to study the 
 evolution of ``Env_E_absMax``.
 
-Set the values of `a0` and `n0` to their original value (:math:`2.4`
+Set the values of `a0` and `n0` to their original value (:math:`2.7`
 and :math:`0.002` respectively) and rerun the simulation. Now try to relaunch 
 the simulation with different values of `a0` (like :math:`0.01`, :math:`0.1`, 
 :math:`2.`). What happens to the waveform of ``Ex`` on the propagation axis? 
