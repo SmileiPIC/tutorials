@@ -1,15 +1,18 @@
+###### Laser Wake tutorial in cylindrical Azimuthal Modes geometry
+ 
+dx = 0.125    # longitudinal resolution
+dr = 1.5      # radial resolution
 
-dx = 0.125
-dr = 1.5
-dt = 0.96*dx
-nx = 128*20
-nr = 384
-Lx = nx * dx
-Lr = nr * dr
+nx = 128*20   # number of grid points in the longitudinal direction
+nr = 384      # number of grid points in the radial direction
+
+Lx = nx * dx  # longitudinal size of the simulation window
+Lr = nr * dr  # radial size of the simulation window
+
 npatch_x = 256
-laser_fwhm = 40.
-laser_waist = 100.
-Niterations = 8000
+
+dt = 0.96*dx  # integration timeestep
+Niterations = 10000
 
 Main(
     geometry = "AMcylindrical",
@@ -29,6 +32,11 @@ Main(
     random_seed = smilei_mpi_rank
 )
 
+# The window is much larger than the laser wais, 
+# to allow the laser diffract 
+# (no radial absorbing boundary conditions available)
+# The physics of interest in this case is near the axis, 
+# so no need to fill all the window with plasma
 
 Radius_plasma = 200.
 longitudinal_profile = trapezoidal(0.004, xvacuum=0., xplateau=1000000000, xslope1=1000.)
@@ -37,6 +45,7 @@ def nplasma(x,r):
     if (r<Radius_plasma):
         profile_r = 1.
     return profile_r*longitudinal_profile(x,r)
+
 
 Species( 
     name = "electron",
@@ -56,7 +65,11 @@ Species(
     ],
 )
 
-LaserGaussian2D(
+# Linear polarization on the y axis
+laser_fwhm = 40.
+laser_waist = 100.
+
+LaserGaussianAM(
     box_side         = "xmin",
     a0              = 4.,
     focus           = [0., 0.],
@@ -70,42 +83,29 @@ MovingWindow(
 )
 
 
-
 # Grid diagnostic
 DiagFields(
-    every = 500,
+    every = 200,
 )
 
-# These diagnostics are not available in AM yet
-# DiagProbe(
-#     every = 1000,
-#     origin = [0., Main.grid_length[1]/2.],
-#     corners = [
-#         [Main.grid_length[0], Main.grid_length[1]/2.],
-#     ],
-#     number = [nx],
-#     fields = ['Ex','Ey','Rho','Jx']
-# )
-# 
-# DiagProbe(
-#     every = 1000,
-#     origin = [0., 0.],
-#     vectors = [[Lx,0], [0,Ly]],
-#     number = [nx,ny],
-#     fields = ['Ex','Ey','Rho','Jx']
-# )
-# 
-# DiagParticleBinning(
-#     deposited_quantity = "weight",
-#     every = 1000,
-#     species = ["electron"],
-#     axes = [
-#         ["moving_x", 0, Lx, 300],
-#         ["ekin", 1, 400, 100]
-#     ]
-# )
-
-DiagPerformances(
-    every = 1000,
-    patch_information = False,
+# 1D Probe defined on a line parallel to the axis of propagation,
+# at a distance sqrt(8)*dr from the axis.
+# A Probe placed on the axis would be very noisy
+DiagProbe(
+    every = 200,
+    origin = [0., 2*dr, 2*dr],
+     corners = [
+         [nx*dx, 2*dr, 2*dr],
+     ],
+     number = [nx],
+     fields = ['Ex','Ey','Rho','Jx']
+ )
+ 
+# 2D Probe, defined on the plane parallel to the polarization axis of the laser
+DiagProbe(
+    every = 200,
+    origin   = [0., -nr*dr,0.],
+    corners  = [ [nx*dx,-nr*dr,0.], [0,nr*dr,0.] ],
+    number   = [nx, 2*nr],
+    fields = ['Ex','Ey','Rho','Jx']
 )
