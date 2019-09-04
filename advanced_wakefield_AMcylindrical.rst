@@ -133,5 +133,18 @@ Thus, to follow the evolution of the longitudinal electric field you can use::
 
 Note that we haven't specified the mode. The ``Probes`` reconstruct the fields including all the modes.
 
+.. rubric:: 3. 2D Probe
+
+In the namelist, a 2D ``Probe`` is defined on the plane parallel to the polarization direction of the laser.
+For how we have defined it, you won't see only half plane as in the ``Field`` diagnostic, but both the negative and positive ``y`` points.
+
+Let's give a look to the evolution of the plasma density::
+
+  S.Probe.Probe0("-Rho").animate(figure=3,vmin=0.,vmax=0.01)
+
+To see the longitudinal electric field and the electric field in the ``y`` direction, you can use::
+
+  S.Probe.Probe0("Ex").animate(figure=4)
+  S.Probe.Probe0("Ey").animate(figure=5)
 
   
