@@ -118,7 +118,7 @@ You can also follow the evolution of any grid quantity (for example here the ele
 
   S.Field.Field0("-Rho",theta=0.,modes=0).animate(figure=1, vmin = 0., vmax = 0.01)
 
-.. rubric:: 2. 1D Probe
+.. rubric:: 2. Probe 1D
 
 A quantity of interest e.g. for plasma acceleration is the longitudinal electric field on the laser propagation axis. 
 For this purpose, we have defined the first ``Probe`` in the namelist. 
@@ -133,7 +133,7 @@ Thus, to follow the evolution of the longitudinal electric field you can use::
 
 Note that we haven't specified the mode. The ``Probes`` reconstruct the fields including all the modes.
 
-.. rubric:: 3. 2D Probe
+.. rubric:: 3. Probe 2D
 
 In the namelist, a 2D ``Probe`` is defined on the plane parallel to the polarization direction of the laser.
 For how we have defined it, you won't see only half plane as in the ``Field`` diagnostic, but both the negative and positive ``y`` points.
