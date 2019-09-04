@@ -20,7 +20,7 @@ Physical configuration
 An ultra high intensity laser enters an under dense plasma. 
 The laser is linearly polarized in the ``y`` direction.
 It propagates in the plasma in the positive ``x`` direction and creates a non linear plasma wave in its wake.
-Electrons from the plasma are eventually trapped in this wave and accelerated to high energies.
+The moving window in the namelist has been set to contain the laser and the first wake period in the simulation window.
 
 
 .. note::
@@ -65,10 +65,6 @@ Check them in the input file:
 * Still in the plasma density profile definition, remember that ``r=0`` corresponds to the lower boundary of the grid, i.e. the laser propagation axis
 
 * The ``Probes`` origin and corners are defined with three coordinates, since they will interpolate the fields in the 3D space as in a 3D simulation.
-Remember that the ``origin`` is defined through the grid coordinate system, so the point ``(0,0,0)`` will be on the laser propagation axis. 
-Remember also that the ``corners/vectors`` of a ``Probe`` are defined relatively to the origin.
-
-
 
 ----
 
@@ -81,6 +77,8 @@ Then, open the results::
 
   import happi
   S = happi.Open("/path/to/the/simulation") 
+
+.. rubric:: 1. Field diagnostic
 
 Now let's have a look at the grid fields, for example the electron density::
 
@@ -120,6 +118,20 @@ You can also follow the evolution of any grid quantity (for example here the ele
 
   S.Field.Field0("-Rho",theta=0.,modes=0).animate(figure=1, vmin = 0., vmax = 0.01)
 
-.. note::
+.. rubric:: 2. 1D Probe
 
-  The moving window in the namelist has been set to contain the laser and the first wake period in the simulation window.
+A quantity of interest e.g. for plasma acceleration is the longitudinal electric field on the laser propagation axis. 
+For this purpose, we have defined the first ``Probe`` in the namelist. 
+Check its ``origin`` and ``corners`` to understand where they are defined. 
+To be more precise, we have defined it parallel to the axis, but at a small distance from it.
+You can try to define another 1D ``Probe`` at the end of the namelist, but you will see that the fields there are very noisy. 
+
+The ``Probes`` interpolate the cartesian components of the fields from the grid, not the cylindrical ones.
+Thus, to follow the evolution of the longitudinal electric field you can use::
+
+  S.Probe.Probe0("Ex").animate(figure=2)
+
+Note that we haven't specified the mode. The ``Probes`` reconstruct the fields including all the modes.
+
+
+  

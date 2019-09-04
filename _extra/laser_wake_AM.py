@@ -1,4 +1,4 @@
-###### Laser Wake tutorial in cylindrical Azimuthal Modes geometry
+###### Laser Wake tutorial in Azimuthal Modes cylindrical geometry
  
 dx = 0.125    # longitudinal resolution
 dr = 1.5      # radial resolution
@@ -95,7 +95,7 @@ DiagProbe(
     every = 200,
     origin = [0., 2*dr, 2*dr],
      corners = [
-         [nx*dx, 2*dr, 2*dr],
+         [nx*dx, 0, 0],
      ],
      number = [nx],
      fields = ['Ex','Ey','Rho','Jx']
