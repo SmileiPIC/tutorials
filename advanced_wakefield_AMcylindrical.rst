@@ -140,11 +140,11 @@ For how we have defined it, you won't see only half plane as in the ``Field`` di
 
 Let's give a look to the evolution of the plasma density::
 
-  S.Probe.Probe0("-Rho").animate(figure=3,vmin=0.,vmax=0.01)
+  S.Probe.Probe1("-Rho").animate(figure=3,vmin=0.,vmax=0.01)
 
 To see the longitudinal electric field and the electric field in the ``y`` direction, you can use::
 
-  S.Probe.Probe0("Ex").animate(figure=4)
-  S.Probe.Probe0("Ey").animate(figure=5)
+  S.Probe.Probe1("Ex").animate(figure=4)
+  S.Probe.Probe1("Ey").animate(figure=5)
 
   
