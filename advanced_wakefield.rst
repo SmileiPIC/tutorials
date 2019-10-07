@@ -11,7 +11,8 @@ The following features will be addressed:
 
 The simulation used for this tutorial is relatively heavy so make sure to submit the job on 160 cores at least.
 
-Disclaimer: This tutorial is done in 2D which is not physically relevent. Proper simulation of this kind must be done in 3D.
+Disclaimer: This tutorial is done in 2D which is not physically relevant. Proper simulation of this kind must be done in 3D 
+or in cylindrical geometry with azimuthal mode decomposition (see the related tutorial).
 Even in 2D, this case is a bit heavy with respect to the other tutorial and can not be run on a labtop.
 We suggest using around a hundred cores to run this tutorial in a reasonable time.
 

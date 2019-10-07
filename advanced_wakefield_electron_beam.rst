@@ -24,7 +24,8 @@ the plasma and creates a non linear plasma wave in its wake.
 .. note::
 
   This tutorial is done in 2D which is not physically relevant.
-  Proper simulation of this kind must be done in 3D.
+  Proper simulation of this kind must be done in 3D 
+  or in cylindrical geometry with azimuthal mode decomposition (see the related tutorial).
 
 .. note::
 
