@@ -100,14 +100,14 @@ gamma factor that enables to simplify and remove some terms.
 We will now setup the radiation reaction parameters.
 
 * Go to the block called ``RadiationReaction``. This block is commented.
-  Uncomment it and the parameter called ``minimum_chi_continuous``:
+  Uncomment this block with the parameter called ``minimum_chi_continuous`` only:
 
   .. code-block:: python
 
     RadiationReaction(
          minimum_chi_continuous = 1e-3
     #     minimum_chi_discontinuous = 1e-2,
-    #     table_path = "/gpfshome/mds/staff/mlobet/smilei/databases/"
+    #     table_path = "<path to some tables>"
     )
 
   This block is used to setup the general parameters. Only ``minimum_chi_continuous``
@@ -303,22 +303,13 @@ an additional stochastic operator derived from a Fokker-Planck approach.
 
     radiation_model = "Niel"
 
-
-* The Niel radiation model uses tabulated values. External Tables are available
-  in the ``SMILEI/databases`` directory in the sources. In order to specify
-  in the input file  where these tables are located, we have to modify the
-  block ``RadiationReaction`` previously uncommented.
-  Uncomment the table_path parameter as follow:
-
-  .. code-block:: python
-
-    RadiationReaction(
-         minimum_chi_continuous = 1e-3
-    #     minimum_chi_discontinuous = 1e-2,
-         table_path = "<path_to_smilei>/databases/"
-    )
-
-  And update the path to :program:`Smilei` according to your installation configuration.
+**External tables: ** some models such as `Niel` use complex mathematical functions to determine the production rate of
+photons and energy.
+These functions are tabulated because it would be too expensive to compute them on the fly for each macro-particles.
+The :program:`Smilei` code includes default tables.
+It is nonetheless possible to use more accurate external tables.
+This is the purpose of the parameter `table_path` in the block `Radiation`.
+For more information about the tables, see https://smileipic.github.io/Smilei/tables.html.
 
 * You can run the simulation
 
@@ -373,7 +364,7 @@ You can have more information about the model and its implementation on the page
     RadiationReaction(
          minimum_chi_continuous = 1e-3
          minimum_chi_discontinuous = 1e-3,
-         table_path = "<path_to_smilei>/databases/"
+    #    table_path = "<path_to_some_tables>
     )
 
   In fact, the default value of ``minimum_chi_discontinuous`` is ``1e-2``.
