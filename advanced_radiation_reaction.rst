@@ -303,7 +303,7 @@ an additional stochastic operator derived from a Fokker-Planck approach.
 
     radiation_model = "Niel"
 
-**External tables: ** some models such as `Niel` use complex mathematical functions to determine the production rate of
+**External tables:** some models such as `Niel` use complex mathematical functions to determine the production rate of
 photons and energy.
 These functions are tabulated because it would be too expensive to compute them on the fly for each macro-particles.
 The :program:`Smilei` code includes default tables.
