@@ -42,7 +42,7 @@ per cell for a total of 3648 macro-particles.
 Content of the tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Download `AdvancedPractical2.tar.gz <AdvancedPractical2.tar.gz>`_ and extract it.
+Download `AdvancedTutorial2.tar.gz <AdvancedTutorial2.tar.gz>`_ and extract it.
 It contains 2 directories:
 
 * ``Analysis``
@@ -129,9 +129,16 @@ Configuration of the radiation reaction block
     RadiationReaction(
          minimum_chi_continuous = 1e-3
          minimum_chi_discontinuous = 1e-3,
-         table_path = "<path_to_smilei>/databases/"
+        #table_path = "<path to some Smilei tables>"
     )
 
+**External tables:** some models such as the Monte-Carlo radiation model use complex mathematical functions to determine the production rate of
+photons and energy.
+These functions are tabulated because it would be too expensive to compute them on the fly for each macro-particles.
+The :program:`Smilei` code includes default tables.
+It is nonetheless possible to use more accurate external tables.
+This is the purpose of the parameter `table_path` in the block `Radiation`.
+For more information about the tables, see https://smileipic.github.io/Smilei/tables.html.
 
 ----
 
