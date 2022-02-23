@@ -10,8 +10,9 @@ script:
  - touch _build/html/.nojekyll
 
 deploy:
- - provider: pages
+ - provider: pages:git
    verbose: true
    token: $GITHUB_TOKEN
+   edge: true
    keep_history: false
    local_dir: _build/html
