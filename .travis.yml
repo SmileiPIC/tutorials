@@ -1,27 +1,17 @@
-os: linux
 
-install: make get-deps
+language: python
 
-language: cpp
-
-sudo: required
-
-dist: trusty
-
-before_install:
-  - sudo apt-get -qq update
-  - git fetch -t
-  - sudo apt-get install -y python-pip
-  - pip install --user travis-sphinx Sphinx alabaster pint
-  - export PATH=$HOME/.local/bin:$PATH
+install:
+ - git fetch -t
+ - pip install Sphinx
 
 script:
-  - travis-sphinx build -s . -n
+ - make html
+ - touch _build/html/.nojekyll
 
-after_success:
-  - travis-sphinx deploy
-    
-install:
-
-
-
+deploy:
+ - provider: pages
+   skip-cleanup: true
+   github-token: $GH_TOKEN
+   keep-history: false
+   local-dir: _build/html
