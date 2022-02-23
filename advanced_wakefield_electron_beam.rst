@@ -158,7 +158,6 @@ since the set-up is in the so-called weakly nonlinear regime.
 Try to change the normalized peak density of the bunch ``alpha`` and rerun the simulation, for example with the values
 ``0.001`` (a linear regime), ``1.5`` (a nonlinear regime). What happens to the ``Ex`` waveform?
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The plasma electrons pushed away from the bunch path will be attracted back to their original positions
 by the immobile ions and start to oscillate.
 

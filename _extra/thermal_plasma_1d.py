@@ -12,12 +12,12 @@ vth = math.sqrt(Te)        # normalised thermal velocity
 
 dx = 1.*Ld                 # spatial resolution
 dt = 0.95*dx               # timestep
-Lx = 512.                  # simulation length
+Lx = 32.                  # simulation length
 tsim = 1024.               # duration of the simulation
 
-nppc = 8                   # number of particle-per-cell
+nppc = 16                   # number of particle-per-cell
 
-diagEvery   = int(64./dt)  # frequency of outputs for DiagField
+diagEvery   = int(16./dt)  # frequency of outputs for DiagField
 
 
 # --------------------------------------
@@ -35,7 +35,7 @@ Main(
     cell_length = [dx],
     grid_length  = [Lx],
     
-    number_of_patches = [ 32 ],
+    number_of_patches = [ 8 ],
     
     EM_boundary_conditions = [ ['periodic'] ] ,
     

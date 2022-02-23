@@ -231,7 +231,7 @@ See what is available in this laser object:
    laser.time_envelope
 
 Note that this quantity is a python function: what function is it?
-Some help is available `here <http://www.maisondelasimulation.fr/smilei/namelist.html#profiles>`_.
+Some help is available `here <https://smileipic.github.io/Smilei/namelist.html#profiles>`_.
 
 To plot the laser profile as a function of time, a list of times is necessary.
 In the following, we use the package *numpy* to generate a list of times from 0 to
