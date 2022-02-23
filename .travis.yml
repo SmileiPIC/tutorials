@@ -11,6 +11,7 @@ script:
 
 deploy:
  - provider: pages
-   skip_cleanup: true
+   verbose: true
+   token: $GITHUB_TOKEN
    keep_history: false
    local_dir: _build/html
