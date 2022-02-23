@@ -57,7 +57,8 @@ div.documentwrapper {
 div.body {
 	background-color: white;
 	color: {{ theme_body_text }};
-	padding: 0 30px 0 30px;
+	padding: 0 1em 0 1em;
+	min-width: unset;
 }
 
 div.footer {
@@ -89,6 +90,20 @@ div.logo a:hover {
 	border: none;
 }
 
+.version {
+    position: relative;
+}
+
+.version::before {
+	display: inline-block;
+	content: "v{{ version }}";
+	position: absolute;
+	bottom: 5%;
+	right: 5%;
+	font: bold 1.6em BPreplay;
+	color: {{ theme_main_color_bold }};;
+}
+
 /* -- body styles ----------------------------------------------------------- */
 
 a {
@@ -109,14 +124,13 @@ div.body h5,
 div.body h6 {
 	font-family: {{ theme_head_font_family }};
 	font-weight: bold;
-	margin: 30px 0px 10px 0px;
+	margin: 10px 0px 10px 0px;
 	padding: 0;
 	color: {{ theme_main_color_bold }};
 }
 
 div.body h1 {
 	font-size: 240%;
-	margin-right: 3em;
 	padding: 0.1em 0.3em 0.1em 1em;
 	background-color:{{ theme_main_color_pale }};
 	display: inline-block;
@@ -127,10 +141,15 @@ div.body h3 { font-size: 150%; }
 div.body h4 { font-size: 130%; }
 div.body h5 { font-size: 100%; }
 div.body h6 { font-size: 100%; }
+.small li { font-size: 1em !important; }
 
-.section {
-	padding-top:{{ theme_head_height | float * 0.5 }}mm;
-	margin-top:-{{ theme_head_height }}mm;
+:target {
+	margin-top: -{{ theme_head_height| float *1.2 }}mm;
+	padding-top: {{ theme_head_height| float *1.2 }}mm;
+}
+
+h1:target, h2:target, h3:target, dt:target {
+	background: {{ theme_main_color_pale }} content-box !important;
 }
 
 a.headerlink {
@@ -144,8 +163,29 @@ a.headerlink:hover {
 	background: {{ theme_anchor_hover_bg }};
 }
 
-div.body p, div.body dd, div.body li {
+div.body p, div.body li {
 	line-height: 1.4em;
+}
+
+div.body p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+div.body dd > p {
+	margin: 0;
+}
+
+dl.field-list > dt {
+	padding-top: 2px;
+}
+
+div.body table p {
+	margin-bottom: 0;
+}
+
+div.body li > p {
+	margin: 0;
 }
 
 div.admonition {
@@ -179,7 +219,7 @@ div.highlight {
 	background-color: white;
 }
 
-dt:target, .highlight {
+.highlight {
 	background: {{ theme_main_color_pale }};
 }
 
@@ -201,7 +241,11 @@ pre, code {
 img.screenshot {
 }
 
-code.descname, code.descclassname {
+.line-block{
+	margin:0
+}
+
+code.descname, code.descclassname, span.descname, span.descclassname {
 	font-size: 0.95em;
 	color: {{ theme_keyword_color }};
 }
@@ -288,16 +332,16 @@ dl {
 }
 
 dl dd {
-	margin-left: 30px;
+	margin: 0.5em 0 0.5em 1em;
 }
 
 blockquote {
-	margin: 0 0 0 30px;
+	margin: 0 0 0 1em;
 	padding: 0;
 }
 
 ul, ol {
-	margin: 4px 0 4px 30px;
+	margin: 4px 0 4px 1em;
 	padding: 0;
 }
 
@@ -321,7 +365,7 @@ li.toctree-l1 > ul {
 
 pre {
 	background: {{ theme_pre_bg }};
-	padding: 7px 30px;
+	padding: 7px 1em;
 	margin: 15px 0px;
 	line-height: 1.3em;
 }
@@ -333,6 +377,7 @@ div.highlight > pre {
 code {
 	background-color: {{ theme_pre_bg }};
 	color: #222;
+	word-break: break-word;
 }
 
 code.xref {
@@ -377,7 +422,7 @@ div#changelog > div.section > ul > li > p:only-child {
 	margin-bottom: 0;
 }
 
-/* Hide fugly table cell borders in ..bibliography:: directive output */
+/* Hide ugly table cell borders in ..bibliography:: directive output */
 table.docutils.citation, table.docutils.citation td, table.docutils.citation th {
   border:none;
 }
@@ -624,11 +669,35 @@ div.header > * {
 .orange {
 	color:orange;
 }
+.blue > a, .red > a, .purple > a, .green > a, .orange > a {
+	color: inherit;
+}
+.blue > a:hover, .red > a:hover, .purple > a:hover, .green > a:hover, .orange > a:hover {
+	border-bottom: 1px solid;
+}
 
 /* Style for an emphasized link */
 .emphlink {
 	text-align:center;
 	font-size:1.3em;
+}
+
+div.experimental > h1:first-of-type::after,
+div.experimental > h2:first-of-type::after,
+dl.experimental > dt:first-of-type::after,
+ul.experimental p:first-of-type::after
+{
+	content: "experimental";
+	display: inline-block;
+	background:red;
+	color:white;
+	margin: 4px 10px;
+	padding: 0 5px;
+	border-radius: 5px;
+	font-size: 0.8em;
+	font-family: "BPreplay";
+	font-weight: bold;
+	line-height: normal;
 }
 
 /* --------------------------------------------------------------------*/
@@ -723,24 +792,52 @@ div.toctree-smilei > ul > li > ul > li > ul {
 
 /* --------------------------------------------------------------------*/
 /* Some tricks for the citations */
-table.citation td.label + td > em {
+table.citation td.label + td > em,
+span.fn-backref {
 	display:none;
 }
 table.citation td.label + td ol {
 	margin-top: 0 !important;
 }
 /* Remove the back-reference link when there is one back-reference */
-table.citation td.label a {
+table.citation td.label a,
+dl.citation dt.label a {
 	pointer-events: none;
 	cursor: default;
 	text-decoration: none;
 	color: inherit;
 }
+/* Brackets for Sphinx 2.+ */
+a.brackets::before, span.brackets > a::before,
+a.brackets::after , span.brackets > a::after {
+	content: "";
+}
+.brackets::before {
+	content: "[";
+}
+.brackets::after {
+	content: "]";
+}
+/* Margins for Sphinx 2.+ */
+dl.citation > dd > p {
+	margin: 0;
+}
+dl.citation > * {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0.25em 0.7em;
+}
+dl.citation p {
+	line-height: normal;
+}
+
 /* Make a "bigcitation" class for citations with several lines */
-table.bigcitation td.label {
+.bigcitation .citation td.label, .bigcitation .citation dt
+{
 	max-width: 0;
 }
-table.bigcitation td.label + td {
+.bigcitation .citation td.label + td, .bigcitation .citation dt + dd
+{
 	padding-top: 1.5em;
 }
 
@@ -748,7 +845,8 @@ table.bigcitation td.label + td {
 /* Adjust horizontal lines */
 hr {
 	margin-top:1em;
-	border: 1px solid {{ theme_main_color_bold }};
+	border: 0;
+	border-top: 2px solid {{ theme_main_color_bold }};
 }
 div.toctree-smilei hr {
 	margin: 0.2em 0;
@@ -822,6 +920,12 @@ div.toctree-smilei hr {
 	padding-top: 5px;
 }
 
+/* ---- MathJax display issues ------------*/
+.MathJax_Display, .MathJax {
+	overflow-x: auto;
+	overflow-y: hidden;
+	z-index: 0;
+}
 
 
 @media screen and (max-width:  {{ theme_page_width | float * 1.01 }}mm) {
@@ -830,12 +934,18 @@ div.toctree-smilei hr {
 		margin:0;
 	}
 	
-	ul {
-		margin-left: 0;
+	.version::before {
+		font-size: 3vw;
+	}
+	
+	ul, ol {
+		margin-left: 0.6em;
 	}
 	
 	.document {
+		position: relative;
 		width: auto !important;
+		z-index:0;
 	}
 	
 	.footer {
@@ -861,6 +971,11 @@ div.toctree-smilei hr {
 		padding: 0;
 	}
 	
+	div.body h1 {
+		padding: 0.1em 0.3em;
+		word-break: break-all;
+	}
+	
 	div.header {
 	   display:block;
 	}
@@ -875,12 +990,17 @@ div.toctree-smilei hr {
 	}
 	#searchbox {
 		display:block !important;
-		left:{{ theme_head_height|float * 3.5 }}mm;
+		left:{{ theme_head_height|float * 2.8 }}mm;
 		right:{{ theme_head_height|float * 1.9 }}mm;
 	}
 	#searchinput {
 		display:block !important;
 		width:100%;
+	}
+	
+	table.fancy, table.fancy > tbody, table.fancy > tbody > tr {
+		display: block;
+		width: 100%;
 	}
 }
 

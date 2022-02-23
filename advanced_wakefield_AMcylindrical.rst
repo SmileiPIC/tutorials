@@ -33,7 +33,7 @@ The moving window in the namelist has been set to contain the laser and the firs
 ----
 
 Azimuthal-mode-decomposition
-^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In some physical situations like the one of this tutorial, the phenomena of interest have a cylindrical geometry or are very near to be cylindrically symmetric.
 

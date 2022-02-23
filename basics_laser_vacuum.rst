@@ -71,7 +71,7 @@ Once your simulation `input file` is correct, you can
 
   ./smilei laser_propagation_2d.py
 
-Before going to the analysis of your simulation, check the ``log``.
+Before going to the analysis of your simulation, check the output on the screen (the *log*).
 
 * What did change compared to the `test mode`?
 * Did your run complete correctly?
@@ -86,29 +86,22 @@ Preparing the post-processing tool
 
 Let's now turn to analysing the output of your run with the python post-processing
 package :program:`happi`.
-To do so, **open a new terminal window**, then install :program:`happi`:
-
-.. code-block:: bash
-   
-   cd /path/to/Smilei
-   make happi       # this is needed only once on a given computer
-
-Start *ipython*:
+To do so, **open a new terminal window**, and start *ipython*:
 
 .. code-block:: bash
     
     ipython
-
-----
-
-Get basic info on the simulation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 From *ipython*, import the happi module:
 
 .. code-block:: python
 
    import happi
+
+----
+
+Get basic info on the simulation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Open the simulation that you have just run:
 
@@ -172,6 +165,16 @@ Check the evolution of the ``energy balance`` in the simulation box:
 
     S.Scalar('Ubal').plot()
 
+You can also compare the last two quantities on the same plot:
+
+.. code-block:: python
+
+    happi.multiPlot(
+        S.Scalar('Utot', label="Total energy"),
+        S.Scalar('Ubal', label="Balance")
+        )
+
+
 
 ----
 
@@ -185,10 +188,10 @@ Open the ``Ey`` field and plot:
 .. code-block:: python
 
    diag = S.Field(0, "Ey")
-   diag.animate(vmin=-1, vmax=1, cmap="smileiD")
+   diag.slide(vsym=1)
 
-This new function ``animate()`` can animate the plot of any diagnostic when several
-timesteps are available.
+This new function ``slide()`` makes a sliding bar to explore the time-evolution
+of the simulation.
 
 Now, open the field with an average, and compare to the previous profile.
 The following calculates the laser amplitude envelope using ``"Ey**2+Ez**2"``.
