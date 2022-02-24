@@ -21,12 +21,12 @@ The following features will be addressed:
 Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-A relativistic electron bunch enters a plasma in a `AMcylindrical` geometry. It propagates in
+A relativistic electron bunch enters a plasma in a ``AMcylindrical`` geometry. It propagates in
 the plasma and creates a non linear plasma wave in its wake.
 
 .. note::
 
-  This tutorial is done in `AMcylindrical` (see also the related tutorial).
+  This tutorial is done in ``AMcylindrical`` with one azimuthal mode, thus assuming perfect cylindrical geometry in the fields (see also the related tutorial).
 
 Initializing our bunch through a plasma density and a Maxwell-Jüttner momentum distribution 
 would not allow us to set a certain emittance for the bunch 
@@ -34,24 +34,24 @@ would not allow us to set a certain emittance for the bunch
 Also, initializing a converging/diverging bunch or a particle distribution obtained from a beam
 transport code would not be possible with this kind of initialization.
 
-To manage these situations, an initialization of a `Species` with a `numpy` array is more suitable.
-The `Species` called `electron_bunch` in our input file the input file `beam_driven_wake.py <beam_driven_wake.py>`_
-will receive two numpy arrays, `array_position` and `array_momentum` in the `position_initialization` and `momentum_initialization`
+To manage these situations, an initialization of a ``Species`` with a ``numpy`` array is more suitable.
+The ``Species`` called ``electron_bunch`` in our input file the input file `beam_driven_wake.py <beam_driven_wake.py>`_
+will receive two ``numpy`` arrays, ``array_position`` and `array_momentum` in the ``position_initialization`` and ``momentum_initialization``
 arguments.
 
-Our bunch has `npart` particles, thus the shapes of these arrays will be `(4,npart)` 
-and `(3,npart)` respectively. The `array_position` contains the coordinates of our bunch particles.
-Remember that the origin of the axes is set on the propagation axis in `AMcylindrical` geometry,
-so the transverse coordinates may be positive or negative. Each of the first three rows represents the `x`,`y`,`z`
+Our bunch has ``npart`` particles, thus the shapes of these arrays will be ``(4,npart)``
+and ``(3,npart)`` respectively. The ``array_position`` contains the coordinates of our bunch particles.
+Remember that the origin of the axes is set on the propagation axis in ``AMcylindrical`` geometry,
+so the transverse coordinates may be positive or negative. Each of the first three rows represents the ``x``,``y``,``z``
 coordinates of the particles, while each column represents a particle.
 The last row represents the weight given to each particle, related to the macro-particle charge.
-Similarly, the `array_momentum` contains the particles momenta `px`,`py`,`pz`.
-With this initialization the density profile of the `Species` will be computed from the position of the
-particles, and not from a profile given in the `Species` block as in other tutorials.
+Similarly, the ``array_momentum`` contains the particles momenta ``px``,``py``,``pz``.
+With this initialization the density profile of the ``Species`` will be computed from the position of the
+particles, and not from a profile given in the ``Species`` block as in other tutorials.
 
 In our case, we generate the particles and momenta distribution of the electron bunch
 assuming a gaussian distribution in the momentum space, with custom average energy, emittance, rms sizes, etc.
-The bunch is assumed as waist (i.e. not converging, nor diverging), but manipulating the `numpy` arrays of the 
+The bunch is assumed as waist (i.e. not converging, nor diverging), but manipulating the ``numpy`` arrays of the 
 bunch particles it is easy to generate a more realistic electron bunch.
 
 More details on the initialization through numpy arrays or from a file can be 
@@ -74,7 +74,7 @@ a block ``Species`` named ``bunch_electrons``.
 The flag ``relativistic_field_initialization = True`` in the ``bunch_electrons`` `Species`
 means that its self-consistent electromagnetic fields will be computed at the time when
 this ``Species`` starts to move, in this case at ``t=0`` because ``time_frozen=0``.
-The procedure used in :program:`Smilei` for this initialization is detailed
+The procedure used in :program:`Smilei` for this field initialization is detailed
 `here <https://smileipic.github.io/Smilei/relativistic_fields_initialization.html>`_.
 
 These electromagnetic fields will propagate with the bunch and push away the plasma electrons
@@ -182,21 +182,21 @@ Particle Binning diagnostic
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let's study in detail the evolution of the electron bunch.
-To start, the energy spectrum can be found using the first `ParticleBinning` diagnostic defined in the namelist::
+To start, the energy spectrum can be found using the first ``ParticleBinning`` diagnostic defined in the namelist::
 
   S.ParticleBinning(0).slide()
 
 Note how the bunch energy spread is increasing and the average energy is decreasing as it drives the plasma waves in its propagation.
 
-The longitudinal phase space can be seen through the second `ParticleBinning` diagnostic of the namelist::
+The longitudinal phase space can be seen through the second ``ParticleBinning`` diagnostic of the namelist::
 
   S.ParticleBinning(1).slide()
 
 Note how the bunch tail is losing its energy. That zone of the bunch is where the decelerating electric field
 is generated.
 
-The third and three `ParticleBinning` diagnostics can show you the bunch distribution in transverse phase space
-(`y` and `z` planes respectively). Note how the transverse coordinates can be negative in cylindrical geometry.
+The third and three ``ParticleBinning`` diagnostics can show you the bunch distribution in transverse phase space
+(``y`` and ``z`` phase space planes respectively). Note how the transverse coordinates can be negative in cylindrical geometry.
 
 ----
 
@@ -205,9 +205,9 @@ Acceleration of a witness bunch
 
 Now you know everything necessary to simulate beam-driven plasma acceleration: try to define
 a second, smaller electron bunch, with the same energy of the driver bunch, smaller charge and small enough to fit 
-in the plasma wave and injected in the accelerating phase of the plasma wave (i.e. negative `Ex`).
+in the plasma wave and injected in the accelerating phase of the plasma wave (i.e. negative ``Ex``).
 
-Use the `numpy` initialization method as you have done for the bunch driving the waves. 
+Use the ``numpy`` array initialization method as you have done for the bunch driving the waves. 
 Study the evolution of the energy spectrum of this witness bunch and check that its average energy is increasing.
 
  
