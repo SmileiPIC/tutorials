@@ -42,10 +42,10 @@ arguments.
 Our bunch has ``npart`` particles, thus the shapes of these arrays will be ``(4,npart)``
 and ``(3,npart)`` respectively. The ``array_position`` contains the coordinates of our bunch particles.
 Remember that the origin of the axes is set on the propagation axis in ``AMcylindrical`` geometry,
-so the transverse coordinates may be positive or negative. Each of the first three rows represents the ``x``,``y``,``z``
+so the transverse coordinates may be positive or negative. Each of the first three rows represents the ``x``, ``y``, ``z``
 coordinates of the particles, while each column represents a particle.
 The last row represents the weight given to each particle, related to the macro-particle charge.
-Similarly, the ``array_momentum`` contains the particles momenta ``px``,``py``,``pz``.
+Similarly, the ``array_momentum`` contains the particles momenta ``px``, ``py``, ``pz``.
 With this initialization the density profile of the ``Species`` will be computed from the position of the
 particles, and not from a profile given in the ``Species`` block as in other tutorials.
 
@@ -173,7 +173,7 @@ The wave form has a shape between a sinusoidal wave and a sawtooth wave,
 since the set-up is in the so-called weakly nonlinear regime. 
 
 Try to change the total bunch charge ``Q_bunch`` and rerun the simulation, for example multiplying it by a factor
-``0.1`` (a linear regime), ``1.5`` (a nonlinear regime). What happens to the ``Ex`` waveform?
+``0.1`` (a linear regime), ``2.0`` (a nonlinear regime). What happens to the ``Ex`` waveform?
 
 The plasma electrons pushed away from the bunch path will be attracted back to their original positions
 by the immobile ions and start to oscillate.
