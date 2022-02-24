@@ -1,7 +1,7 @@
 Weibel and two-stream instabilities
 ================================================
 
-The goal of this tutorial is to run to physics simulation relating to streaming instabilities,
+The goal of this tutorial is to run to physics simulations relating to streaming instabilities,
 and in particular to the electron Weibel and two-stream instabilities.
 
 This tutorial will also allow you to:
@@ -62,8 +62,8 @@ the magnetic field :math:`B_y`:
 
 .. code-block:: python
 
-    S.Field(0,'Jz'  ).streak()
-    S.Field(0,'By_m').streak()
+    S.Field(0,'Jz'  ).streak(vsym=True)
+    S.Field(0,'By_m').streak(vsym=True)
 
 Do you have any clue what is going on? 
 You can get another view using an animation:
@@ -72,7 +72,7 @@ You can get another view using an animation:
 
     jz = S.Field(0,'Jz')
     by = S.Field(0,'By_m',vmin=-0.5,vmax=0.5)
-    happi.multiPlot(jz,by)
+    happi.multiSlide(jz,by)
 
 Now, using the ``Scalar`` diagnostics, check the temporal evolution of the energies
 in the magnetic (:math:`B_y`) and electrostatic (:math:`E_z`) fields.
@@ -105,23 +105,26 @@ then, have a first look at your simulation results:
 
 .. code-block:: python
 
-    uel = S.Scalar('Uelm',data_log=True,vmin=-9,vmax=-2)
-    ne  = S.Field(0,'-Rho_eon1-Rho_eon2', xmin=0, xmax=1.05, vmin=0, vmax=2)
-    ex  = S.Field(0,'Ex', xmin=0, xmax=1.05, vmin=-0.2, vmax=0.2)
-    phs = S.ParticleBinning(0,data_log=True)
-    happi.multiPlot(uelm,ne,ex,phs,shape=[1,4])
+    uel = S.Scalar('Uelm',data_log=True,vmin=-9,vmax=-2) 
+    ne  = S.Field(0,'-Rho_eon1-Rho_eon2', xmin=0, xmax=1.05, vmin=0, vmax=2) 
+    ex  = S.Field(0,'Ex', xmin=0, xmax=1.05, vmin=-0.2, vmax=0.2) 
+    phs = S.ParticleBinning(0,cmap="smilei_r",vmin=0,vmax=200) 
+    happi.multiSlide(uel,ne,ex,phs,shape=[1,4])    
 
 Any clue what's going on? 
 
 Let's have a look at the energy in the electrostatic field :math:`E_x`:
 
 * can you distinguish the linear and non-linear phase of the instability? 
-* check the :math:`(x,p_x)`-phase-space distribution (and energy in the electromagnetic fields), can you get any clue on what leads the instability to saturate?
+* check the :math:`(x,p_x)`-phase-space distribution (and energy in the electromagnetic fields),
+can you get any clue on what leads the instability to saturate?
 
-Try changing the simulation box size (which is also the wavelength of the considered perturbation), e.g. taking: 
-:math:`L_x =` 0.69, 1.03 or 1.68 :math:`c/\omega_{p0}`. What do you observe?
+Try changing the simulation box size (which is also the wavelength of the considered
+perturbation), e.g. taking: :math:`L_x =` 0.69, 1.03 or 1.68 :math:`c/\omega_{p0}`.
+What do you observe?
 
-Now, take :math:`L_x =` 0.6, 0.31 or 0.16 :math:`c/\omega_{p0}`. What are the differences? Can you explain them?
+Now, take :math:`L_x =` 0.6, 0.31 or 0.16 :math:`c/\omega_{p0}`. What are the differences?
+Can you explain them?
 
 
 

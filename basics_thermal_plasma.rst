@@ -5,7 +5,8 @@ The goal of this tutorial is to get familiar with:
 
 * the ``Species`` block that allows you to define a particle species,
 * the ``ParticleBinning`` diagnostics to obtain particle energy spectra,
-* the problem of `numerical heating` and the necessity to correctly `resolve the electron dynamics` in explicit PIC codes.
+* the problem of `numerical heating` and the necessity to correctly `resolve the electron dynamics`
+  in explicit PIC codes.
 
 
 ----
@@ -101,16 +102,19 @@ but you can also use the ``multiSlide`` function of :program:`happi`:
 The ``ParticleBinning`` diagnostics
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now, have a look at the ``ParticleBinning`` diagnostics, and in particular
-at the electron energy distribution at initial and latest timesteps:
+Now, have a look at the ``ParticleBinning`` diagnostics in the input file.
+What kind of data will this diagnostic provide?
+
+You can compare the results at the beginning and at the end of the simulation:
 
 .. code-block:: python
 
-    Nt = S.ParticleBinning(0).getTimesteps()[-1]
+    Nt = S.ParticleBinning(0).getTimesteps()[-1] # the last timestep
     f_initial = S.ParticleBinning(0, data_log=True, timesteps=0 , label="initial")
     f_final   = S.ParticleBinning(0, data_log=True, timesteps=Nt, label="final")
     happi.multiPlot(f_initial, f_final)
 
+What can you conclude?
 
 ----
 
