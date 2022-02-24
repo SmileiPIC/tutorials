@@ -115,9 +115,9 @@ Any clue what's going on?
 
 Let's have a look at the energy in the electrostatic field :math:`E_x`:
 
-* can you distinguish the linear and non-linear phase of the instability? 
-* check the :math:`(x,p_x)`-phase-space distribution (and energy in the electromagnetic fields),
-can you get any clue on what leads the instability to saturate?
+* Can you distinguish the linear and non-linear phase of the instability? 
+* Check the :math:`(x,p_x)`-phase-space distribution (and energy in the electromagnetic fields),
+  can you get any clue on what leads the instability to saturate?
 
 Try changing the simulation box size (which is also the wavelength of the considered
 perturbation), e.g. taking: :math:`L_x =` 0.69, 1.03 or 1.68 :math:`c/\omega_{p0}`.

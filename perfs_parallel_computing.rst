@@ -1,66 +1,88 @@
 Parallel computing
 =================================
 
-As supercomputers (as well as local clusters or personal computers)
-become larger, we can explore new domains of plasma physics
-with expensive, 3D, high-resolution models.
+As supercomputers become larger, we can explore new domains of plasma physics
+with more expensive simulations. However, this type of computer requires the
+computation to be made by many computing cores at the same time, *in parallel*.
 
-However, optimizing parallel algorithms on these new machines
-becomes increasingly difficult, because hardware architectures
-become increasingly complex as their computational power grows:
+Optimizing parallel algorithms on these new machines becomes increasingly difficult,
+because their architecture complexity grows together with their power.
+See this `introduction to parallelism <https://smileipic.github.io/Smilei/parallelization.html#decomposition-of-the-box>`_.
 
-* supercomputers are composed of *nodes* which communicate through a dedicated network: see *distributed memory* parallelism below
-* nodes are composed of many *computing units* (for instance, *cores*) which must be synchronized: see *shared memory* parallelism below
-* cores access more and more advanced instructions sets, such as *SIMD* (Single Instruction Multiple Data) instructions
+.. rubric:: Basic architecture of supercomputers:
 
-In Smilei, these three points are respectivly adressed with
-MPI, OpenMP and vectorization using ``#pragma omp simd`` on Intel architecture.
+..
 
-Being efficient at each level of parallelism requires to understand constraints on 
-the memory intimately related to them. This tutorial focuses on distributed and
-shared memory paradigms in Smilei.
+  * Many **nodes** communicate through a *network*. Each node owns its own memory.
+  * Nodes are composed of many **computing units** (for instance, *cores*) which share the memory of the node.
+
+  .. image:: _static/node.svg
+    :width: 50%
+    :align: center
+  
+  
+
+.. Cores access more and more advanced instructions sets, such as *SIMD* (Single Instruction Multiple Data) instructions
+
+.. In Smilei, these three points are respectivly adressed with MPI, OpenMP and vectorization using ``#pragma omp simd`` on Intel architecture.
+
+..
+
+  This defines two levels of parallelism:
+
+  * *"Distributed memory"*: Communicating information between nodes that do not access the same memory.
+  * *"Shared memory"*: Synchronizing the operations of the cores that share the same memory.
 
 .. rubric:: Distributed memory
-            
-To enable parallel simulations over several nodes which all have their own memory, we first have to perform a domain decomposition:
-the simulation's data (particles and fields) is decomposed into small pieces, called `Patch`, and evenly distributed between the memories.
 
-Then, an **MPI process** is associated to each `Patch`. 
-A single process is usually associated to several `Patch`.
-Each process is also associated to computational ressources, a fraction of the supercomputer, which may have several processing units (cores) but has a single memory.
-The **MPI process** executes all the computation necessary to handle the patches he has been given using the ressources he has access to.
+..
 
-In order to combat computational load imbalance, inherent to many particle-in-cell simulations,
-the domain decomposition in :program:`Smilei` creates many more `Patch` than processes.
-The main idea is to provide a variable number of `Patch` to each MPI process in order to balance the computational
-load carried by each process (details about `parallelism <https://smileipic.github.io/Smilei/parallelization.html#decomposition-of-the-box>`_).
+  The protocal that handles the communication of data between different nodes is called MPI.
+  Smilei will run independently on each of those locations, and we call each of these instances an **MPI process**
+  (sometimes also called **task**). One MPI process is usually associated to many cores inside one single node,
+  but it does not necessarily occupy all the cores in this node.
+  
+  The data is split into small pieces, called **patches**, so that it can be distributed to those MPI processes.
+  This is called *domain decomposition*.
+  
+  Each **MPI process** executes all the computation necessary to handle the patches he has been given using the ressources he has access to.
+  The main difficulty is to provide an equal amount of work to each MPI process. This is called **load balancing**. We will see how
+  Smilei distributes the patches to MPI processes in order to have a uniform load.
 
 .. rubric:: Shared memory
 
-This specific domain decomposition is also well adapted to the application of **OpenMP threads** parallelism over this collection of `Patch` per process.
-Indeed, the MPI process is able to spawn as many **openMP threads** as he has cores.
-These threads will be affected to successive `Patch` and will be able to efficiently deal with them in parallel.
-This is an effective way to balance the load since as soon as a thread is done with a given `Patch`, it can start executing the next one withtout having to
-synchronize with another thread that could have been slower and would have induced idle time.
-This method also guarantees that threads are always treating different `Patch` and thus avoid fine grain memory concurrency between them during the current deposition.
+..
+
+  Inside a given MPI process, where the shared memory contains many patches to be computed,
+  the work must be synchronized between available cores.
+  This is handled by the **OpenMP** protocol.
+  
+  OpenMP creates **threads** which are sequences of instructions to be executed by cores, and schedules
+  the parallel work of all available cores accordingly.
+  
+  Each thread will be assigned to successive patches, in parallel with other threads.
+  This is an effective way to balance the load inside the MPI process: when a patch is done, a core will automatically
+  work on the next patch withtout having to wait for another core that might still be working.
 
 .. rubric:: Summary
 
-The domain should be divided into many `Patch` for each MPI process for two reasons:
+..
 
-* to distribute the computational load and feed all threads associated to each process
-* to be able to manage the load imbalance
-  
-An attention must be paid to the limit of this approach.
-An excessively refined decomposition with too many and too small patches is going to produce a large overhead due to synchronization (MPI and OpenMP).
+  The simulation domain should be divided into many patches for two reasons:
 
-The goal of this tutorial is to understand how to setup a simulation to get good performances,
-the following features will be addressed:
+  * to distribute the computational load and feed all threads associated to each MPI process
+  * to be able to manage the load imbalance by moving patches between different MPI processes
+    
+  But, be careful: an excessively refined decomposition (with too many small patches) will
+  produce a large overhead due to communications and synchronizations.
 
-* Decomposition of the simulation box into patches
-* Choice of the number of MPI *processes* and OpenMP *threads*
-* Smilei's *load balancing* feature
-* Performance analysis with the ``DiagPerformances``
+  The goal of this tutorial is to understand how to setup a simulation to get good performances.
+  The following features will be addressed:
+
+  * Decomposition of the simulation box into patches
+  * Choice of the number of MPI processes and OpenMP threads
+  * Smilei's *load balancing* feature
+  * Performance analysis with the ``DiagPerformances``
 
 ----
 
@@ -89,7 +111,8 @@ It could seems out of context but the idea is to illustrate how works the code p
 Splitting the box
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In a first test, we will use a single core to focus on the box splitting:
+In a first test, we will use a single core with in a single MPI process to focus on the box splitting.
+Launch the simulation with 1 MPI and 1 thread only. For instance, you could use commands similar to:
 
 .. code-block:: bash
 
