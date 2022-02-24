@@ -17,7 +17,7 @@ The simulation used for this tutorial is relatively heavy so make sure to submit
 Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-An ultra high intensity laser enters an under dense plasma. 
+An high intensity laser pulse enters an under dense plasma. 
 The laser is linearly polarized in the ``y`` direction.
 It propagates in the plasma in the positive ``x`` direction and creates a non linear plasma wave in its wake.
 The moving window in the namelist has been set to contain the laser and the first wake period in the simulation window.
@@ -42,9 +42,10 @@ Each mode is defined on a 2D grid, where the two dimensions are the longitudinal
 
 In this case, Maxwell's Equations can evolve independently the 2D azimuthal modes, and to save time we can retain only a certain number of azimuthal modes, 
 without losing the relevant physics. In the case simulated in this tutorial, using only two azimuthal modes allows to catch the relevant physics.
-The particles, on the other hand, move in the 3D space, pushed by the 3D fields reconstructed from the electromagnetic azimuthal modes. 
+The particles, on the other hand, move in the 3D space, pushed by the 3D Cartesian fields reconstructed from the electromagnetic azimuthal modes. 
 With this powerful technique, 3D features can be simulated at the cost of approximately N 2D simulations, where N is the number of modes we keep in the simulation.
 
+More details on the Azimuthal modes decomposition can be found `here <https://smileipic.github.io/Smilei/azimuthal_modes_decomposition.html>`_.
 
 Simulation setup
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -56,7 +57,7 @@ Check them in the input file:
 
 * The grid resolution is given by a longitudinal and radial resolution, since the azimuthal modes are defined on a 2D grid 
 
-* The number of azimuthal modes simulated is set in ``number_of_AM``. In this case only two of them are necessary to catch the relevant physics
+* The number of azimuthal modes simulated is set in ``number_of_AM``. In this case only two of them are necessary to reproduce the relevant physics phenomena
 
 * The laser can be defined through the ``LaserGaussianAM`` block
 
@@ -64,7 +65,7 @@ Check them in the input file:
 
 * Still in the plasma density profile definition, remember that ``r=0`` corresponds to the lower boundary of the grid, i.e. the laser propagation axis
 
-* The ``Probes`` origin and corners are defined with three coordinates, since they will interpolate the fields in the 3D space as in a 3D simulation.
+* The ``Probes`` origin and corners are defined with three coordinates, since they will interpolate the fields in the 3D space as if they were macro-particles in a 3D simulation.
 
 ----
 
@@ -72,7 +73,7 @@ Check them in the input file:
 Step by step tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Download  `this input file <laser_wake_AM.py>`_ and open it with your favorite editor and run the simulation.
+Download  `this input file <laser_wake_AM.py>`_ , open it with your favorite editor and run the simulation.
 Then, open the results::
 
   import happi
@@ -86,12 +87,14 @@ Now let's have a look at the grid fields, for example the electron density::
 
 In the previous command we have specified a certain angle ``theta = 0`` (i.e. the demi-plane including the positive ``y`` coordinates).
 With the ``Field`` diagnostic, you can virtually specify any angle ``theta``. 
-This means that at the cost of approximately N 2D simulations (N is the number of azimuthal modes, two in this case), you can obtain the fields in all the 3D space, like in a 3D simulation.
-Note that you will see only half of the plane, as the ``Field`` diagnostics shows the fields on the grid, which is defined on a half-plane.
+See the reference frame `here <https://smileipic.github.io/Smilei/azimuthal_modes_decomposition.html>`_ for the definition of this angle.
 
-By default, the last command we used will plot the last timestep available. You can also plot a specific timestep::
+At the cost of approximately N 2D simulations (N is the number of azimuthal modes, two in this case), you can obtain the fields in all the 3D space, like in a 3D simulation.
+Note that in the ``Field`` diagnostic you will see only half of the plane, as the ``Field`` diagnostics shows the fields on the grid, defined on a half-plane in this geometry.
+
+By default, the last command we used will plot the last timestep available. You can also slide along the available timesteps::
   
-  S.Field.Field0("-Rho",timesteps=6000.,theta=0.).plot(figure=1, vmin = 0., vmax = 0.01)
+  S.Field.Field0("-Rho",timesteps=6000.,theta=0.).slide(figure=1, vmin = 0., vmax = 0.01)
 
 In the last command no azimuthal mode was specified. By default, if no mode is specified the reconstruction with all the modes is performed.
 
@@ -140,11 +143,14 @@ For how we have defined it, you won't see only half plane as in the ``Field`` di
 
 Let's give a look to the evolution of the plasma density::
 
-  S.Probe.Probe1("-Rho").animate(figure=3,vmin=0.,vmax=0.01)
+  S.Probe.Probe1("-Rho").slide(figure=3,vmin=0.,vmax=0.01)
 
-To see the longitudinal electric field and the electric field in the ``y`` direction, you can use::
+To see the evolution of the longitudinal electric field and the electric field in the ``y`` direction, you can use::
 
-  S.Probe.Probe1("Ex").animate(figure=4)
-  S.Probe.Probe1("Ey").animate(figure=5)
+  S.Probe.Probe1("Ex").slide(figure=4)
+  S.Probe.Probe1("Ey").slide(figure=5)
+
+Note that the ``Fields`` contained the cylindrical components of the fields, but the ``Probes`` diagnostics
+contain the Cartesian reconstruction of the fields, thus with Cartesian components.
 
   

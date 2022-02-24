@@ -7,7 +7,7 @@ recommend to complete first the tutorial on :doc:`advanced_wakefield`. In that
 Tutorial, Laser Wakefield Acceleration is simulated in a standard way, i.e. the
 laser is defined through its electromagnetic fields defined on the grid.
 
-With 2 MPI process and 20 OpenMP threads this simulation should run in a few minutes.
+With 2 MPI processes and 20 OpenMP threads this simulation should run in a few minutes.
 (remember to set the number of OpenMP threads as explained in :doc:`basics_setup`).
 
 The following features will be addressed:
