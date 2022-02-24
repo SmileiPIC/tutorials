@@ -120,3 +120,7 @@ DiagProbe(
     fields = ['Ex','Ey','Ez','Bx','By','Bz','Rho_ion','Rho_eon']
     )
 
+
+DiagPerformances(
+    every = globalEvery,
+)

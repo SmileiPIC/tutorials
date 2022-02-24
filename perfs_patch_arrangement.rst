@@ -29,10 +29,10 @@ we propose to run on several MPI processes and only 1 thread per process.
 
 ----
 
-Using the appropriate patch arrangement
+Setting up the simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Run in the default configuration :
+Set your simulation with 16 MPI processes, and only 1 thread per process. Typically:
 
 .. code-block:: bash
 
@@ -45,6 +45,12 @@ Observe timers and the probe diagnostics results.
 
    Field diagnostics do not work with the alternative ``patch_arrangement``
    so we use Probe diagnostics instead.
+
+
+----
+
+Change the patch arrangement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Activate the dynamic load balancing to absorb synchronizations overhead
 

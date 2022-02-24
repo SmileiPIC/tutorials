@@ -37,7 +37,7 @@ See this `introduction to parallelism <https://smileipic.github.io/Smilei/parall
 
 ..
 
-  The protocal that handles the communication of data between different nodes is called MPI.
+  The protocol that handles the communication of data between different nodes is called MPI.
   Smilei will run independently on each of those locations, and we call each of these instances an **MPI process**
   (sometimes also called **task**). One MPI process is usually associated to many cores inside one single node,
   but it does not necessarily occupy all the cores in this node.
