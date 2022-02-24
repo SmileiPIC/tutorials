@@ -38,6 +38,7 @@ To manage these situations, an initialization of a `Species` with a `numpy` arra
 The `Species` called `electron_bunch` in our input file the input file `beam_driven_wake.py <beam_driven_wake.py>`_
 will receive two numpy arrays, `array_position` and `array_momentum` in the `position_initialization` and `momentum_initialization`
 arguments.
+
 Our bunch has `npart` particles, thus the shapes of these arrays will be `(4,npart)` 
 and `(3,npart)` respectively. The `array_position` contains the coordinates of our bunch particles.
 Remember that the origin of the axes is set on the propagation axis in `AMcylindrical` geometry,
@@ -89,14 +90,14 @@ triggering a plasma oscillation.
 
 .. note::
 
-  The moving window in the namelist has been set to contain the electron bunch and the first wake period in the simulation window.
-
-.. note::
-
   You will see that the plasma does not fill all the simulation window. 
   This is because we want to include the electron bunch field in the window, but the plasma particles creating the plasma oscillations
   are only those radially near to the electron beam. Plasma particles at greater radial distances would not contribute to the relevant physics, but they would 
   require additional computational time. Thus we can omit them to perform the simulation more quickly without losing relevant phenomena.
+
+.. note::
+
+  The moving window in the namelist has been set to contain the electron bunch and the first wake period in the simulation window.
 
 ----
 
@@ -203,7 +204,7 @@ Acceleration of a witness bunch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now you know everything necessary to simulate beam-driven plasma acceleration: try to define
-a smaller electron bunch, with the same energy of the driver bunch, smaller charge and small enough to fit 
+a second, smaller electron bunch, with the same energy of the driver bunch, smaller charge and small enough to fit 
 in the plasma wave and injected in the accelerating phase of the plasma wave (i.e. negative `Ex`).
 
 Use the `numpy` initialization method as you have done for the bunch driving the waves. 
