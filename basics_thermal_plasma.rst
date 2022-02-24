@@ -5,7 +5,6 @@ The goal of this tutorial is to get familiar with:
 
 * the ``Species`` block that allows you to define a particle species,
 * the ``ParticleBinning`` diagnostics to obtain particle energy spectra,
-* the ``happi.multiPlot`` tool,
 * the problem of `numerical heating` and the necessity to correctly `resolve the electron dynamics` in explicit PIC codes.
 
 
@@ -82,21 +81,20 @@ First, `prepare` the data:
 .. code-block:: python
 
     # minus the electron density
-    ne = S.Field(0,'-Rho_eon',vmin=-0.25,vmax=2, label="e- density")
-    
+    ne = S.Field(0,'-Rho_eon', label="e- density")
+
     # ion density
     ni = S.Field(0,'Rho_ion', label="ion density")
-    
-    # Ex field
-    ex = S.Field(0,'Ex', label="Ex field")
 
-You may plot all these quantities independently using ``ex.plot()`` or ``ex.animate()``,
-but you can also use the ``multiPlot`` function of :program:`happi`:
+    # Ex field
+    ex = S.Field(0,'Ex', label="Ex field", vmin=-0.25,vmax=2)
+
+You may plot all these quantities independently using ``ex.plot()`` or ``ex.slide()``,
+but you can also use the ``multiSlide`` function of :program:`happi`:
 
 .. code-block:: python
 
-    happi.multiPlot(ne,ni,ex)
-
+    happi.multiSlide(ne,ni,ex)
 
 ----
 
@@ -108,7 +106,7 @@ at the electron energy distribution at initial and latest timesteps:
 
 .. code-block:: python
 
-    Nt        = int(S.namelist.tsim / S.namelist.dt)
+    Nt = S.ParticleBinning(0).getTimesteps()[-1]
     f_initial = S.ParticleBinning(0, data_log=True, timesteps=0 , label="initial")
     f_final   = S.ParticleBinning(0, data_log=True, timesteps=Nt, label="final")
     happi.multiPlot(f_initial, f_final)
@@ -131,6 +129,7 @@ Can you check the electron spectrum at the beginning and end of the simulation?
 What is going on?
 
 Finally, increase your spatial resolution to
-:math:`\Delta x = 2\,c/\omega_{pe} = 2\,c\lambda_{\rm De}/v_{\rm th}`.
+:math:`\Delta x = 2\,c/\omega_{pe} = 2\,c\lambda_{\rm De}/v_{\rm th}` (you will need to extend
+your simulation box size to have enough cells).
 Check the evolution of the total energy.
 What do you observe?

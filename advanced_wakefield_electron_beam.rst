@@ -174,11 +174,16 @@ since the set-up is in the so-called weakly nonlinear regime.
 Try to change the total bunch charge ``Q_bunch`` and rerun the simulation, for example multiplying it by a factor
 ``0.1`` (a linear regime), ``1.5`` (a nonlinear regime). What happens to the ``Ex`` waveform?
 
+<<<<<<< HEAD
 
 ----
 
 Particle Binning diagnostic
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=======
+The plasma electrons pushed away from the bunch path will be attracted back to their original positions
+by the immobile ions and start to oscillate.
+>>>>>>> d3596fb0c71ad3d2d4db9391f1900d9f61eb1e78
 
 Let's study in detail the evolution of the electron bunch.
 To start, the energy spectrum can be found using the first `ParticleBinning` diagnostic defined in the namelist::
