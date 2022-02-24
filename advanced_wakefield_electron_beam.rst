@@ -108,7 +108,7 @@ A subtlety: why ions are not present?
 Maxwell's equations and the continuity equation :math:`\nabla\cdot\mathbf{J}=-\partial_t\rho` 
 (which is true also for the single species) imply that :math:`\nabla\cdot\mathbf{E}-\rho` remains 
 constant throughout the simulation
-(see `this <http://www.maisondelasimulation.fr/smilei/relativistic_fields_initialization.html>`_).
+(see `this <https://smileipic.github.io/Smilei/relativistic_fields_initialization.html>`_).
 This can be written :math:`\nabla\cdot\mathbf{E}-\rho_e-\rho_i=\nabla\cdot\mathbf{E_0}-\rho_{e0}-\rho_{i0}`.
 If we consider ions immobile, then this becomes :math:`\nabla\cdot\mathbf{E}-\rho_e=\nabla\cdot\mathbf{E_0}-\rho_{e0}`, 
 because the ion continuity equation implies that if :math:`\mathbf{J}_{i}=0` then :math:`\rho_i=\rho_{i0}`.

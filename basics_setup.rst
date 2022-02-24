@@ -7,7 +7,7 @@ If you are, instead, using a home computer or workstation, we recommend you scal
 simulations down in order to reduce their execution time.
 
 We recommend getting some `basic understanding of parallel computing
-<http://www.maisondelasimulation.fr/smilei/parallelization.html>`_ and some basic knowledge
+<https://smileipic.github.io/Smilei/parallelization.html>`_ and some basic knowledge
 on UNIX commands.
 
 You should first open a `terminal` or a `console`, then ``cd`` to the directory of your
@@ -47,7 +47,7 @@ Prepare the environment
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 The environment should be ready to accomodate for Smilei's installation.
-Check `this page <http://www.maisondelasimulation.fr/smilei/installation.html>`_
+Check `this page <https://smileipic.github.io/Smilei/installation.html>`_
 for details.
 
 In short, you need:
