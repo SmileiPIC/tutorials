@@ -160,7 +160,7 @@ Laser Wakefield Acceleration, can be plotted in this way, choosing the field
   S.Probe.Probe0("Ex").slide(figure=3)
 
 Through the function ``multiSlide``, follow the evolution of the envelope and the of
-electron density on the axis:
+electron density on the axis::
 
   envelope_E = S.Probe.Probe0("Env_E_abs")
   Ex   = S.Probe.Probe0("100*Ex")
@@ -171,7 +171,7 @@ to have a more readable scale in the plot.
 
 The evolution of both the envelope and the electron density can be studied in 2D at the same time
 through the `transparent` argument of the `multiSlide` function. We'll make transparent
-all the values of `Env_E_abs` below 1.:
+all the values of `Env_E_abs` below 1.::
 
   Rho   = S.Field.Field0("-Rho",cmap="Blues_r",vmax=0.01)
   Env_E   = S.Field.Field0("Env_E_abs",cmap="hot",vmin=1,transparent="under")
