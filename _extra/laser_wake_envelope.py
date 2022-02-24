@@ -23,7 +23,7 @@ Main(
     cell_length  = [dx, dtrans],
     grid_length = [ Lx,  Ltrans],
 
-    number_of_patches =[npatch_x, 32],
+    number_of_patches =[npatch_x, 16],
     
     clrw = nx/npatch_x,
 
@@ -50,16 +50,24 @@ LoadBalancing(
 
 n0 = 0.002 # plasma plateau density 
 
+Radius_plasma = 130.
+longitudinal_profile = polygonal(xpoints=[center_laser+1.5*laser_fwhm,center_laser+2.*laser_fwhm,15000,20000],xvalues=[0.,n0,n0,0.])
+def my_density_profile(x,y):
+    r = abs(Ltrans/2.-y)
+    profile_r = 0.
+    if (r<Radius_plasma):
+        profile_r = 1.
+    return profile_r*longitudinal_profile(x,y)
+
 Species(
     name = "electron",
     position_initialization = "regular",
     momentum_initialization = "cold",
     particles_per_cell = 4,
     c_part_max = 1.0,
-    ponderomotive_dynamics = True, # this species interacts with laser envelope
     mass = 1.0,
     charge = -1.0,
-    charge_density = polygonal(xpoints=[center_laser+1.5*laser_fwhm,center_laser+2.*laser_fwhm,15000,20000],xvalues=[0.,n0,n0,0.]),
+    charge_density = my_density_profile,
     mean_velocity = [0.0, 0.0, 0.0],
     temperature = [0.0],
     pusher = "ponderomotive_boris", # pusher to interact with envelope
@@ -90,12 +98,12 @@ Checkpoints(
 list_fields = ['Ex','Ey','Rho','Env_A_abs','Env_E_abs']
 
 DiagFields(
-   every = 200,
+   every = 400,
         fields = list_fields
 )
 
 DiagProbe(
-        every = 200,
+        every = 400,
         origin = [0., Main.grid_length[1]/2.],
         corners = [
             [Main.grid_length[0], Main.grid_length[1]/2.]
@@ -105,5 +113,6 @@ DiagProbe(
 )
 
 
-DiagScalar(every = 10, vars=['Env_A_absMax','Env_E_absMax'])
+DiagScalar(every = 20, vars=['Env_A_absMax','Env_E_absMax'])
+
 
