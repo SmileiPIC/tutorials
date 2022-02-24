@@ -14,7 +14,7 @@ See this `introduction to parallelism <https://smileipic.github.io/Smilei/parall
 ..
 
   * Many **nodes** communicate through a *network*. Each node owns its own memory.
-  * Nodes are composed of many **computing units** (for instance, *cores*) which share the memory of the node.
+  * Nodes are composed of many **computing units** (most often *cores*) which share the memory of the node.
 
   .. image:: _static/node.svg
     :width: 50%
@@ -169,19 +169,21 @@ Introduce Smilei’s parallelism
 Let's make the first step to introduce parallel processing of all the patches.
 We will use several OpenMP threads in a single MPI process.
 
-Use the best patch configuration found in the previous step: 8x8 patches.
-The single patch simulation is maybe slightly faster but it does not exhibit any parallelism.
+Use a good patch configuration found in the previous step: 8x8 patches.
+The single patch simulation is maybe slightly faster but it cannot exhibit any parallelism.
 
-Use the following commands to setup 1 process, and 16 threads per process.
-You may need to adjust these settings according to your machine.
+Setup 1 MPI process, and 16 threads per process.
+You may need to adjust these settings according to your machine. TypicallyL
 
 .. code-block:: bash
 
-  source ${SMILEI_ROOT}/scripts/set_omp_env.sh 16
+  export OMP_NUM_THREADS=16
+  export OMP_SCHEDULE=dynamic
   mpirun -np 1 smilei beam_2d.py
 
 Make sure that, in the output log, it specifies the correct number of
-processes and threads. 
+processes and threads.
+
 Even though 16 threads are used, the speed-up is very poor.
 
 Let us now use ``happi`` to analyse the simulation.
@@ -192,7 +194,7 @@ Open an ``ipython`` prompt, then run::
 
 You can have a quick understanding of what happens in the simulation using::
 
-  S.ParticleBinning(0).animate()
+  S.ParticleBinning(0).slide()
 
 A ball of plasma (30 cells radius) is moving through the box (256x256 cells):
 
@@ -228,10 +230,8 @@ to each thread. In this situation, threads will only work on their own pool,
 even if it is an empty region. This obviously prevents load balancing between threads.
 It is used on grids computing function of Smilei which is naturraly balanced.
 
-To choose the type of OpenMP scheduling, you can use the environment
-variable ``OMP_SCHEDULE``, which was set to ``dynamic`` in the script
-``set_omp_env.sh``.
-You can observe the difference with the ``static`` scheduling:
+To choose the type of OpenMP scheduling, you can set the environment
+variable ``OMP_SCHEDULE`` to ``static``. Typically:
 
 .. code-block:: bash
 
@@ -247,33 +247,26 @@ the level of parallelism, we advice the ``dynamic`` scheduling.
 Imbalance and distributed memory
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Run the 16 x 16 patches simulation but with a MPI only configuration:
+Run the 16 x 16 patches simulation but with a MPI-only configuration.
+Typically, you can write:
 
 .. code-block:: bash
 
-  source ${SMILEI_ROOT}/scripts/set_omp_env.sh 1
-  mpirun -np 16 smilei beam_2d.py
+  export OMP_NUM_THREADS=1
+  mpirun -np 12 smilei beam_2d.py
 
 This is technically similar to the ``static`` scheduling of the previous section:
 the pool of patches is explicitly distributed over MPI processes starting the simulation.
 Compare the time spent in the PIC loop to that previous case.
 
-.. warning::
-
-   You also may have noticed major differences in sub timers.
-   As these timers are managed per MPI process,
-   they include waiting times due to thread imbalance.
-   Specifically, they are caused by implicit OpenMP barriers
-   in ``#pragma omp for`` loops.
-
 We are now going to use the ``Performances`` diagnostic.
 The list of available quantities can be obtained with::
 
-  S.Performances()
+  S.Performances
 
 Let us try::
 
-  S.Perfomances(map="hindex").plot()
+  S.Performances(map="hindex").plot()
 
 You should obtain a map of the simulation box with one distinct color for
 each memory region (i.e. each MPI process). There are 16 regions, as we requested
@@ -281,12 +274,11 @@ initially. You can see that these regions do not have necessarily the same shape
 
 Now plot the number of particles in each region::
 
-  S.Performances(map="number_of_particles").animate(cmap="smilei_r", vmin=0)
+  S.Performances(map="number_of_particles").slide(cmap="smilei_r", vmin=0)
 
-Clearly, at every given time, no more than only few regions contain particles.
+Clearly, at every given time, no more than only a few regions contain particles.
 This is a typical situation where almost all processes have nothing to do
 and wait for a single process to finish its computation.
-
 
 ----
 
@@ -327,21 +319,23 @@ regions and their computational load.
 Realistic configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To get familiar with Smilei's domain decomposition, distribued and shared memory parallelism,
-we don't consider the NUMA (non uniform memory access) aspect of most of nodes which composed supercomputers.
-Indeed, a node is generally composed of some processors which owns itself many cores. The cores of each node
-has a privileged access to the memory associated to it processor.
+.. note::
 
-As it has been described in the begining of this page supercomputers should be adressed with both paradigm:
+  To get familiar with Smilei's domain decomposition, distributed and shared memory parallelism,
+  we did not consider the NUMA (non uniform memory access) aspect of most supercomputers.
+  Indeed, a node is generally composed of several *sockets* which own many cores each.
+  Cores have privileged access to the memory associated to it socket.
 
-* MPI to go through nodes **and** processors for many processors nodes to handle memory affinity.
-* OpenMP to feed threads, minimize imbalance and to manage more efficiently diagnostics at large scale
+In general, supercomputers should be adressed with both:
+
+* MPI: to go through nodes **and** sockets (to enhance memory affinity),
+* OpenMP: to feed threads and minimize imbalance
 
 The following example uses 2 MPI processes with 8 threads each:
 
 .. code-block:: bash
 
-  source ${SMILEI_ROOT}/scripts/set_omp_env.sh 8
+  export OMP_NUM_THREADS=8
   mpirun -np 2 smilei beam_2d.py
 
 
