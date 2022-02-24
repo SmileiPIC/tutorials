@@ -56,6 +56,7 @@ Temperature isotropization
 Non-isotropic thermal electrons are isotropized with *e-e* collisions.
 
 | ``temperature_isotropization1.py``
+| ``temperature_isotropization2.py``
 | Analysis and plotting provided in ``temperature_isotropization.py``
 
 
@@ -79,23 +80,6 @@ The *e-e* slowing rate of test electrons passing through an electron plasma is m
 | ``Stopping_power2.py`` : projectiles from 100 to 300 keV
 | ``Stopping_power3.py`` : projectiles from 1 to 10 MeV
 | Analysis and plotting provided in ``Stopping_power123.py``
-
-
-Conductivity
-^^^^^^^^^^^^
-
-An electric field applied to solid-density Cu generates an electron current. The maximum
-electron velocity, due to *e-i* collisions, relates to the conductivity, which is
-compared to theoretical values.
-
-.. warning::
-  
-  This benchmark requires review
-
-| ``conductivity1.py`` : temperature from 1 to 10 eV
-| ``conductivity2.py`` : temperature from 20 to 100 eV
-| ``conductivity3.py`` : temperature from 300 to 1000 eV
-| Analysis and plotting provided in ``conductivity.py``
 
 
 Ionization rate
