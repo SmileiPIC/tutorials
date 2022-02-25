@@ -6,14 +6,14 @@ The following features will be addressed:
 
 * The moving window in order to follow the laser propagation.
 * Variations on Silver-Muller transverse boundary conditions.
-* Particle binning diagnostic.
+* Particle Binning diagnostic.
 * Dynamic load balancing.
 
 The simulation used for this tutorial is relatively heavy so make sure to submit the job on 160 cores at least.
 
 Disclaimer: This tutorial is done in 2D which is not physically relevant. Proper simulation of this kind must be done in 3D 
 or in cylindrical geometry with azimuthal mode decomposition (see the related tutorial).
-Even in 2D, this case is a bit heavy with respect to the other tutorial and can not be run on a labtop.
+Even in 2D, this case is a bit heavy with respect to the other tutorial and can not be run on a laptop.
 We suggest using around a hundred cores to run this tutorial in a reasonable time.
 
 ----
@@ -36,7 +36,7 @@ Absorbing Silver-Muller boundary conditions are chosen for all faces.
 By default, the optimal absorption angle is set to be normal to all faces.
 In other words, the laser will be optimally absorbed on the +X face.
 
-The box is initally empty of plasma.
+The box is initially empty of plasma.
 
 **Action**: Try to run the simulation and observe laser absorption on the Ymin and Ymax faces with the Probe diagnostic. Notice that a fraction of the laser
 is reflected back into the simulation domain. This is a numerical artefact induced by non perfect absorbing boundary conditions. 
@@ -69,7 +69,7 @@ This is a rather long simulation so make sure to use at least 160 cores.
 .. rubric:: 4. Particle binning
 
 Some electrons have been trapped and accelerated in the wakefield of the laser. 
-We can use the particle binning diag in order to visualize them in phase space.
+We can use the ``ParticleBinning`` diagnostic in order to visualize them in phase space.
 
 **Action**: Visualize the particle binning diagnostic and evaluate the accelerated beam energy.
 
@@ -77,11 +77,11 @@ We can use the particle binning diag in order to visualize them in phase space.
 
 .. rubric:: 5. Performances diagnostic
 
-Do you feel like the load is correctly balance ? Check it via the performance diag !
+Do you feel like the load is correctly balanced? Check it via the ``Performance`` diagnostic!
 
-**Action**: Use the performance diag to observe imbalance.
+**Action**: Use the ``Performance`` diagnostic to observe load imbalance.
 
-**Hint**: Pick a specific quantity like "timer_particles" in order to highlight the imbalance. The :program:`timer_total` quantity is not relevent since it adds up all imbalances which compensate each other.
+**Hint**: Pick a specific quantity like "timer_particles" in order to highlight the imbalance. The :program:`timer_total` quantity is not relevant since it adds up all imbalances which compensate each other.
 
 .. rubric:: 6. Optimize simulation
 
