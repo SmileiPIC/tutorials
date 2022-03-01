@@ -41,6 +41,7 @@ The box is initially empty of plasma.
 
 To visualize e.g. the density ``-Rho`` and the laser ``Ey``, try::
 
+  import happi; S=happi.Open()
   S.Probe.Probe1("-Rho").slide()
   S.Probe.Probe1("Ey").slide(figure=2)
 
