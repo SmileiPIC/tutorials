@@ -107,39 +107,33 @@ keep the cost of simulation/export/visualization operations manageable.
 Export the results in VTK format
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-
-Download  the postprocessing script `export_vtk.py <export_vtk.py>`_ and open it
-with your favorite editor. Take some time to study it carefully.
-
-Inside the script, as usual the simulation results are open with ``happi``, 
-then the ``Field`` diagnostic and the ``TrackParticle`` diagnostic are opened 
-and stored in a variable, e.g::
+To start, we can select the fields we want to visualize and export it to VTK.
+In this case, we can export the intensity::
 
   E2 = S.Field.Field0("Ex**2+Ey**2+Ez**2")
-
-Afterwards, with the ``toVTK()`` method this diagnostic can be exported::
-
-  E2.toVTK()
+  E2.toVTK()  
 
 If everything works smoothly, a folder called ``Field0_EzEyEx`` should be created
-by ``happi`` after executing the script. 
+by ``happi`` after executing the ``toVTK()`` method. 
 This folder contains the ``Fields`` exported to VTK format, for all the available 
 iterations.
 
-Afterwards, for all the available iterations, the ``TrackParticles`` are 
+Afterwards, for all the available iterations, the ``TrackParticles`` can be
 exported, creating a folder ``TrackParticles_electron_xyzpxpypzId``. Each 
 file within this folder contains coordinates of the tracked macro-particles.
 
-**Action** When your simulation ends, run the postprocessing script in the 
-simulation directory, e.g. with ``IPython``::
+The export command will be::
 
-  %run export_vtk.py
+  track_part = S.TrackParticles(species ="electron",axes = ["x","y","z","px","py","pz","Id"])
+  track_part.toVTK(rendering="cloud")
 
-**Note** In the command selecting the ``TrackParticles`` you have to choose
-the attributes to export with the particles, in this case 
-``["x","y","z","px","py","pz","Id"]``. In a simulation with moving window you can
-also export a coordinate calles ``moving_x``, relative to the moving 
-window position.
+In the last commands we have selected the attributes to export with the 
+macro-particles, in this case coordinates, momentum components, Id.
+Then, we have used ``rendering="cloud"`` to export a file for each iteration.
+
+**Note** In a simulation with moving window you can
+also export a coordinate called ``moving_x``, i.e. the ``x`` coordinate relative 
+to the moving window position.
 
 **Note** Also other diagnostics, e.g. ``Probes``, can be exported with ``toVTK()``
 See the 
