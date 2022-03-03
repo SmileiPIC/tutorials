@@ -78,7 +78,7 @@ field.
 Run the simulation and study the propagation of the laser intensity::
 
   import happi; S=happi.Open()
-  S.Probe.Probe1("Ex**2+Ey**2+Ez**2").slide()
+  S.Probe.Probe1("Ex**2+Ey**2+Ez**2").slide(figure=1)
 
 It would be difficult to visualize the corkscrew shape in 2D, even if we had 
 plotted only one component of the electric field. 
@@ -88,7 +88,7 @@ To visualize the trajectories of the electrons, we can use::
   species_name="electron"
   chunk_size  = 600000
   track       = S.TrackParticles(species = species_name, chunksize=chunk_size,axes = ["x","y"])
-  track.slide(figure=1)
+  track.slide(figure=2)
 
 In this plot too it is difficult to see how the particles are moving in 3D.
 
