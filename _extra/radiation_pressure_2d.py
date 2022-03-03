@@ -8,23 +8,23 @@ t0           = 2*pi    # optical cycle duration in normalized units
 # Grid size and total simulated time
 Lx           = 6.*l0
 Ly           = 10.*l0
-Tsim         = 10.*t0   # duration of the simulation
+Tsim         = 10.*t0  # duration of the simulation
 
 # ### Choice 2: Physical Inputs in normalized units, converted from SI units #######
-# 
+
 # from scipy.constants import c, epsilon_0, e, m_e # constants in SI units
-# wavelength_SI  = 0.8e-6 # laser wavelength, m
+# wavelength_SI= 0.8e-6 # laser wavelength, m
 # # Normalization quantities
-# L_r     = wavelength_SI       # reference length is the wavelength
-# T_r     = L_r / c             # reference time
-# omega_r = 2*pi*c/L_r          # reference angular frequency
+# L_r          = wavelength_SI       # reference length is the wavelength
+# T_r          = L_r / c             # reference time
+# omega_r      = 2*pi*c/L_r          # reference angular frequency
 # # Laser wavelength and period in normalized units
-# l0 = wavelength_SI / L_r
-# t0 = wavelength_SI/c / T_r
+# l0           = wavelength_SI / L_r
+# t0           = wavelength_SI/c / T_r
 # # Grid size and total simulated time in normalized units
-# Lx   = 6. *wavelength_SI / L_r
-# Ly   = 10.*wavelength_SI / L_r
-# Tsim = 10.*wavelength_SI/c / T_r   # duration of the simulation
+# Lx           = 6. *wavelength_SI / L_r
+# Ly           = 10.*wavelength_SI / L_r
+# Tsim         = 10.*wavelength_SI/c / T_r   # duration of the simulation
 
 
 ####################  Simulated domain and time interval #######################
