@@ -74,3 +74,13 @@ What do you obtain? Check also if any ``.eps`` file is generated.
 
     Some lines containing LateX commands have been commented out.
     If your machine has LateX installed, it may provide higher-quality figures.
+
+
+----
+
+Changing the reference angular frequency
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+As you have seen in the namelist, you have to specify a reference angular frequency in SI units.
+This because the ionization rate is not invariant under the usual normalizations (see tutorial on ``Units``).
+What happens to the results if you multiply this frequency by a factor ``0.5`` or ``2.0``?
