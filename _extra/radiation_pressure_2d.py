@@ -1,39 +1,40 @@
-import math
-import scipy.constants
+from math import pi
 
 ### Choice 1: Physical Inputs in normalized units ########################
 
 # laser wavelength and period
-l0           = 2.0*math.pi               # laser wavelength in normalized units
-t0           = l0                        # optical cycle duration in normalized units
+l0           = 2*pi    # laser wavelength in normalized units
+t0           = 2*pi    # optical cycle duration in normalized units
+# Grid size and total simulated time
+Lx           = 6.*l0
+Ly           = 10.*l0
+Tsim         = 10.*t0   # duration of the simulation
 
 # ### Choice 2: Physical Inputs in normalized units, converted from SI units #######
 # 
-# # Physical constants
-# lambda_r     = 0.8e-6                    # Reference length, m
-# c            = scipy.constants.c         # Lightspeed, m/s
-# omega_r      = 2*math.pi*c/lambda_r      # Laser angular frequency, rad/s
-# # Variables used for unit conversions
-# c_normalized = 1.                        # Speed of light in vacuum in normalized units
-# um           = 1.e-6/(c/omega_r )        # 1 micron in normalized units
-# fs           = 1.e-15*omega_r            # 1 femtosecond in normalized units
-# # Laser wavelength and period
-# l0           = lambda_r*um
-# t0           = (c_normalized/lambda_r*um)*fs
+# from scipy.constants import c, epsilon_0, e, m_e # constants in SI units
+# wavelength_SI  = 0.8e-6 # laser wavelength, m
+# # Normalization quantities
+# L_r     = wavelength_SI       # reference length is the wavelength
+# T_r     = L_r / c             # reference time
+# omega_r = 2*pi*c/L_r          # reference angular frequency
+# # Laser wavelength and period in normalized units
+# l0 = wavelength_SI / L_r
+# t0 = wavelength_SI/c / T_r
+# # Grid size and total simulated time in normalized units
+# Lx   = 6. *wavelength_SI / L_r
+# Ly   = 10.*wavelength_SI / L_r
+# Tsim = 10.*wavelength_SI/c / T_r   # duration of the simulation
 
 
 ####################  Simulated domain and time interval #######################
 # Spatial and temporal resolution
-resx         = 100.                     # nb of cells in on laser wavelength
-rest         = 150.                     # time of timestep in one optical cycle 
+resx         = 100.                     # nb of cells in one laser wavelength
+rest         = 150.                     # nb of timesteps in one optical cycle 
 # Mesh and integration timestep
 dx           = l0/resx
 dy           = l0/resx
 dt           = t0/rest
-# Grid size and total simulated time
-Lx           = 6.*l0      
-Ly           = 10.*l0
-Tsim         = 10.*t0                   # duration of the simulation
 
 Main(
     geometry = "2Dcartesian",
@@ -62,7 +63,7 @@ laser_waist = 2.0*l0      # laser waist
 # eps0        = scipy.constants.epsilon_0 # Vacuum permittivity, F/m
 # e           = scipy.constants.e         # Elementary charge, C
 # me          = scipy.constants.m_e       # Electron mass, kg
-# E0          = me*omega_r*c/e            # Reference electric field, V/m
+# E_r         = me*omega_r*c/e            # Reference electric field, V/m
 
 LaserGaussian2D(
    box_side        = "xmin",
@@ -75,10 +76,10 @@ LaserGaussian2D(
 )
 
 # plasma parameters
-# n_ref          = eps0*omega0**2*me/e**2 # Reference density, m-3
-n0             = 100                    # initial plasma density, normalized units
-vacuum_length  = l0                     # distance between Xmin and the plasma, normalized units
-plateau_length = 0.44*l0                # length of plateau of plasma density profile, normalized units
+# N_r          = eps0*omega0**2*me/e**2 # Reference density, m-3
+n0             = 100         # initial plasma density, normalized units
+vacuum_length  = l0          # distance between Xmin and the plasma, normalized units
+plateau_length = 0.44*l0     # length of plateau of plasma density profile, normalized units
 
 Species(
     name = 'ion',

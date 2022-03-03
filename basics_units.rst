@@ -5,8 +5,8 @@ The goal of this tutorial is to familiarize with the use of physical units in ``
 
 This tutorial will allow you to:
 
-* get familiar with the units used in the input namelist
-* postprocess the results displaying the correct units
+* get familiar with the units of the input namelist
+* postprocess the results displaying units of your choice
 
 This tutorial requires the installation of the `pint` Python package.
 
@@ -14,28 +14,37 @@ This tutorial requires the installation of the `pint` Python package.
 
 What units are used by the code?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The system given by Maxwell's Equations and Vlasov Equation (upon which the basic PIC
-method is based) can be easily written in normalized `units <https://smileipic.github.io/Smilei/units.html>`_, normalizing speeds by ``c``,
-the masses by electron mass ``m_e``, charges by the unit charge ``e``.
-However, to complete the normalization, one must choose a reference length :math:`\lambda_r`
-or equivalently a reference angular frequency :math:`\omega_r` or equivalently a reference time.
-Normally the computations in simulation codes' source files work with normalized units similar to these ones.
 
-Why this choice? From a purely computational point of view, if the 
-physical phenomena we are interested in have a certain characteristic length/temporal scale to resolve, 
-choosing a reference length/time equal to that scale or to some scale of the same order
-reduces the precision errors of our simulation.
+Usually, physics codes work with normalized units to simplify the equations and reduce the number
+of multiplications.
 
-From a theoretical point of view, we can use normalization to obtain the solution to a virtually infinite set
-of problems instead of one. If our phenomena does not change its descriptive equations with many possible characteristic scales, 
-once we have a solution with normalized units, we just have to scale our results
-to the units of our interest using the reference scales. 
+For the electromagnetic PIC method, the system given by Maxwell's and Vlasov's equations
+can be easily written in normalized `units <https://smileipic.github.io/Smilei/units.html>`_,
+normalizing speeds by :math:`c`, masses by the electron mass :math:`m_e` and charges
+by the unit charge :math:`e`.
+However, there are is natural length or time normalization in this system of equations.
+To complete the normalization, one must choose a reference length :math:`L_r`, or equivalently
+a reference time :math:`T_r`, or equivalently a reference angular frequency :math:`\omega_r`.
+In the following, we choose :math:`\omega_r` as our normalization quantity (:math:`L_r` and
+:math:`T_r` are deduced from :math:`\omega_r`).
 
-From a code user's point of view, normalized units are involved only in two steps: 
+Importantly, it is not even necessary to choose a value for this last normalization.
+Indeed, it automatically cancels out, so that the system of equations does not depend on
+:math:`\omega_r`. This means that the result of the simulation is true for any value of
+:math:`\omega_r`! That is why is it usually not necessary to set a value to :math:`\omega_r`
+in the simulation input file.
 
-  * when defining the physical set-up in the input namelist
-  * when results are postprocessed. 
-In this tutorial we will explore unit conversions in both these steps.
+In practice, we always know our problem in terms of real-world units, but in Smilei's
+input file, all quantities must be normalized.
+
+1. Choose :math:`\omega_r` as one important frequency of your problem (i.e. laser frequency,
+   plasma frequency, ...)
+2. Deduce other reference quantities such as :math:`L_r` and :math:`T_r` 
+3. The parameters in the input file should be normalized accordingly
+
+During post-processing, you will obtain results in terms of normalized quantities, 
+but :program:`happi` gives you the possibility to convert to units of your choice.
+
 
 ----
 
@@ -44,23 +53,22 @@ Physical configuration
 
 Download the input file `radiation_pressure_2d.py <radiation_pressure_2d.py>`_.
 
-In this simulation, a slab of preionized overdense plasma of uniform density :math:`n_0`
-is irradiated by a high intensity laser pulse, triggering electron and ion expansion.
+In this simulation, a slab of pre-ionized overdense plasma of uniform density :math:`n_0`
+is irradiated by a high-intensity laser pulse, triggering electron and ion expansion.
 
 ----
 
 Check input file and run the simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The first step is to check that your `input files` are correct.
+The first step is to check that your `input file` is correct.
 To do so, you will run (locally) :program:`Smilei` in test mode:
 
 .. code-block:: bash
 
     ./smilei_test radiation_pressure_2d.py
 
-If your simulation `input files` are correct, you can run the simulation.
-Then, take some time to study the namelist, in particular how the physical parameters
+Take some time to study the namelist, in particular how the physical parameters
 have been defined. For the moment you can ignore the lines of code marked with ``Choice 2``
 at the start of the namelist.
 
@@ -72,7 +80,8 @@ Normalized units in the input namelist
 The blocks of the input namelist will accept only quantities in normalized units.
 As mentioned before, choosing a reference length/time/angular frequency yields 
 conversion factors for all physical units involved in a PIC simulation. 
-For more details, see the `units <https://smileipic.github.io/Smilei/units.html>`_ page in the documentation.
+For more details, see the `units <https://smileipic.github.io/Smilei/units.html>`_
+page in the documentation.
 
 Therefore, if you are accustomed to work with normalized units, you can directly 
 put your physical set-up's parameters in the input namelist in normalized units.
@@ -81,33 +90,35 @@ The use of SI units will be called ``Choice 2`` and will be explored in the last
 of this tutorial.
 
 The provided input file already has ``Choice 1`` implemented in the namelist 
-(see the initial part of the file). As you can see reading the namelist, in this
-set-up most of the simulation parameters can be defined starting from the definition 
+(see the initial part of the file). As you can see reading the namelist,
+most of the simulation parameters can be defined starting from the definition 
 of the laser wavelength, which will be also our reference wavelength.
 This can be seen in the ``LaserGaussian2D`` block, where the ``Laser`` 's angular frequency 
 ``omega`` in normalized units is 1, i.e. equal to our reference angular frequency.
 
-With this choice, a length of :math:`2\pi` corresponds to a laser wavelength,
-a time interval :math:`2\pi` corresponds to an optical cycle of the laser, 
-the reference density corresponds to the laser critical density, and so on, as explained in 
-`this page <https://smileipic.github.io/Smilei/units.html>`_.
+With this choice of normalization:
 
-**Note**: In other set-ups you may want to choose the reference length equal to the Debye length,
-or the plasma electron wave frequency, etc. In this case, if a ``Laser`` is present,
-remember to redefine the ``omega`` in the ``Laser`` block accordingly.
+* a length of :math:`2\pi` corresponds to a laser wavelength,
+* a time interval :math:`2\pi` corresponds to an optical cycle of the laser,
+* the reference density corresponds to the laser critical density :math:`n_c=\varepsilon_0 m_e \omega^2/e^2`.
 
-**Note**: Some reference quantities do not change with the choice of reference length/time,
-e.g. the electron charge will be :math:`-1`, the electron mass will be :math:`1`, since the 
-reference charge and mass in our normalized units are those of the electron. 
-Also, the reference energy and speed are :math:`m_ec^2` and `c`, independently of the choice for
-the reference length/time.
+.. note:: In other set-ups you may want to choose the reference length equal to the Debye length,
+  or the plasma electron wave frequency, etc. In this case, if a ``Laser`` is present,
+  remember to redefine the ``omega`` in the ``Laser`` block accordingly.
+
+.. note:: Some reference quantities do not change with the choice of reference length/time,
+  e.g. the electron charge will be :math:`-1`, the electron mass will be :math:`1`, since the 
+  reference charge and mass in our normalized units are those of the electron. 
+  Also, the reference energy and speed are :math:`m_ec^2` and `c`, independently of the choice for
+  the reference length/time.
 
 **Question**: if we wanted a laser with frequency equal to two times the reference frequency,
 what would be the value of `omega` in the `Laser` block?
 
-**Question**: for a reference wavelength of :math:`\lambda_r=0.8` :math:`\mu m` what would be 
-the reference density? Hint: use the constants in the module `scipy.constants` to compute the 
-reference frequency, following its definition `here <https://smileipic.github.io/Smilei/units.html>`_.
+**Question**: for a reference length of :math:`L_r=0.8` µm what would be 
+the reference density? See its definition `here <https://smileipic.github.io/Smilei/units.html>`_
+(you may use the constants in the module ``scipy.constants``).
+It is equal to :math:`L_r^{-3}`?
 
 .. warning::
 
@@ -170,20 +181,18 @@ the code. In the namelist there is a way to do it, marked with ``Choice 2``
 and commented for the moment
 
 **Action**: Comment the two lines marked with the comment ``Choice 1`` in the input namelist.
-Decomment the lines marked with ``Choice 2`` and take some time to read them.
+Uncomment the lines marked with ``Choice 2`` and take some time to read them.
 
-As you can see, first we use the `scipy.constants` module to define some useful physical constants,
+As you can see, first we use the ``scipy.constants`` module to define some useful physical constants,
 e.g. the speed of light. Then, we define the reference length, from which we derive some variables useful
-for the conversions. Afterwards, we define variables e.g. ``um``, ``fs``, etc. corresponding to
-one micron, one femtosecond, etc. to make the conversions from these units to normalized units.
-
+for the conversions.
 With these variables, it is easy to have the necessary quantities in normalized units and vice-versa::
 
-  length_normalized_units = length_um * um
+  length_normalized_units = length_SI / L_r
 
-**Question**: Near the `Laser` block, a variable ``E0`` is defined, representing the reference
+**Question**: Near the ``Laser`` block, a variable ``E_r`` is defined, representing the reference
 electric field. Using this variable, can you convert the normalized peak electric field of the laser ``a0``
-to TV/m? Similarly, can you convert the plasma density ``n0`` to :math:`cm^{-3}`? Note that instead of
+to TV/m? Similarly, can you convert the plasma density ``n0`` to :math:`\textrm{cm}^{-3}`? Note that instead of
 defining the density as in the namelist we could have just used::
 
-  density_normalized_units = n0_cm_minus_3 / n_ref
+  density_normalized_units = n0_SI / N_r
