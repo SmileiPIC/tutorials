@@ -118,7 +118,7 @@ DiagProbe(
     corners = [
         [Main.grid_length[0], Main.grid_length[1]/2.],
     ],
-    number = [nx],
+    number = [int(Lx/dx)],
     fields = ['Ex','Ey','Ez','Bx','By','Bz','Rho_ion','Rho_eon']
 )
 
