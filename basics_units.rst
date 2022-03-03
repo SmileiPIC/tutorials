@@ -113,7 +113,7 @@ With this choice of normalization:
   the reference length/time.
 
 **Question**: if we wanted a laser with frequency equal to two times the reference frequency,
-what would be the value of `omega` in the `Laser` block?
+what would be the value of ``omega`` in the ``Laser`` block?
 
 **Question**: for a reference length of :math:`L_r=0.8` µm what would be 
 the reference density? See its definition `here <https://smileipic.github.io/Smilei/units.html>`_
