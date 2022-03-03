@@ -118,7 +118,7 @@ what would be the value of ``omega`` in the ``Laser`` block?
 **Question**: for a reference length of :math:`L_r=0.8` µm what would be 
 the reference density? See its definition `here <https://smileipic.github.io/Smilei/units.html>`_
 (you may use the constants in the module ``scipy.constants``).
-It is equal to :math:`L_r^{-3}`?
+Is it equal to :math:`L_r^{-3}`?
 
 .. warning::
 
