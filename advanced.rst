@@ -13,4 +13,5 @@ Advanced
    advanced_wakefield_envelope
    advanced_wakefield_AMcylindrical
    advanced_wakefield_electron_beam
+   advanced_vtk
    
