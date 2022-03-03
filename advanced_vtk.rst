@@ -126,9 +126,9 @@ by ``happi`` after executing the script.
 This folder contains the ``Fields`` exported to VTK format, for all the available 
 iterations.
 
-Afterwards, for all the available iterations the ``TrackParticles`` are 
-exported, creating a folder ``TrackParticles_electron_xyzpxpypzId`` with the 
-coordinates of the tracked macro-particles.
+Afterwards, for all the available iterations, the ``TrackParticles`` are 
+exported, creating a folder ``TrackParticles_electron_xyzpxpypzId``. Each 
+file within this folder contains coordinates of the tracked macro-particles.
 
 **Action** When your simulation ends, run the postprocessing script in the 
 simulation directory, e.g. with ``IPython``::
