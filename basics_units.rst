@@ -148,6 +148,7 @@ Now, what if we wanted our results in physical units, e.g. SI units? While openi
 we can specify a reference angular frequency in SI. In this case, we can choose it from 
 the laser wavelength::
 
+  import math
   import scipy.constants
   laser_wavelength_um = 0.8
   c                   = scipy.constants.c     # Lightspeed, m/s
