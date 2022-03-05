@@ -145,6 +145,12 @@ reconstruct the selected quantities in the 3D space with the ``build3d`` utility
 before exporting to VTK. For its synthax, see the
 `Field documentation <https://smileipic.github.io/Smilei/post-processing.html#open-a-field-diagnostic>`_.
 
+**Warning** This tutorial has a relatively small amount of data to export. 
+If you want to export the results from a larger simulation on a cluster with 
+multiple users, use a job to avoid saturating the shared resources
+of the login nodes. You can also speed-up the export operation parallelizing it 
+with MPI.
+
 ----
 
 Visualize the 3D data
