@@ -107,14 +107,15 @@ keep the cost of simulation/export/visualization operations manageable.
 Export the results in VTK format
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To start, we can select the fields we want to visualize and export it to VTK.
+To start, we can select the fields we want to visualize and export them to VTK.
 In this case, we can export the intensity::
 
   E2 = S.Field.Field0("Ex**2+Ey**2+Ez**2")
   E2.toVTK()  
 
 If everything works smoothly, a folder called ``Field0_EzEyEx`` should be created
-by ``happi`` after executing the ``toVTK()`` method. 
+by ``happi`` after executing the ``toVTK()`` method. In general the folder name 
+will change with the selected field.
 This folder contains the ``Fields`` exported to VTK format, for all the available 
 iterations.
 
@@ -130,6 +131,17 @@ The export command will be::
 In the last commands we have selected the attributes to export with the 
 macro-particles, in this case coordinates, momentum components, Id.
 Then, we have used ``rendering="cloud"`` to export a file for each iteration.
+
+If we wanted to visualize only one or some iterations, we could have selected
+them in the variable definition before using the ``toVTK()`` method. 
+
+In case you want to create a 3D animation of a new simulation (like the animation we
+will create with this tutorial), before exporting a lot of data it is recommended 
+to export and visualize only the results from one or few iterations. 
+If everything you want to see is in place and clearly visible, 
+then you can export all the iterations necessary for an animation if 
+so desired. This will save a lot of time spent in case some diagnostic is missing 
+in your simulation or if the set-up is not correctly defined in the namelist.
 
 **Note** In a simulation with moving window you can
 also export a coordinate called ``moving_x``, i.e. the ``x`` coordinate relative 
