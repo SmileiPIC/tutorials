@@ -25,8 +25,6 @@ Main(
 
     number_of_patches =[npatch_x, 16],
     
-    clrw = nx/npatch_x,
-
     EM_boundary_conditions = [ ["silver-muller"] ],
     
 
