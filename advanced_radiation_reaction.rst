@@ -1,4 +1,4 @@
-Synchrotron-like Radiation reaction processes
+Synchrotron-like radiation reaction
 ------------------------------------------------------------------------------
 
 The goal of this tutorial is to present how to use the radiative and QED processes in
@@ -10,6 +10,11 @@ The following points will be addressed:
 * How to use :program:`Smilei` diagnostics
 * How to read and understand generated outputs
 
+The radiation reaction module implemented in Smilei is described
+`in this page <https://smileipic.github.io/Smilei/radiation_loss.html>`_.
+It models the radiation emitted by accelerated charges and their subsequent
+loss of energy, which is also known as Inverse Compton Scattering.
+
 ----
 
 Physical configuration
@@ -20,7 +25,7 @@ This configuration is one of the most efficient to trigger radiative and QED eff
 It maximizes the value of the quantum parameter for a given electron energy and a given
 field strength.
 
-The simulation is 2D Cartesian with a simulation size of :math:`30 \lambda \times 4 \lambda`
+The simulation is 2D Cartesian with a box size of :math:`30 \lambda \times 4 \lambda`
 where :math:`\lambda` is the laser wavelength. The laser is injected from the left side
 of the simulation domain while the electron beam is initialized at the extreme right.
 
@@ -30,71 +35,56 @@ in the :math:`y` direction. The temporal profile is Gaussian (order 4).
 The full width at half maximum (FWHM) is of 10 laser periods (approximately 33 fs).
 
 The electron beam has an initial energy of 1 GeV and propagates to the left.
-The beam density is of :math:`n_b = 10^{-5} n_c`. The electron beam is frozen the
-time for the laser to be fully injected and so that the collision occurred at the
-middle of the domain. This enables to have a shorter simulation box and therefore
-save computational time. The beam is initialized with 32 particles per cell for a
-total of 12480 macro-particles.
-
+The beam density :math:`n_b = 10^{-5} n_c`, and contains 32 macro-particles per cell
+for a total of 12480 macro-particles. To save computational time, the
+electron beam is frozen until the laser is fully injected in the box. They collide at
+middle of the domain.
 
 ----
 
 Content of the tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Download `AdvancedTutorial1.tar.gz <AdvancedTutorial1.tar.gz>`_ and extract it.
+Download `AdvancedTutorial1.tar.gz <AdvancedTutorial1.tar.gz>`_ and extract it with the command ``tar -xvf``.
 It contains 2 directories:
 
-* ``Analysis``
-* ``Execution``
+1. ``Execution`` which contains the input file ``tst2d_electron_laser_collision.py``
+2. ``Analysis`` where you will find `Python` scripts for the analysis and visualization of the simulation outputs.
+   Each script has been designed to focus on a specific quantity:
 
-The directory ``Analysis`` contains `Python` scripts that will be used to analysis
-and visualize the simulation outputs.
-Each script has been designed to focus on a specific quantity:
+   * ``show_energy_balance.py``: electron kinetic energy and the radiated energy vs. time.
+   * ``show_2d_density.py``: map of the electron density.
+   * ``show_2d_average_energy.py``: map of the electron average energy.
+   * ``show_2d_average_chi.py``: map of the electron local quantum parameter.
+   * ``show_2d_fields.py``: maps of the electric field :math:`E_y` and the magnetic field :math:`B_z`.
+   * ``animate_2d_average_chi.py``: map of the electron local quantum parameter vs. time.
+   * ``compare_energy_balance_Landau_Lifshitz.py``
+   * ``compare_energy_balance_radiation_models.py``
+   * ``compare_2d_density_radiation_models.py``
+   * ``compare_2d_average_energy_radiation_models.py``
+   * ``compare_2d_average_chi_radiation_models.py``
 
-* ``show_energy_balance.py``: display the time evolution of the electron normalized kinetic energy and the radiated energy.
-* ``show_2d_density.py``: display the 2d colormap of the electron normalized density.
-* ``show_2d_average_energy.py``: display the 2d colormap of the electron average normalized energy.
-* ``show_2d_average_chi.py``: display the 2d colormap of the electron local quantum parameter.
-* ``show_2d_fields.py``: display 2D colormaps  of the electric field :math:`E_y` and the magnetic field :math:`B_z`.
-* ``animate_2d_average_chi.py``: animate the 2d colormap of the electron local quantum parameter
-* ``compare_energy_balance_Landau_Lifshitz.py``
-* ``compare_energy_balance_radiation_models.py``
-* ``compare_2d_density_radiation_models.py``
-* ``compare_2d_average_energy_radiation_models.py``
-* ``compare_2d_average_chi_radiation_models.py``
-
-All Python scripts uses Happi, the visualization framework for Smilei.
-
-The ``Execution`` directory contains the input file:
-
-* ``tst2d_electron_laser_collision.py``
-
-We will perform simulations step by step for each radiation model.
-We will use the Python script available in ``Analysis`` to analyze the
-generated outputs.
-
+All Python scripts use *happi*.
 
 ----
 
 First simulation: the classical model of Landau-Lifshitz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Let us first use the continuous classical model of Landau-Lifshitz.
-This radiation reaction model is valid in the so-called classical regime when
+Let us first use the continuous, classical model of Landau-Lifshitz.
+This radiation-reaction model is valid in the classical regime when
 the particle quantum parameter ``chi`` is below :math:`10^{-2}`.
 The version implemented in :program:`Smilei` is an approximation for high
-gamma factor that enables to simplify and remove some terms.
+gamma factors.
 
-* copy the directory ``Execution`` into a new directory called ``Radiation_Landau_Lifshitz``
+* Copy the directory input file into a new directory called ``Radiation_Landau_Lifshitz``
   in which we will work:
 
   .. code-block:: bash
 
     cp -r Execution Radiation_Landau_Lifshitz
 
-
-* Go into this directory and open the input file ``tst2d_electron_laser_collision.py``.
+* Go into this directory and open the input file.
 
 
 We will now setup the radiation reaction parameters.
@@ -141,7 +131,7 @@ the particle binning (``ParticleBinning*.h5``), the fields (``Fields*.h5``) and
 the scalar (``scalars.txt``) diagnostics.
 
 
-* We will use the python script ``show_energ_balance.py`` to plot the time evolution
+* We will use the python script ``show_energy_balance.py`` to plot the time evolution
   of the particle normalized kinetic energy. Copy this file from the Analysis directory
   to the current one:
 
@@ -161,10 +151,8 @@ the scalar (``scalars.txt``) diagnostics.
   This method is another approach of using the :program:`Smilei` Python
   library and differs from what you may have seen before.
 
-* Run the script using Python. You can open an *ipython* prompt:
-
-  .. code-block:: python
-
+* Run the script using Python. For instance, in *ipython*::
+  
     %run show_energy_balance.py
 
   Or you can also run it directly in your terminal by adding the interactive option:
@@ -174,7 +162,7 @@ the scalar (``scalars.txt``) diagnostics.
     python -i show_energy_balance.py
 
   You obtain a plot of the time evolution of the electron normalized energy and
-  the radiated energy (purple). There is no positron or photons here.
+  the radiated energy (purple). There are no positron or macro-photons here.
 
 * What do you observe? You can see that during the laser interaction
   (starting from :math:`t = 240 \omega_r^{-1}`), the electron kinetic energy
@@ -316,7 +304,7 @@ For more information about the tables, see https://smileipic.github.io/Smilei/ta
   By looking at the standart output (the *log*) that contains the simulation output,
   you can check that the external tables have been well read.
 
-* Use the script ``show_energ_balance.py`` to plot the evolution of the energy
+* Use the script ``show_energy_balance.py`` to plot the evolution of the energy
   balance for this simulation. Compare the results to the corrected Landau-Lifshitz model.
 
 * **Optional exercice:** as for the previous model, use the Python scripts to
@@ -373,7 +361,7 @@ You can have more information about the model and its implementation on the page
 
 * You can now run the simulation
 
-* Use the script ``show_energ_balance.py`` to plot the evolution of the energy
+* Use the script ``show_energy_balance.py`` to plot the evolution of the energy
   balance for this simulation.
 
 * **Optional exercice:** as for the previous model, use the Python scripts to
