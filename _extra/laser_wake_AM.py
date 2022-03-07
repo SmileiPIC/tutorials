@@ -22,7 +22,6 @@ Main(
     cell_length  = [dx, dr],
     grid_length = [ Lx, Lr ],
     number_of_patches = [npatch_x, 32],
-    clrw = nx/npatch_x,
     EM_boundary_conditions = [
         ["silver-muller","silver-muller"],
         ["buneman","buneman"],
