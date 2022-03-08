@@ -95,7 +95,7 @@ In this plot too it is difficult to see how the particles are moving in 3D.
 It seems one of the occasions where 3D visualization gives a better qualitative 
 picture.
 
-**Warning** To visualize the macro-particles a ``TrackParticle`` diagnostic is
+**Warning** To visualize the macro-particles, a ``TrackParticle`` diagnostic is
 defined in the namelist. No filter is used, since the number of tracked 
 macro-particles is not enormous. In a more realistic case you should select 
 only a subset of the particles to make the visualization understandable and to 
@@ -121,7 +121,7 @@ iterations.
 
 Afterwards, for all the available iterations, the ``TrackParticles`` can be
 exported, creating a folder ``TrackParticles_electron_xyzpxpypzId``. Each 
-file within this folder contains coordinates of the tracked macro-particles.
+file within this folder contains the coordinates of the tracked macro-particles.
 
 The export command will be::
 
@@ -140,7 +140,7 @@ will create with this tutorial), before exporting a lot of data it is recommende
 to export and visualize only the results from one or few iterations. 
 If everything you want to see is in place and clearly visible, 
 then you can export all the iterations necessary for an animation if 
-so desired. This will save a lot of time spent in case some diagnostic is missing 
+so desired. This will save a lot of time in case some diagnostic is missing 
 in your simulation or if the set-up is not correctly defined in the namelist.
 
 **Note** In a simulation with moving window you can
@@ -175,7 +175,7 @@ version of Paraview on both the client and server machines). For large amounts o
 data it is recommendable to work in this server-client mode.
 
 **Warning** from now on, the given instructions contain completely arbitrary 
-choices, the colors of representations. Feel free to make different choices 
+choices, e.g. the colors of representations. Feel free to make different choices 
 based on you personal tastes and what you want to highlight in your image/animation. 
 The figure at the end of the tutorial represents only the result of the 
 mentioned choices.
