@@ -52,19 +52,13 @@ The directory ``Analysis`` contains `Python` scripts that will be used to analys
 and visualize the simulation outputs. Each script has been designed to focus on a
 specific quantity:
 
-* ``show_energy_balance.py``: display the time evolution of the species kinetic energy,
-  the photon species energy and the radiated energy (not in the photons).
-* ``show_particle_number.py``: display the time evolution of the number of macro-particles
-  for each species.
-* ``show_2d_density.py``: display the 2D colormap of the electron, positron and photon density.
-* ``show_2d_average_energy.py``: display the 2D colormap of the electron, positron and
-  photon average normalized energy.
-* ``show_2d_average_chi.py``: display the 2D colormap of the electron, positron and
-  photon quantum parameter.
-* ``show_2d_fields.py``: display 2D colormaps  of the electric field :math:`E_y`
-  and the magnetic field :math:`B_z`.
-* ``show_energy_spectrum.py``: display the electron, positron and photon energy
-  distribution at a given time.
+* ``show_energy_balance.py``: particle kinetic energy, photon energy and radiated energy (not in the photons) vs. time.
+* ``show_particle_number.py``: number of macro-particles for each species vs. time.
+* ``show_2d_density.py``: maps of the electron, positron and photon density.
+* ``show_2d_average_energy.py``: maps of the electron, positron and photon average energy.
+* ``show_2d_average_chi.py``: maps of the electron, positron and photon quantum parameter.
+* ``show_2d_fields.py``: maps of the electric field :math:`E_y` and the magnetic field :math:`B_z`.
+* ``show_energy_spectrum.py``: electron, positron and photon energy distribution at a given time.
 
 The ``Execution`` directory contains the input file:
 
@@ -75,7 +69,7 @@ The ``Execution`` directory contains the input file:
 Simulation of the multiphoton Breit-Wheeler process
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-We will first lean how to configure the input file for the Monte-Carlo process
+We will first learn how to configure the input file for the Monte-Carlo process
 with macro-photon emission followed by the Multiphoton Breit-Wheeler
 pair creation process.
 For this simulation case, we will need to define three species: electrons, positrons and photons.
@@ -102,9 +96,8 @@ Configuration of the radiation reaction block
 * Go to the ``RadiationReaction`` block.
 
 * The Monte-Carlo algorithm uses tabulated values.
-  The path needs to be specified in the block ``RadiationReaction`` via the parameter ``table_path``.
-  The tables are located in the directory ``databases`` at the root of the :program:`Smilei` repository.
-  Uncomment this parameter and update the path to the location of your :program:`Smilei` installation.
+  The path can be specified in the block ``RadiationReaction`` via the parameter ``table_path``
+  (read the documentation if you want to use non-default databases).
 
 * The parameter ``minimum_chi_continuous`` corresponds to the minimal value
   of the quantum parameter at which the radiation reaction process is applied.
@@ -149,16 +142,15 @@ Configuration of the multiphoton Breit-Wheeler block
   This block controls the general parameters of the Multiphoton Breit-Wheeler process.
 
 * The Monte-Carlo algorithm for the Multiphoton Breit-Wheeler process uses tabulated values.
-  The path needs to be specified in the block ``MultiphotonBreitWheeler`` via the parameter ``table_path``.
-  The tables are located in the directory ``databases`` at the root of the :program:`Smilei` repository.
-  Uncomment this parameter and update the path to the location of your :program:`Smilei` installation.
+  The path can be specified in the block ``MultiphotonBreitWheeler`` via the parameter ``table_path``,
+  if you wish to use non-default tables.
 
 * The ``MultiphotonBreitWheeler`` should now look like:
 
   .. code-block:: python
 
     MultiphotonBreitWheeler(
-         table_path = "<path_to_smilei>/databases/"
+        #table_path = "<path_to_smilei>/databases/"
     )
 
 ----
@@ -304,9 +296,9 @@ Several diagnostics are defined in the input file.
     )
 
 
-* The field grids are damped every 500 iterations via the block ``DiagFields``.
+* The field grids are written out every 500 iterations via the block ``DiagFields``.
 
-* The ``DiagParticleBinning`` blocks enable to project the particle
+* The ``DiagParticleBinning`` blocks project the particle
   quantities on specified multidimensional grids.
   There are 4 types of diagnostics configured in the input file for each species:
 
@@ -315,7 +307,7 @@ Several diagnostics are defined in the input file.
   - 3. the quantum parameter time the weight (``weight_chi``)
   - 4. the species energy distribution
 
-  The particle binning diagnostics are damped every 500 iterations.
+  The particle binning diagnostics are written every 500 iterations.
 
 ----
 
@@ -385,23 +377,11 @@ After you have run the simulation, you may start analyzing its results.
   From the top to the bottom, you have respectively the electron, positron
   normalized kinetic energy and the photon normalized energy.
 
-* Open the script ``show_2d_average_energy.py``. In the section `Parameters`,
-  you can play with the parameter ``timestep`` that plot the species average energy
-  at different iteration. Rerun the script at different timesteps.
+  You can also choose a different timestep using, for instance
 
-  .. code-block:: python
+  .. code-block:: bash
 
-    # ______________________________________________________________________________
-    # Parameters
-
-    # Path to the simulation directory
-    path = "./"
-
-    # Time step for the diagnotics
-    timestep = 5500
-
-
-  Observe the evolution of the different species energy all along the simulation.
+    run show_2d_average_energy.py 6000
 
 * We will now do the same thing for the weight (normalized local density).
   Copy the file ``Analysis/show_2d_density.py`` in the working directory
@@ -458,8 +438,8 @@ After you have run the simulation, you may start analyzing its results.
 
   Change the ``timestep`` parameter as for the particle binning diagnostics.
 
-* Finally, we want to analysis the final energy spectra of the species.
-  For this aim, copy the script ``Analysis/show_energy_spectrum.py`` and run it.
+* Finally, we want to analyze the final energy spectra of the species.
+  Copy the script ``Analysis/show_energy_spectrum.py`` and run it.
 
   .. code-block:: bash
 
