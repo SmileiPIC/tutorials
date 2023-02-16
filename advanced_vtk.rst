@@ -149,13 +149,13 @@ to the moving window position.
 
 **Note** Also other diagnostics, e.g. ``Probes``, can be exported with ``toVTK()``
 See the 
-`relevant documentation <https://smileipic.github.io/Smilei/post-processing.html#export-2d-or-3d-data-to-vtk>`_
+`relevant documentation <https://smileipic.github.io/Smilei/Understand/post-processing.html#export-2d-or-3d-data-to-vtk>`_
 for more details.
 
 **Note** For ``Fields`` in ``AMcylindrical`` geometry, you will need to rirst
 reconstruct the selected quantities in the 3D space with the ``build3d`` utility
 before exporting to VTK. For its synthax, see the
-`Field documentation <https://smileipic.github.io/Smilei/post-processing.html#open-a-field-diagnostic>`_.
+`Field documentation <https://smileipic.github.io/Smilei/Understand/post-processing.html#open-a-field-diagnostic>`_.
 
 **Warning** This tutorial has a relatively small amount of data to export. 
 If you want to export the results from a larger simulation on a cluster with 

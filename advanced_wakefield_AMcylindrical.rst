@@ -45,7 +45,7 @@ without losing the relevant physics. In the case simulated in this tutorial, usi
 The particles, on the other hand, move in the 3D space, pushed by the 3D Cartesian fields reconstructed from the electromagnetic azimuthal modes. 
 With this powerful technique, 3D features can be simulated at the cost of approximately N 2D simulations, where N is the number of modes we keep in the simulation.
 
-More details on the Azimuthal modes decomposition can be found `here <https://smileipic.github.io/Smilei/azimuthal_modes_decomposition.html>`_.
+More details on the Azimuthal modes decomposition can be found `here <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_.
 
 Simulation setup
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -87,7 +87,7 @@ Now let's have a look at the grid fields, for example the electron density::
 
 In the previous command we have specified a certain angle ``theta = 0`` (i.e. the demi-plane including the positive ``y`` coordinates).
 With the ``Field`` diagnostic, you can virtually specify any angle ``theta``. 
-See the reference frame `here <https://smileipic.github.io/Smilei/azimuthal_modes_decomposition.html>`_ for the definition of this angle.
+See the reference frame `here <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_ for the definition of this angle.
 
 At the cost of approximately N 2D simulations (N is the number of azimuthal modes, two in this case), you can obtain the fields in all the 3D space, like in a 3D simulation.
 Note that in the ``Field`` diagnostic you will see only half of the plane, as the ``Field`` diagnostics shows the fields on the grid, defined on a half-plane in this geometry.

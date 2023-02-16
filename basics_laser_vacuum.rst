@@ -19,9 +19,9 @@ Note that this file is written in the *python* language.
 
 Read through this file and try to understand the contents of the ``Main(...)`` and
 ``LaserGaussian2D(...)`` blocks. You can obtain details on the meaning of all keywords
-in this `documentation page <https://smileipic.github.io/Smilei/namelist.html>`_.
+in this `documentation page <https://smileipic.github.io/Smilei/Use/namelist.html>`_.
 Note that all units are normalized according to
-`these conventions <https://smileipic.github.io/Smilei/units.html>`_.
+`these conventions <https://smileipic.github.io/Smilei/Understand/units.html>`_.
 
 A Gaussian (in both space and time) laser pulse enters in the simulation box from
 the ``xmin`` side and propagates through the box.
@@ -130,7 +130,7 @@ Check laser using ``Scalar``
 
 Read the namelist again and spot the line where the ``Scalar`` diagnostic has been defined.
 You may get more information on this diagnostic
-`on this page <http://www.maisondelasimulation.fr/smilei/namelist.html#scalar-diagnostics>`_.
+`on this page <https://smileipic.github.io/Smilei/Use/namelist.html#scalar-diagnostics>`_.
 
 Obtain a list of ``Scalar`` diagnostics:
 
@@ -231,7 +231,7 @@ See what is available in this laser object:
    laser.time_envelope
 
 Note that this quantity is a python function: what function is it?
-Some help is available `here <https://smileipic.github.io/Smilei/namelist.html#profiles>`_.
+Some help is available `here <https://smileipic.github.io/Smilei/Use/namelist.html#profiles>`_.
 
 To plot the laser profile as a function of time, a list of times is necessary.
 In the following, we use the package *numpy* to generate a list of times from 0 to

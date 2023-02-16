@@ -7,7 +7,7 @@ If you are, instead, using a home computer or workstation, we recommend you scal
 simulations down in order to reduce their execution time.
 
 We recommend getting some `basic understanding of parallel computing
-<https://smileipic.github.io/Smilei/parallelization.html>`_ and some basic knowledge
+<https://smileipic.github.io/Smilei/Understand/parallelization.html>`_ and some basic knowledge
 on UNIX commands.
 
 You should first open a `terminal` or a `console`, then ``cd`` to the directory of your
@@ -47,7 +47,7 @@ Prepare the environment
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 The environment should be ready to accomodate for Smilei's installation.
-Check `this page <https://smileipic.github.io/Smilei/installation.html>`_
+Check `this page <https://smileipic.github.io/Smilei/Use/installation.html>`_
 for details.
 
 In short, you need:
@@ -136,7 +136,7 @@ If you want to use several computing units, you can use the relevant
   mpirun -n 4 smilei my_input.py
 
 To facilitate this process, a script ``smilei.sh`` is already available.
-See `help here <http://www.maisondelasimulation.fr/smilei/run.html#using-the-provided-script>`_.
+See `help here <https://smileipic.github.io/Smilei/Use/run.html#using-the-provided-script>`_.
 
 In this example, the simulation will use 4 processes, but remember that the option above
 ``OMP_NUM_THREADS=8`` will set 8 threads in each process, so a total of 24 threads.
@@ -176,8 +176,8 @@ Tips
   * | with the *slurm* scheduler:
     | ``srun -p default -I -N 2 -c 8 --pty -t 0-01:00``
       
-  * with `intel's LoadLeveler <https://www.ibm.com/support/knowledgecenter/SSFJTW_5.1.0/com.ibm.cluster.loadl.v5r1.load500.doc/am2cr_llrun.htm>`_
-  
+  * with intel's LoadLeveler
+    
 
 * Download a file from this webpage to your machine
 

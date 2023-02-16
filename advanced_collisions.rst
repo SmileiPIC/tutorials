@@ -3,7 +3,7 @@ Binary collisions and impact ionization
 
 Smilei includes binary collisions between various species, which can also generate
 ionization when one of the species is ions and the other one electrons.
-`Smilei's website <https://smileipic.github.io/Smilei/collisions.html>`_
+`Smilei's website <https://smileipic.github.io/Smilei/Understand/collisions.html>`_
 already gives a description of the approach, and provides results from various benchmarks.
 
 The list of benchmarks, located in the ``benchmarks/collisions/`` folder is briefly

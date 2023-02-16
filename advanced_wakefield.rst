@@ -29,7 +29,7 @@ Step by step tutorial
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Download  `this input file <laser_wake.py>`_ and open it with your favorite editor. 
-Keep open a page with the `documentation for the namelist <https://smileipic.github.io/Smilei/namelist.html>`_ to follow the tutorial's steps. 
+Keep open a page with the `documentation for the namelist <https://smileipic.github.io/Smilei/Use/namelist.html>`_ to follow the tutorial's steps. 
 
 .. rubric:: 1. Transverse reflections
 
@@ -63,7 +63,7 @@ it must keep a non zero normal component.
 .. rubric:: 3. Moving Window
 
 Now that the laser propagates without interfering with the simulation too much, we are interested in looking at the laser propagation over several box lengths.
-Notice the ``MovingWindow`` block in the `documentation for the namelist <https://smileipic.github.io/Smilei/namelist.html>`_.
+Notice the ``MovingWindow`` block in the `documentation for the namelist <https://smileipic.github.io/Smilei/Use/namelist.html>`_.
 This allows the simulation domain to constantly shifts toward the `x` direction in order to follow the laser propagation.
 
 **Action**: Give a proper velocity and start time to the moving window in order to follow the laser pulse and observe it enter the plasma.

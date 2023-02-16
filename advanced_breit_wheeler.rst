@@ -131,7 +131,7 @@ These functions are tabulated because it would be too expensive to compute them 
 The :program:`Smilei` code includes default tables.
 It is nonetheless possible to use more accurate external tables.
 This is the purpose of the parameter `table_path` in the block `Radiation`.
-For more information about the tables, see https://smileipic.github.io/Smilei/tables.html.
+For more information about the tables, see https://smileipic.github.io/Smilei/Use/tables.html.
 
 ----
 

@@ -55,7 +55,7 @@ The bunch is assumed as waist (i.e. not converging, nor diverging), but manipula
 bunch particles it is easy to generate a more realistic electron bunch.
 
 More details on the initialization through numpy arrays or from a file can be 
-found `here <https://smileipic.github.io/Smilei/particle_initialization.html>`_.
+found `here <https://smileipic.github.io/Smilei/Use/particle_initialization.html>`_.
 
 
 ----
@@ -75,7 +75,7 @@ The flag ``relativistic_field_initialization = True`` in the ``bunch_electrons``
 means that its self-consistent electromagnetic fields will be computed at the time when
 this ``Species`` starts to move, in this case at ``t=0`` because ``time_frozen=0``.
 The procedure used in :program:`Smilei` for this field initialization is detailed
-`here <https://smileipic.github.io/Smilei/relativistic_fields_initialization.html>`_.
+`here <https://smileipic.github.io/Smilei/Understand/relativistic_fields_initialization.html>`_.
 
 These electromagnetic fields will propagate with the bunch and push away the plasma electrons
 (just like an intense laser pulse would do with its ponderomotive force)
@@ -108,7 +108,7 @@ A subtlety: why ions are not present?
 Maxwell's equations and the continuity equation :math:`\nabla\cdot\mathbf{J}=-\partial_t\rho` 
 (which is true also for the single species) imply that :math:`\nabla\cdot\mathbf{E}-\rho` remains 
 constant throughout the simulation
-(see `this <https://smileipic.github.io/Smilei/relativistic_fields_initialization.html>`_).
+(see `this <https://smileipic.github.io/Smilei/Understand/relativistic_fields_initialization.html>`_).
 This can be written :math:`\nabla\cdot\mathbf{E}-\rho_e-\rho_i=\nabla\cdot\mathbf{E_0}-\rho_{e0}-\rho_{i0}`.
 If we consider ions immobile, then this becomes :math:`\nabla\cdot\mathbf{E}-\rho_e=\nabla\cdot\mathbf{E_0}-\rho_{e0}`, 
 because the ion continuity equation implies that if :math:`\mathbf{J}_{i}=0` then :math:`\rho_i=\rho_{i0}`.

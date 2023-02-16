@@ -7,7 +7,7 @@ computation to be made by many computing cores at the same time, *in parallel*.
 
 Optimizing parallel algorithms on these new machines becomes increasingly difficult,
 because their architecture complexity grows together with their power.
-See this `introduction to parallelism <https://smileipic.github.io/Smilei/parallelization.html#decomposition-of-the-box>`_.
+See this `introduction to parallelism <https://smileipic.github.io/Smilei/Understand/parallelization.html#decomposition-of-the-box>`_.
 
 .. rubric:: Basic architecture of supercomputers:
 

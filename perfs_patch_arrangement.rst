@@ -4,7 +4,7 @@ Patch arrangement
 In some situations with slow particles dynamics, the dynamic load balancing
 may not be relevant to speed-up the simulation.
 Moreover, as it relies on a
-`Hilbert curve <https://smileipic.github.io/Smilei/parallelization.html#load-balancing-between-mpi-regions>`_,
+`Hilbert curve <https://smileipic.github.io/Smilei/Understand/parallelization.html#load-balancing-between-mpi-regions>`_,
 it may not be able to split intelligently the plasma in equal parts.
 
 Typically, this happens when the plasma is contained in a thin slab.

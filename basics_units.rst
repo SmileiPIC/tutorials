@@ -19,7 +19,7 @@ Usually, physics codes work with normalized units to simplify the equations and 
 of multiplications.
 
 For the electromagnetic PIC method, the system given by Maxwell's and Vlasov's equations
-can be easily written in normalized `units <https://smileipic.github.io/Smilei/units.html>`_,
+can be easily written in normalized `units <https://smileipic.github.io/Smilei/Understand/units.html>`_,
 normalizing speeds by :math:`c`, masses by the electron mass :math:`m_e` and charges
 by the unit charge :math:`e`.
 However, there are is natural length or time normalization in this system of equations.
@@ -80,7 +80,7 @@ Normalized units in the input namelist
 The blocks of the input namelist will accept only quantities in normalized units.
 As mentioned before, choosing a reference length/time/angular frequency yields 
 conversion factors for all physical units involved in a PIC simulation. 
-For more details, see the `units <https://smileipic.github.io/Smilei/units.html>`_
+For more details, see the `units <https://smileipic.github.io/Smilei/Understand/units.html>`_
 page in the documentation.
 
 Therefore, if you are accustomed to work with normalized units, you can directly 
@@ -116,7 +116,7 @@ With this choice of normalization:
 what would be the value of ``omega`` in the ``Laser`` block?
 
 **Question**: for a reference length of :math:`L_r=0.8` µm what would be 
-the reference density? See its definition `here <https://smileipic.github.io/Smilei/units.html>`_
+the reference density? See its definition `here <https://smileipic.github.io/Smilei/Understand/units.html>`_
 (you may use the constants in the module ``scipy.constants``).
 Is it equal to :math:`L_r^{-3}`?
 
@@ -161,7 +161,7 @@ Then, we have to specify the units we want in our plot::
   S_SI.Probe.Probe0("Ey", units=['um','fs','GV/m']).slide(figure=2)
 
 **Question**: Does the peak transverse field of the laser correspond to the one in normalized units
-at the same timestep and in the namelist? Compute first the reference electric field as explained `here <https://smileipic.github.io/Smilei/units.html>`_
+at the same timestep and in the namelist? Compute first the reference electric field as explained `here <https://smileipic.github.io/Smilei/Understand/units.html>`_
 and check the conversion to GV/m.
 
 **Action**: Similarly, try to plot the kinetic energy ``Ukin`` from the ``Scalar`` diagnostic
@@ -169,7 +169,7 @@ and the evolution of the electron density ``Rho_eon`` from the ``Field`` diagnos
 in normalized and physical units.  
 
 **Note**: Other systems of units can be used, e.g. CGS, or different combinations of units, including ``inches``, ``feet``.
-For more details, see `here <https://smileipic.github.io/Smilei/post-processing.html#specifying-units>`_.
+For more details, see `here <https://smileipic.github.io/Smilei/Use/post-processing.html#specifying-units>`_.
 
 ----
 

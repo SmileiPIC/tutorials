@@ -11,7 +11,7 @@ The following points will be addressed:
 * How to read and understand generated outputs
 
 The radiation reaction module implemented in Smilei is described
-`in this page <https://smileipic.github.io/Smilei/radiation_loss.html>`_.
+`in this page <https://smileipic.github.io/Smilei/Understand/radiation_loss.html>`_.
 It models the radiation emitted by accelerated charges and their subsequent
 loss of energy, which is also known as Inverse Compton Scattering.
 
@@ -297,7 +297,7 @@ These functions are tabulated because it would be too expensive to compute them 
 The :program:`Smilei` code includes default tables.
 It is nonetheless possible to use more accurate external tables.
 This is the purpose of the parameter `table_path` in the block `Radiation`.
-For more information about the tables, see https://smileipic.github.io/Smilei/tables.html.
+For more information about the tables, see https://smileipic.github.io/Smilei/Use/tables.html.
 
 * You can run the simulation
 
