@@ -18,8 +18,8 @@ Choose among the available tutorials in the top menu.
    
 .. rubric:: Links to Smilei's documentation:
 
-* `Smilei units <https://smileipic.github.io/Smilei/units.html>`_
-* `Smilei input syntax <https://smileipic.github.io/Smilei/namelist.html>`_
-* `Smilei post-processing <https://smileipic.github.io/Smilei/post-processing.html>`_
+* `Smilei units <https://smileipic.github.io/Smilei/Understand/units.html>`_
+* `Smilei input syntax <https://smileipic.github.io/Smilei/Use/namelist.html>`_
+* `Smilei post-processing <https://smileipic.github.io/Smilei/Use/post-processing.html>`_
 * `Smilei tutorials source <https://github.com/SmileiPIC/tutorials>`_
 
