@@ -22,7 +22,7 @@ For the electromagnetic PIC method, the system given by Maxwell's and Vlasov's e
 can be easily written in normalized `units <https://smileipic.github.io/Smilei/Understand/units.html>`_,
 normalizing speeds by :math:`c`, masses by the electron mass :math:`m_e` and charges
 by the unit charge :math:`e`.
-However, there are is natural length or time normalization in this system of equations.
+However, there is no natural length or time normalization in this system of equations.
 To complete the normalization, one must choose a reference length :math:`L_r`, or equivalently
 a reference time :math:`T_r`, or equivalently a reference angular frequency :math:`\omega_r`.
 In the following, we choose :math:`\omega_r` as our normalization quantity (:math:`L_r` and
@@ -179,7 +179,7 @@ SI units in the input namelist
 If you prefer to work with physical units, e.g. SI units, the use of Python for the input namelist 
 allows to easily convert our inputs in SI units to normalized inputs required by
 the code. In the namelist there is a way to do it, marked with ``Choice 2`` 
-and commented for the moment
+and commented for the moment.
 
 **Action**: Comment the two lines marked with the comment ``Choice 1`` in the input namelist.
 Uncomment the lines marked with ``Choice 2`` and take some time to read them.
