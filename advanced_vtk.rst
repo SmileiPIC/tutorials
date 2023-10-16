@@ -2,7 +2,8 @@ Export to VTK and 3D visualization
 -------------------------------------
 
 The goal of this tutorial is to learn how to export some diagnostics to the
-`VTK <https://vtk.org>`_ format and how to visualize them in 3D. 
+`VTK <https://vtk.org>`_ format and how to visualize them in 3D.
+Two simulations will be run, one in ``"3Dcartesian"`` geometry and the other in ``"AMcylindrical"`` geometry.
 In this tutorial we will use the open-source
 application `Paraview <https://www.paraview.org>`_  to open the VTK files and 3D
 visualization, although this is not the only possible choice. 
@@ -19,23 +20,25 @@ In particular this tutorial will explain how to
   * export the macro-particles' coordinates in the ``TrackParticles`` results to VTK
   * visualize a Volume Rendering of ``Fields`` with ``Paraview``
   * visualize the tracked macro-particles as points with ``Paraview``
+  * perform the same operations for a simulation in ``"AMcylindrical"`` geometry.
 
-The simulation used for this tutorial is relatively heavy so make sure to submit 
+The simulations used for this tutorial is relatively heavy so make sure to submit 
 the job on 40 cores at least to run in a few minutes. This tutorial 
 needs an installation of the ``vtk`` Python library to export the data 
-with ``happi``.
+with ``happi``. The export in 3D of data obtained in ``"AMcylindrical"`` geometry
+also requires the installation of the ``scipy`` Python library.
 
-**Disclaimer** This tutorial is not physically relevant. Proper simulation of this 
+**Disclaimer** This tutorial is not physically relevant. Proper simulations of this 
 kind must be done with better resolution in all directions, just to start. 
-This would give more accurate results, but it would make the simulation 
+This would give more accurate results, but it would make the simulations 
 even more demanding.
 
 **Warning** To avoid wasting computing resources it is highly recommended to start 
 small when learning how to visualize results in 3D. Apart from the simulation
-generating the accurate 3D data, the export and visualization of large amounts of 
+generating the physically accurate data, the export and visualization of large amounts of 
 data requires resources and computing time. For these reasons, if you are learning 
 how to visualize VTK files we recommend to start with relatively small benchmarks 
-like the one in this tutorial in order to learn the export/visualization tricks 
+like the ones in this tutorial in order to learn the export/visualization tricks 
 and to familiarize with the data you may need for your future cases of interest.
 Afterwards, you can improve the quality of your simulation results with better 
 resolution, more macro-particles, more frequent output, etc. and apply the same 
@@ -51,8 +54,8 @@ unnecessary or misleading information.
 
 ----
 
-Physical configuration
-^^^^^^^^^^^^^^^^^^^^^^^^
+Physical configuration for the case in `"3Dcartesian"` geometry
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A Laguerre-Gauss laser pulse enters the window, where test electrons are present.
 The laser pushes the electrons out of its propagation axis through ponderomotive force.
@@ -62,8 +65,11 @@ The laser pushes the electrons out of its propagation axis through ponderomotive
 Run your simulation
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Download  the input namelist `laguerre_gauss.py <laguerre_gauss.py>`_ and open 
+Download  the input namelist `export_VTK_namelist.py <export_VTK_namelist.py>`_ and open 
 it with your favorite editor. Take some time to study it carefully.
+This namelist allows to select between the geometries ``"3Dcartesian"`` and ``"AMcylindrical"``,
+each corresponding to a similar case, through the variable `geometry` at the start of the namelist. 
+For the moment we will use ``geometry="3Dcartesian"`` for our first case.
 
 Note how we define a ``Laser`` profile corresponding to a Laguerre-Gauss mode 
 with azimuthal number :math:`m=1`.
@@ -108,7 +114,7 @@ Export the results in VTK format
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To start, we can select the fields we want to visualize and export them to VTK.
-In this case, we can export the intensity::
+In this case, we can export the laser intensity::
 
   E2 = S.Field.Field0("Ex**2+Ey**2+Ez**2")
   E2.toVTK()  
@@ -151,11 +157,6 @@ to the moving window position.
 See the 
 `relevant documentation <https://smileipic.github.io/Smilei/Understand/post-processing.html#export-2d-or-3d-data-to-vtk>`_
 for more details.
-
-**Note** For ``Fields`` in ``AMcylindrical`` geometry, you will need to rirst
-reconstruct the selected quantities in the 3D space with the ``build3d`` utility
-before exporting to VTK. For its synthax, see the
-`Field documentation <https://smileipic.github.io/Smilei/Understand/post-processing.html#open-a-field-diagnostic>`_.
 
 **Warning** This tutorial has a relatively small amount of data to export. 
 If you want to export the results from a larger simulation on a cluster with 
@@ -236,3 +237,59 @@ last iteration:
 Now you can visualize the animation of the laser entering the window and 
 pushing away the electrons, start experimenting with the many options of the selected 
 representations, or with the colormaps and transfer functions.
+
+Exporting data obtained in `"AMcylindrical"` geometry
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In this geometry a cylindrical ``(x,r)`` grid is used for the fields, as explained 
+its `documentation <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_.
+The axis ``r=0`` corresponds to the propagation axis of the laser pulse.
+Furthermore, fields are defined through their cylindrical components, e.g.
+``El``, ``Er``, ``Et`` instead of the ``Ex``, ``Ey``, ``Ez`` in ``"3Dcylindrical"``. 
+Therefore, when using ``geometry="AMcylindrical"`` in the same input script 
+you have used for this tutorial, some changes are made, in particular field and 
+density profiles are defined on a ``(x,r)`` grid and the origins of the axes 
+(in the profiles and the Probes) are shifted according to the different definition 
+of their origins.
+
+Change the ``geometry`` variable at the start of the namelist to have ``geometry="AMcylindrical"`` 
+and run the simulation. The physical set-up is almost identical to the one 
+simulated in ``"3Dcartesian"`` geometry, but for simplicity a Gaussian beam will 
+be used for the ``Laser`` instead of a Laguerre-Gauss beam.
+
+The commands to export macro-particle data from ``TrackParticles``, except for the 
+different axis origin, are identical to those used in the ``"3Dcartesian"`` case.
+This because the macro-particles (exactly as ``Probes``) in ``"AMcylindrical"`` 
+geometry are defined in the 3D space.
+
+For the fields, you may in principle define 3D ``Probes`` in the namelist for the 
+Cartesian components of the fields and export them to VTK adapting the previous 
+commands, but we do not recommend this strategy.
+This way, the code would have to sample the ``Probe`` data in 3D during the simulation,
+creating a huge amount of data and slowing down your simulation, just to have 
+data for visualization.
+
+Instead, we recommend to export to vtk the ``Fields`` data defined in cylindrical geometry 
+to the 3D cartesian space, though the argument ``build3d`` of the ``Fields`` available 
+only in cylindrical geometry. For its synthax, see the
+`Field documentation <https://smileipic.github.io/Smilei/Understand/post-processing.html#open-a-field-diagnostic>`_.
+
+First, you need to specify an interval in the 3D cartesian space where you want 
+have your VTK data. This interval is defined through a list, one for each axis ``x``, ``y``, ``z``.
+Each list contains in order its lower and upper border and resolution in that direction.
+In this case, we can for example extract the data from the physical space that was simulated, 
+so we can take the required values from the namelist. Afterwards, we export the `Field` 
+data proportional to the laser intensity using ``build3d``::
+  build3d_interval = [[0,S.namelist.Lx,S.namelist.dx],[-S.namelist.Ltrans,S.namelist.Ltrans,S.namelist.dtrans],[-S.namelist.Ltrans,S.namelist.Ltrans,S.namelist.dtrans]]
+  E2 = S.Field.Field0("El**2+Er**2+Et**2",build3d = build3d_interval )
+  
+Note how we had to specify the cylindrical components of the fields.
+You do not have to export all the physical space or to use the same resolution 
+specified in the namelist. For example, to reduce the amount of exported data
+you may choose to subsample the physical space with a coarser cell length.
+
+**Action**: Try to define a Laguerre-Gauss beam profile in ``"AMcylindrical"`` geometry
+and simulate the same case you have simulated in ``"3Dcartesian"`` geometry.
+You will need some trigonometry to decompose the field in azimuthal modes, as 
+described in the `documentation <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_.
+
+
