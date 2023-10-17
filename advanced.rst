@@ -11,7 +11,7 @@ Advanced
    advanced_breit_wheeler
    advanced_wakefield
    advanced_wakefield_AMcylindrical
-   advanced_wakefield_envelope
    advanced_wakefield_electron_beam
+   advanced_wakefield_envelope
    advanced_vtk
    

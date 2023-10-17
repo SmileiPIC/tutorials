@@ -3,13 +3,16 @@ Azimuthal-mode-decomposition cylindrical geometry
 
 The goal of this tutorial is to give an introduction to the use of the cylindrical geometry 
 with azimuthal Fourier decomposition in :program:`Smilei`.
+The chosen physical configuration is a case of laser wakefield acceleration.
+This set-up will allow us to address advanced features that are available
+also in other geometries.
 The following topics will be addressed:
 
 * Understand the concept of azimuthal mode decomposition
 * Set up a simulation in this geometry
 * The analysis of the grid fields in AM cylindrical geometry
-* Observation of the effect of Perfectly Matched Layers
-* Reduce the effects of the Numerical Cherenkov Radiation.
+* Observation of the effect of Perfectly Matched Layers (feature available also in other geometries)
+* Reduce the effects of the Numerical Cherenkov Radiation (with features available also in other geometries).
 
 With 8 MPI processes and 10 OpenMP threads per MPI process, the simulation should need a few minutes.
 
