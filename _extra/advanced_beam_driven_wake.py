@@ -11,7 +11,7 @@
 
 import math 
 import numpy as np
-import scipy.constants as sc
+import scipy.constants
 
 ##### Physical constants
 lambda0             = 333.89e-6                 # reference length, m - here it will be our plasma wavelength

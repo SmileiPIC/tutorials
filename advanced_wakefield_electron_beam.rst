@@ -17,7 +17,7 @@ The following features will be addressed:
 * Observation of the plasma wakefield driven by a relativistic electron bunch
 * Analysis of the bunch evolution with the ``DiagParticleBinning`` diagnostic
 * Analysis of the bunch evolution with the ``TrackParticles`` diagnostic
-* Observation of the effect of Perfectly Matched Layers.
+* Observation of the effect of Perfectly Matched Layers
 
 ----
 
@@ -98,32 +98,6 @@ triggering a plasma oscillation.
 
   The moving window in the namelist has been set to contain the electron bunch and the first wake period in the simulation window.
 
-
-
-
-----
-
-
-A subtlety: why ions are not present?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Maxwell's equations and the continuity equation :math:`\nabla\cdot\mathbf{J}=-\partial_t\rho` 
-(which is true also for the single species) imply that :math:`\nabla\cdot\mathbf{E}-\rho` remains 
-constant throughout the simulation
-(see `this <https://smileipic.github.io/Smilei/Understand/relativistic_fields_initialization.html>`_).
-This can be written :math:`\nabla\cdot\mathbf{E}-\rho_e-\rho_i=\nabla\cdot\mathbf{E_0}-\rho_{e0}-\rho_{i0}`.
-If we consider ions immobile, then this becomes :math:`\nabla\cdot\mathbf{E}-\rho_e=\nabla\cdot\mathbf{E_0}-\rho_{e0}`, 
-because the ion continuity equation implies that if :math:`\mathbf{J}_{i}=0` then :math:`\rho_i=\rho_{i0}`.
-Note that ions do not appear anymore so that they can be discarded from the simulation.
-Assuming also :math:`\rho_{e0}+\rho_{i0}=0` and the initial field :math:`\mathbf{E_0}` being divergence free,
-we have :math:`\nabla\cdot\mathbf{E}=\rho_e+\rho_{i0}` at all times.
-The system will evolve as if there were ions, without having a real ion ``Species``. 
-
-This is a good approximation in our case: plasma oscillations driven by a relativistic
-electron bunch do not substantially move the ions. Indeed, the ion mass is at least 2000 times greater than the mass of an electron, so the characteristic timescales of the ion motion are much greater than those of the electron motion. Discarding ions represents an important gain of
-computational time.
-If we were interested in phenomena like ionization or ion motion,
-we would have needed to explicitly define an ion ``Species``.
 
 
 ----
