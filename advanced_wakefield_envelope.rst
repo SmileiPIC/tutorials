@@ -195,7 +195,7 @@ electron density on the axis::
 
   envelope_E = S.Probe.Probe0("Env_E_abs")
   Ex         = S.Probe.Probe0("100*Ex")
-  happi.multiSlide(Ex,envelope_E)
+  happi.multiSlide(Ex,envelope_E,xmin=0)
   
 Note that we have multiplied the longitudinal electric field by 10 in the last command
 to have a more readable scale in the plot.
