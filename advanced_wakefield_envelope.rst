@@ -193,8 +193,8 @@ choosing the field ``Ex`` in your diagnostic::
 Through the function ``multiSlide``, follow the evolution of the envelope and the of
 electron density on the axis::
 
-  envelope_E = S.Probe.Probe0("Env_E_abs")
-  Ex         = S.Probe.Probe0("100*Ex")
+  envelope_E = S.Probe.Probe0("Env_E_abs",label="Env_E_abs")
+  Ex         = S.Probe.Probe0("100*Ex",label="100*Ex")
   happi.multiSlide(Ex,envelope_E)
   
 Note that we have multiplied the longitudinal electric field by 10 in the last command
