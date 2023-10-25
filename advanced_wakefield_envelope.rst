@@ -195,7 +195,7 @@ electron density on the axis::
 
   envelope_E = S.Probe.Probe0("Env_E_abs")
   Ex         = S.Probe.Probe0("100*Ex")
-  happi.multiSlide(Ex,envelope_E,xmin=0)
+  happi.multiSlide(Ex,envelope_E)
   
 Note that we have multiplied the longitudinal electric field by 10 in the last command
 to have a more readable scale in the plot.
@@ -206,7 +206,7 @@ all the values of `Env_E_abs` below 1.::
 
   Rho        = S.Probe.Probe1("-Rho",cmap="Blues_r",vmin=0.,vmax=0.005)
   Env_E      = S.Probe.Probe1("Env_E_abs",cmap="hot",vmin=0.8,transparent="under")
-  happi.multiSlide(Rho,Env_E)
+  happi.multiSlide(Rho,Env_E,xmin=0)
 
 This way you should see the laser pulse envelope and the plasma wave in the electron density.
 
