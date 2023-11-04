@@ -280,6 +280,12 @@ Clearly, at every given time, no more than only a few regions contain particles.
 This is a typical situation where almost all processes have nothing to do
 and wait for a single process to finish its computation.
 
+You can also visualize the time taken for computing particles using::
+
+  S.Performances(map="timer_particles",cumulative=False).slide(cmap="smilei_r", vmin=0)
+
+  
+
 ----
 
 Balancing the load between processes

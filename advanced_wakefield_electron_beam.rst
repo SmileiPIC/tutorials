@@ -262,7 +262,9 @@ This way, you will have some numpy arrays, with the coordinates, momenta etc of 
 the electron bunch macro-particles at the timestep ``timestep``.
 In this case we exported the first timestep. You can find a list of the available 
 timesteps with::
+
   timesteps = track.getAvailableTimesteps()
+
 Each array has a size equal to the number of macro-particles.
 The argument ``chunksize`` denotes the maximum number macro-particles per chunk
 you are reading. Extracting data in chunks avoids reading all the macro-particles at once,

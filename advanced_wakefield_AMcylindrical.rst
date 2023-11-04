@@ -220,7 +220,8 @@ The Perfectly Matched Layers are activated in the ``Main`` block through::
 **Action**: How do the results change if you decrease the number of PML cells
 from 20 to 5? Are the fields more or less noisy? You may need to saturate the 
 colormap to see differences.
-Check the field with ::
+Check the field with::
+
   S.Probe.Probe1("Ey").slide(vmin=-0.001,vmax=0.001,cmap="seismic",figure=4)
   
 We recommend to launch this simulation in a different directory to be able to
