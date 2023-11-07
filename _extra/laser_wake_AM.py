@@ -51,19 +51,20 @@ EM_boundary_conditions  = [["PML","PML"],["PML","PML"],]
 use_BTIS3_interpolation = False
 
 Main(
-    geometry                = "AMcylindrical",
-    number_of_AM            = 2,
-    timestep                = dt,
-    simulation_time         = Niterations*dt, 
-    cell_length             = [dx, dr],
-    grid_length             = [Lx, Lr],
-    number_of_patches       = [npatch_x, 8],
-    EM_boundary_conditions  = EM_boundary_conditions,
-    number_of_pml_cells     = [[20,20],[20,20]],     
-    solve_poisson           = False,
-    print_every             = 100,
-    random_seed             = smilei_mpi_rank,
-    use_BTIS3_interpolation = use_BTIS3_interpolation,
+    geometry                       = "AMcylindrical",
+    number_of_AM                   = 2,
+    timestep                       = dt,
+    simulation_time                = Niterations*dt, 
+    cell_length                    = [dx, dr],
+    grid_length                    = [Lx, Lr],
+    number_of_patches              = [npatch_x, 8],
+    EM_boundary_conditions         = EM_boundary_conditions,
+    number_of_pml_cells            = [[20,20],[20,20]],     
+    solve_poisson                  = False,
+    print_every                    = 100,
+    random_seed                    = smilei_mpi_rank,
+    use_BTIS3_interpolation        = use_BTIS3_interpolation,
+    reference_angular_frequency_SI = omega0,
 )
 
 #### Define the plasma
