@@ -21,6 +21,7 @@ The following features will be addressed:
 * Observation of the effect of Perfectly Matched Layers
 
 
+
 ----
 
 Physical configuration
@@ -63,6 +64,14 @@ More details on the initialization through numpy arrays or from a file can be
 found `here <https://smileipic.github.io/Smilei/Use/particle_initialization.html>`_.
 
 
+.. note::
+
+  The simulation in this tutorial uses a few macro-particles per cell and a coarse mesh too keep the 
+  computational time reasonable. Physically relevant simulations of the considered phenomena would 
+  require more macro-particles and a finer mesh. Apart from the numerical artefacts whose 
+  mitigation will be addressed in this tutorial, the noise in the grid quantities will be caused 
+  also by the small number of macro-particles. 
+  
 ----
 
 

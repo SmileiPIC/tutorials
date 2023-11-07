@@ -10,6 +10,7 @@ The following topics will be addressed:
 
 * Understand the concept of azimuthal mode decomposition
 * Set up a simulation in this geometry
+* Automatic conversion of the output to SI units (``pint`` Python module required)
 * The analysis of the grid fields in AM cylindrical geometry
 * Observation of the effect of Perfectly Matched Layers (feature available also in other geometries)
 * Reduce the effects of the Numerical Cherenkov Radiation (with features available also in other geometries).
@@ -33,10 +34,11 @@ The moving window in the namelist has been set to contain the laser and the firs
 
 .. note::
 
-  You will see that the plasma does not fill all the simulation window. 
-  This is because we want to include the laser electromagnetic field in the window, but the plasma particles creating the plasma oscillations
-  are only those radially near to the laser pulse. Plasma particles at greater radial distances would not contribute to the relevant physics, but they would 
-  require additional computational time. Thus we can omit them to perform the simulation more quickly without losing relevant phenomena.
+  The simulation in this tutorial uses a few macro-particles per cell and a coarse mesh too keep the 
+  computational time reasonable. Physically relevant simulations of the considered phenomena would 
+  require more macro-particles and a finer mesh. Apart from the numerical artefacts whose 
+  mitigation will be addressed in this tutorial, the noise in the grid quantities will be caused 
+  also by the small number of macro-particles. 
 
 ----
 
@@ -103,6 +105,24 @@ Check them in the input file:
 
 * The ``Probes`` origin and corners are defined with three coordinates, since they will interpolate the fields in the 3D space as if they were macro-particles in a 3D simulation.
 
+
+
+----
+
+Conversion to SI units
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+We have specified the ``reference_angular_frequency_SI`` in the ``Main`` block
+of our input namelist. Therefore, if you have built ``happi`` with the ``pint`` Python module, 
+you should be able to automatically convert the normalized units of the outputs
+towards SI units, as will be shown in the commands of this tutorial. 
+
+To do this, while opening the diagnostic you will `specify the units in your plot <https://smileipic.github.io/Smilei/Use/post-processing.html#specifying-units>`_,
+e.g. ``units = ["um","GV/m"]``. If ``happi`` was not built with the ``pint`` module 
+or if you want to see the results in normalized units, just omit these units
+and remember to adjust the ``vmin`` and ``vmax`` of your plot commands.
+  
+  
 ----
 
 
@@ -119,7 +139,7 @@ Then, open the results::
 
 Now let's have a look at the grid fields, for example the electron density::
 
-  S.Field.Field0("-Rho",theta = 0.).plot(figure=1, vmin = 0., vmax = 0.01)
+  S.Field.Field0("-Rho",theta = 0.,units=["um","pC/cm^3"]).plot(figure=1, vmin = 0., vmax=1.5e12)
 
 In the previous command we have specified a certain angle ``theta = 0`` (i.e. the demi-plane including the positive ``y`` coordinates).
 With the ``Field`` diagnostic, you can virtually specify any angle ``theta``. 
@@ -130,13 +150,13 @@ Note that in the ``Field`` diagnostic you will see only half of the plane, as th
 
 By default, the last command we used will plot the last timestep available. You can also slide along the available timesteps::
   
-  S.Field.Field0("-Rho",timesteps=6000.,theta=0.).slide(figure=1, vmin = 0., vmax = 0.01)
+  S.Field.Field0("-Rho",theta = 0.,units=["um","pC/cm^3"]).slide(figure=1, vmin = 0., vmax=1.5e12)
 
 In the last command no azimuthal mode was specified. By default, if no mode is specified the reconstruction with all the modes is performed.
 
 To plot a specific mode (in this case the mode ``0``), you can use::
 
-  S.Field.Field0("-Rho",theta=0.,modes=0).plot(figure=1, vmin = 0., vmax = 0.01)
+  S.Field.Field0("-Rho",theta = 0.,units=["um","pC/cm^3"],modes=0).plot(figure=1, vmin = 0., vmax=3e12)
 
 The main azimuthal mode of the plasma wave in the wake of the laser is the mode 0. The mode 0 has a complete cylindrical symmetry.
 
@@ -144,18 +164,18 @@ The azimuthal mode of the laser is the mode ``1``.
 To see the transverse field of the laser, we can plot the mode ``1`` of 
 the transverse electric field (i.e. ``Er``)::
 
-  S.Field.Field0("Er",theta=0.,modes=1).plot(figure=2)
+  S.Field.Field0("Er",theta=0.,modes=1,units=["um","TV/m"]).plot(figure=2,vmin=-20,vmax=20,cmap="seismic")
 
 On ``theta=0`` it will correspond ``Ey`` with our choice of laser polarization.
 
 You can plot the reconstruction of the whole longitudinal electric 
 field (laser and wake fields, modes ``1`` and ``0`` respectively) through::
 
-  S.Field.Field0("El",theta=0.).plot(figure=4)
+  S.Field.Field0("El",theta=0.,units=["um","GV/m"]).plot(figure=2,vmin=-500,vmax=500,cmap="seismic")
 
 You can also follow the evolution of any grid quantity (for example here the electron density) through the command ``animate()``::
 
-  S.Field.Field0("-Rho",theta=0.,modes=0).animate(figure=1, vmin = 0., vmax = 0.01)
+  S.Field.Field0("-Rho",theta = 0.,units=["um","pC/cm^3"],modes=0).slide(figure=1, vmin = 0., vmax=3e12)
 
 .. rubric:: 2. Probe 1D
 
@@ -168,7 +188,7 @@ You can try to define another 1D ``Probe`` at the end of the namelist, but you w
 The ``Probes`` interpolate the cartesian components of the fields from the grid, not the cylindrical ones.
 Thus, to follow the evolution of the longitudinal electric field you can use::
 
-  S.Probe.Probe0("Ex").animate(figure=2)
+  S.Probe.Probe0("Ex",units=["um","GV/m"]).slide(figure=2)
 
 Note that we haven't specified the mode. The ``Probes`` reconstruct the fields including all the modes.
 
@@ -177,14 +197,14 @@ Note that we haven't specified the mode. The ``Probes`` reconstruct the fields i
 In the namelist, a 2D ``Probe`` is defined on the plane parallel to the polarization direction of the laser.
 For how we have defined it, you won't see only half plane as in the ``Field`` diagnostic, but both the negative and positive ``y`` points.
 
-Let's give a look to the evolution of the plasma density::
+Let's have a look at the evolution of the plasma density::
 
-  S.Probe.Probe1("-Rho").slide(figure=3,vmin=0.,vmax=0.01)
+  S.Probe.Probe1("-Rho",units=["um","pC/cm^3"]).slide(figure=1, vmin = 0., vmax=3e12)
 
 To see the evolution of the longitudinal electric field and the electric field in the ``y`` direction, you can use::
 
-  S.Probe.Probe1("Ex").slide(figure=4)
-  S.Probe.Probe1("Ey").slide(figure=5)
+  S.Probe.Probe1("Ex",units=["um","GV/m"]).slide(figure=2,vmin=-500,vmax=500,cmap="seismic")
+  S.Probe.Probe1("Ey",units=["um","TV/m"]).slide(figure=2,vmin=-1,vmax=1,cmap="seismic")
 
 Note that the ``Fields`` contained the cylindrical components of the fields, but the ``Probes`` diagnostics
 contain the Cartesian reconstruction of the fields, thus with Cartesian components.
@@ -222,7 +242,7 @@ from 20 to 5? Are the fields more or less noisy? You may need to saturate the
 colormap to see differences.
 Check the field with::
 
-  S.Probe.Probe1("Ey").slide(vmin=-0.001,vmax=0.001,cmap="seismic",figure=4)
+  S.Probe.Probe1("Ey",units=["um","TV/m"]).slide(figure=2,vmin=-1,vmax=1,cmap="seismic")
   
 We recommend to launch this simulation in a different directory to be able to
 compare the two simulations. You should find some differences especially at 
@@ -240,7 +260,7 @@ can have visible effects on the accelerated electron beam dynamics.
 For example, check the shape of the electron beam by visualizing the electron 
 density::
 
-  S.Probe.Probe1("-Rho").slide(vmin=0,vmax=0.005,figure=9)
+  S.Probe.Probe1("-Rho",units=["um","pC/cm^3"]).slide(figure=1, vmin = 0., vmax=3e12)
 
 How large should the simulation window be to avoid reflections without a Perfectly
 Matched Layers? How much does the simulation time change with a larger window without
@@ -296,7 +316,7 @@ Without the filter, you will see the high frequency oscillations of the numerica
 Cherenkov Radiation, that have a visible effect also on the shape of the
 accelerated electron beam inside the plasma waves. You can check this with::
 
-  S.Probe.Probe1("-Rho").slide(vmin=0,vmax=0.005,figure=9)
+  .Probe.Probe1("-Rho",units=["um","pC/cm^3"]).slide(figure=1, vmin = 0., vmax=3e12)
   
 The electron beam simulated with the filter should be transversely smaller.
 This happens because the filter reduces the growth of the spurious radiation, 
@@ -321,7 +341,7 @@ to the normalized cell size along `x` (which is typical of laser wakefield simul
 Check how the electron beam shape changes as you have done before with the filter
 and then check this combination of ``Probes``::
 
-  S.Probe.Probe1("Ey-c*Bz").slide(vmin=-0.02,vmax=0.02,cmap="seismic")
+  S.Probe.Probe1("Ey-c*Bz",units=["um","GV/m"]).slide(figure=2,vmin=-200,vmax=200,cmap="seismic")
   
 The differences are small compared to the simulation with B-TIS3 and you will 
 still see the Numerical Cherenkov Radiation in the grid. However, in this simulations
@@ -329,7 +349,7 @@ the macro-particles are not pushed on the `y` direction with these fields,
 but by a combination of fields that uses the B-TIS3 fields when necessary. 
 The force along `y` acting on the macro-particles in this case is proportional to::
   
-  S.Probe.Probe1("Ey-c*BzBTIS3").slide(vmin=-0.02,vmax=0.02,cmap="seismic")
+  S.Probe.Probe1("Ey-c*Bz",units=["um","GV/m"]).slide(figure=3,vmin=-200,vmax=200,cmap="seismic")
 
 Here you should see visible differences, especially near the electron beam.
 

@@ -51,6 +51,15 @@ Furthermore, the simulation of this tutorial is run in cylindrical geometry
 (only one azimuthal mode), which further speeds-up the simulations. 
 The envelope model is available also in other geometries.
 
+.. note::
+
+  The simulation in this tutorial uses a few macro-particles per cell and a coarse mesh too keep the 
+  computational time reasonable. Physically relevant simulations of the considered phenomena would 
+  require more macro-particles and a finer mesh. Apart from the numerical artefacts whose 
+  mitigation will be addressed in this tutorial, the noise in the grid quantities will be caused 
+  also by the small number of macro-particles. 
+  
+
 ----
 
 
