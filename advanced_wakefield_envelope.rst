@@ -222,7 +222,7 @@ choosing the field ``Ex`` in your diagnostic::
 Through the function ``multiSlide``, follow the evolution of the envelope and the of
 electron density on the axis::
 
-  envelope_E = S.Probe.Probe0("10*Env_E_abs",units=["um"],label="10*Env_E_abs")
+  envelope_E = S.Probe.Probe0("20*Env_E_abs",units=["um"],label="20*Env_E_abs")
   Ex         = S.Probe.Probe0("Ex",label="Ex",units=["um","GV/m"])
   happi.multiSlide(Ex,envelope_E)
   
@@ -317,7 +317,7 @@ Check how the electron beam shape changes::
 Afterwards, check this combination of ``Probes``, proportional to the force acting 
 on the macro-particles along the `y` direction::
   
-  S.Probe.Probe1("Ey-c*BzBTIS3",units=["um","GV/m"]).slide(figure=3,vmin=-80,vmax=80,cmap="seismic")
+  S.Probe.Probe1("Ey-c*BzBTIS3",units=["um","GV/m"]).slide(figure=3,vmin=-20,vmax=20,cmap="seismic")
   
 What difference do you observe if you compare it with the equivalent combination 
 in the simulation without the B-TIS3 scheme (using ``Bz`` instead of ``BzBTIS3``)?
