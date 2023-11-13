@@ -12,12 +12,15 @@ to reduce the time spent in field initialization.
 
 The following features will be addressed:
 
+* Automatic conversion of the output to SI units (``pint`` Python module required)
 * Initialization of a `Species` through a `numpy` array
 * Initialization of the electromagnetic field with relativistic species
 * Observation of the plasma wakefield driven by a relativistic electron bunch
 * Analysis of the bunch evolution with the ``DiagParticleBinning`` diagnostic
 * Analysis of the bunch evolution with the ``TrackParticles`` diagnostic
 * Observation of the effect of Perfectly Matched Layers
+
+
 
 ----
 
@@ -61,6 +64,14 @@ More details on the initialization through numpy arrays or from a file can be
 found `here <https://smileipic.github.io/Smilei/Use/particle_initialization.html>`_.
 
 
+.. note::
+
+  The simulation in this tutorial uses a few macro-particles per cell and a coarse mesh too keep the 
+  computational time reasonable. Physically relevant simulations of the considered phenomena would 
+  require more macro-particles and a finer mesh. Apart from the numerical artefacts whose 
+  mitigation will be addressed in this tutorial, the noise in the grid quantities will be caused 
+  also by the small number of macro-particles. 
+  
 ----
 
 
@@ -99,7 +110,22 @@ triggering a plasma oscillation.
   The moving window in the namelist has been set to contain the electron bunch and the first wake period in the simulation window.
 
 
+----
 
+Conversion to SI units
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+We have specified the ``reference_angular_frequency_SI`` in the ``Main`` block
+of our input namelist. Therefore, if you have built ``happi`` with the ``pint`` Python module, 
+you should be able to automatically convert the normalized units of the outputs
+towards SI units, as will be shown in the commands of this tutorial. 
+
+To do this, while opening the diagnostic you will `specify the units in your plot <https://smileipic.github.io/Smilei/Use/post-processing.html#specifying-units>`_,
+e.g. ``units = ["um","GV/m"]``. If ``happi`` was not built with the ``pint`` module 
+or if you want to see the results in normalized units, just omit these units
+and remember to adjust the ``vmin`` and ``vmax`` of your plot commands.
+  
+  
 ----
 
 
@@ -113,8 +139,8 @@ Run the simulation and open the results with ``happi``::
 
 To visualize the initial bunch density and transverse electric field on the ``xy`` plane, use::
 
-  S.Probe.Probe1("-Rho",timesteps=0.).plot(figure=1)
-  S.Probe.Probe1("Ey",timesteps=0.).plot(figure=2)
+  S.Probe.Probe1("-Rho",timesteps=0.,units=["um","pC/cm^3"]).plot(figure=1,vmin=0)
+  S.Probe.Probe1("Ey",timesteps=0.,units=["um","GV/m"]).plot(figure=2,cmap="seismic",vmin=-1.6,vmax=1.6)
 
 Note that the bunch is initially in vacuum. If a ``Species`` is initialized inside the plasma,
 activating the initialization of its field creates non-physical forces.
@@ -150,14 +176,14 @@ by the immobile ions and start to oscillate.
 
 Visualize the nonlinear plasma wave forming in the wake of the electron bunch::
 
-  S.Probe.Probe0("-Rho",).slide(figure=1)
-  S.Probe.Probe1("-Rho",).slide(figure=2)
+  S.Probe.Probe0("-Rho",units=["um","pC/cm^3"]).slide(figure=1)
+  S.Probe.Probe1("-Rho",units=["um","pC/cm^3"]).slide(figure=2)
 
 The evolution of the longitudinal electric field on axis, very important for acceleration of another particle bunch,
 can be visualized through::
 
-  S.Probe.Probe0("Ex").slide(figure=4)
-  S.Probe.Probe1("Ex").slide(figure=4,vmin=-0.4,vmax=0.4,cmap="seismic")
+  S.Probe.Probe0("Ex",units=["um","GV/m"]).slide(figure=4)
+  S.Probe.Probe1("Ex",units=["um","GV/m"]).slide(figure=5,cmap="seismic",vmin=-2,vmax=2)
 
 The wave form has a shape of a sawtooth wave, 
 since the set-up is in the so-called nonlinear regime. 
@@ -178,13 +204,13 @@ Particle Binning diagnostic
 Let's study in detail the evolution of the electron bunch.
 To start, the energy spectrum can be found using the first ``ParticleBinning`` diagnostic defined in the namelist::
 
-  S.ParticleBinning(0).slide()
+  S.ParticleBinning(0,units=["MeV","1/cm^3/MeV"]).slide()
 
 Note how the bunch energy spread is increasing and the average energy is decreasing as it drives the plasma waves in its propagation.
 
 The longitudinal phase space can be seen through the second ``ParticleBinning`` diagnostic of the namelist::
 
-  S.ParticleBinning(1).slide()
+  S.ParticleBinning(1,units=["um","MeV","1/cm^3/MeV"]).slide()
 
 Note how the bunch tail is losing its energy. That zone of the bunch is where the decelerating electric field
 is generated.
@@ -259,12 +285,10 @@ You can extract the ``TrackParticles`` data of a given ``timestep`` with::
     
     
 This way, you will have some numpy arrays, with the coordinates, momenta etc of all 
-the electron bunch macro-particles at the timestep ``timestep``.
+the electron bunch macro-particles at the timestep ``timestep``, in normalized units.
 In this case we exported the first timestep. You can find a list of the available 
 timesteps with::
-
   timesteps = track.getAvailableTimesteps()
-
 Each array has a size equal to the number of macro-particles.
 The argument ``chunksize`` denotes the maximum number macro-particles per chunk
 you are reading. Extracting data in chunks avoids reading all the macro-particles at once,

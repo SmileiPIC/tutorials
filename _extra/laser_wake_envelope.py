@@ -34,13 +34,13 @@ MeV                 = 1./electron_mass_MeV      # 1 MeV in normalized units
 #########################  Simulation parameters
 
 ##### mesh resolution
-dx                  = 0.20*um                   # longitudinal mesh resolution
-dr                  = 0.6*um                    # transverse mesh resolution
+dx                  = 0.15*um                   # longitudinal mesh resolution
+dr                  = 0.65*um                   # transverse mesh resolution
 dt                  = 0.9*dx/c_normalized       # integration timestep
 
 ##### simulation window size
-nx                  = 320 #288                  # number of mesh points in the longitudinal direction
-nr                  = 96                        # number of mesh points in the transverse direction
+nx                  = 352                       # number of mesh points in the longitudinal direction
+nr                  = 48                        # number of mesh points in the transverse direction
 Lx                  = nx * dx                   # longitudinal size of the simulation window
 Lr                  = nr * dr                   # transverse size of the simulation window
 
@@ -73,8 +73,8 @@ Main(
 
     number_of_patches              = [npatch_x,npatch_r],
 
-    EM_boundary_conditions         = [["PML","PML"],["PML","PML"],],
-    number_of_pml_cells            = [[20,20],[20,20]],
+    EM_boundary_conditions         = [["silver-muller"],["PML"],],
+    number_of_pml_cells            = [[0,0],[20,20]],
   
     solve_poisson                  = False,
     solve_relativistic_poisson     = False,
@@ -103,7 +103,10 @@ LaserEnvelopeGaussianAM(
   waist                            = laser_waist,                                      # laser waist
   time_envelope                    = tgaussian(center=center_laser, fwhm=laser_fwhm),  # time profile of the laser pulse
   envelope_solver                  = 'explicit_reduced_dispersion',
-  Envelope_boundary_conditions     = [ ["reflective", "reflective"],["reflective", "reflective"], ],
+  Envelope_boundary_conditions     = [ ["reflective"],["PML"] ],
+  Env_pml_sigma_parameters         = [[0.9 ,2     ],[80.0,2]     ,[80.0,2     ]],
+  Env_pml_kappa_parameters         = [[1.00,1.00,2],[1.00,1.00,2],[1.00,1.00,2]],
+  Env_pml_alpha_parameters         = [[0.90,0.90,1],[0.65,0.65,1],[0.65,0.65,1]]
 )
 
 
@@ -120,9 +123,9 @@ MovingWindow(
 
 ##### plasma parameters
 # atomic density
-plasma_plateau_density_1_ov_cm3    = 1.4e18
+plasma_plateau_density_1_ov_cm3    = 1.3e18
 n_at                               = plasma_plateau_density_1_ov_cm3*1e6/ncrit  # plasma plateau density in units of critical density defined above
-R_plasma = 30.*um   # Radius of plasma
+R_plasma                           = 30.*um                                     # Radius of plasma
 
 # Define the density function
 # this plasma density profile tries to create the density distribution
@@ -145,8 +148,7 @@ Prop_N_in_1                        = dopant_N_concentration   # proportion of N 
 Prop_H_in_1                        = 1.-Prop_N_in_1           # proportion of H atoms in H2-N2 mixture
 
 
-def dens_func_at1(x, r) :
-
+def dens_func_at1(x, r):
     x_meters = (x)*c_over_omega0
     var1 = (1.+np.exp(-mu1/T1)) / (1.+np.exp(-(mu1+x_meters-xc1)/T1))
     var2 = (1.+np.exp(-mu1/T2)) / (1.+np.exp(-(mu1-x_meters+xc1)/T2))
@@ -156,8 +158,7 @@ def dens_func_at1(x, r) :
 
     return nat1
 
-def dens_func_at2(x, r) :
-
+def dens_func_at2(x, r):
     x_meters = (x)*c_over_omega0
     var1     = (np.exp(-(mu1-x_meters+xc1)/T2)- np.exp(-mu1/T2)) / (1.+np.exp(-(mu1-x_meters+xc1)/T2))
     var1     = np.where(var1 > 0.0, var1, 0.0)
@@ -165,13 +166,11 @@ def dens_func_at2(x, r) :
     nat2     = np.where(x_meters < xc2, var1, var2)
     nat2     = np.where(x_meters <= p_xmin, 0.0, nat2)
     nat2     = np.where(x_meters >= p_xmax, 0.0, nat2)
-
     return nat2
 
-def dens_func_e(x, r) :
+def dens_func_e(x, r):
     n1       = dens_func_at1(x, r)
     n2       = dens_func_at2(x, r)
-
     return (Prop_H_in_1 + Prop_N_in_1*Q_init_N)*n1 + n2
 
 # number density profile of the dopant (nitrogen)
@@ -249,8 +248,8 @@ Species(
 ######################### Diagnostics
 
 list_fields_probes          = ['Ex','Ey','Bz']
-list_fields_probes.extend(['Rho','Rho_bckgelectron','Rho_nitrogen5plus','Rho_electronfromion'])
-list_fields_probes.extend(['Env_A_abs','Env_Chi','Env_E_abs'])
+list_fields_probes.extend(    ['Rho','Rho_bckgelectron','Rho_nitrogen5plus','Rho_electronfromion'])
+list_fields_probes.extend(    ['Env_A_abs','Env_Chi','Env_E_abs'])
 
 if (use_BTIS3_interpolation == True):
 	list_fields_probes.append('BzBTIS3')
@@ -259,7 +258,7 @@ if (use_BTIS3_interpolation == True):
 DiagProbe(
         every               = int(50*um/dt), #500,
         origin              = [0. , 1.*dr, 1.*dr],
-        corners             = [[Lr, 1.*dr, 1.*dr]],
+        corners             = [[Lx, 1.*dr, 1.*dr]],
         number              = [nx],
         fields              = list_fields_probes,
 )

@@ -57,55 +57,50 @@ npatch_r            = 8
 ######################### Main simulation definition block
 
 Main(
-    geometry = "AMcylindrical",
+    geometry                           = "AMcylindrical",
+    number_of_AM                       = 1, # cylindrical symmetry
+    interpolation_order                = 2,
 
-    interpolation_order = 2,
-
-    timestep = dt,
-    simulation_time = 1100*um, 
-    cell_length  = [dx, dr],
-    grid_length = [ Lx,  Lr],
-
-    number_of_AM = 1,
-
-    number_of_patches = [npatch_x,npatch_r],
+    timestep                           = dt,
+    simulation_time                    = 1101*um, 
+    cell_length                        = [dx, dr],
+    grid_length                        = [ Lx,  Lr],
+    number_of_patches                  = [npatch_x,npatch_r],
    
-    EM_boundary_conditions = [
-        ["PML","PML"],
-        ["PML","PML"],
-    ],
+    EM_boundary_conditions             = [["PML","PML"],["PML","PML"],],
+    number_of_pml_cells                = [[20,20],[20,20]],   
 
-    number_of_pml_cells = [[20,20],[20,20]],   
- 
-    solve_poisson = False,
-    solve_relativistic_poisson = True,
-    print_every = 100,
+    print_every                        = 100,
+    
+    reference_angular_frequency_SI     = omega0,
 
+    solve_poisson                      = False,
+    solve_relativistic_poisson         = True,
     relativistic_poisson_max_iteration = 50000,
 )
 
 ######################### Define a moving window
 
 MovingWindow(
-    time_start = 0.,     # window starts  moving at the start of the simulation
+    time_start = 0.,          # window starts  moving at the start of the simulation
     velocity_x = c_normalized,
 )
 
 ######################### Define the plasma
-center_bunch  = Lx-166.5*um
+center_bunch   = Lx-166.5*um
 ##### plasma parameters
-n0            = 1e22/ncrit   # plasma plateau density in units of critical density defined above
-Radius_plasma = 65.*um       # Radius of plasma
-Lramp         = 100*um       # Plasma density upramp length
-Lplateau      = 100.*Lx
-Ldownramp     = 0.1*Lx
-begin_upramp  = Lx 
-begin_plateau = begin_upramp+Lramp
-end_plateau   = begin_plateau+Lplateau
-end_downramp  = end_plateau+Ldownramp
+n0             = 1e22/ncrit   # plasma plateau density in units of critical density defined above
+Radius_plasma  = 65.*um       # Radius of plasma
+Lramp          = 100*um       # Plasma density upramp length
+Lplateau       = 100.*Lx
+Ldownramp      = 0.1*Lx
+begin_upramp   = Lx 
+begin_plateau  = begin_upramp+Lramp
+end_plateau    = begin_plateau+Lplateau
+end_downramp   = end_plateau+Ldownramp
 
 ##### plasma density profile
-longitudinal_profile = polygonal(xpoints=[begin_upramp,begin_plateau,end_plateau,end_downramp],xvalues=[0.,n0,n0,0.])
+longitudinal_profile      = polygonal(xpoints=[begin_upramp,begin_plateau,end_plateau,end_downramp],xvalues=[0.,n0,n0,0.])
 def plasma_density(x,r):
 	profile_r = 0.
 	if ((r)**2<Radius_plasma**2):
@@ -114,23 +109,19 @@ def plasma_density(x,r):
 
 ####### define the plasma electrons
 Species(
-  name = "plasmaelectrons",
+  name                    = "plasmaelectrons",
   position_initialization = "regular",
   momentum_initialization = "cold",
-  particles_per_cell = 2, #4,
-  regular_number = [1,2,1], #[2,2,1],
-  c_part_max = 1.0,
-  mass = 1.0,
-  charge = -1.0,
-  number_density = plasma_density,
-  mean_velocity = [0.0, 0.0, 0.0],
-  temperature = [0.,0.,0.],
-  pusher = "boris",
-  time_frozen = 0.0,
-  boundary_conditions = [
-     ["remove", "remove"],
-     ["remove", "remove"],
-  ],
+  particles_per_cell      = 2, 
+  regular_number          = [1,2,1],
+  mass                    = 1.0,
+  charge                  = -1.0,
+  number_density          = plasma_density,
+  mean_velocity           = [0.0, 0.0, 0.0],
+  temperature             = [0.,0.,0.],
+  pusher                  = "boris",
+  time_frozen             = 0.0,
+  boundary_conditions     = [["remove", "remove"],["remove", "remove"],],
 )
 
 
@@ -151,34 +142,30 @@ weight                     = Q_part/((c/omega0)**3*ncrit*normalized_species_char
 
 #### initialize the bunch using numpy arrays
 #### the bunch will have npart particles, so an array of npart elements is used to define the x coordinate of each particle and so on ...
-array_position = np.zeros((4,npart))                         # positions x,y,z, weight
-array_momentum = np.zeros((3,npart))                         # momenta x,y,z
+array_position            = np.zeros((4,npart))              # positions x,y,z, weight
+array_momentum            = np.zeros((3,npart))              # momenta x,y,z
 
 #### The electron bunch is supposed at waist. To make it convergent/divergent, transport matrices can be used
-array_position[0,:] = np.random.normal(loc=center_bunch, scale=sigma_x, size=npart)                        # generate random number from gaussian distribution for x position
-array_position[1,:] = np.random.normal(loc=0., scale=sigma_r, size=npart)                                  # generate random number from gaussian distribution for y position
-array_position[2,:] = np.random.normal(loc=0., scale=sigma_r, size=npart)                                  # generate random number from gaussian distribution for z position
-array_momentum[0,:] = np.random.normal(loc=gamma_bunch, scale=bunch_energy_spread*gamma_bunch, size=npart) # generate random number from gaussian distribution for px position
+array_position[0,:]       = np.random.normal(loc=center_bunch, scale=sigma_x, size=npart)                        # generate random number from gaussian distribution for x position
+array_position[1,:]       = np.random.normal(loc=0., scale=sigma_r, size=npart)                                  # generate random number from gaussian distribution for y position
+array_position[2,:]       = np.random.normal(loc=0., scale=sigma_r, size=npart)                                  # generate random number from gaussian distribution for z position
+array_momentum[0,:]       = np.random.normal(loc=gamma_bunch, scale=bunch_energy_spread*gamma_bunch, size=npart) # generate random number from gaussian distribution for px position
 # assumption: bunch defined at waist (zero rms divergence)
-array_momentum[1,:] = np.random.normal(loc=0., scale=bunch_normalized_emittance/sigma_r, size=npart)       # generate random number from gaussian distribution for py position
-array_momentum[2,:] = np.random.normal(loc=0., scale=bunch_normalized_emittance/sigma_r, size=npart)       # generate random number from gaussian distribution for pz position
+array_momentum[1,:]       = np.random.normal(loc=0., scale=bunch_normalized_emittance/sigma_r, size=npart)       # generate random number from gaussian distribution for py position
+array_momentum[2,:]       = np.random.normal(loc=0., scale=bunch_normalized_emittance/sigma_r, size=npart)       # generate random number from gaussian distribution for pz position
 
-array_position[3,:] = np.multiply(np.ones(npart),weight)
+array_position[3,:]       = np.multiply(np.ones(npart),weight)
 
 #### define the electron bunch
 Species( 
-  name = "electronbunch",
+  name                    = "electronbunch",
   position_initialization = array_position,
   momentum_initialization = array_momentum,
-  c_part_max = 1.0,
-  mass = 1.0,
-  charge = -1.0,
+  mass                    = 1.0,
+  charge                  = -1.0,
   relativistic_field_initialization = True,
-  pusher = "boris", 
-  boundary_conditions = [
-  	["remove", "remove"],
-  	["remove", "remove"], 
-  ],
+  pusher                  = "boris", 
+  boundary_conditions     = [["remove", "remove"],["remove", "remove"],],
 )
  
 ######################### Diagnostics
@@ -187,89 +174,86 @@ Species(
 DiagProbe(
         every = int(100*um/dt),
         origin = [0., 0.5*dr, 0.5*dr],
-        corners = [
-            [Main.grid_length[0], 0.5*dr, 0.5*dr]
-        ],
-        number = [nx],
-        fields = ['Ex','Ey','Rho']
+        corners        = [[Main.grid_length[0], 0.5*dr, 0.5*dr]],
+        number         = [nx],
+        fields         = ['Ex','Ey','Rho']
 )
-
 
 ##### 2D Probe diagnostics on the xy plane
 DiagProbe(
-    every = int(100*um/dt),
-    origin   = [0., -nr*dr,0.],
-    corners  = [ [nx*dx,-nr*dr,0.], [0,nr*dr,0.] ],
-    number   = [nx, int(2*nr)],
-    fields = ['Ex','Ey','Rho']
+    every              = int(100*um/dt),
+    origin             = [0., -nr*dr,0.],
+    corners            = [ [nx*dx,-nr*dr,0.], [0,nr*dr,0.] ],
+    number             = [nx, int(2*nr)],
+    fields             = ['Ex','Ey','Rho']
 )
 
 ##### Diagnostic for the electron bunch macro-particles
 DiagTrackParticles(
- species = "electronbunch",
- every = int(100*um/dt),
- attributes = ["x", "y", "z", "px", "py", "pz", "w"]
+ species               = "electronbunch",
+ every                 = int(100*um/dt),
+ attributes            = ["x", "y", "z", "px", "py", "pz", "w"]
 )
 
 CurrentFilter(
-    model = "binomial",
-    passes = [2],
+    model              = "binomial",
+    passes             = [2],
     #kernelFIR = [0.25,0.5,0.25]
 )
 
 ######################### Load balancing (for parallelization)                                                                                                                                                     
 LoadBalancing(
-    initial_balance = False,
-        every = 40,
-    cell_load = 1.,
-    frozen_particle_load = 0.1
+  initial_balance      = False,
+  every                = 40,
+  cell_load            = 1.,
+  frozen_particle_load = 0.1
 )
 
 ######################### Diag Binning
 # Energy density of the bunch
 DiagParticleBinning(
     deposited_quantity = "weight",
-    every = 1000,
-    time_average = 1,
-    species = ["electronbunch"],
-    axes = [
-        ["ekin"    , 90*MeV, 110*MeV, 1000 ]
-    ]
+    every              = int(100*um/dt),
+    time_average       = 1,
+    species            = ["electronbunch"],
+    axes               = [
+                          ["ekin"    , 90*MeV, 110*MeV, 1000 ]
+                         ]
 )
 
 
 # longitudinal phase space of the bunch
 DiagParticleBinning(
     deposited_quantity = "weight",
-    every = 1000,
-    time_average = 1,
-    species = ["electronbunch"],
-    axes = [
-        ["moving_x", 0.    , Lx      , 200 ],
-        ["ekin"    , 90*MeV, 110.*MeV, 1000]
-    ]
+    every              = int(100*um/dt),
+    time_average       = 1,
+    species            = ["electronbunch"],
+    axes               = [
+                          ["moving_x", 0.    , Lx      , 200 ],
+                          ["ekin"    , 90*MeV, 110.*MeV, 1000]
+                         ]
 )
 
 # Transverse (y) phase space of the bunch
 DiagParticleBinning(
     deposited_quantity = "weight",
-    every = 1000,
-    time_average = 1,
-    species = ["electronbunch"],
-    axes = [
-        ["y" , -3.*um              , 3.*um              , 200],
-        ["py", -3.*MeV/c_normalized, 3.*MeV/c_normalized, 200]
-    ]
+    every              = int(100*um/dt),
+    time_average       = 1,
+    species            = ["electronbunch"],
+    axes               = [
+                          ["y" , -3.*um              , 3.*um              , 200],
+                          ["py", -3.*MeV/c_normalized, 3.*MeV/c_normalized, 200]
+                         ]
 )
 
 # Transverse (z) phase space of the bunch
 DiagParticleBinning(
     deposited_quantity = "weight",
-    every = 1000,
-    time_average = 1,
-    species = ["electronbunch"],
-    axes = [
-        ["z" , -3.*um              , 3.*um              , 200],
-        ["pz", -3.*MeV/c_normalized, 3.*MeV/c_normalized, 200]
-    ]
+    every              = int(100*um/dt),
+    time_average       = 1,
+    species            = ["electronbunch"],
+    axes               = [
+                          ["z" , -3.*um              , 3.*um              , 200],
+                          ["pz", -3.*MeV/c_normalized, 3.*MeV/c_normalized, 200]
+                         ]
 )

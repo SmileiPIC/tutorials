@@ -14,9 +14,11 @@ With 2 MPI processes and 20 OpenMP threads this simulation should run in a few m
 
 The following features will be addressed:
 
+* Automatic conversion of the output to SI units (``pint`` Python module required)
 * Laser envelope initialization "in the box"
 * Initialization of the species interacting with the laser envelope
 * Observation of relativistic self-focusing
+* Automatic conversion of the output to SI units (``pint`` Python module required)
 * Analysis of the grid fields when an envelope is present
 * Use of the envelope ionization module.
 * Use of the B-TIS3 interpolation scheme with a laser envelope
@@ -48,6 +50,15 @@ Thus, although the envelope represents a laser pulse, you won't see the laser os
 Furthermore, the simulation of this tutorial is run in cylindrical geometry 
 (only one azimuthal mode), which further speeds-up the simulations. 
 The envelope model is available also in other geometries.
+
+.. note::
+
+  The simulation in this tutorial uses a few macro-particles per cell and a coarse mesh too keep the 
+  computational time reasonable. Physically relevant simulations of the considered phenomena would 
+  require more macro-particles and a finer mesh. Apart from the numerical artefacts whose 
+  mitigation will be addressed in this tutorial, the noise in the grid quantities will be caused 
+  also by the small number of macro-particles. 
+  
 
 ----
 
@@ -92,6 +103,21 @@ possible that you will need a smaller integration timestep to use it.
 
 ----
 
+Conversion to SI units
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+We have specified the ``reference_angular_frequency_SI`` in the ``Main`` block
+of our input namelist. Therefore, if you have built ``happi`` with the ``pint`` Python module, 
+you should be able to automatically convert the normalized units of the outputs
+towards SI units, as will be shown in the commands of this tutorial. 
+
+To do this, while opening the diagnostic you will `specify the units in your plot <https://smileipic.github.io/Smilei/Use/post-processing.html#specifying-units>`_,
+e.g. ``units = ["um","GV/m"]``. If ``happi`` was not built with the ``pint`` module 
+or if you want to see the results in normalized units, just omit these units
+and remember to adjust the ``vmin`` and ``vmax`` of your plot commands.
+
+----
+
 A subtlety: the envelope of the vector potential vs the envelope of the electric field
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -110,6 +136,9 @@ not provided, the last one is plotted by default)::
 
 Here we have used the ``happi`` command ``multiSlide``, that it is analogous to
 the command ``multiPlot``, but allows to slide between multiple timesteps.
+Note that we have not converted these outputs to SI units, since in laser wakefield 
+acceleration the peak normalized field (often called ``a0``) of the laser pulse can give important information
+on the wave excitation regime (nonlinear for ``a0 > 1.`` for example, linear for ``a0 << 1.``).
 
 Do you see some differences when the simulation advances?
 The complex envelope field used for calculations is the envelope of the vector potential 
@@ -179,7 +208,7 @@ You can also follow the formation of the plasma wave, plotting the electron dens
 To see it more clearly, we recommend the use of the option ``vmax`` in the
 ``slide()`` or ``plot()`` function, for example::
 
- S.Probe.Probe1("-Rho").slide(figure=2, vmin=0.,vmax=0.005)
+ S.Probe.Probe1("-Rho",units=["um","pC/cm^3"]).slide(figure=2, vmin=0.,vmax=1.5e12)
 
 Note the formation of a bubble behind the laser, whose borders are full of
 electrons and whose interior is emptied (or almost emptied in some regimes) of electrons.
@@ -188,24 +217,24 @@ The longitudinal electric field on axis, very important for electron
 Laser Wakefield Acceleration, can be plotted with the ``Probe`` defined on the propagation axis, 
 choosing the field ``Ex`` in your diagnostic::
 
-  S.Probe.Probe0("Ex").slide(figure=3)
+  S.Probe.Probe0("Ex",units=["um","GV/m"]).slide(figure=3)
 
 Through the function ``multiSlide``, follow the evolution of the envelope and the of
 electron density on the axis::
 
-  envelope_E = S.Probe.Probe0("Env_E_abs",label="Env_E_abs")
-  Ex         = S.Probe.Probe0("100*Ex",label="100*Ex")
+  envelope_E = S.Probe.Probe0("20*Env_E_abs",units=["um"],label="20*Env_E_abs")
+  Ex         = S.Probe.Probe0("Ex",label="Ex",units=["um","GV/m"])
   happi.multiSlide(Ex,envelope_E)
   
-Note that we have multiplied the longitudinal electric field by 10 in the last command
+Note that we have multiplied the laser normalized electric field by 10 in the last command
 to have a more readable scale in the plot.
 
 The evolution of both the envelope and the electron density can be studied in 2D at the same time
 through the `transparent` argument of the `multiSlide` function. We'll make transparent
 all the values of `Env_E_abs` below 1.::
 
-  Rho        = S.Probe.Probe1("-Rho",cmap="Blues_r",vmin=0.,vmax=0.005)
-  Env_E      = S.Probe.Probe1("Env_E_abs",cmap="hot",vmin=0.8,transparent="under")
+  Rho        = S.Probe.Probe1("-Rho",units=["um","pC/cm^3"],cmap="Blues_r",vmin=0.,vmax=1.5e12)
+  Env_E      = S.Probe.Probe1("Env_E_abs",units=["um"],cmap="hot",vmin=0.8,transparent="under")
   happi.multiSlide(Rho,Env_E,xmin=0)
 
 This way you should see the laser pulse envelope and the plasma wave in the electron density.
@@ -246,7 +275,7 @@ More details on this model can be found `here <http://dx.doi.org/10.1103/PhysRev
 
 **Action** Visualize the density of the electrons created through ionization::
 
-  S.Probe.Probe1("-Rho_electronfromion").slide(figure=2, vmin=0.,vmax=0.005)
+  S.Probe.Probe1("-Rho_electronfromion",units=["um","pC/cm^3"]).slide(figure=2, vmin=0.,vmax=1.5e12)
 
 Run two new simulations, changing the fraction of the nitrogen dopant in the gas mixture,
 stored in the variable ``dopant_N_concentration=0.10`` (i.e. ten percent of nitrogen).
@@ -283,12 +312,12 @@ before the ``Main`` block to ``True``. Note how this changes the ``pusher``
 to ``"ponderomotive_borisBTIS3"`` and adds some fields to the ``Probes`` in the namelist. 
 Check how the electron beam shape changes::
   
-  S.Probe.Probe1("-Rho").slide(figure=2, vmin=0.,vmax=0.005)
+  S.Probe.Probe1("-Rho",units=["um","pC/cm^3"]).slide(figure=2, vmin=0.,vmax=1.5e12)
   
 Afterwards, check this combination of ``Probes``, proportional to the force acting 
 on the macro-particles along the `y` direction::
   
-  S.Probe.Probe1("Ey-c*BzBTIS3").slide(vmin=-0.02,vmax=0.02,cmap="seismic")
+  S.Probe.Probe1("Ey-c*BzBTIS3",units=["um","GV/m"]).slide(figure=3,vmin=-20,vmax=20,cmap="seismic")
   
 What difference do you observe if you compare it with the equivalent combination 
 in the simulation without the B-TIS3 scheme (using ``Bz`` instead of ``BzBTIS3``)?
