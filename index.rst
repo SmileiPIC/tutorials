@@ -23,3 +23,8 @@ Choose among the available tutorials in the top menu.
 * `Smilei post-processing <https://smileipic.github.io/Smilei/Use/post-processing.html>`_
 * `Smilei tutorials source <https://github.com/SmileiPIC/tutorials>`_
 
+.. rubric:: Previous versions of these tutorials were used for training during Smilei workshops
+   in `2017 <https://indico.math.cnrs.fr/event/2401/>`_,
+   `2019 <https://indico.math.cnrs.fr/event/4002/>`_,
+   `2022 <https://indico.math.cnrs.fr/event/6911/>`_ and
+   `2023 <https://indico.math.cnrs.fr/event/9577/>`_.

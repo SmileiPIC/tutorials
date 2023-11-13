@@ -62,7 +62,6 @@ Main(
     number_of_pml_cells     = [[20,20],[20,20]],     
     solve_poisson           = False,
     print_every             = 100,
-    random_seed             = smilei_mpi_rank,
     use_BTIS3_interpolation = use_BTIS3_interpolation,
 )
 

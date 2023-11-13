@@ -25,7 +25,6 @@ Main(
     ],
     solve_poisson = False,
     print_every = 100,
-    random_seed = smilei_mpi_rank
 )
 
 Species( 

@@ -44,8 +44,6 @@ Main(
     number_of_patches = [ 8 ],
 
     EM_boundary_conditions = [ ['periodic'] ] ,
-
-    random_seed = smilei_mpi_rank
 )
 
 # DEFINE ALL SPECIES (ADDING BLOCKS)

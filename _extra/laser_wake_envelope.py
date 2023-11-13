@@ -82,7 +82,7 @@ Main(
     print_every                    = 100,
     use_BTIS3_interpolation        = use_BTIS3_interpolation,
 
-    random_seed                    = 0, #smilei_mpi_rank
+    random_seed                    = 0,
     reference_angular_frequency_SI = omega0,
 )
 

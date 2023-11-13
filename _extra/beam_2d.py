@@ -38,8 +38,6 @@ Main(
     EM_boundary_conditions = [ ['periodic'] ] ,
 
     solve_poisson = False,
-    
-    random_seed = smilei_mpi_rank
 )
 
 Species(

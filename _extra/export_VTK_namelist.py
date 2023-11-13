@@ -41,7 +41,6 @@ Main(
      EM_boundary_conditions = EM_boundary_conditions,
      solve_poisson          = False,
      print_every            = 100,
-     random_seed            = smilei_mpi_rank
 )
 
 
