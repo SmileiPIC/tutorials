@@ -349,7 +349,7 @@ the macro-particles are not pushed on the `y` direction with these fields,
 but by a combination of fields that uses the B-TIS3 fields when necessary. 
 The force along `y` acting on the macro-particles in this case is proportional to::
   
-  S.Probe.Probe1("Ey-c*Bz",units=["um","GV/m"]).slide(figure=3,vmin=-200,vmax=200,cmap="seismic")
+  S.Probe.Probe1("Ey-c*BzBTIS3",units=["um","GV/m"]).slide(figure=3,vmin=-200,vmax=200,cmap="seismic")
 
 Here you should see visible differences, especially near the electron beam.
 
