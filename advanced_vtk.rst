@@ -282,7 +282,7 @@ data proportional to the laser intensity using ``build3d``::
 
   build3d_interval = [[0,S.namelist.Lx,S.namelist.dx]]
   build3d_interval.append([-S.namelist.Ltrans,S.namelist.Ltrans,S.namelist.dtrans])
-  build3d_interval.append([-S.namelist.Ltrans,S.namelist.Ltrans,S.namelist.dtrans]])
+  build3d_interval.append([-S.namelist.Ltrans,S.namelist.Ltrans,S.namelist.dtrans])
   E2 = S.Field.Field0("El**2+Er**2+Et**2",build3d = build3d_interval )
   
 Note how we had to specify the cylindrical components of the fields.
