@@ -53,7 +53,7 @@ The envelope model is available also in other geometries.
 
 .. note::
 
-  The simulation in this tutorial uses a few macro-particles per cell and a coarse mesh too keep the 
+  The simulation in this tutorial uses a few macro-particles per cell and a coarse mesh to keep the 
   computational time reasonable. Physically relevant simulations of the considered phenomena would 
   require more macro-particles and a finer mesh. Apart from the numerical artefacts whose 
   mitigation will be addressed in this tutorial, the noise in the grid quantities will be caused 
@@ -219,7 +219,7 @@ choosing the field ``Ex`` in your diagnostic::
 
   S.Probe.Probe0("Ex",units=["um","GV/m"]).slide(figure=3)
 
-Through the function ``multiSlide``, follow the evolution of the envelope and the of
+Through the function ``multiSlide``, follow the evolution of the envelope and of
 electron density on the axis::
 
   envelope_E = S.Probe.Probe0("20*Env_E_abs",units=["um"],label="20*Env_E_abs")
