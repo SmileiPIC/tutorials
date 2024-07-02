@@ -173,7 +173,7 @@ field (laser and wake fields, modes ``1`` and ``0`` respectively) through::
 
   S.Field.Field0("El",theta=0.,units=["um","GV/m"]).plot(figure=2,vmin=-500,vmax=500,cmap="seismic")
 
-You can also follow the evolution of any grid quantity (for example here the electron density) through the command ``animate()``::
+You can also follow the evolution of any grid quantity (for example here the electron density) through the command ``slide()``::
 
   S.Field.Field0("-Rho",theta = 0.,units=["um","pC/cm^3"],modes=0).slide(figure=1, vmin = 0., vmax=3e12)
 
@@ -306,7 +306,7 @@ Try to launch a new simulation using the same namelist, but decommenting the blo
      passes = [2],
   )
 
-**Action**: compare the results of the two simulations, with an without filter.
+**Action**: compare the results of the two simulations, with and without filter.
 For example, you can use the ``Probes`` to check a combination of ``Probes`` proportional
 to the force acting on the macro-particles in the `y` direction::
 
@@ -316,7 +316,7 @@ Without the filter, you will see the high frequency oscillations of the numerica
 Cherenkov Radiation, that have a visible effect also on the shape of the
 accelerated electron beam inside the plasma waves. You can check this with::
 
-  .Probe.Probe1("-Rho",units=["um","pC/cm^3"]).slide(figure=1, vmin = 0., vmax=3e12)
+  S.Probe.Probe1("-Rho",units=["um","pC/cm^3"]).slide(figure=1, vmin = 0., vmax=3e12)
   
 The electron beam simulated with the filter should be transversely smaller.
 This happens because the filter reduces the growth of the spurious radiation, 
