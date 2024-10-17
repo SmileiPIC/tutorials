@@ -120,7 +120,7 @@ Species(
 
 #### Define the laser
 
-# this is the FWHM in intensity, i.e. sqrt(2) times larger than the FWHM in intensity  measured in experiments
+# this is the FWHM of the field, i.e. sqrt(2) times larger than the FWHM in intensity measured in experiments
 laser_fwhm                  = 16.*fs  
 laser_waist                 = 15.*um
 t_laser_peak_enters_window  = 3*laser_fwhm
