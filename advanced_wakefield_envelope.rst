@@ -307,7 +307,7 @@ the ``"explicit_reduced_dispersion"``. Try have at least ``dt>=0.9*dx`` to use
 the B-TIS3, but check that the solver results (i.e. the envelope fields) do not
 increase exponentially due to a too high ``dt``.
 
-**Action**: Run a new simulation, changing the variable ``use_BTIS3_interpolation`` 
+**Action**: Run the same simulation again in a new folder, changing the variable ``use_BTIS3_interpolation`` 
 before the ``Main`` block to ``True``. Note how this changes the ``pusher`` 
 to ``"ponderomotive_borisBTIS3"`` and adds some fields to the ``Probes`` in the namelist. 
 Check how the electron beam shape changes::
