@@ -35,12 +35,12 @@ MeV                 = 1./electron_mass_MeV      # 1 MeV in normalized units
 
 ##### mesh resolution
 dx                  = 0.15*um                   # longitudinal mesh resolution
-dr                  = 0.65*um                   # transverse mesh resolution
+dr                  = 1*um                   # transverse mesh resolution
 dt                  = 0.9*dx/c_normalized       # integration timestep
 
 ##### simulation window size
 nx                  = 352                       # number of mesh points in the longitudinal direction
-nr                  = 48                        # number of mesh points in the transverse direction
+nr                  = 96                        # number of mesh points in the transverse direction
 Lx                  = nx * dx                   # longitudinal size of the simulation window
 Lr                  = nr * dr                   # transverse size of the simulation window
 
@@ -91,7 +91,7 @@ Main(
 #### laser parameters
 a0                                 = 1.8
 laser_fwhm                         = 25.5*math.sqrt(2)*fs                              # laser FWHM duration in field, i.e. FWHM duration in intensity*sqrt(2)
-laser_waist                        = 15.*um                                            # laser waist, conversion from um
+laser_waist                        = 20.*um                                            # laser waist, conversion from um
 center_laser                       = Lx-1.7*laser_fwhm                                 # laser position at the start of the simulation
 x_focus_laser                      = 500*um
 
@@ -125,7 +125,7 @@ MovingWindow(
 # atomic density
 plasma_plateau_density_1_ov_cm3    = 1.3e18
 n_at                               = plasma_plateau_density_1_ov_cm3*1e6/ncrit  # plasma plateau density in units of critical density defined above
-R_plasma                           = 30.*um                                     # Radius of plasma
+R_plasma                           = 90.*um                                     # Radius of plasma
 
 # Define the density function
 # this plasma density profile tries to create the density distribution
@@ -257,8 +257,8 @@ if (use_BTIS3_interpolation == True):
 ##### 1D Probe diagnostic on the x axis
 DiagProbe(
         every               = int(50*um/dt), #500,
-        origin              = [0. , 1.*dr, 1.*dr],
-        corners             = [[Lx, 1.*dr, 1.*dr]],
+        origin              = [0. , 2.*dr, 2.*dr],
+        corners             = [[Lx, 2.*dr, 2.*dr]],
         number              = [nx],
         fields              = list_fields_probes,
 )

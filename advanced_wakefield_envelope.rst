@@ -303,7 +303,7 @@ Now we will see how to use this feature with a laser envelope model.
 The tricky part with an envelope model is that this feature works well only when 
 the normalized timestep (or ``dt``) is close to the normalized cell length along `x` (or ``dx``), which is
 not always compatible with the stability of the envelope solver, expecially 
-the ``"explicit_reduced_dispersion"``. Try have at least ``dt>0.9*dx`` to use 
+the ``"explicit_reduced_dispersion"``. Try have at least ``dt>=0.9*dx`` to use 
 the B-TIS3, but check that the solver results (i.e. the envelope fields) do not
 increase exponentially due to a too high ``dt``.
 
@@ -321,5 +321,9 @@ on the macro-particles along the `y` direction::
   
 What difference do you observe if you compare it with the equivalent combination 
 in the simulation without the B-TIS3 scheme (using ``Bz`` instead of ``BzBTIS3``)?
+
+Try to repeat the previous postprocessing commands of the tutorial, 
+comparing the results of the simulation using the B-TIS3 and those of the one 
+which did not use it. What differences do you observe?
 
 
