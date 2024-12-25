@@ -2,7 +2,7 @@ import numpy as np
 import cmath
 
 
-geometry   = "3Dcartesian" # or "AMcylindrical"
+geometry   = "3Dcartesian" 
 
 # Spatial and temporal resolution
 dx         = 0.1
@@ -69,7 +69,8 @@ if (geometry  == "3Dcartesian"):
 	focus               = [0., Main.grid_length[1]/2., Main.grid_length[2]/2.]
 	waist               = 10.
 	laser_fwhm          = 20.
-	time_envelope       = tgaussian(center=2**0.5*laser_fwhm, fwhm=laser_fwhm)
+	laser_center        = 2**0.5*laser_fwhm
+	time_envelope       = tgaussian(center=laser_center, fwhm=laser_fwhm)
 
 	Zr                  = omega * waist**2/2.
 	w                   = math.sqrt(1./(1.+(focus[0]/Zr)**2))
@@ -84,8 +85,8 @@ if (geometry  == "3Dcartesian"):
 		return 0.
 	def Bz(y,z,t):
 		r2 = (y-focus[1])**2 + (z-focus[2])**2
-		omegat = omega*t - coeff*r2
-		return a0 * w * math.exp( -invWaist2*r2  ) * time_envelope( omegat/omega ) * math.sin( omegat - phase(y,z))
+		omegat = omega*(t-laser_center) - coeff*r2
+		return a0 * w * math.exp( -invWaist2*r2  ) * time_envelope( t ) * math.sin( omegat - phase(y,z))
 	
 	# Define the laser pulse	
 	Laser( box_side = "xmin",space_time_profile = [By, Bz])
@@ -105,7 +106,8 @@ if (geometry  == "AMcylindrical"):
 	boundary_conditions = [["remove", "remove"],["remove", "remove"],]
 	particles_per_cell  = 1
     
-	# We build a simple Gaussian laser from scratch instead of using LaserGaussianAM
+	# We build a simple Gaussian beam laser from scratch instead of using LaserGaussianAM
+	# the laser is assumed as linearly polarized in the y direction
 	
 	# The goal is to test the space_time_profile_AM attribute
 	omega         = 1.
@@ -113,25 +115,30 @@ if (geometry  == "AMcylindrical"):
 	focus         = [0., 0.]
 	waist         = 10.
 	laser_fwhm    = 20.
-	time_envelope = tgaussian(center=2**0.5*laser_fwhm, fwhm=laser_fwhm)
+	laser_center  = 2**0.5*laser_fwhm
+	time_envelope = tgaussian(center=laser_center, fwhm=laser_fwhm)
 
 	Zr            = omega * waist**2/2.
 	w             = math.sqrt(1./(1.+(focus[0]/Zr)**2))
 	invWaist2     = (w/waist)**2
 	coeff         = -omega * focus[0] * w**2 / (2.*Zr**2)
+	
+	# Bz field of a Gaussian beam linearly polarized in the y direction, propagating following the x axis,
+	# with Gaussian temporal profile. For this laser, Bz=Ey in normalized units
+	def Bz(r,t): 
+		return a0 * w * math.exp( -invWaist2*r**2  ) * time_envelope( t ) * math.sin( omega*(t-laser_center) - coeff*r**2 )
 
 	def Br_mode0(r,t):
-		return 0.*(1.+0.*1j)	
+		return 0j
 	def Bt_mode0(r,t):
-		return 0.*(1.+0.*1j)	
-	def Br_mode1(r,t):
-		return 0.*(1.+0.*1j)	
+		return 0j
+	def Br_mode1(r,t): 
+		return 1j*Bz(r,t)
 	def Bt_mode1(r,t):
-		omegat = omega*t - coeff*r**2
-		return a0 * w * math.exp( -invWaist2*r**2  ) * time_envelope( omegat/omega ) * math.sin( omegat )*(1.+0.*1j)	
+		return complex(Bz(r,t))	
 	
 	# Define the laser pulse	
-	Laser( box_side = "xmin",space_time_profile_AM = [Br_mode0, Bt_mode1, Br_mode0, Bt_mode1])
+	Laser( box_side = "xmin",space_time_profile_AM = [Br_mode0, Bt_mode0, Br_mode1, Bt_mode1])
 
 	# Define Plasma density profile
 	def my_profile(x,r):
