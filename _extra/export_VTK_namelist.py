@@ -2,7 +2,7 @@ import numpy as np
 import cmath
 
 
-geometry   = "3Dcartesian" 
+geometry   = "3Dcartesian"  # or "AMcylindrical"
 
 # Spatial and temporal resolution
 dx         = 0.1
