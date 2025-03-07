@@ -22,8 +22,8 @@ In particular this tutorial will explain how to
   * visualize the tracked macro-particles as points with ``Paraview``
   * perform the same operations for a simulation in ``"AMcylindrical"`` geometry.
 
-The simulations used for this tutorial is relatively heavy so make sure to submit 
-the job on 40 cores at least to run in a few minutes. This tutorial 
+The 3D simulation used for this tutorial is relatively heavy so make sure to submit 
+the job on 10 cores at least to run in a few minutes. This tutorial 
 needs an installation of the ``vtk`` Python library to export the data 
 with ``happi``. The export in 3D of data obtained in ``"AMcylindrical"`` geometry
 also requires the installation of the ``scipy`` Python library.
@@ -36,21 +36,21 @@ even more demanding.
 **Warning** To avoid wasting computing resources it is highly recommended to start 
 small when learning how to visualize results in 3D. Apart from the simulation
 generating the physically accurate data, the export and visualization of large amounts of 
-data requires resources and computing time. For these reasons, if you are learning 
+data require resources and computing time. For these reasons, if you are learning 
 how to visualize VTK files we recommend to start with relatively small benchmarks 
 like the ones in this tutorial in order to learn the export/visualization tricks 
 and to familiarize with the data you may need for your future cases of interest.
-Afterwards, you can improve the quality of your simulation results with better 
+Afterwards, you can improve the accuracy of your simulation results with better 
 resolution, more macro-particles, more frequent output, etc. and apply the same 
 export and visualization techniques you will have learned in the process.
 
 **Warning for non-experts** 3D visualizations can be good-looking and often artistic, they 
 help giving a qualitative picture of what is happening in your simulation, but
-they are not recommended to draw accurate scientific conclusions.
+they should not be used to draw accurate scientific conclusions.
 Indeed, 3D pictures/animations often have too many details and graphical artifacts
-coming from the rendering of 3D objects, so it's always essential to quantitatively 
-study your phenomena of interest with 1D and 2D plot to reduce at minimum the 
-unnecessary or misleading information.
+coming from the rendering of 3D objects, so it's recommended to quantitatively 
+study your phenomena of interest with 1D and 2D plots to reduce at minimum the 
+unnecessary or misleading visual information.
 
 ----
 
@@ -58,7 +58,7 @@ Physical configuration for the case in `"3Dcartesian"` geometry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A Laguerre-Gauss laser pulse enters the window, where test electrons are present.
-The laser pushes the electrons out of its propagation axis through ponderomotive force.
+The laser pushes the electrons out of its propagation axis through its ponderomotive force.
 
 ----
 
@@ -68,26 +68,27 @@ Run your simulation
 Download  the input namelist `export_VTK_namelist.py <export_VTK_namelist.py>`_ and open 
 it with your favorite editor. Take some time to study it carefully.
 This namelist allows to select between the geometries ``"3Dcartesian"`` and ``"AMcylindrical"``,
-each corresponding to a similar case, through the variable `geometry` at the start of the namelist. 
+each corresponding to the same physical case, through the variable ``geometry`` at the start of the namelist. 
 For the moment we will use ``geometry="3Dcartesian"`` for our first case.
 
 Note how we define a ``Laser`` profile corresponding to a Laguerre-Gauss mode 
-with azimuthal number :math:`m=1`.
-This mode has an intensity profile that looks like a corkscrew in 3D.
+with azimuthal number :math:`l=1` and radial number :math:`p=0`, linearly polarized in the ``y`` direction.
+This type of laser has a wavefront that looks like a corkscrew and an intensity distribution 
+that looks like a double corkscrew. These shapes can be better visualized in 3D.
 
 After the definition of the ``Laser``, a small block of electrons is defined, 
 with few test macro-particles to make the simulation and the postprocessing 
 quicker. Since these electrons are test macro-particles, they will not
-influence the laser propagation, but they will be moved by its electromagnetic
+influence the laser propagation, but they will be pushed by its electromagnetic
 field.
 
-Run the simulation and study the propagation of the laser intensity::
+Run the simulation and study the propagation of the laser ``Ey`` field and intensity with a 2D Probe::
 
   import happi; S=happi.Open()
-  S.Probe.Probe1("Ex**2+Ey**2+Ez**2").slide(figure=1)
+  S.Probe.Probe1("Ey").slide(figure=1)
+  S.Probe.Probe1("Ex**2+Ey**2+Ez**2").slide(figure=2)
 
-It would be difficult to visualize the corkscrew shape in 2D, even if we had 
-plotted only one component of the electric field. 
+As you can see, it is difficult to visualize the corkscrew shapes in 2D.
 
 To visualize the trajectories of the electrons, we can use::
 
@@ -98,7 +99,7 @@ To visualize the trajectories of the electrons, we can use::
 
 In this plot too it is difficult to see how the particles are moving in 3D.
 
-It seems one of the occasions where 3D visualization gives a better qualitative 
+It seems one of the occasions where a 3D visualization may give a clearer qualitative 
 picture.
 
 **Warning** To visualize the macro-particles, a ``TrackParticle`` diagnostic is
@@ -114,14 +115,16 @@ Export the results in VTK format
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To start, we can select the fields we want to visualize and export them to VTK.
-In this case, we can export the laser intensity::
+In this case, we can export the laser ``Ey`` field and intensity::
 
-  E2 = S.Field.Field0("Ex**2+Ey**2+Ez**2")
-  E2.toVTK()  
+  Intensity = S.Field.Field0("Ex**2+Ey**2+Ez**2")
+  Intensity.toVTK()
+  Ey = S.Field.Field0("Ey")
+  Ey.toVTK()  
 
-If everything works smoothly, a folder called ``Field0_EzEyEx`` should be created
-by ``happi`` after executing the ``toVTK()`` method. In general the folder name 
-will change with the selected field.
+If everything works smoothly, a folder called ``Field0_Ey`` and one called``Field0_EzEyEx`` 
+should be created by ``happi`` after executing the ``toVTK()`` method. 
+In general the folder name will change with the field selected for the export.
 This folder contains the ``Fields`` exported to VTK format, for all the available 
 iterations.
 
@@ -224,8 +227,9 @@ should already be able to see the point-like electrons. Now you can play with
 the options of this representation in the bottom left part of the screen.
 For example, you can color them with a ``Solid Color`` white (choice made for the
 figure in this tutorial), or color them according to their longitudinal 
-momentum. Selecting the option ``Emissive`` (macro-particles emitting light) from
-the ``Search`` bar, you should be able to create an image like this for the 
+momentum, or select the option ``Emissive`` (macro-particles emitting light) from
+the ``Search`` bar.
+Playing with some settings, you should be able to create an image like this for the 
 last iteration:
 
 
@@ -233,10 +237,13 @@ last iteration:
     :width: 40%
     :align: center
 
-
-Now you can visualize the animation of the laser entering the window and 
+Depending on your graphic choices, you may see a different image.
+Now you can visualize the animation of the laser (namely, its intensity distribution) entering the window and 
 pushing away the electrons, start experimenting with the many options of the selected 
 representations, or with the colormaps and transfer functions.
+
+**Action** Try to visualize instead the ``Ey`` field that you have exported.
+A divergent colormap is recommended.
 
 Exporting data obtained in `"AMcylindrical"` geometry
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -252,23 +259,30 @@ density profiles are defined on a ``(x,r)`` grid and the origins of the axes
 of their origins.
 
 Change the ``geometry`` variable at the start of the namelist to have ``geometry="AMcylindrical"`` 
-and run the simulation. The physical set-up is almost identical to the one 
-simulated in ``"3Dcartesian"`` geometry, but for simplicity a Gaussian beam will 
-be used for the ``Laser`` instead of a Laguerre-Gauss beam.
+and run the simulation. The physical set-up is identical to the one 
+simulated in ``"3Dcartesian"`` geometry, i.e. a Laguerre-Gauss mode 
+with azimuthal number :math:`l=1` and radial number :math:`p=0`. Note that the Cartesian component of the complex envelope of ``Ey`` that 
+has a phase described by :math:`l\theta`. To define this in cylindrical geometry, first we need to 
+project this field on its cylindrical components and then decompose them in harmonics of :math:`m\theta`.
+In the `documentation <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_
+this is shown for a cylindrically symmetric laser like a Gaussian beam, i.e. :math:`l=0`, which is modeled with
+the harmonic :math:`m=1`. For our case, the Laguerre-Gauss mode with :math:`l=1` is made of cylindrical harmonics with
+:math:`m=0` and :math:`m=2`. These harmonics, for each transverse component of the magnetic field, are defined in the ``Laser`` block with 
+the ``space_time_profile_AM``.
+
+**Exercise** from the definition of Laguerre-Gauss mode with ``l=1``, using trigonometry
+and complex exponentials, derive the expressions 
+for the azimuthal harmonics defined in the namelist. 
+Please read carefully the `documentation <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_
+for the definition of the azimuthal Fourier decomposition.
 
 The commands to export macro-particle data from ``TrackParticles``, except for the 
 different axis origin, are identical to those used in the ``"3Dcartesian"`` case.
 This because the macro-particles (exactly as ``Probes``) in ``"AMcylindrical"`` 
-geometry are defined in the 3D space.
+geometry are defined in the 3D space. However, only the cylindrical components are available
+in the ``Field`` diagnostic, and on a cylindrical grid.
 
-For the fields, you may in principle define 3D ``Probes`` in the namelist for the 
-Cartesian components of the fields and export them to VTK adapting the previous 
-commands, but we do not recommend this strategy.
-This way, the code would have to sample the ``Probe`` data in 3D during the simulation,
-creating a huge amount of data and slowing down your simulation, just to have 
-data for visualization.
-
-Instead, we recommend to export to vtk the ``Fields`` data defined in cylindrical geometry 
+To export the intensity in the 3D Cartesian space, you can export to vtk the ``Fields`` data defined in cylindrical geometry 
 to the 3D cartesian space, though the argument ``build3d`` of the ``Fields`` available 
 only in cylindrical geometry. For its synthax, see the
 `Field documentation <https://smileipic.github.io/Smilei/Understand/post-processing.html#open-a-field-diagnostic>`_.
@@ -283,16 +297,15 @@ data proportional to the laser intensity using ``build3d``::
   build3d_interval = [[0,S.namelist.Lx,S.namelist.dx]]
   build3d_interval.append([-S.namelist.Ltrans,S.namelist.Ltrans,S.namelist.dtrans])
   build3d_interval.append([-S.namelist.Ltrans,S.namelist.Ltrans,S.namelist.dtrans])
-  E2 = S.Field.Field0("El**2+Er**2+Et**2",build3d = build3d_interval )
+  Intensity = S.Field.Field0("El**2+Er**2+Et**2",build3d = build3d_interval )
   
 Note how we had to specify the cylindrical components of the fields.
 You do not have to export all the physical space or to use the same resolution 
 specified in the namelist. For example, to reduce the amount of exported data
 you may choose to subsample the physical space with a coarser cell length.
 
-**Action**: Try to define a Laguerre-Gauss beam profile in ``"AMcylindrical"`` geometry
-and simulate the same case you have simulated in ``"3Dcartesian"`` geometry.
-You will need some trigonometry to decompose the field in azimuthal modes, as 
-described in the `documentation <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_.
+**Action**: define a 3D Probe to export and visualize the ``Ey`` field.
+Please note that, depending on the number of probe points, this may considerably slow down the simulation and 
+create a huge amount of data, so it is not recommended for scientific production purposes.
 
 
