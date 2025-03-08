@@ -70,8 +70,8 @@ You can get another view using an animation:
 
 .. code-block:: python
 
-    jz = S.Field(0,'Jz')
-    by = S.Field(0,'By_m',vmin=-0.5,vmax=0.5)
+    jz = S.Field(0,'Jz',vsym=2)
+    by = S.Field(0,'By_m',vsym=1,side="right")
     happi.multiSlide(jz,by)
 
 Now, using the ``Scalar`` diagnostics, check the temporal evolution of the energies
