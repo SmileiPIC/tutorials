@@ -15,7 +15,7 @@ The following topics will be addressed:
 * Observation of the effect of Perfectly Matched Layers (feature available also in other geometries)
 * Reduce the effects of the Numerical Cherenkov Radiation (with features available also in other geometries).
 
-With 8 MPI processes and 10 OpenMP threads per MPI process, the simulation should need a few minutes.
+With 4 MPI processes and 20 OpenMP threads per MPI process, the simulation should need a few minutes.
 
 
 ----
@@ -73,35 +73,57 @@ we would have needed to explicitly define an ion ``Species``.
 Azimuthal-mode-decomposition
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In some physical situations like the one of this tutorial, the phenomena of interest have a cylindrical geometry or are very near to be cylindrically symmetric.
+The simulation of some of laser-plasma interaction phenomena, e.g. laser wakefield acceleration, 
+yields completely different results in 2D Cartesian and 3D Cartesian geometry,
+due to the different evolution of the laser pulse in these geometries.
+In some of these cases, like the one of this tutorial, the phenomena of interest 
+have a cylindrical symmetry or are close to be cylindrically symmetric
+around a propagation axis, which here will be the :math:`x` axis. In these cases, the 
+`cylindrical geometry with azimuthal Fourier decomposition <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_
+can yield results with a 3D-like accuracy but with an amount of computational resources comparable
+to the one of some 2D simulations.
 
-The electromagnetic fields can then be decomposed in Fourier azimuthal modes (where the azimuthal angle is defined with respect to the propagation axis of the laser). 
-Each mode is defined on a 2D grid, where the two dimensions are the longitudinal and radial ones.
+This technique consists in decomposing the scalar fields and the cylindrical components of vector fields
+in Fourier harmonics of the angle :math:`\theta`, also called azimuthal modes. 
+The angle :math:`\theta` is defined with respect to the propagation axis of the laser. 
+Each azimuthal mode is defined on a 2D grid :math:`(x,r)`, where the two directions are the longitudinal and radial ones.
+The user can choose the maximum number of azimuthal modes :math:`N_m` at which the decomposition of the physical fields is truncated.
+When :math:`N_m` modes are used, the azimuthal mode decomposition will use the harmonics :math:`m=0,...,(N_m-1)`,
+where the mode :math:`m=0` represents perfect cylindrical symmetry. 
+In general the mode :math:`m` represents variations of type :math:`\sin(m\theta)` and/or :math:`\cos(m\theta)`
+in a scalar field or cylindrical component of a vector field. Please note that if a Cartesian component
+of a vector field, e.g. the electric field component :math:`E_y` of a Gaussian beam linearly polarized along :math:`y`,
+is cylindrically symmetric, its cylindrical components :math:`E_r` and :math:`E_\theta` will contain the harmonics :math:`m=1`,
+as explained `here <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_.
 
-In this case, Maxwell's Equations can evolve independently the 2D azimuthal modes, and to save time we can retain only a certain number of azimuthal modes, 
-without losing the relevant physics. In the case simulated in this tutorial, using only two azimuthal modes allows to catch the relevant physics.
-The particles, on the other hand, move in the 3D space, pushed by the 3D Cartesian fields reconstructed from the electromagnetic azimuthal modes. 
-With this powerful technique, 3D features can be simulated at the cost of approximately N 2D simulations, where N is the number of modes we keep in the simulation.
+Maxwell's Equations can evolve independently the azimuthal modes of the electromagnetic fields in vacuum. 
+The presence of particles may introduce a coupling between different azimuthal modes.
+In the case simulated in this tutorial, using only two azimuthal modes will allow 
+to catch the main relevant physical phenomena.
+While the fields are defined on a 2D :math:`(x,r)` grid, the macro-particles move 
+in the 3D space, pushed by the 3D Cartesian fields reconstructed from the electromagnetic azimuthal modes. 
+With this powerful technique, 3D features can be simulated at the cost of comparable to :math:`N_m` 2D simulations.
 
 More details on the Azimuthal modes decomposition can be found `here <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_.
 
 Simulation setup
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-An input file to simulate laser wake excitation in this geometry will be very similar to a namelist in 2D geometry, with some important differences.
-Check them in the input file:
+An input file to simulate laser wake excitation in this geometry will be very 
+similar to a namelist in 2D geometry, with some important differences.
+Check them out in the input file:
 
-* The selected geometry is ``AMcylindrical``
+* The selected geometry is ``AMcylindrical``.
 
-* The grid resolution is given by a longitudinal and radial resolution, since the azimuthal modes are defined on a 2D grid 
+* The grid resolution is given by a longitudinal and radial resolution, since the azimuthal modes are defined on a 2D grid.
 
-* The number of azimuthal modes simulated is set in ``number_of_AM``. In this case only two of them are necessary to reproduce the relevant physics phenomena
+* The number :math:`N_m` of azimuthal modes simulated is set with the variable ``number_of_AM`` in the ``Main`` block. In this case only two of them, i.e. the modes :math:`m=0` and :math:`m=1`, are necessary to reproduce the relevant physics phenomena.
 
-* The laser can be defined through the ``LaserGaussianAM`` block
+* The laser can be defined through the ``LaserGaussianAM`` block.
 
-* When you define a plasma density profile, it will be defined with two coordinates ``(x,r)``
+* When you define a plasma density profile, it will be defined with two coordinates ``(x,r)``.
 
-* Still in the plasma density profile definition, remember that ``r=0`` corresponds to the lower boundary of the grid, i.e. the laser propagation axis
+* Still in the plasma density profile definition, remember that ``r=0`` corresponds to the lower boundary of the grid, i.e. the laser propagation axis.
 
 * The ``Probes`` origin and corners are defined with three coordinates, since they will interpolate the fields in the 3D space as if they were macro-particles in a 3D simulation.
 
@@ -145,7 +167,7 @@ In the previous command we have specified a certain angle ``theta = 0`` (i.e. th
 With the ``Field`` diagnostic, you can virtually specify any angle ``theta``. 
 See the reference frame `here <https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html>`_ for the definition of this angle.
 
-At the cost of approximately N 2D simulations (N is the number of azimuthal modes, two in this case), you can obtain the fields in all the 3D space, like in a 3D simulation.
+At a cost comparable to some 2D simulations, you can reconstruct the fields in all the 3D space, like in a 3D simulation.
 Note that in the ``Field`` diagnostic you will see only half of the plane, as the ``Field`` diagnostics shows the fields on the grid, defined on a half-plane in this geometry.
 
 By default, the last command we used will plot the last timestep available. You can also slide along the available timesteps::
@@ -179,7 +201,7 @@ You can also follow the evolution of any grid quantity (for example here the ele
 
 .. rubric:: 2. Probe 1D
 
-A quantity of interest e.g. for plasma acceleration is the longitudinal electric field on the laser propagation axis. 
+A quantity of interest, e.g. for plasma acceleration, is the longitudinal electric field on the laser propagation axis. 
 For this purpose, we have defined the first ``Probe`` in the namelist. 
 Check its ``origin`` and ``corners`` to understand where they are defined. 
 To be more precise, we have defined it parallel to the axis, but at a small distance from it.
@@ -216,8 +238,8 @@ Perfectly Matched Layers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Imperfect boundary conditions may cause unphysical effects when the laser's intense
-electromagnetic fields arrive at the boundaries of the simulation window.
-A larger box (transversally) could help fields decay near the boundaries.
+electromagnetic fields reach the boundaries of the simulation window.
+A transversely larger box would let the fields decay before reaching the boundaries.
 However this can easily increase the simulation time beyond an acceptable level, 
 and only to avoid reflections, adding to the domain some physical regions where 
 no phenomenon of interest happens. 
@@ -357,3 +379,5 @@ Here you should see visible differences, especially near the electron beam.
 diagnostic in the next tutorials, compare the final electron beam
 parameters with and without the techniques that we have explored to reduce 
 the effects of the Numerical Cherenkov Radiation.
+
+
