@@ -1,0 +1,944 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Multiphoton Breit-Wheeler pair creation process &#8212; Smilei tutorials  unknown documentation</title>
+    <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="_static/smileiIcon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="2D laser wakefield acceleration" href="advanced_wakefield.html" />
+    <link rel="prev" title="Synchrotron-like radiation reaction" href="advanced_radiation_reaction.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      scale: 95,
+      availableFonts: ["TeX"]
+    }
+  });
+  </script>
+   
+  </head><body>
+
+<div id="smallScreenMenu" class="off">
+
+    
+    <div class="toctree-smilei">
+        <ul>
+                <li class="outer">
+                    <a href="basics_setup.html">Setup</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_units.html">Units</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="perfs_parallel_computing.html">Parallel computing</a>
+                </li>
+                <li class="outer">
+                    <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="advanced_field_ionization.html">Field ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Multiphoton Breit-Wheeler pair creation process</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#content-of-the-tutorial">Content of the tutorial</a></li>
+<li><a class="reference internal" href="#simulation-of-the-multiphoton-breit-wheeler-process">Simulation of the multiphoton Breit-Wheeler process</a></li>
+<li><a class="reference internal" href="#configuration-of-the-radiation-reaction-block">Configuration of the radiation reaction block</a></li>
+<li><a class="reference internal" href="#configuration-of-the-multiphoton-breit-wheeler-block">Configuration of the multiphoton Breit-Wheeler block</a></li>
+<li><a class="reference internal" href="#configuration-of-the-electron-species">Configuration of the electron species</a></li>
+<li><a class="reference internal" href="#configuration-of-the-photon-species">Configuration of the photon species</a></li>
+<li><a class="reference internal" href="#configuration-of-the-positron-species">Configuration of the positron species</a></li>
+<li><a class="reference internal" href="#presentation-of-the-diagnostics">Presentation of the diagnostics</a></li>
+<li><a class="reference internal" href="#simulation-analysis">Simulation analysis</a></li>
+<li><a class="reference internal" href="#to-go-beyond">To go beyond</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
+                <li class="outer">
+                    <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                </li>
+        </ul>
+        <hr />
+    </div>
+
+</div>
+<div id="hcontainer">
+    <div id="nav_positioner">
+        <div id="nav">
+            <div id="nav_button" onclick="toggleNav()">
+                Sections
+            </div>
+            <div id="nav_list" class="toctree-smilei">
+                <div id="nav_title"><a href="#">Multiphoton Breit-Wheeler pair creation process</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Multiphoton Breit-Wheeler pair creation process</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#content-of-the-tutorial">Content of the tutorial</a></li>
+<li><a class="reference internal" href="#simulation-of-the-multiphoton-breit-wheeler-process">Simulation of the multiphoton Breit-Wheeler process</a></li>
+<li><a class="reference internal" href="#configuration-of-the-radiation-reaction-block">Configuration of the radiation reaction block</a></li>
+<li><a class="reference internal" href="#configuration-of-the-multiphoton-breit-wheeler-block">Configuration of the multiphoton Breit-Wheeler block</a></li>
+<li><a class="reference internal" href="#configuration-of-the-electron-species">Configuration of the electron species</a></li>
+<li><a class="reference internal" href="#configuration-of-the-photon-species">Configuration of the photon species</a></li>
+<li><a class="reference internal" href="#configuration-of-the-positron-species">Configuration of the positron species</a></li>
+<li><a class="reference internal" href="#presentation-of-the-diagnostics">Presentation of the diagnostics</a></li>
+<li><a class="reference internal" href="#simulation-analysis">Simulation analysis</a></li>
+<li><a class="reference internal" href="#to-go-beyond">To go beyond</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="headercolor">
+    </div>
+    <div class="hpositioner">
+        <div class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img class="logo" src="_static/smileiLogo_tutorials.svg" alt="Logo" />
+            </a>
+        </div>
+        <div class="menu"
+            id="menu_PIC basics"
+            
+        >
+            <div id="menuButton_PIC basics" class="menuButton"
+                 onmouseenter="prepareMenu('menu_PIC basics')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="basics.html">
+                    <span>PIC basics</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_PIC basics',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="basics_setup.html">Setup</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_units.html">Units</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Performances"
+            
+        >
+            <div id="menuButton_Performances" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Performances')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="perfs.html">
+                    <span>Performances</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Performances',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="perfs_parallel_computing.html">Parallel computing</a>
+                        </li>
+                        <li class="outer">
+                            <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="last menu"
+            id="menu_Advanced"
+            style="font-weight:bold"
+        >
+            <div id="menuButton_Advanced" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Advanced')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="advanced.html">
+                    <span>Advanced</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Advanced',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="advanced_field_ionization.html">Field ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                        </li>
+                        <li >
+                            <a href="#">Multiphoton Breit-Wheeler pair creation process</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var es=document.getElementsByClassName("menuButton"), i=0;
+            var evt = "ontouchend" in document ? "touchend" : "click";
+            for( var i=0; i<es.length; i+=1 ) {
+                es[i].addEventListener(evt, function(a){ return function(){toggleMenu(a)};}(es[i].parentNode.id));
+            }
+        </script>
+        
+        <div id="searchbox" role="search" style="display:none">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search" id="searchinput" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        
+        <div id="searchicon" onclick="openSearch()" style="display:block">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g transform="translate(0,-932.36216)" >
+                <circle
+                   r="25" cy="977.51044" cx="38.078663"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <rect
+                   transform="matrix(0.36717877,0.93015039,-0.93427297,0.35655858,0,0)"
+                   rx="4.9996676" ry="7.4995141" x="947.6142" y="316.16959"
+                   height="14.117695" width="46.476151"
+                   style="opacity:1;fill:#ffffff;fill:var(--header_text);fill-opacity:1;stroke:none;" />
+                <path
+                   d="m 41.383282,962.25996 a 15,15 0 0 1 11.660107,11.6355"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+              </g>
+            </svg>
+        </div>
+        <div id="closesearchicon" onclick="closeSearch()" style="display:none">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g
+                 transform="translate(0,-932.36216)"
+                 style="fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none">
+                <path d="m 10,962.36216 60,60.00004" />
+                <path d="M 70,962.36216 10,1022.3622" />
+              </g>
+            </svg>
+        </div>
+        
+        <div id="smallScreenMenuButton" onclick="event.preventDefault(); toggleSmallScreenMenu(event)">
+            <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+               viewBox="-20 -20 140 140">
+              <g  style="fill:#ffffff; fill:var(--header_text);stroke:none;">
+                <circle cx="15" cy="20" r="5" />
+                <circle cx="35" cy="20" r="5" />
+                <circle cx="85" cy="20" r="5" />
+                <rect width="50" height="10" x="35" y="15" rx="0" ry="0" />
+                <circle cx="15" cy="40" r="5" />
+                <circle cx="35" cy="40" r="5" />
+                <circle cx="85" cy="40" r="5" />
+                <rect width="50" height="10" x="35" y="35" rx="0" ry="0" />
+                <circle cx="15" cy="60" r="5" />
+                <circle cx="35" cy="60" r="5" />
+                <circle cx="85" cy="60" r="5" />
+                <rect width="50" height="10" x="35" y="55" rx="0" ry="0" />
+                <circle cx="15" cy="80" r="5" />
+                <circle cx="35" cy="80" r="5" />
+                <circle cx="85" cy="80" r="5" />
+                <rect width="50" height="10" x="35" y="75" rx="0" ry="0" />
+              </g>
+            </svg>
+        </div>
+        
+    </div>
+    
+</div>
+</div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="multiphoton-breit-wheeler-pair-creation-process">
+<h1>Multiphoton Breit-Wheeler pair creation process<a class="headerlink" href="#multiphoton-breit-wheeler-pair-creation-process" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to present how to use the multiphoton Breit-Wheeler
+pair creation process in <strong class="program">Smilei</strong>.
+The following points will be addressed:</p>
+<ul class="simple">
+<li><p>How to prepare input files for this physical module</p></li>
+<li><p>How to setup macro-photon species and the Monte-Carlo emission</p></li>
+<li><p>How to setup the multiphoton Breit-Wheeler pair creation process</p></li>
+<li><p>How to use diagnostics</p></li>
+<li><p>How to read and understand produced outputs</p></li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>A multi-GeV electron beam is made to collide with a counter-propagating plane wave.
+This configuration is one of the most efficient to trigger radiative and QED effects.
+It maximizes the value of the quantum parameter for a given electron energy and a
+given field strength.</p>
+<p>The simulation is 2D Cartesian with a simulation size of <span class="math notranslate nohighlight">\(30 \lambda \times 4 \lambda\)</span>
+where <span class="math notranslate nohighlight">\(\lambda\)</span> is the laser wavelength. The laser is injected from the left side
+of the simulation domain while the electron beam is initialized at the extreme right.</p>
+<p>In this initial configuration, the laser has a wavelength of <span class="math notranslate nohighlight">\(\lambda = 1\ \mu \mathrm{m}\)</span>,
+an amplitude of <span class="math notranslate nohighlight">\(10^{23}\ \mathrm{W/cm}^2\)</span> (<span class="math notranslate nohighlight">\(a_0 \simeq 270\)</span>) and is linearly
+polarized in the <cite>y</cite> direction. The temporal profile is Gaussian (order 4).
+he full width at half maximum (FWHM) is of 10 laser periods (approximately 33 fs).</p>
+<p>The electron beam has an initial energy of 4 GeV and propagates to the left.
+The beam density is of <span class="math notranslate nohighlight">\(n_b = 10^{-5} n_c\)</span>. The electron beam is frozen the
+time for the laser to be fully injected and so that the collision occurred at
+the middle of the domain. This enables to have a shorter simulation box and
+therefore save computational time. The beam is initialized with 32 particles
+per cell for a total of 3648 macro-particles.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="content-of-the-tutorial">
+<h2>Content of the tutorial<a class="headerlink" href="#content-of-the-tutorial" title="Permalink to this headline">¶</a></h2>
+<p>Download <a class="reference external" href="AdvancedTutorial2.tar.gz">AdvancedTutorial2.tar.gz</a> and extract it.
+It contains 2 directories:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Analysis</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Execution</span></code></p></li>
+</ul>
+<p>The directory <code class="docutils literal notranslate"><span class="pre">Analysis</span></code> contains <cite>Python</cite> scripts that will be used to analysis
+and visualize the simulation outputs. Each script has been designed to focus on a
+specific quantity:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">show_energy_balance.py</span></code>: particle kinetic energy, photon energy and radiated energy (not in the photons) vs. time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_particle_number.py</span></code>: number of macro-particles for each species vs. time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_2d_density.py</span></code>: maps of the electron, positron and photon density.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_2d_average_energy.py</span></code>: maps of the electron, positron and photon average energy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_2d_average_chi.py</span></code>: maps of the electron, positron and photon quantum parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_2d_fields.py</span></code>: maps of the electric field <span class="math notranslate nohighlight">\(E_y\)</span> and the magnetic field <span class="math notranslate nohighlight">\(B_z\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_energy_spectrum.py</span></code>: electron, positron and photon energy distribution at a given time.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">Execution</span></code> directory contains the input file:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">tst2d_electron_laser_collision.py</span></code></p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="simulation-of-the-multiphoton-breit-wheeler-process">
+<h2>Simulation of the multiphoton Breit-Wheeler process<a class="headerlink" href="#simulation-of-the-multiphoton-breit-wheeler-process" title="Permalink to this headline">¶</a></h2>
+<p>We will first learn how to configure the input file for the Monte-Carlo process
+with macro-photon emission followed by the Multiphoton Breit-Wheeler
+pair creation process.
+For this simulation case, we will need to define three species: electrons, positrons and photons.
+After the configuration, we will then run our simulation test case.
+Finally, we will see how to read and exploit diagnostic outputs via Python script
+and the <strong class="program">happi</strong> post-processing module.</p>
+<ul>
+<li><p>Make a copy of the directory <code class="docutils literal notranslate"><span class="pre">Execution</span></code> and name it
+<code class="docutils literal notranslate"><span class="pre">Multiphoton_Breit_Wheeler</span></code>. We will perform the simulation in this directory.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp -r Execution Multiphoton_Breit_Wheeler
+<span class="nb">cd</span> Multiphoton_Breit_Wheeler
+</pre></div>
+</div>
+</li>
+<li><p>Open the input file <code class="docutils literal notranslate"><span class="pre">tst2d_electron_laser_collision.py</span></code>.</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="configuration-of-the-radiation-reaction-block">
+<h2>Configuration of the radiation reaction block<a class="headerlink" href="#configuration-of-the-radiation-reaction-block" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Go to the <code class="docutils literal notranslate"><span class="pre">RadiationReaction</span></code> block.</p></li>
+<li><p>The Monte-Carlo algorithm uses tabulated values.
+The path can be specified in the block <code class="docutils literal notranslate"><span class="pre">RadiationReaction</span></code> via the parameter <code class="docutils literal notranslate"><span class="pre">table_path</span></code>
+(read the documentation if you want to use non-default databases).</p></li>
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">minimum_chi_continuous</span></code> corresponds to the minimal value
+of the quantum parameter at which the radiation reaction process is applied.
+Below this value, the particle does not undergo radiation reaction.
+Uncomment the corresponding line.
+Specifying this parameter is actually not compulsory since it is defined
+by default at <span class="math notranslate nohighlight">\(10^{-3}\)</span>.</p></li>
+<li><p>Uncomment the line with the parameter <code class="docutils literal notranslate"><span class="pre">minimum_chi_discontinuous</span></code>.
+The Monte-Carlo model is built to work with
+the continuous corrected Landau-Lifshitz approach when the particle quantum parameter is too low.
+This parameter corresponds to this threshold.
+Above this value, a particle undergoes radiation reaction via the Monte-Carlo engine.
+Below the continuous approach is used.
+This parameter is by default equal to <span class="math notranslate nohighlight">\(10^{-2}\)</span>
+but it is modified to be <span class="math notranslate nohighlight">\(10^{-3}\)</span> here.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">RadiationReaction</span></code> should now look like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RadiationReaction</span><span class="p">(</span>
+     <span class="n">minimum_chi_continuous</span> <span class="o">=</span> <span class="mf">1e-3</span>
+     <span class="n">minimum_chi_discontinuous</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+    <span class="c1">#table_path = &quot;&lt;path to some Smilei tables&gt;&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>External tables:</strong> some models such as the Monte-Carlo radiation model use complex mathematical functions to determine the production rate of
+photons and energy.
+These functions are tabulated because it would be too expensive to compute them on the fly for each macro-particles.
+The <strong class="program">Smilei</strong> code includes default tables.
+It is nonetheless possible to use more accurate external tables.
+This is the purpose of the parameter <cite>table_path</cite> in the block <cite>Radiation</cite>.
+For more information about the tables, see <a class="reference external" href="https://smileipic.github.io/Smilei/Use/tables.html">https://smileipic.github.io/Smilei/Use/tables.html</a>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="configuration-of-the-multiphoton-breit-wheeler-block">
+<h2>Configuration of the multiphoton Breit-Wheeler block<a class="headerlink" href="#configuration-of-the-multiphoton-breit-wheeler-block" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Go to the <code class="docutils literal notranslate"><span class="pre">MultiphotonBreitWheeler</span></code> block.
+This block controls the general parameters of the Multiphoton Breit-Wheeler process.</p></li>
+<li><p>The Monte-Carlo algorithm for the Multiphoton Breit-Wheeler process uses tabulated values.
+The path can be specified in the block <code class="docutils literal notranslate"><span class="pre">MultiphotonBreitWheeler</span></code> via the parameter <code class="docutils literal notranslate"><span class="pre">table_path</span></code>,
+if you wish to use non-default tables.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">MultiphotonBreitWheeler</span></code> should now look like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MultiphotonBreitWheeler</span><span class="p">(</span>
+    <span class="c1">#table_path = &quot;&lt;path_to_smilei&gt;/databases/&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="configuration-of-the-electron-species">
+<h2>Configuration of the electron species<a class="headerlink" href="#configuration-of-the-electron-species" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>We will first configure the <code class="docutils literal notranslate"><span class="pre">electron</span></code> species that composes the beam so that
+it can radiate via the Monte-Carlo model and generate macro-photons
+Go to the <code class="docutils literal notranslate"><span class="pre">electron</span></code> species block. you can see that the radiation parameters
+are commented.</p></li>
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">radiation_model</span></code> corresponds to the type of radiation model to be used.
+Uncomment the corresponding line. We use here the <code class="docutils literal notranslate"><span class="pre">Monte-Carlo</span></code>.</p></li>
+<li><p>When <code class="docutils literal notranslate"><span class="pre">radiation_photon_species</span></code> is present and not set to <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+the possibility to generate macro-photons is activated. This parameter has to be set to
+the name of the <code class="docutils literal notranslate"><span class="pre">photon</span></code> species that will receive the created macro-photons.
+Uncomment the corresponding line. The photon species is called <code class="docutils literal notranslate"><span class="pre">photon</span></code>.</p></li>
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">radiation_photon_sampling</span></code> enables to control the number of
+macro-photons generated per emission even. By default, an emission yields a
+single macro-photons of weight similar to the emitting particle. to increase
+the emission statistics, you can decide to increase this number so that several
+macro-photons are generated per even. In this case, the weight is equally
+divided between macro-photons for quantity conservation.
+Uncomment the corresponding line.</p></li>
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">radiation_photon_gamma_threshold</span></code> enables to control the
+minimum threshold on the photon energy that allow macro-photon emission.
+Below the specified value, the radiation reaction is taken into account
+but no macro-photon is created.
+Here, since photons of energy below twice the electron rest mass energy have
+no chance to turn into electron-positron pairs, this threshold is set to 2.
+This value is actually the default one.
+Uncomment the corresponding line.</p></li>
+<li><p>The radiation parameters of the <code class="docutils literal notranslate"><span class="pre">electron</span></code> species block are now:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Species</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;electron&quot;</span><span class="p">,</span>
+<span class="o">...</span>
+    <span class="n">radiation_model</span> <span class="o">=</span> <span class="s2">&quot;Monte-Carlo&quot;</span><span class="p">,</span>
+    <span class="n">radiation_photon_species</span> <span class="o">=</span> <span class="s2">&quot;photon&quot;</span><span class="p">,</span>
+    <span class="n">radiation_photon_sampling</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">radiation_photon_gamma_threshold</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="o">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>The electron species is now configured.</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="configuration-of-the-photon-species">
+<h2>Configuration of the photon species<a class="headerlink" href="#configuration-of-the-photon-species" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>We will then configure the <code class="docutils literal notranslate"><span class="pre">photon</span></code> species that will receive the macro-photons
+generated by the other species via the Monte-Carlo radiation model.
+Go to the <code class="docutils literal notranslate"><span class="pre">photon</span></code> species block. you can see that the Multiphoton
+Breit-Wheeler parameters are commented. They start by <code class="docutils literal notranslate"><span class="pre">multiphoton_Breit_Wheeler</span></code>.</p></li>
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">multiphoton_Breit_Wheeler</span></code> is a list of two strings.
+These strings respectively correspond
+to the species name that will receive the created electron and the created positron.
+Uncomment the corresponding line.
+The electron and the positron species respectively correspond to <code class="docutils literal notranslate"><span class="pre">electron</span></code> and <code class="docutils literal notranslate"><span class="pre">positron</span></code>.
+When this parameter is commented, the multiphoton Breit-Wheeler is not activated.</p></li>
+<li><p>The parameter <code class="docutils literal notranslate"><span class="pre">multiphoton_Breit_Wheeler_sampling</span></code> is the number of
+macro-electron and macro-positron generated per Monte-Carlo event.
+This parameter is a list of two integers.
+By default, an electron and a positron are generated per event.
+To improve the statistics, these numbers can be increased.
+The macro-particle weight is then divided in consequence.
+Uncomment the corresponding line.</p></li>
+<li><p>The multiphoton Breit-Wheeler parameters for the <code class="docutils literal notranslate"><span class="pre">photon</span></code> species block are now:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Species</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;photon&quot;</span><span class="p">,</span>
+<span class="o">...</span>
+    <span class="n">multiphoton_Breit_Wheeler</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;electron&quot;</span><span class="p">,</span><span class="s2">&quot;positron&quot;</span><span class="p">],</span>
+    <span class="n">multiphoton_Breit_Wheeler_sampling</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+<span class="o">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="configuration-of-the-positron-species">
+<h2>Configuration of the positron species<a class="headerlink" href="#configuration-of-the-positron-species" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>We will then configure the <code class="docutils literal notranslate"><span class="pre">positron</span></code> species that will receive the macro-positrons
+generated via the multiphoton Breit-Wheeler.
+Go to the <code class="docutils literal notranslate"><span class="pre">positron</span></code> species block.</p></li>
+<li><p>As for the <code class="docutils literal notranslate"><span class="pre">electron</span></code> species, uncomment the radiation parameters as follow:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Species</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;positron&quot;</span><span class="p">,</span>
+<span class="o">...</span>
+    <span class="n">radiation_model</span> <span class="o">=</span> <span class="s2">&quot;Monte-Carlo&quot;</span><span class="p">,</span>
+    <span class="n">radiation_photon_species</span> <span class="o">=</span> <span class="s2">&quot;photon&quot;</span><span class="p">,</span>
+    <span class="n">radiation_photon_sampling</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">radiation_photon_gamma_threshold</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="o">...</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The positrons will also radiate with the Monte-Carlo model.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="presentation-of-the-diagnostics">
+<h2>Presentation of the diagnostics<a class="headerlink" href="#presentation-of-the-diagnostics" title="Permalink to this headline">¶</a></h2>
+<p>Several diagnostics are defined in the input file.</p>
+<ul>
+<li><p>Time-evolution of scalar quantities are configured via the <code class="docutils literal notranslate"><span class="pre">DiagScalar</span></code> block.
+Here, output of the radiated energy (not including the macro-photons)
+is requested via <code class="docutils literal notranslate"><span class="pre">Urad</span></code>. <code class="docutils literal notranslate"><span class="pre">Ukin_&lt;species&gt;</span></code> corresponds to the kinetic energy of <code class="docutils literal notranslate"><span class="pre">&lt;species&gt;</span></code>
+(total energy for the photons). <code class="docutils literal notranslate"><span class="pre">Ntot_&lt;species&gt;</span></code> is the number of macro-particles.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DiagScalar</span><span class="p">(</span>
+    <span class="n">every</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="nb">vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Uelm&#39;</span><span class="p">,</span><span class="s1">&#39;Ukin&#39;</span><span class="p">,</span><span class="s1">&#39;Utot&#39;</span><span class="p">,</span><span class="s1">&#39;Uexp&#39;</span><span class="p">,</span><span class="s1">&#39;Ubal&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Urad&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Ukin_electron&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Ukin_positron&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Ukin_photon&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Ntot_electron&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Ntot_positron&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;Ntot_photon&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>The field grids are written out every 500 iterations via the block <code class="docutils literal notranslate"><span class="pre">DiagFields</span></code>.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">DiagParticleBinning</span></code> blocks project the particle
+quantities on specified multidimensional grids.
+There are 4 types of diagnostics configured in the input file for each species:</p>
+<ul class="simple">
+<li><ol class="arabic simple">
+<li><p>the species <cite>weight</cite> distribution</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="2">
+<li><p>the kinetic energy times the weight (<code class="docutils literal notranslate"><span class="pre">weight_ekin</span></code>)</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="3">
+<li><p>the quantum parameter time the weight (<code class="docutils literal notranslate"><span class="pre">weight_chi</span></code>)</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="4">
+<li><p>the species energy distribution</p></li>
+</ol>
+</li>
+</ul>
+<p>The particle binning diagnostics are written every 500 iterations.</p>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="simulation-analysis">
+<h2>Simulation analysis<a class="headerlink" href="#simulation-analysis" title="Permalink to this headline">¶</a></h2>
+<p>After you have run the simulation, you may start analyzing its results.</p>
+<ul>
+<li><p>Let us first analyze the time-evolution of the number of macro-particles
+in the simulation.
+Copy the file <code class="docutils literal notranslate"><span class="pre">Analysis/show_particle_number.py</span></code> in the working directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp ../Analysis/show_particle_number.py .
+</pre></div>
+</div>
+<p>Run the script using iPython:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ipython
+run show_particle_number.py
+</pre></div>
+</div>
+</li>
+<li><p>You should obtain the following graph:</p>
+<img alt="_images/particle_number.png" src="_images/particle_number.png" />
+<p>When the laser starts to interact with the electron beam around <span class="math notranslate nohighlight">\(t = 230 \omega_r^{-1}\)</span>,
+the number of macro-photons rises rapidly due thanks to
+the Monte-Carlo radiation model.
+Later, these photons start to decay into electron-positron pairs
+via the multiphoton Breit-Wheeler.
+We can observe an increase of the number of macro-electrons and macro-positrons
+from <span class="math notranslate nohighlight">\(t = 235 \omega_r^{-1}\)</span></p>
+</li>
+<li><p>Copy the file <code class="docutils literal notranslate"><span class="pre">Analysis/show_energy_balance.py</span></code> in the working directory
+and run the script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp ../Analysis/show_energy_balance.py .
+ipython
+run show_energy_balance.py
+</pre></div>
+</div>
+</li>
+<li><p>You should obtain the following graph:</p>
+<img alt="_images/energy_balance.png" src="_images/energy_balance.png" />
+</li>
+<li><p>We will now use the particle binning diagnostics.
+Copy the file <code class="docutils literal notranslate"><span class="pre">Analysis/show_2d_average_energy.py</span></code> in the working directory
+and run the script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp ../Analysis/show_2d_average_energy.py .
+ipython
+run show_2d_average_energy.py
+</pre></div>
+</div>
+<p>You should obtain the following graph:</p>
+<img alt="_images/2d_average_energy_it5500.png" src="_images/2d_average_energy_it5500.png" />
+<p>From the top to the bottom, you have respectively the electron, positron
+normalized kinetic energy and the photon normalized energy.</p>
+<p>You can also choose a different timestep using, for instance</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>run show_2d_average_energy.py <span class="m">6000</span>
+</pre></div>
+</div>
+</li>
+<li><p>We will now do the same thing for the weight (normalized local density).
+Copy the file <code class="docutils literal notranslate"><span class="pre">Analysis/show_2d_density.py</span></code> in the working directory
+and run the script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp ../Analysis/show_2d_density.py .
+ipython
+run show_2d_density.py
+</pre></div>
+</div>
+<p>You should obtain the following figure:</p>
+<img alt="_images/2d_density_it5500.png" src="_images/2d_density_it5500.png" />
+<p>Change the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> parameter to see how the beam shape evolves during
+the simulation and how the positron are created.</p>
+</li>
+<li><p>We can also look at the quantum parameter.
+Copy the file <code class="docutils literal notranslate"><span class="pre">Analysis/show_2d_average_chi.py</span></code> in the working directory
+and run the script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp ../Analysis/show_2d_average_chi.py .
+ipython
+run show_2d_average_chi.py
+</pre></div>
+</div>
+<p>You should obtain the following figure:</p>
+<img alt="_images/2d_average_chi_it5500.png" src="_images/2d_average_chi_it5500.png" />
+<p>The maximal value of the quantum parameter is printed in the terminal.
+Change the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> parameter to see how the electron, positron and photon
+average quantum parameter evolve during
+the simulation.</p>
+</li>
+<li><p>To get an idea of where in the laser field the beam is located,
+you can use the script <code class="docutils literal notranslate"><span class="pre">Analysis/show_2d_fields.py</span></code>
+Copy and run it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp ../Analysis/show_2d_fields.py .
+ipython
+run show_2d_fields.py
+</pre></div>
+</div>
+<p>You should obtain the following figure:</p>
+<img alt="_images/2d_fields_it5500.png" src="_images/2d_fields_it5500.png" />
+<p>Change the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> parameter as for the particle binning diagnostics.</p>
+</li>
+<li><p>Finally, we want to analyze the final energy spectra of the species.
+Copy the script <code class="docutils literal notranslate"><span class="pre">Analysis/show_energy_spectrum.py</span></code> and run it.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp ../Analysis/show_energy_spectrum.py .
+ipython
+run show_energy_spectrum
+</pre></div>
+</div>
+<p>You should obtain the following figure:</p>
+<img alt="_images/energy_spectrum_it8000.png" src="_images/energy_spectrum_it8000.png" />
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="to-go-beyond">
+<h2>To go beyond<a class="headerlink" href="#to-go-beyond" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Optional exercice:</strong> Change the laser and electron beam properties to see
+how it affects the beam energy loss and the production of electron-positron pairs.</p></li>
+<li><p><strong>Optional exercice:</strong> Use the same input file to build a similar case in 3D.
+You will have to increase the number of nodes.
+Use a focused laser pulse instead a place wave and see how the pulse waist
+affect the interaction (final positron energy, beam divergence…).</p></li>
+<li><p><strong>Optional exercice:</strong> Activate the load balancing and change the number of
+patches to see how it affects the performances.</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      <div>
+        <input type="button" id="themebutton"  value="" onclick="switchTheme('')" />
+      </div>
+      <div>
+      <a href="site.html">Site index</a>
+      </div>
+      <div>
+        Last updated on Mar 12, 2025
+      </div>
+      
+      <div>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      </div>
+      
+    </div>
+    
+    <script type="text/javascript">
+        
+        var nav = document.getElementById("nav");
+        var nav_list = document.getElementById("nav_list");
+        var nav_button = document.getElementById("nav_button");
+        var smallScreenMenu = document.getElementById("smallScreenMenu");
+        var smallScreenMenuButton = document.getElementById("smallScreenMenuButton");
+        var searchicon = document.getElementById("searchicon");
+        var searchbox  = document.getElementById("searchbox");
+        var searchinput= document.getElementById("searchinput");
+        var menus = document.getElementsByClassName("menu");
+        for( var i=0; i<menus.length; i++ )
+            menus[i].active = false;
+        
+        // Manage theme
+        var theme="light";
+        function switchTheme(type) {
+            if( type == "dark" || ( ! type && theme == "light" ) ) {
+                theme = "dark";
+                document.documentElement.setAttribute('theme', 'dark');
+                window.name = "dark_theme"
+                localStorage.setItem("_theme","dark")
+            } else {
+                theme = "light";
+                document.documentElement.setAttribute('theme', 'light');
+                window.name = "light_theme"
+                localStorage.setItem("_theme","light")
+            }
+        }
+        if( window.name && window.name == "light_theme" ) {
+            switchTheme("light");
+        } else if ( window.name && window.name == "dark_theme" ) {
+            switchTheme("dark");
+        } else if( stored_theme = localStorage.getItem("_theme") ) {
+            switchTheme(stored_theme);
+        } else if( window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            switchTheme("dark");
+        }
+        
+        var ul = nav_list.getElementsByTagName("ul")[0], li;
+        var keep_nav = false;
+        if( ul ) {
+            li = ul.firstElementChild;
+            if( li ) {
+                if( li.getElementsByTagName("ul").length > 0 ) keep_nav = true;
+            }
+        }
+        if( keep_nav ) {
+            li.removeChild( li.firstElementChild );
+        } else {
+            document.getElementById("nav_positioner").removeChild( document.getElementById("nav") );
+        }
+        
+        function navOff() {
+            nav_list.style.display = "none";
+            nav_button.className = "";
+            nav.style.overflowY = "visible";
+        }
+        
+        function toggleNav() {
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+            if( nav_list.style.display != "inline-block" ) {
+                nav_list.style.display = "inline-block";
+                nav_button.className = "pushed";
+                nav.style.overflowY = "auto";
+            } else {
+                navOff();
+            }
+        }
+        
+        function toggleSmallScreenMenu(e) {
+            if( smallScreenMenu.className != "on" ) {
+                smallScreenMenu.className = "on";
+                smallScreenMenuButton.className = "pushed";
+                document.documentElement.style.overflow = "hidden";
+            } else {
+                smallScreenMenu.className = "off";
+                smallScreenMenuButton.className = "";
+                document.documentElement.style.overflow = "";
+            }
+        }
+        
+        if (smallScreenMenuAfterTOC = document.getElementById("smallScreenMenuAfterTOC")) {
+            var smallScreenMenuTOC = smallScreenMenuAfterTOC.previousElementSibling
+                .getElementsByTagName("li")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+            for (var i = 0; i < smallScreenMenuTOC.length; i++) {
+                if (smallScreenMenuTOC[i].tagName = "a") {
+                    smallScreenMenuTOC[i].addEventListener("click", function(event){ toggleSmallScreenMenu(event); } );
+                }
+            }
+        }
+        
+        function prepareMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            menu.timer1 = setTimeout(function(a){ return function(){thisMenuOnly(a)};}(menu_id), 100);
+            menu.addEventListener("mouseleave", function(a){ return function(){clearTimeout(a.timer1)};}(menu) );
+        }
+        
+        function leaveMenu(menu_id, source) {
+            var menu = document.getElementById(menu_id);
+            menu.timer2 = setTimeout(function(a){ return function(){menuOff(a)};}(menu), 1000);
+            source.addEventListener("mouseenter", function(a){ return function(){clearTimeout(a.timer2)};}(menu) );
+        }
+        
+        function menuOn( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            if(nav_list) navOff();
+            divs[1].className = "on";
+            divs[0].className = "menuButton pushed";
+            menu.active = true;
+        }
+        function menuOff( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            divs[1].className = "off";
+            divs[0].className = "menuButton";
+            menu.active = false;
+        }
+        
+        function thisMenuOnly(menu_id) {
+            var menu = document.getElementById(menu_id);
+            for( var i=0; i<menus.length; i++ )
+                if( i!=menu_id )
+                    menuOff( menus[i] );
+            menuOn( menu );
+        }
+        
+        function toggleMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            if( menu.active ) {
+                menuOff( menu );
+            } else {
+                for( var i=0; i<menus.length; i++ )
+                    if( i!=menu_id )
+                        menuOff( menus[i] );
+                menuOn( menu );
+            }
+        }
+        
+        function openSearch() {
+            for( var i=0; i<menus.length; i++ ) {
+                menuOff( menus[i] );
+                menus[i].style.zIndex = "-1";
+            }
+            searchicon.style.display = "none";
+            closesearchicon.style.display = "block";
+            searchbox.style.display = "block";
+            searchinput.focus();
+        }
+        
+        function closeSearch() {
+            searchicon.style.display = "block";
+            closesearchicon.style.display = "none";
+            searchbox .style.display = "none";
+            for( var i=0; i<menus.length; i++ )
+                menus[i].style.zIndex = "0";
+        }
+        
+        
+        var documentDiv = document.getElementsByClassName("document")[0];
+        documentDiv.addEventListener('click', function (event) {
+            if(nav_list) navOff();
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+        });
+    </script>
+  </body>
+</html>

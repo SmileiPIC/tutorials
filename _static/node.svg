@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg version="1.2" viewBox="0 0 16000 5120" preserveAspectRatio="xMidYMid"
+  xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <g id="node">
+      <g stroke="none" font-family="Calibri, sans-serif">
+        <rect fill="none" x="-3.2479998e-05" y="-2.428e-05" width="5120" height="5120" />
+        <path fill="#00b050" d="M 2559.9999,5119.0169 H -3.248e-5 V -2.428e-5 H 5119.0168 V 5119.0169 Z" />
+        <rect fill="none" x="300.82947" y="1333.0875" width="4519.3242" height="1078.4639" />
+        <path fill="#ffc000"
+          d="m 301.81256,1512.9954 v 0 c 0,-31.4593 7.86482,-62.9186 23.59447,-89.4624 15.72965,-27.5269 39.32412,-50.1382 65.8679,-65.8679 27.52688,-15.7296 58.00307,-24.5776 90.44546,-24.5776 l 4157.54221,0.9831 v 0 c 31.4593,0 62.9186,7.8649 89.4624,23.5945 27.5268,15.7297 50.1382,39.3241 65.8679,65.8679 15.7296,27.5269 24.5775,58.0031 24.5775,90.4455 v 0 716.682 0 c 0,31.4593 -7.8648,62.9186 -23.5944,89.4624 -15.7297,27.5268 -39.3242,50.1382 -65.8679,65.8679 -27.5269,15.7296 -58.0031,24.5775 -90.4455,24.5775 H 480.73729 v 0 c -31.45929,0 -62.91859,-7.8648 -89.46236,-23.5944 -27.52689,-15.7297 -50.13825,-39.3242 -65.8679,-65.8679 -15.72965,-27.5269 -24.57757,-58.0031 -24.57757,-90.4455 z" />
+        <text x="-3806.5745" y="-1809.8925">
+          <tspan font-size="624.27px" font-weight="700" x="1465.8064" y="2121.5361" fill="#843c0b">memory</tspan>
+        </text>
+        <rect fill="none" x="300.82947" y="2688.7864" width="4519.3242" height="2004.5469" />
+        <path fill="#c0d3ff"
+          d="m 301.81256,3023.0415 v 0 c 0,-58.9862 15.72965,-116.0062 44.23963,-167.1275 29.49309,-50.1383 71.76651,-92.4117 122.88787,-121.9048 50.13824,-29.4931 108.14132,-45.2227 167.12749,-45.2227 l 3848.84785,0.9831 v 0 c 58.9862,0 116.0062,15.7296 167.1275,44.2396 50.1383,29.4931 92.4117,71.7665 121.9048,122.8879 29.4931,50.1382 45.2227,108.1413 45.2227,167.1275 v 0 1334.0706 0 c 0,58.9862 -15.7296,116.0062 -44.2396,167.1275 -29.4931,50.1383 -71.7665,92.4117 -122.8879,121.9048 -50.1382,29.4931 -108.1413,45.2227 -167.1275,45.2227 H 635.08445 v 0 c -58.98618,0 -116.00615,-15.7296 -167.1275,-44.2396 -50.13825,-29.4931 -92.41167,-71.7665 -121.90476,-122.8879 -29.49309,-50.1382 -45.22273,-108.1413 -45.22273,-167.1275 z" />
+        <text x="-3806.5745" y="-1809.8925">
+          <tspan font-size="624.27px" font-weight="700" x="1871.8279" y="4346.2979" fill="#084ad2">cores</tspan>
+        </text>
+      </g>
+      <g fill="#084ad2" stroke="none">
+        <g >
+          <circle cx="900" cy="3200" r="300" />
+          <circle cx="1720" cy="3200" r="300" />
+          <circle cx="2550" cy="3200" r="300" />
+          <circle cx="3360" cy="3200" r="300" />
+          <circle cx="4180" cy="3200" r="300" />
+        </g>
+      </g>
+      <g fill="none" stroke="#084ad2" stroke-width="88" stroke-linejoin="miter">
+        <path d="m  900,3200 0,-800" />
+        <path d="m 1720,3200 0,-800" />
+        <path d="m 2550,3200 0,-800" />
+        <path d="m 3360,3200 0,-800" />
+        <path d="m 4180,3200 0,-800" />
+      </g>
+    </g>
+    
+    <linearGradient id="grad1" x1="70%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" style="stop-color:#fff;stop-opacity:0.1" />
+      <stop offset="90%" style="stop-color:#fff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <g transform="translate(0,0)">
+    <use xlink:href="#node" transform="translate(0,0)" />
+    <text x="-3806.5745" y="-1809.8925" font-family="Calibri, sans-serif">
+      <tspan font-size="832.688px" font-weight="700" x="1324.2396" y="955.57599" fill="#b1fb61">Node 1</tspan>
+    </text>
+  </g>
+  
+  <g transform="translate(5376,0)">
+    <use xlink:href="#node" transform="translate(0,0)" />
+    <text x="-3806.5745" y="-1809.8925" font-family="Calibri, sans-serif">
+      <tspan font-size="832.688px" font-weight="700" x="1324.2396" y="955.57599" fill="#b1fb61">Node 2</tspan>
+    </text>
+  </g>
+  
+  <g transform="translate(10752,0)">
+    <use xlink:href="#node" transform="translate(0,0)" />
+    <text x="-3806.5745" y="-1809.8925" font-family="Calibri, sans-serif">
+      <tspan font-size="832.688px" font-weight="700" x="1324.2396" y="955.57599" fill="#b1fb61">Node 3</tspan>
+    </text>
+  </g>
+  
+  <rect x="0" y="-10" width="16000" height="5140" fill="url(#grad1)" />
+  
+</svg>

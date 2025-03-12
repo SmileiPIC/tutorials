@@ -1,0 +1,791 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Export to VTK and 3D visualization &#8212; Smilei tutorials  unknown documentation</title>
+    <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="_static/smileiIcon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Envelope model for laser wakefield acceleration" href="advanced_wakefield_envelope.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      scale: 95,
+      availableFonts: ["TeX"]
+    }
+  });
+  </script>
+   
+  </head><body>
+
+<div id="smallScreenMenu" class="off">
+
+    
+    <div class="toctree-smilei">
+        <ul>
+                <li class="outer">
+                    <a href="basics_setup.html">Setup</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_units.html">Units</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="perfs_parallel_computing.html">Parallel computing</a>
+                </li>
+                <li class="outer">
+                    <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="advanced_field_ionization.html">Field ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Export to VTK and 3D visualization</a><ul>
+<li><a class="reference internal" href="#physical-configuration-for-the-case-in-3dcartesian-geometry">Physical configuration for the case in <cite>“3Dcartesian”</cite> geometry</a></li>
+<li><a class="reference internal" href="#run-your-simulation">Run your simulation</a></li>
+<li><a class="reference internal" href="#export-the-results-in-vtk-format">Export the results in VTK format</a></li>
+<li><a class="reference internal" href="#visualize-the-3d-data">Visualize the 3D data</a></li>
+<li><a class="reference internal" href="#volume-rendering-of-fields">Volume Rendering of Fields</a></li>
+<li><a class="reference internal" href="#point-like-representation-of-macro-particles">Point-like representation of Macro-particles</a></li>
+<li><a class="reference internal" href="#exporting-data-obtained-in-amcylindrical-geometry">Exporting data obtained in <cite>“AMcylindrical”</cite> geometry</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
+        </ul>
+        <hr />
+    </div>
+
+</div>
+<div id="hcontainer">
+    <div id="nav_positioner">
+        <div id="nav">
+            <div id="nav_button" onclick="toggleNav()">
+                Sections
+            </div>
+            <div id="nav_list" class="toctree-smilei">
+                <div id="nav_title"><a href="#">Export to VTK and 3D visualization</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Export to VTK and 3D visualization</a><ul>
+<li><a class="reference internal" href="#physical-configuration-for-the-case-in-3dcartesian-geometry">Physical configuration for the case in <cite>“3Dcartesian”</cite> geometry</a></li>
+<li><a class="reference internal" href="#run-your-simulation">Run your simulation</a></li>
+<li><a class="reference internal" href="#export-the-results-in-vtk-format">Export the results in VTK format</a></li>
+<li><a class="reference internal" href="#visualize-the-3d-data">Visualize the 3D data</a></li>
+<li><a class="reference internal" href="#volume-rendering-of-fields">Volume Rendering of Fields</a></li>
+<li><a class="reference internal" href="#point-like-representation-of-macro-particles">Point-like representation of Macro-particles</a></li>
+<li><a class="reference internal" href="#exporting-data-obtained-in-amcylindrical-geometry">Exporting data obtained in <cite>“AMcylindrical”</cite> geometry</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="headercolor">
+    </div>
+    <div class="hpositioner">
+        <div class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img class="logo" src="_static/smileiLogo_tutorials.svg" alt="Logo" />
+            </a>
+        </div>
+        <div class="menu"
+            id="menu_PIC basics"
+            
+        >
+            <div id="menuButton_PIC basics" class="menuButton"
+                 onmouseenter="prepareMenu('menu_PIC basics')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="basics.html">
+                    <span>PIC basics</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_PIC basics',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="basics_setup.html">Setup</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_units.html">Units</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Performances"
+            
+        >
+            <div id="menuButton_Performances" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Performances')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="perfs.html">
+                    <span>Performances</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Performances',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="perfs_parallel_computing.html">Parallel computing</a>
+                        </li>
+                        <li class="outer">
+                            <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="last menu"
+            id="menu_Advanced"
+            style="font-weight:bold"
+        >
+            <div id="menuButton_Advanced" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Advanced')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="advanced.html">
+                    <span>Advanced</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Advanced',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="advanced_field_ionization.html">Field ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                        </li>
+                        <li >
+                            <a href="#">Export to VTK and 3D visualization</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var es=document.getElementsByClassName("menuButton"), i=0;
+            var evt = "ontouchend" in document ? "touchend" : "click";
+            for( var i=0; i<es.length; i+=1 ) {
+                es[i].addEventListener(evt, function(a){ return function(){toggleMenu(a)};}(es[i].parentNode.id));
+            }
+        </script>
+        
+        <div id="searchbox" role="search" style="display:none">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search" id="searchinput" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        
+        <div id="searchicon" onclick="openSearch()" style="display:block">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g transform="translate(0,-932.36216)" >
+                <circle
+                   r="25" cy="977.51044" cx="38.078663"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <rect
+                   transform="matrix(0.36717877,0.93015039,-0.93427297,0.35655858,0,0)"
+                   rx="4.9996676" ry="7.4995141" x="947.6142" y="316.16959"
+                   height="14.117695" width="46.476151"
+                   style="opacity:1;fill:#ffffff;fill:var(--header_text);fill-opacity:1;stroke:none;" />
+                <path
+                   d="m 41.383282,962.25996 a 15,15 0 0 1 11.660107,11.6355"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+              </g>
+            </svg>
+        </div>
+        <div id="closesearchicon" onclick="closeSearch()" style="display:none">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g
+                 transform="translate(0,-932.36216)"
+                 style="fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none">
+                <path d="m 10,962.36216 60,60.00004" />
+                <path d="M 70,962.36216 10,1022.3622" />
+              </g>
+            </svg>
+        </div>
+        
+        <div id="smallScreenMenuButton" onclick="event.preventDefault(); toggleSmallScreenMenu(event)">
+            <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+               viewBox="-20 -20 140 140">
+              <g  style="fill:#ffffff; fill:var(--header_text);stroke:none;">
+                <circle cx="15" cy="20" r="5" />
+                <circle cx="35" cy="20" r="5" />
+                <circle cx="85" cy="20" r="5" />
+                <rect width="50" height="10" x="35" y="15" rx="0" ry="0" />
+                <circle cx="15" cy="40" r="5" />
+                <circle cx="35" cy="40" r="5" />
+                <circle cx="85" cy="40" r="5" />
+                <rect width="50" height="10" x="35" y="35" rx="0" ry="0" />
+                <circle cx="15" cy="60" r="5" />
+                <circle cx="35" cy="60" r="5" />
+                <circle cx="85" cy="60" r="5" />
+                <rect width="50" height="10" x="35" y="55" rx="0" ry="0" />
+                <circle cx="15" cy="80" r="5" />
+                <circle cx="35" cy="80" r="5" />
+                <circle cx="85" cy="80" r="5" />
+                <rect width="50" height="10" x="35" y="75" rx="0" ry="0" />
+              </g>
+            </svg>
+        </div>
+        
+    </div>
+    
+</div>
+</div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="export-to-vtk-and-3d-visualization">
+<h1>Export to VTK and 3D visualization<a class="headerlink" href="#export-to-vtk-and-3d-visualization" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to learn how to export some diagnostics to the
+<a class="reference external" href="https://vtk.org">VTK</a> format and how to visualize them in 3D.
+Two simulations will be run, one in <code class="docutils literal notranslate"><span class="pre">&quot;3Dcartesian&quot;</span></code> geometry and the other in <code class="docutils literal notranslate"><span class="pre">&quot;AMcylindrical&quot;</span></code> geometry.
+In this tutorial we will use the open-source
+application <a class="reference external" href="https://www.paraview.org">Paraview</a>  to open the VTK files and 3D
+visualization, although this is not the only possible choice.</p>
+<p>This tutorial is meant as a
+first introduction to the 3D visualization of <code class="docutils literal notranslate"><span class="pre">Smilei</span></code> results.
+For the sake of clarity, only a few available representation options
+will be explored, with no pretense of completeness in the field of
+3D visualization or in the use of Paraview or similar software.</p>
+<p>In particular this tutorial will explain how to</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>export <code class="docutils literal notranslate"><span class="pre">Fields</span></code> results to VTK</p></li>
+<li><p>export the macro-particles’ coordinates in the <code class="docutils literal notranslate"><span class="pre">TrackParticles</span></code> results to VTK</p></li>
+<li><p>visualize a Volume Rendering of <code class="docutils literal notranslate"><span class="pre">Fields</span></code> with <code class="docutils literal notranslate"><span class="pre">Paraview</span></code></p></li>
+<li><p>visualize the tracked macro-particles as points with <code class="docutils literal notranslate"><span class="pre">Paraview</span></code></p></li>
+<li><p>perform the same operations for a simulation in <code class="docutils literal notranslate"><span class="pre">&quot;AMcylindrical&quot;</span></code> geometry.</p></li>
+</ul>
+</div></blockquote>
+<p>The 3D simulation used for this tutorial is relatively heavy so make sure to submit
+the job on 10 cores at least to run in a few minutes. This tutorial
+needs an installation of the <code class="docutils literal notranslate"><span class="pre">vtk</span></code> Python library to export the data
+with <code class="docutils literal notranslate"><span class="pre">happi</span></code>. The export in 3D of data obtained in <code class="docutils literal notranslate"><span class="pre">&quot;AMcylindrical&quot;</span></code> geometry
+also requires the installation of the <code class="docutils literal notranslate"><span class="pre">scipy</span></code> Python library.</p>
+<p><strong>Disclaimer</strong> This tutorial is not physically relevant. Proper simulations of this
+kind must be done with better resolution in all directions, just to start.
+This would give more accurate results, but it would make the simulations
+even more demanding.</p>
+<p><strong>Warning</strong> To avoid wasting computing resources it is highly recommended to start
+small when learning how to visualize results in 3D. Apart from the simulation
+generating the physically accurate data, the export and visualization of large amounts of
+data require resources and computing time. For these reasons, if you are learning
+how to visualize VTK files we recommend to start with relatively small benchmarks
+like the ones in this tutorial in order to learn the export/visualization tricks
+and to familiarize with the data you may need for your future cases of interest.
+Afterwards, you can improve the accuracy of your simulation results with better
+resolution, more macro-particles, more frequent output, etc. and apply the same
+export and visualization techniques you will have learned in the process.</p>
+<p><strong>Warning for non-experts</strong> 3D visualizations can be good-looking and often artistic, they
+help giving a qualitative picture of what is happening in your simulation, but
+they should not be used to draw accurate scientific conclusions.
+Indeed, 3D pictures/animations often have too many details and graphical artifacts
+coming from the rendering of 3D objects, so it’s recommended to quantitatively
+study your phenomena of interest with 1D and 2D plots to reduce at minimum the
+unnecessary or misleading visual information.</p>
+<hr class="docutils" />
+<div class="section" id="physical-configuration-for-the-case-in-3dcartesian-geometry">
+<h2>Physical configuration for the case in <cite>“3Dcartesian”</cite> geometry<a class="headerlink" href="#physical-configuration-for-the-case-in-3dcartesian-geometry" title="Permalink to this headline">¶</a></h2>
+<p>A Laguerre-Gauss laser pulse enters the window, where test electrons are present.
+The laser pushes the electrons out of its propagation axis through its ponderomotive force.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="run-your-simulation">
+<h2>Run your simulation<a class="headerlink" href="#run-your-simulation" title="Permalink to this headline">¶</a></h2>
+<p>Download  the input namelist <a class="reference external" href="export_VTK_namelist.py">export_VTK_namelist.py</a> and open
+it with your favorite editor. Take some time to study it carefully.
+This namelist allows to select between the geometries <code class="docutils literal notranslate"><span class="pre">&quot;3Dcartesian&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;AMcylindrical&quot;</span></code>,
+each corresponding to the same physical case, through the variable <code class="docutils literal notranslate"><span class="pre">geometry</span></code> at the start of the namelist.
+For the moment we will use <code class="docutils literal notranslate"><span class="pre">geometry=&quot;3Dcartesian&quot;</span></code> for our first case.</p>
+<p>Note how we define a <code class="docutils literal notranslate"><span class="pre">Laser</span></code> profile corresponding to a Laguerre-Gauss mode
+with azimuthal number <span class="math notranslate nohighlight">\(l=1\)</span> and radial number <span class="math notranslate nohighlight">\(p=0\)</span>, linearly polarized in the <code class="docutils literal notranslate"><span class="pre">y</span></code> direction.
+This type of laser has a wavefront that looks like a corkscrew and an intensity distribution
+that looks like a double corkscrew. These shapes can be better visualized in 3D.</p>
+<p>After the definition of the <code class="docutils literal notranslate"><span class="pre">Laser</span></code>, a small block of electrons is defined,
+with few test macro-particles to make the simulation and the postprocessing
+quicker. Since these electrons are test macro-particles, they will not
+influence the laser propagation, but they will be pushed by its electromagnetic
+field.</p>
+<p>Run the simulation and study the propagation of the laser <code class="docutils literal notranslate"><span class="pre">Ey</span></code> field and intensity with a 2D Probe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">happi</span><span class="p">;</span> <span class="n">S</span><span class="o">=</span><span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">()</span>
+<span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;Ey&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;Ex**2+Ey**2+Ez**2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, it is difficult to visualize the corkscrew shapes in 2D.</p>
+<p>To visualize the trajectories of the electrons, we can use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">species_name</span><span class="o">=</span><span class="s2">&quot;electron&quot;</span>
+<span class="n">chunk_size</span>  <span class="o">=</span> <span class="mi">600000</span>
+<span class="n">track</span>       <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">TrackParticles</span><span class="p">(</span><span class="n">species</span> <span class="o">=</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span><span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">])</span>
+<span class="n">track</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this plot too it is difficult to see how the particles are moving in 3D.</p>
+<p>It seems one of the occasions where a 3D visualization may give a clearer qualitative
+picture.</p>
+<p><strong>Warning</strong> To visualize the macro-particles, a <code class="docutils literal notranslate"><span class="pre">TrackParticle</span></code> diagnostic is
+defined in the namelist. No filter is used, since the number of tracked
+macro-particles is not enormous. In a more realistic case you should select
+only a subset of the particles to make the visualization understandable and to
+keep the cost of simulation/export/visualization operations manageable.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="export-the-results-in-vtk-format">
+<h2>Export the results in VTK format<a class="headerlink" href="#export-the-results-in-vtk-format" title="Permalink to this headline">¶</a></h2>
+<p>To start, we can select the fields we want to visualize and export them to VTK.
+In this case, we can export the laser <code class="docutils literal notranslate"><span class="pre">Ey</span></code> field and intensity:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Intensity</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="o">.</span><span class="n">Field0</span><span class="p">(</span><span class="s2">&quot;Ex**2+Ey**2+Ez**2&quot;</span><span class="p">)</span>
+<span class="n">Intensity</span><span class="o">.</span><span class="n">toVTK</span><span class="p">()</span>
+<span class="n">Ey</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="o">.</span><span class="n">Field0</span><span class="p">(</span><span class="s2">&quot;Ey&quot;</span><span class="p">)</span>
+<span class="n">Ey</span><span class="o">.</span><span class="n">toVTK</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If everything works smoothly, a folder called <code class="docutils literal notranslate"><span class="pre">Field0_Ey</span></code> and one called``Field0_EzEyEx``
+should be created by <code class="docutils literal notranslate"><span class="pre">happi</span></code> after executing the <code class="docutils literal notranslate"><span class="pre">toVTK()</span></code> method.
+In general the folder name will change with the field selected for the export.
+This folder contains the <code class="docutils literal notranslate"><span class="pre">Fields</span></code> exported to VTK format, for all the available
+iterations.</p>
+<p>Afterwards, for all the available iterations, the <code class="docutils literal notranslate"><span class="pre">TrackParticles</span></code> can be
+exported, creating a folder <code class="docutils literal notranslate"><span class="pre">TrackParticles_electron_xyzpxpypzId</span></code>. Each
+file within this folder contains the coordinates of the tracked macro-particles.</p>
+<p>The export command will be:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">track_part</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">TrackParticles</span><span class="p">(</span><span class="n">species</span> <span class="o">=</span><span class="s2">&quot;electron&quot;</span><span class="p">,</span><span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="s2">&quot;z&quot;</span><span class="p">,</span><span class="s2">&quot;px&quot;</span><span class="p">,</span><span class="s2">&quot;py&quot;</span><span class="p">,</span><span class="s2">&quot;pz&quot;</span><span class="p">,</span><span class="s2">&quot;Id&quot;</span><span class="p">])</span>
+<span class="n">track_part</span><span class="o">.</span><span class="n">toVTK</span><span class="p">(</span><span class="n">rendering</span><span class="o">=</span><span class="s2">&quot;cloud&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the last commands we have selected the attributes to export with the
+macro-particles, in this case coordinates, momentum components, Id.
+Then, we have used <code class="docutils literal notranslate"><span class="pre">rendering=&quot;cloud&quot;</span></code> to export a file for each iteration.</p>
+<p>If we wanted to visualize only one or some iterations, we could have selected
+them in the variable definition before using the <code class="docutils literal notranslate"><span class="pre">toVTK()</span></code> method.</p>
+<p>In case you want to create a 3D animation of a new simulation (like the animation we
+will create with this tutorial), before exporting a lot of data it is recommended
+to export and visualize only the results from one or few iterations.
+If everything you want to see is in place and clearly visible,
+then you can export all the iterations necessary for an animation if
+so desired. This will save a lot of time in case some diagnostic is missing
+in your simulation or if the set-up is not correctly defined in the namelist.</p>
+<p><strong>Note</strong> In a simulation with moving window you can
+also export a coordinate called <code class="docutils literal notranslate"><span class="pre">moving_x</span></code>, i.e. the <code class="docutils literal notranslate"><span class="pre">x</span></code> coordinate relative
+to the moving window position.</p>
+<p><strong>Note</strong> Also other diagnostics, e.g. <code class="docutils literal notranslate"><span class="pre">Probes</span></code>, can be exported with <code class="docutils literal notranslate"><span class="pre">toVTK()</span></code>
+See the
+<a class="reference external" href="https://smileipic.github.io/Smilei/Understand/post-processing.html#export-2d-or-3d-data-to-vtk">relevant documentation</a>
+for more details.</p>
+<p><strong>Warning</strong> This tutorial has a relatively small amount of data to export.
+If you want to export the results from a larger simulation on a cluster with
+multiple users, use a job to avoid saturating the shared resources
+of the login nodes. You can also speed-up the export operation parallelizing it
+with MPI.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="visualize-the-3d-data">
+<h2>Visualize the 3D data<a class="headerlink" href="#visualize-the-3d-data" title="Permalink to this headline">¶</a></h2>
+<p>Open <code class="docutils literal notranslate"><span class="pre">Paraview</span></code>. This can be done from your machine if you have the VTK data
+stored there, or from a remote machine with remote desktop screen sharing,
+or using Paraview in a server-client mode (in this case you will need the same
+version of Paraview on both the client and server machines). For large amounts of
+data it is recommendable to work in this server-client mode.</p>
+<p><strong>Warning</strong> from now on, the given instructions contain completely arbitrary
+choices, e.g. the colors of representations. Feel free to make different choices
+based on you personal tastes and what you want to highlight in your image/animation.
+The figure at the end of the tutorial represents only the result of the
+mentioned choices.</p>
+<p>First, to highlight the laser and particles we can set the background color to
+black. To change the background color, click on the icon with the painter’s brush
+and color palette symbol and pick a background color.</p>
+</div>
+<div class="section" id="volume-rendering-of-fields">
+<h2>Volume Rendering of Fields<a class="headerlink" href="#volume-rendering-of-fields" title="Permalink to this headline">¶</a></h2>
+<p>Click on the folder icon in the top left part of the menu or in <code class="docutils literal notranslate"><span class="pre">File-&gt;Open</span></code>,
+then find the folder <code class="docutils literal notranslate"><span class="pre">Field0_EzEyEx</span></code> in your system where the <code class="docutils literal notranslate"><span class="pre">Field</span></code>
+diagnostic has been exported. Select the multiple iterations files, they should
+be grouped with the name <code class="docutils literal notranslate"><span class="pre">Field0_EzEyEx_..pvti</span></code>. In the middle left part of
+the screen, click on <code class="docutils literal notranslate"><span class="pre">Apply</span></code>.</p>
+<p>In the central part of one of the top menu bars
+you should see the word <code class="docutils literal notranslate"><span class="pre">Outline</span></code>. Click on it and change the representation
+mode to <code class="docutils literal notranslate"><span class="pre">Volume</span></code> to create a Volume Rendering. For the moment you will see nothing,
+because the laser still has to enter the window. Click on the <code class="docutils literal notranslate"><span class="pre">Play</span></code> button
+above to see the animation of the laser entering the window.</p>
+<p>You can zoom into the scene scrolling with the mouse or rotate the view
+by left-clicking and moving the cursor. Try to change the colormap with
+the dedicated button (try e.g. a black, white, blue colormap).
+Afterwards, click on the button <code class="docutils literal notranslate"><span class="pre">Rescale</span> <span class="pre">to</span> <span class="pre">Custom</span> <span class="pre">Data</span> <span class="pre">Range</span></code>, selecting
+e.g. the interval <code class="docutils literal notranslate"><span class="pre">4-10</span></code> for the laser intensity.
+This way the corkscrew shape should be visible.</p>
+</div>
+<div class="section" id="point-like-representation-of-macro-particles">
+<h2>Point-like representation of Macro-particles<a class="headerlink" href="#point-like-representation-of-macro-particles" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s superpose the tracked macro-particles. As before, click on
+<code class="docutils literal notranslate"><span class="pre">File-&gt;Open</span></code>, then search for the folder <code class="docutils literal notranslate"><span class="pre">TrackParticles_electron_xyzpxpypzId</span></code>
+where the macro-particles coordinates have been exported.
+Select all the iterations, grouped under the name
+<code class="docutils literal notranslate"><span class="pre">TrackParticles_electron_xyzpxpypzId_trajectory_..vtp</span></code>.
+As before, click on <code class="docutils literal notranslate"><span class="pre">Apply</span></code>.</p>
+<p>Again, in the central part of one of the top menu bars
+you should see the word <code class="docutils literal notranslate"><span class="pre">Outline</span></code>. Click on it and change the representation
+mode to <code class="docutils literal notranslate"><span class="pre">Point</span> <span class="pre">Gaussian</span></code>. If you are visualizing one of the last iterations you
+should already be able to see the point-like electrons. Now you can play with
+the options of this representation in the bottom left part of the screen.
+For example, you can color them with a <code class="docutils literal notranslate"><span class="pre">Solid</span> <span class="pre">Color</span></code> white (choice made for the
+figure in this tutorial), or color them according to their longitudinal
+momentum, or select the option <code class="docutils literal notranslate"><span class="pre">Emissive</span></code> (macro-particles emitting light) from
+the <code class="docutils literal notranslate"><span class="pre">Search</span></code> bar.
+Playing with some settings, you should be able to create an image like this for the
+last iteration:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/LaguerreGauss.png"><img alt="_images/LaguerreGauss.png" class="align-center" src="_images/LaguerreGauss.png" style="width: 40%;" /></a>
+</div></blockquote>
+<p>Depending on your graphic choices, you may see a different image.
+Now you can visualize the animation of the laser (namely, its intensity distribution) entering the window and
+pushing away the electrons, start experimenting with the many options of the selected
+representations, or with the colormaps and transfer functions.</p>
+<p><strong>Action</strong> Try to visualize instead the <code class="docutils literal notranslate"><span class="pre">Ey</span></code> field that you have exported.
+A divergent colormap is recommended.</p>
+</div>
+<div class="section" id="exporting-data-obtained-in-amcylindrical-geometry">
+<h2>Exporting data obtained in <cite>“AMcylindrical”</cite> geometry<a class="headerlink" href="#exporting-data-obtained-in-amcylindrical-geometry" title="Permalink to this headline">¶</a></h2>
+<p>In this geometry a cylindrical <code class="docutils literal notranslate"><span class="pre">(x,r)</span></code> grid is used for the fields, as explained
+its <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html">documentation</a>.
+The axis <code class="docutils literal notranslate"><span class="pre">r=0</span></code> corresponds to the propagation axis of the laser pulse.
+Furthermore, fields are defined through their cylindrical components, e.g.
+<code class="docutils literal notranslate"><span class="pre">El</span></code>, <code class="docutils literal notranslate"><span class="pre">Er</span></code>, <code class="docutils literal notranslate"><span class="pre">Et</span></code> instead of the <code class="docutils literal notranslate"><span class="pre">Ex</span></code>, <code class="docutils literal notranslate"><span class="pre">Ey</span></code>, <code class="docutils literal notranslate"><span class="pre">Ez</span></code> in <code class="docutils literal notranslate"><span class="pre">&quot;3Dcylindrical&quot;</span></code>.
+Therefore, when using <code class="docutils literal notranslate"><span class="pre">geometry=&quot;AMcylindrical&quot;</span></code> in the same input script
+you have used for this tutorial, some changes are made, in particular field and
+density profiles are defined on a <code class="docutils literal notranslate"><span class="pre">(x,r)</span></code> grid and the origins of the axes
+(in the profiles and the Probes) are shifted according to the different definition
+of their origins.</p>
+<p>Change the <code class="docutils literal notranslate"><span class="pre">geometry</span></code> variable at the start of the namelist to have <code class="docutils literal notranslate"><span class="pre">geometry=&quot;AMcylindrical&quot;</span></code>
+and run the simulation. The physical set-up is identical to the one
+simulated in <code class="docutils literal notranslate"><span class="pre">&quot;3Dcartesian&quot;</span></code> geometry, i.e. a Laguerre-Gauss mode
+with azimuthal number <span class="math notranslate nohighlight">\(l=1\)</span> and radial number <span class="math notranslate nohighlight">\(p=0\)</span>. Note that the Cartesian component of the complex envelope of <code class="docutils literal notranslate"><span class="pre">Ey</span></code> that
+has a phase described by <span class="math notranslate nohighlight">\(l\theta\)</span>. To define this in cylindrical geometry, first we need to
+project this field on its cylindrical components and then decompose them in harmonics of <span class="math notranslate nohighlight">\(m\theta\)</span>.
+In the <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html">documentation</a>
+this is shown for a cylindrically symmetric laser like a Gaussian beam, i.e. <span class="math notranslate nohighlight">\(l=0\)</span>, which is modeled with
+the harmonic <span class="math notranslate nohighlight">\(m=1\)</span>. For our case, the Laguerre-Gauss mode with <span class="math notranslate nohighlight">\(l=1\)</span> is made of cylindrical harmonics with
+<span class="math notranslate nohighlight">\(m=0\)</span> and <span class="math notranslate nohighlight">\(m=2\)</span>. These harmonics, for each transverse component of the magnetic field, are defined in the <code class="docutils literal notranslate"><span class="pre">Laser</span></code> block with
+the <code class="docutils literal notranslate"><span class="pre">space_time_profile_AM</span></code>.</p>
+<p><strong>Exercise</strong> from the definition of Laguerre-Gauss mode with <code class="docutils literal notranslate"><span class="pre">l=1</span></code>, using trigonometry
+and complex exponentials, derive the expressions
+for the azimuthal harmonics defined in the namelist.
+Please read carefully the <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/azimuthal_modes_decomposition.html">documentation</a>
+for the definition of the azimuthal Fourier decomposition.</p>
+<p>The commands to export macro-particle data from <code class="docutils literal notranslate"><span class="pre">TrackParticles</span></code>, except for the
+different axis origin, are identical to those used in the <code class="docutils literal notranslate"><span class="pre">&quot;3Dcartesian&quot;</span></code> case.
+This because the macro-particles (exactly as <code class="docutils literal notranslate"><span class="pre">Probes</span></code>) in <code class="docutils literal notranslate"><span class="pre">&quot;AMcylindrical&quot;</span></code>
+geometry are defined in the 3D space. However, only the cylindrical components are available
+in the <code class="docutils literal notranslate"><span class="pre">Field</span></code> diagnostic, and on a cylindrical grid.</p>
+<p>To export the intensity in the 3D Cartesian space, you can export to vtk the <code class="docutils literal notranslate"><span class="pre">Fields</span></code> data defined in cylindrical geometry
+to the 3D cartesian space, though the argument <code class="docutils literal notranslate"><span class="pre">build3d</span></code> of the <code class="docutils literal notranslate"><span class="pre">Fields</span></code> available
+only in cylindrical geometry. For its synthax, see the
+<a class="reference external" href="https://smileipic.github.io/Smilei/Understand/post-processing.html#open-a-field-diagnostic">Field documentation</a>.</p>
+<p>First, you need to specify an interval in the 3D cartesian space where you want
+have your VTK data. This interval is defined through a list, one for each axis <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code>.
+Each list contains in order its lower and upper border and resolution in that direction.
+In this case, we can for example extract the data from the physical space that was simulated,
+so we can take the required values from the namelist. Afterwards, we export the <cite>Field</cite>
+data proportional to the laser intensity using <code class="docutils literal notranslate"><span class="pre">build3d</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">build3d_interval</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">Lx</span><span class="p">,</span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">dx</span><span class="p">]]</span>
+<span class="n">build3d_interval</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">Ltrans</span><span class="p">,</span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">Ltrans</span><span class="p">,</span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">dtrans</span><span class="p">])</span>
+<span class="n">build3d_interval</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">Ltrans</span><span class="p">,</span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">Ltrans</span><span class="p">,</span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">dtrans</span><span class="p">])</span>
+<span class="n">Intensity</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="o">.</span><span class="n">Field0</span><span class="p">(</span><span class="s2">&quot;El**2+Er**2+Et**2&quot;</span><span class="p">,</span><span class="n">build3d</span> <span class="o">=</span> <span class="n">build3d_interval</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Note how we had to specify the cylindrical components of the fields.
+You do not have to export all the physical space or to use the same resolution
+specified in the namelist. For example, to reduce the amount of exported data
+you may choose to subsample the physical space with a coarser cell length.</p>
+<p><strong>Action</strong>: define a 3D Probe to export and visualize the <code class="docutils literal notranslate"><span class="pre">Ey</span></code> field.
+Please note that, depending on the number of probe points, this may considerably slow down the simulation and
+create a huge amount of data, so it is not recommended for scientific production purposes.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      <div>
+        <input type="button" id="themebutton"  value="" onclick="switchTheme('')" />
+      </div>
+      <div>
+      <a href="site.html">Site index</a>
+      </div>
+      <div>
+        Last updated on Mar 12, 2025
+      </div>
+      
+      <div>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      </div>
+      
+    </div>
+    
+    <script type="text/javascript">
+        
+        var nav = document.getElementById("nav");
+        var nav_list = document.getElementById("nav_list");
+        var nav_button = document.getElementById("nav_button");
+        var smallScreenMenu = document.getElementById("smallScreenMenu");
+        var smallScreenMenuButton = document.getElementById("smallScreenMenuButton");
+        var searchicon = document.getElementById("searchicon");
+        var searchbox  = document.getElementById("searchbox");
+        var searchinput= document.getElementById("searchinput");
+        var menus = document.getElementsByClassName("menu");
+        for( var i=0; i<menus.length; i++ )
+            menus[i].active = false;
+        
+        // Manage theme
+        var theme="light";
+        function switchTheme(type) {
+            if( type == "dark" || ( ! type && theme == "light" ) ) {
+                theme = "dark";
+                document.documentElement.setAttribute('theme', 'dark');
+                window.name = "dark_theme"
+                localStorage.setItem("_theme","dark")
+            } else {
+                theme = "light";
+                document.documentElement.setAttribute('theme', 'light');
+                window.name = "light_theme"
+                localStorage.setItem("_theme","light")
+            }
+        }
+        if( window.name && window.name == "light_theme" ) {
+            switchTheme("light");
+        } else if ( window.name && window.name == "dark_theme" ) {
+            switchTheme("dark");
+        } else if( stored_theme = localStorage.getItem("_theme") ) {
+            switchTheme(stored_theme);
+        } else if( window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            switchTheme("dark");
+        }
+        
+        var ul = nav_list.getElementsByTagName("ul")[0], li;
+        var keep_nav = false;
+        if( ul ) {
+            li = ul.firstElementChild;
+            if( li ) {
+                if( li.getElementsByTagName("ul").length > 0 ) keep_nav = true;
+            }
+        }
+        if( keep_nav ) {
+            li.removeChild( li.firstElementChild );
+        } else {
+            document.getElementById("nav_positioner").removeChild( document.getElementById("nav") );
+        }
+        
+        function navOff() {
+            nav_list.style.display = "none";
+            nav_button.className = "";
+            nav.style.overflowY = "visible";
+        }
+        
+        function toggleNav() {
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+            if( nav_list.style.display != "inline-block" ) {
+                nav_list.style.display = "inline-block";
+                nav_button.className = "pushed";
+                nav.style.overflowY = "auto";
+            } else {
+                navOff();
+            }
+        }
+        
+        function toggleSmallScreenMenu(e) {
+            if( smallScreenMenu.className != "on" ) {
+                smallScreenMenu.className = "on";
+                smallScreenMenuButton.className = "pushed";
+                document.documentElement.style.overflow = "hidden";
+            } else {
+                smallScreenMenu.className = "off";
+                smallScreenMenuButton.className = "";
+                document.documentElement.style.overflow = "";
+            }
+        }
+        
+        if (smallScreenMenuAfterTOC = document.getElementById("smallScreenMenuAfterTOC")) {
+            var smallScreenMenuTOC = smallScreenMenuAfterTOC.previousElementSibling
+                .getElementsByTagName("li")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+            for (var i = 0; i < smallScreenMenuTOC.length; i++) {
+                if (smallScreenMenuTOC[i].tagName = "a") {
+                    smallScreenMenuTOC[i].addEventListener("click", function(event){ toggleSmallScreenMenu(event); } );
+                }
+            }
+        }
+        
+        function prepareMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            menu.timer1 = setTimeout(function(a){ return function(){thisMenuOnly(a)};}(menu_id), 100);
+            menu.addEventListener("mouseleave", function(a){ return function(){clearTimeout(a.timer1)};}(menu) );
+        }
+        
+        function leaveMenu(menu_id, source) {
+            var menu = document.getElementById(menu_id);
+            menu.timer2 = setTimeout(function(a){ return function(){menuOff(a)};}(menu), 1000);
+            source.addEventListener("mouseenter", function(a){ return function(){clearTimeout(a.timer2)};}(menu) );
+        }
+        
+        function menuOn( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            if(nav_list) navOff();
+            divs[1].className = "on";
+            divs[0].className = "menuButton pushed";
+            menu.active = true;
+        }
+        function menuOff( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            divs[1].className = "off";
+            divs[0].className = "menuButton";
+            menu.active = false;
+        }
+        
+        function thisMenuOnly(menu_id) {
+            var menu = document.getElementById(menu_id);
+            for( var i=0; i<menus.length; i++ )
+                if( i!=menu_id )
+                    menuOff( menus[i] );
+            menuOn( menu );
+        }
+        
+        function toggleMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            if( menu.active ) {
+                menuOff( menu );
+            } else {
+                for( var i=0; i<menus.length; i++ )
+                    if( i!=menu_id )
+                        menuOff( menus[i] );
+                menuOn( menu );
+            }
+        }
+        
+        function openSearch() {
+            for( var i=0; i<menus.length; i++ ) {
+                menuOff( menus[i] );
+                menus[i].style.zIndex = "-1";
+            }
+            searchicon.style.display = "none";
+            closesearchicon.style.display = "block";
+            searchbox.style.display = "block";
+            searchinput.focus();
+        }
+        
+        function closeSearch() {
+            searchicon.style.display = "block";
+            closesearchicon.style.display = "none";
+            searchbox .style.display = "none";
+            for( var i=0; i<menus.length; i++ )
+                menus[i].style.zIndex = "0";
+        }
+        
+        
+        var documentDiv = document.getElementsByClassName("document")[0];
+        documentDiv.addEventListener('click', function (event) {
+            if(nav_list) navOff();
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+        });
+    </script>
+  </body>
+</html>

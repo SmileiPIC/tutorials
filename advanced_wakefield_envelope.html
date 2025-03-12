@@ -1,0 +1,810 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Envelope model for laser wakefield acceleration &#8212; Smilei tutorials  unknown documentation</title>
+    <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="_static/smileiIcon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Export to VTK and 3D visualization" href="advanced_vtk.html" />
+    <link rel="prev" title="Field initialization for a relativistic electron bunch" href="advanced_wakefield_electron_beam.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      scale: 95,
+      availableFonts: ["TeX"]
+    }
+  });
+  </script>
+   
+  </head><body>
+
+<div id="smallScreenMenu" class="off">
+
+    
+    <div class="toctree-smilei">
+        <ul>
+                <li class="outer">
+                    <a href="basics_setup.html">Setup</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_units.html">Units</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="perfs_parallel_computing.html">Parallel computing</a>
+                </li>
+                <li class="outer">
+                    <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="advanced_field_ionization.html">Field ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Envelope model for laser wakefield acceleration</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#preparing-the-case-study">Preparing the case study</a></li>
+<li><a class="reference internal" href="#conversion-to-si-units">Conversion to SI units</a></li>
+<li><a class="reference internal" href="#a-subtlety-the-envelope-of-the-vector-potential-vs-the-envelope-of-the-electric-field">A subtlety: the envelope of the vector potential vs the envelope of the electric field</a></li>
+<li><a class="reference internal" href="#wakefield-excitation">Wakefield excitation</a></li>
+<li><a class="reference internal" href="#envelope-ionization-module">Envelope ionization module</a></li>
+<li><a class="reference internal" href="#reducing-the-effects-of-numerical-cherenkov-radiation">Reducing the effects of Numerical Cherenkov Radiation</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
+                <li class="outer">
+                    <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                </li>
+        </ul>
+        <hr />
+    </div>
+
+</div>
+<div id="hcontainer">
+    <div id="nav_positioner">
+        <div id="nav">
+            <div id="nav_button" onclick="toggleNav()">
+                Sections
+            </div>
+            <div id="nav_list" class="toctree-smilei">
+                <div id="nav_title"><a href="#">Envelope model for laser wakefield acceleration</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Envelope model for laser wakefield acceleration</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#preparing-the-case-study">Preparing the case study</a></li>
+<li><a class="reference internal" href="#conversion-to-si-units">Conversion to SI units</a></li>
+<li><a class="reference internal" href="#a-subtlety-the-envelope-of-the-vector-potential-vs-the-envelope-of-the-electric-field">A subtlety: the envelope of the vector potential vs the envelope of the electric field</a></li>
+<li><a class="reference internal" href="#wakefield-excitation">Wakefield excitation</a></li>
+<li><a class="reference internal" href="#envelope-ionization-module">Envelope ionization module</a></li>
+<li><a class="reference internal" href="#reducing-the-effects-of-numerical-cherenkov-radiation">Reducing the effects of Numerical Cherenkov Radiation</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="headercolor">
+    </div>
+    <div class="hpositioner">
+        <div class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img class="logo" src="_static/smileiLogo_tutorials.svg" alt="Logo" />
+            </a>
+        </div>
+        <div class="menu"
+            id="menu_PIC basics"
+            
+        >
+            <div id="menuButton_PIC basics" class="menuButton"
+                 onmouseenter="prepareMenu('menu_PIC basics')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="basics.html">
+                    <span>PIC basics</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_PIC basics',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="basics_setup.html">Setup</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_units.html">Units</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Performances"
+            
+        >
+            <div id="menuButton_Performances" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Performances')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="perfs.html">
+                    <span>Performances</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Performances',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="perfs_parallel_computing.html">Parallel computing</a>
+                        </li>
+                        <li class="outer">
+                            <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="last menu"
+            id="menu_Advanced"
+            style="font-weight:bold"
+        >
+            <div id="menuButton_Advanced" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Advanced')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="advanced.html">
+                    <span>Advanced</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Advanced',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="advanced_field_ionization.html">Field ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                        </li>
+                        <li >
+                            <a href="#">Envelope model for laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var es=document.getElementsByClassName("menuButton"), i=0;
+            var evt = "ontouchend" in document ? "touchend" : "click";
+            for( var i=0; i<es.length; i+=1 ) {
+                es[i].addEventListener(evt, function(a){ return function(){toggleMenu(a)};}(es[i].parentNode.id));
+            }
+        </script>
+        
+        <div id="searchbox" role="search" style="display:none">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search" id="searchinput" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        
+        <div id="searchicon" onclick="openSearch()" style="display:block">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g transform="translate(0,-932.36216)" >
+                <circle
+                   r="25" cy="977.51044" cx="38.078663"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <rect
+                   transform="matrix(0.36717877,0.93015039,-0.93427297,0.35655858,0,0)"
+                   rx="4.9996676" ry="7.4995141" x="947.6142" y="316.16959"
+                   height="14.117695" width="46.476151"
+                   style="opacity:1;fill:#ffffff;fill:var(--header_text);fill-opacity:1;stroke:none;" />
+                <path
+                   d="m 41.383282,962.25996 a 15,15 0 0 1 11.660107,11.6355"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+              </g>
+            </svg>
+        </div>
+        <div id="closesearchicon" onclick="closeSearch()" style="display:none">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g
+                 transform="translate(0,-932.36216)"
+                 style="fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none">
+                <path d="m 10,962.36216 60,60.00004" />
+                <path d="M 70,962.36216 10,1022.3622" />
+              </g>
+            </svg>
+        </div>
+        
+        <div id="smallScreenMenuButton" onclick="event.preventDefault(); toggleSmallScreenMenu(event)">
+            <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+               viewBox="-20 -20 140 140">
+              <g  style="fill:#ffffff; fill:var(--header_text);stroke:none;">
+                <circle cx="15" cy="20" r="5" />
+                <circle cx="35" cy="20" r="5" />
+                <circle cx="85" cy="20" r="5" />
+                <rect width="50" height="10" x="35" y="15" rx="0" ry="0" />
+                <circle cx="15" cy="40" r="5" />
+                <circle cx="35" cy="40" r="5" />
+                <circle cx="85" cy="40" r="5" />
+                <rect width="50" height="10" x="35" y="35" rx="0" ry="0" />
+                <circle cx="15" cy="60" r="5" />
+                <circle cx="35" cy="60" r="5" />
+                <circle cx="85" cy="60" r="5" />
+                <rect width="50" height="10" x="35" y="55" rx="0" ry="0" />
+                <circle cx="15" cy="80" r="5" />
+                <circle cx="35" cy="80" r="5" />
+                <circle cx="85" cy="80" r="5" />
+                <rect width="50" height="10" x="35" y="75" rx="0" ry="0" />
+              </g>
+            </svg>
+        </div>
+        
+    </div>
+    
+</div>
+</div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="envelope-model-for-laser-wakefield-acceleration">
+<h1>Envelope model for laser wakefield acceleration<a class="headerlink" href="#envelope-model-for-laser-wakefield-acceleration" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to give an introduction to the use of the laser
+envelope model with <strong class="program">Smilei</strong>. Before starting with this tutorial, we
+recommend to complete first the tutorial on <a class="reference internal" href="advanced_wakefield_AMcylindrical.html"><span class="doc">Azimuthal-mode-decomposition cylindrical geometry</span></a>. In that
+Tutorial, Laser Wakefield Acceleration is simulated in a standard way, i.e. the
+laser is defined through its electromagnetic fields defined on the grid.
+We recommend also to complete the tutorial <a class="reference internal" href="advanced_wakefield_electron_beam.html"><span class="doc">Field initialization for a relativistic electron bunch</span></a>
+to familiarize with the diagnostics involving the macro-particle quantities.</p>
+<p>With 2 MPI processes and 20 OpenMP threads this simulation should run in a few minutes.
+(remember to set the number of OpenMP threads as explained in <a class="reference internal" href="basics_setup.html"><span class="doc">Setup</span></a>).</p>
+<p>The following features will be addressed:</p>
+<ul class="simple">
+<li><p>Automatic conversion of the output to SI units (<code class="docutils literal notranslate"><span class="pre">pint</span></code> Python module required)</p></li>
+<li><p>Laser envelope initialization “in the box”</p></li>
+<li><p>Initialization of the species interacting with the laser envelope</p></li>
+<li><p>Observation of relativistic self-focusing</p></li>
+<li><p>Automatic conversion of the output to SI units (<code class="docutils literal notranslate"><span class="pre">pint</span></code> Python module required)</p></li>
+<li><p>Analysis of the grid fields when an envelope is present</p></li>
+<li><p>Use of the envelope ionization module.</p></li>
+<li><p>Use of the B-TIS3 interpolation scheme with a laser envelope</p></li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>An ultra high intensity laser enters an under dense plasma. It propagates in
+the plasma and creates a non linear plasma wave in its wake.
+The start of the plasma is made of a mixture of hydrogen and nitrogen, while the
+rest of the plasma is made of pure hydrogen. The laser field is strong enough to
+ionize the hydrogen and the first 5 levels of the nitrogen much before the arrival
+of the laser peak field, thus the hydrogen will be assumed ionized and the nitrogen
+ionized up to level 5. The field of the laser peak is intense enough to further
+ionize the nitrogen ions. Some of the newly released electrons are trapped and
+accelerated in the plasma wave behind the laser (hence the name laser wakefield
+acceleration with ionization injection).</p>
+<p>The simulation is run with a <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/laser_envelope.html">Laser Envelope model</a>
+for the laser pulse. This allows to simulate the laser-plasma interaction in an underdense plasma
+without the need to resolve the high frequency oscillations of the laser pulse.
+This way, we can use a coarser cell size along the laser propagation direction <cite>x</cite> and
+a coarser timestep, obtaining considerable speed-ups for our simulations.
+Thus, although the envelope represents a laser pulse, you won’t see the laser oscillations at wavelength
+<span class="math notranslate nohighlight">\(\lambda_0\)</span> since we are using a laser envelope model.</p>
+<p>Furthermore, the simulation of this tutorial is run in cylindrical geometry
+(only one azimuthal mode), which further speeds-up the simulations.
+The envelope model is available also in other geometries.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The simulation in this tutorial uses a few macro-particles per cell and a coarse mesh to keep the
+computational time reasonable. Physically relevant simulations of the considered phenomena would
+require more macro-particles and a finer mesh. Apart from the numerical artefacts whose
+mitigation will be addressed in this tutorial, the noise in the grid quantities will be caused
+also by the small number of macro-particles.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="preparing-the-case-study">
+<h2>Preparing the case study<a class="headerlink" href="#preparing-the-case-study" title="Permalink to this headline">¶</a></h2>
+<p>Download <a class="reference external" href="laser_wake_envelope.py">this input file</a> and open it with your
+favorite editor.</p>
+<p>First, note how we defined variables for physical constants and for conversions
+from SI units to normalized units. Specifying a reference length, in this case
+the laser wavelength, is important to treat ionization. This information is found
+in the <code class="docutils literal notranslate"><span class="pre">reference_angular_frequency_SI</span></code> argument in the <code class="docutils literal notranslate"><span class="pre">Main</span></code> block.</p>
+<p>The laser is initialized via the use of <code class="docutils literal notranslate"><span class="pre">LaserEnvelope</span></code>
+block. The laser envelope will be initialized in the box. The longitudinal
+profile of the laser is called <code class="docutils literal notranslate"><span class="pre">time_envelope</span></code> in analogy with a standard
+laser, but it does not represent a temporal variation during the simulation
+as when the laser is injected from a window border, as in the tutorial in
+<a class="reference internal" href="advanced_wakefield_AMcylindrical.html"><span class="doc">Azimuthal-mode-decomposition cylindrical geometry</span></a>.
+To visualize it more easily, think of substituting the time <code class="docutils literal notranslate"><span class="pre">t</span></code> with the <code class="docutils literal notranslate"><span class="pre">x</span></code> coordinate.
+Thus, the center of the laser profile (i.e. its position at <code class="docutils literal notranslate"><span class="pre">t=0</span></code>) must be chosen
+inside the simulation domain. Note that the focus of the laser can have a longitudinal
+position different from the laser center.</p>
+<p>We have used the <code class="docutils literal notranslate"><span class="pre">&quot;explicit_reduced_dispersion&quot;</span></code> solver for the envelope equation.
+For short propagation distances without strong self-focusing (see later in this tutorial)
+you can use also the quicker <code class="docutils literal notranslate"><span class="pre">&quot;explicit&quot;</span></code> solver.
+However, when long propagation distances or quick envelope evolutions
+occur in a plasma we recommend to use <code class="docutils literal notranslate"><span class="pre">&quot;explicit_reduced_dispersion&quot;</span></code> to have more accurate results.
+In those situations the results using the two solvers can be considerably different.
+The stability condition for <code class="docutils literal notranslate"><span class="pre">&quot;explicit_reduced_dispersion&quot;</span></code> is more strict, so it is
+possible that you will need a smaller integration timestep to use it.</p>
+<p><strong>Action</strong> Run the simulation and open the results:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">happi</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;/example/path/to/the/simulation&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="conversion-to-si-units">
+<h2>Conversion to SI units<a class="headerlink" href="#conversion-to-si-units" title="Permalink to this headline">¶</a></h2>
+<p>We have specified the <code class="docutils literal notranslate"><span class="pre">reference_angular_frequency_SI</span></code> in the <code class="docutils literal notranslate"><span class="pre">Main</span></code> block
+of our input namelist. Therefore, if you have built <code class="docutils literal notranslate"><span class="pre">happi</span></code> with the <code class="docutils literal notranslate"><span class="pre">pint</span></code> Python module,
+you should be able to automatically convert the normalized units of the outputs
+towards SI units, as will be shown in the commands of this tutorial.</p>
+<p>To do this, while opening the diagnostic you will <a class="reference external" href="https://smileipic.github.io/Smilei/Use/post-processing.html#specifying-units">specify the units in your plot</a>,
+e.g. <code class="docutils literal notranslate"><span class="pre">units</span> <span class="pre">=</span> <span class="pre">[&quot;um&quot;,&quot;GV/m&quot;]</span></code>. If <code class="docutils literal notranslate"><span class="pre">happi</span></code> was not built with the <code class="docutils literal notranslate"><span class="pre">pint</span></code> module
+or if you want to see the results in normalized units, just omit these units
+and remember to adjust the <code class="docutils literal notranslate"><span class="pre">vmin</span></code> and <code class="docutils literal notranslate"><span class="pre">vmax</span></code> of your plot commands.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="a-subtlety-the-envelope-of-the-vector-potential-vs-the-envelope-of-the-electric-field">
+<h2>A subtlety: the envelope of the vector potential vs the envelope of the electric field<a class="headerlink" href="#a-subtlety-the-envelope-of-the-vector-potential-vs-the-envelope-of-the-electric-field" title="Permalink to this headline">¶</a></h2>
+<p>First, let’s study the laser propagation. Note the <code class="docutils literal notranslate"><span class="pre">MovingWindow</span></code> block and
+that the window starts moving since the very first iteration of the simulation.
+This allows the simulation domain to constantly shift toward the <cite>x</cite> direction
+in order to follow the laser propagation.</p>
+<p>Plot the values on the propagation axis of the fields called <code class="docutils literal notranslate"><span class="pre">Env_A_abs</span></code> and <code class="docutils literal notranslate"><span class="pre">Env_E_abs</span></code>,
+with the same scale. For this, use the diagnostic <code class="docutils literal notranslate"><span class="pre">Fields</span></code> (if the timestep is
+not provided, the last one is plotted by default):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Env_A</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Env_A_abs&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Env_A&quot;</span><span class="p">)</span>
+<span class="n">Env_E</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Env_E_abs&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Env_E&quot;</span><span class="p">)</span>
+<span class="n">happi</span><span class="o">.</span><span class="n">multiSlide</span><span class="p">(</span><span class="n">Env_A</span><span class="p">,</span><span class="n">Env_E</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we have used the <code class="docutils literal notranslate"><span class="pre">happi</span></code> command <code class="docutils literal notranslate"><span class="pre">multiSlide</span></code>, that it is analogous to
+the command <code class="docutils literal notranslate"><span class="pre">multiPlot</span></code>, but allows to slide between multiple timesteps.
+Note that we have not converted these outputs to SI units, since in laser wakefield
+acceleration the peak normalized field (often called <code class="docutils literal notranslate"><span class="pre">a0</span></code>) of the laser pulse can give important information
+on the wave excitation regime (nonlinear for <code class="docutils literal notranslate"><span class="pre">a0</span> <span class="pre">&gt;</span> <span class="pre">1.</span></code> for example, linear for <code class="docutils literal notranslate"><span class="pre">a0</span> <span class="pre">&lt;&lt;</span> <span class="pre">1.</span></code>).</p>
+<p>Do you see some differences when the simulation advances?
+The complex envelope field used for calculations is the envelope of the vector potential
+<span class="math notranslate nohighlight">\(\tilde{A}\)</span>. In the diagnostics, you can plot its absolute value through <code class="docutils literal notranslate"><span class="pre">Env_A_abs</span></code>.
+Instead, the field <code class="docutils literal notranslate"><span class="pre">Env_E_abs</span></code> is the absolute value of the envelope of the electric field <span class="math notranslate nohighlight">\(\tilde{E}\)</span>,
+the latter defined to allow comparisons with the field of a standard laser:
+<span class="math notranslate nohighlight">\(\tilde{E}=-(\partial_t-ik_0c)\tilde{A}\)</span> (see <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/laser_envelope.html">Smilei’s website</a> for the derivation).
+Remember that as explained in the documentation, when the laser
+temporal variations are quick, the difference between the two fields will be
+sensitive. Both the fields are complex quantities, the <cite>abs</cite> means that their
+absolute value is plotted. These quick temporal evolutions can occur during the
+propagation in plasmas.</p>
+<p>You can see how the two fields evolve differently in this nonlinear case extracting
+the data at all timesteps and computing the peak of the field at each timestep:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">dt</span>        <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">dt</span>
+<span class="n">timesteps</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Env_E_abs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getAvailableTimesteps</span><span class="p">()</span>
+
+<span class="n">Env_A_abs</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Env_A_abs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getData</span><span class="p">()</span>
+<span class="n">Env_A_abs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Env_A_abs</span><span class="p">)</span>
+<span class="n">Env_A_abs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">Env_A_abs</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">timesteps</span><span class="o">*</span><span class="n">dt</span><span class="p">,</span><span class="n">Env_A_abs</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;|Env_A|&quot;</span><span class="p">)</span>
+
+<span class="n">Env_E_abs</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Env_E_abs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">getData</span><span class="p">()</span>
+<span class="n">Env_E_abs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">Env_E_abs</span><span class="p">)</span>
+<span class="n">Env_E_abs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">amax</span><span class="p">(</span><span class="n">Env_E_abs</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">timesteps</span><span class="o">*</span><span class="n">dt</span><span class="p">,</span><span class="n">Env_E_abs</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;|Env_E|&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;field peak [normalized units]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;t [normalized units]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the namelist we have specified a peak value for the field equal to <code class="docutils literal notranslate"><span class="pre">a0=1.8</span></code>,
+and that is the peak value that the laser field in <code class="docutils literal notranslate"><span class="pre">Env_E_abs</span></code> would reach in vacuum at the focal plane.
+From the previous plot you can see that the laser reaches higher values.
+This is due to relativistic self-focusing that occurs in plasmas when the laser
+power exceeds the power threshold for the occurrence of this phenomenon.
+The interaction of the plasma on the laser pulse propagation is quantified by the
+field <code class="docutils literal notranslate"><span class="pre">Env_Chi</span></code>, which appears in the <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/laser_envelope.html#the-envelope-equation">envelope equation</a>.</p>
+<p><strong>Action</strong> Visualize in 2D the envelope fields on the plane <cite>xy</cite> through the other <code class="docutils literal notranslate"><span class="pre">Probes</span></code>
+defined in the namelist, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;Env_E_abs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">slide</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="wakefield-excitation">
+<h2>Wakefield excitation<a class="headerlink" href="#wakefield-excitation" title="Permalink to this headline">¶</a></h2>
+<p>Now let’s observe the wakefield formation in the trail of the laser
+envelope. Remember that the pusher scheme to use when a laser envelope model is present is
+either <code class="docutils literal notranslate"><span class="pre">pusher=&quot;ponderomotive_boris&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">pusher=&quot;ponderomotive_borisBTIS3&quot;</span></code>.</p>
+<p><strong>Action</strong> Check that the defined <code class="docutils literal notranslate"><span class="pre">Species</span></code> has a compatible <code class="docutils literal notranslate"><span class="pre">pusher</span></code> scheme.</p>
+<p>Through the diagnostic <code class="docutils literal notranslate"><span class="pre">Probe</span></code> and the option <code class="docutils literal notranslate"><span class="pre">animate</span></code> or <code class="docutils literal notranslate"><span class="pre">slide</span></code>, you can follow
+the envelope propagation and plasma evolution during the simulation. As before, you can plot the
+absolute value of the envelope <code class="docutils literal notranslate"><span class="pre">Env_E_abs</span></code>.</p>
+<p>You can also follow the formation of the plasma wave, plotting the electron density <code class="docutils literal notranslate"><span class="pre">Rho</span></code>.
+To see it more clearly, we recommend the use of the option <code class="docutils literal notranslate"><span class="pre">vmax</span></code> in the
+<code class="docutils literal notranslate"><span class="pre">slide()</span></code> or <code class="docutils literal notranslate"><span class="pre">plot()</span></code> function, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;-Rho&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;pC/cm^3&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.5e12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note the formation of a bubble behind the laser, whose borders are full of
+electrons and whose interior is emptied (or almost emptied in some regimes) of electrons.</p>
+<p>The longitudinal electric field on axis, very important for electron
+Laser Wakefield Acceleration, can be plotted with the <code class="docutils literal notranslate"><span class="pre">Probe</span></code> defined on the propagation axis,
+choosing the field <code class="docutils literal notranslate"><span class="pre">Ex</span></code> in your diagnostic:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Ex&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;GV/m&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Through the function <code class="docutils literal notranslate"><span class="pre">multiSlide</span></code>, follow the evolution of the envelope and of
+electron density on the axis:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">envelope_E</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;20*Env_E_abs&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">],</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;20*Env_E_abs&quot;</span><span class="p">)</span>
+<span class="n">Ex</span>         <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Ex&quot;</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;Ex&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;GV/m&quot;</span><span class="p">])</span>
+<span class="n">happi</span><span class="o">.</span><span class="n">multiSlide</span><span class="p">(</span><span class="n">Ex</span><span class="p">,</span><span class="n">envelope_E</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that we have multiplied the laser normalized electric field by 10 in the last command
+to have a more readable scale in the plot.</p>
+<p>The evolution of both the envelope and the electron density can be studied in 2D at the same time
+through the <cite>transparent</cite> argument of the <cite>multiSlide</cite> function. We’ll make transparent
+all the values of <cite>Env_E_abs</cite> below 1.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Rho</span>        <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;-Rho&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;pC/cm^3&quot;</span><span class="p">],</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues_r&quot;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.5e12</span><span class="p">)</span>
+<span class="n">Env_E</span>      <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;Env_E_abs&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">],</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;hot&quot;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span><span class="n">transparent</span><span class="o">=</span><span class="s2">&quot;under&quot;</span><span class="p">)</span>
+<span class="n">happi</span><span class="o">.</span><span class="n">multiSlide</span><span class="p">(</span><span class="n">Rho</span><span class="p">,</span><span class="n">Env_E</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This way you should see the laser pulse envelope and the plasma wave in the electron density.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="envelope-ionization-module">
+<h2>Envelope ionization module<a class="headerlink" href="#envelope-ionization-module" title="Permalink to this headline">¶</a></h2>
+<p>As explained in the tutorial for <a class="reference internal" href="advanced_field_ionization.html"><span class="doc">Field ionization</span></a>, to correctly model
+tunnel ionization it is essential to specify a reference frequency, which is already
+done in the <code class="docutils literal notranslate"><span class="pre">Main</span></code> block of this tutorial’s namelist.</p>
+<p>Afterwards, you have to specify a <code class="docutils literal notranslate"><span class="pre">Species</span></code> that will be ionized, in this case <code class="docutils literal notranslate"><span class="pre">&quot;nitrogen5plus&quot;</span></code>,
+whose <code class="docutils literal notranslate"><span class="pre">charge</span></code> state at the start of the simulation is lower than its <code class="docutils literal notranslate"><span class="pre">atomic_number</span></code>.
+Note also that you can keep this <code class="docutils literal notranslate"><span class="pre">Species</span></code> frozen and at the same time able to be
+ionized. This will avoid spending time in moving macro-particles that do not move too much,
+as the nitrogen ions of this laser wakefield simulation set-up.</p>
+<p>The new electrons created from the tunnel ionization of this <code class="docutils literal notranslate"><span class="pre">Species</span></code> will be
+stored in another <code class="docutils literal notranslate"><span class="pre">Species</span></code>, specified in <code class="docutils literal notranslate"><span class="pre">ionization_electrons</span></code> of <code class="docutils literal notranslate"><span class="pre">&quot;nitrogen5plus&quot;</span></code>.
+In our case this <code class="docutils literal notranslate"><span class="pre">Species</span></code> at the start of the simulation has zero macro-particles.
+We could have chosen an already populated species of electrons like <code class="docutils literal notranslate"><span class="pre">bckgelectron</span></code>,
+but if you want to keep them separated like in this case it can be useful for diagnostics
+(although it can take more simulation time, due to cache efficiency).</p>
+<p>To ionize <code class="docutils literal notranslate"><span class="pre">&quot;nitrogen5plus&quot;</span></code>, a <code class="docutils literal notranslate"><span class="pre">ionization_model</span></code> must be selected in its <code class="docutils literal notranslate"><span class="pre">Species</span></code>
+block. Since we are using a laser envelope model, we must use the <code class="docutils literal notranslate"><span class="pre">&quot;tunnel_envelope_averaged&quot;</span></code> model.
+Physically tunnel ionization occurs at the peaks of the laser field, but these peaks
+are not part of an envelope model, by definition.
+How can we model tunnel ionization with a laser envelope model then?
+The model <code class="docutils literal notranslate"><span class="pre">&quot;tunnel_envelope_averaged&quot;</span></code> uses an ADK ionization rate averaged over the
+laser oscillations, and a similar averaging is taken into account when the newly created
+electrons are initialized, to correctly recreate their transverse momentum dispersion
+and the drift in their <cite>x</cite> direction from tunnel ionization occurring in relativistic regimes.
+More details on this model can be found <a class="reference external" href="http://dx.doi.org/10.1103/PhysRevE.102.033204">here</a>.</p>
+<p><strong>Action</strong> Visualize the density of the electrons created through ionization:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;-Rho_electronfromion&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;pC/cm^3&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.5e12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run two new simulations, changing the fraction of the nitrogen dopant in the gas mixture,
+stored in the variable <code class="docutils literal notranslate"><span class="pre">dopant_N_concentration=0.10</span></code> (i.e. ten percent of nitrogen).
+Try a value 1.5 times larger and 1.5 times smaller. How does the <code class="docutils literal notranslate"><span class="pre">Rho_electronfromion</span></code>
+change?</p>
+<p><strong>Action</strong> Using the same techniques you have used in the tutorial <a class="reference internal" href="advanced_wakefield_electron_beam.html"><span class="doc">Field initialization for a relativistic electron bunch</span></a>,
+try to plot the energy spectrum of the electrons created through ionization.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="reducing-the-effects-of-numerical-cherenkov-radiation">
+<h2>Reducing the effects of Numerical Cherenkov Radiation<a class="headerlink" href="#reducing-the-effects-of-numerical-cherenkov-radiation" title="Permalink to this headline">¶</a></h2>
+<p>As already discussed in this tutorial <a class="reference internal" href="advanced_wakefield_AMcylindrical.html"><span class="doc">Azimuthal-mode-decomposition cylindrical geometry</span></a>,
+the use of finite difference solvers for Maxwell’s equations introduces a numerical
+dispersion, that interacting with relativistic macro-particles will generate
+a numerical artefact called Numerical Cherenkov Radiation.
+In that tutorial two methods are shown to cope with this artefact, one of which is
+the B-TIS3 interpolation scheme described in
+<a class="reference external" href="https://doi.org/10.1017/S0022377823000223">P.-L. Bourgeois and X. Davoine, Journal of Plasma Physics 89 (2023)</a>,
+that does not remove the Numerical Cherenkov Radiation, but considerably reduces
+its effects on the macro-particles, with minimal increase of the simulation time.
+Now we will see how to use this feature with a laser envelope model.
+The tricky part with an envelope model is that this feature works well only when
+the normalized timestep (or <code class="docutils literal notranslate"><span class="pre">dt</span></code>) is close to the normalized cell length along <cite>x</cite> (or <code class="docutils literal notranslate"><span class="pre">dx</span></code>), which is
+not always compatible with the stability of the envelope solver, expecially
+the <code class="docutils literal notranslate"><span class="pre">&quot;explicit_reduced_dispersion&quot;</span></code>. Try have at least <code class="docutils literal notranslate"><span class="pre">dt&gt;=0.9*dx</span></code> to use
+the B-TIS3, but check that the solver results (i.e. the envelope fields) do not
+increase exponentially due to a too high <code class="docutils literal notranslate"><span class="pre">dt</span></code>.</p>
+<p><strong>Action</strong>: Run the same simulation again in a new folder, changing the variable <code class="docutils literal notranslate"><span class="pre">use_BTIS3_interpolation</span></code>
+before the <code class="docutils literal notranslate"><span class="pre">Main</span></code> block to <code class="docutils literal notranslate"><span class="pre">True</span></code>. Note how this changes the <code class="docutils literal notranslate"><span class="pre">pusher</span></code>
+to <code class="docutils literal notranslate"><span class="pre">&quot;ponderomotive_borisBTIS3&quot;</span></code> and adds some fields to the <code class="docutils literal notranslate"><span class="pre">Probes</span></code> in the namelist.
+Check how the electron beam shape changes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;-Rho&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;pC/cm^3&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.5e12</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Afterwards, check this combination of <code class="docutils literal notranslate"><span class="pre">Probes</span></code>, proportional to the force acting
+on the macro-particles along the <cite>y</cite> direction:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;Ey-c*BzBTIS3&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;GV/m&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">20</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What difference do you observe if you compare it with the equivalent combination
+in the simulation without the B-TIS3 scheme (using <code class="docutils literal notranslate"><span class="pre">Bz</span></code> instead of <code class="docutils literal notranslate"><span class="pre">BzBTIS3</span></code>)?</p>
+<p>Try to repeat the previous postprocessing commands of the tutorial,
+comparing the results of the simulation using the B-TIS3 and those of the one
+which did not use it. What differences do you observe?</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      <div>
+        <input type="button" id="themebutton"  value="" onclick="switchTheme('')" />
+      </div>
+      <div>
+      <a href="site.html">Site index</a>
+      </div>
+      <div>
+        Last updated on Mar 12, 2025
+      </div>
+      
+      <div>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      </div>
+      
+    </div>
+    
+    <script type="text/javascript">
+        
+        var nav = document.getElementById("nav");
+        var nav_list = document.getElementById("nav_list");
+        var nav_button = document.getElementById("nav_button");
+        var smallScreenMenu = document.getElementById("smallScreenMenu");
+        var smallScreenMenuButton = document.getElementById("smallScreenMenuButton");
+        var searchicon = document.getElementById("searchicon");
+        var searchbox  = document.getElementById("searchbox");
+        var searchinput= document.getElementById("searchinput");
+        var menus = document.getElementsByClassName("menu");
+        for( var i=0; i<menus.length; i++ )
+            menus[i].active = false;
+        
+        // Manage theme
+        var theme="light";
+        function switchTheme(type) {
+            if( type == "dark" || ( ! type && theme == "light" ) ) {
+                theme = "dark";
+                document.documentElement.setAttribute('theme', 'dark');
+                window.name = "dark_theme"
+                localStorage.setItem("_theme","dark")
+            } else {
+                theme = "light";
+                document.documentElement.setAttribute('theme', 'light');
+                window.name = "light_theme"
+                localStorage.setItem("_theme","light")
+            }
+        }
+        if( window.name && window.name == "light_theme" ) {
+            switchTheme("light");
+        } else if ( window.name && window.name == "dark_theme" ) {
+            switchTheme("dark");
+        } else if( stored_theme = localStorage.getItem("_theme") ) {
+            switchTheme(stored_theme);
+        } else if( window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            switchTheme("dark");
+        }
+        
+        var ul = nav_list.getElementsByTagName("ul")[0], li;
+        var keep_nav = false;
+        if( ul ) {
+            li = ul.firstElementChild;
+            if( li ) {
+                if( li.getElementsByTagName("ul").length > 0 ) keep_nav = true;
+            }
+        }
+        if( keep_nav ) {
+            li.removeChild( li.firstElementChild );
+        } else {
+            document.getElementById("nav_positioner").removeChild( document.getElementById("nav") );
+        }
+        
+        function navOff() {
+            nav_list.style.display = "none";
+            nav_button.className = "";
+            nav.style.overflowY = "visible";
+        }
+        
+        function toggleNav() {
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+            if( nav_list.style.display != "inline-block" ) {
+                nav_list.style.display = "inline-block";
+                nav_button.className = "pushed";
+                nav.style.overflowY = "auto";
+            } else {
+                navOff();
+            }
+        }
+        
+        function toggleSmallScreenMenu(e) {
+            if( smallScreenMenu.className != "on" ) {
+                smallScreenMenu.className = "on";
+                smallScreenMenuButton.className = "pushed";
+                document.documentElement.style.overflow = "hidden";
+            } else {
+                smallScreenMenu.className = "off";
+                smallScreenMenuButton.className = "";
+                document.documentElement.style.overflow = "";
+            }
+        }
+        
+        if (smallScreenMenuAfterTOC = document.getElementById("smallScreenMenuAfterTOC")) {
+            var smallScreenMenuTOC = smallScreenMenuAfterTOC.previousElementSibling
+                .getElementsByTagName("li")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+            for (var i = 0; i < smallScreenMenuTOC.length; i++) {
+                if (smallScreenMenuTOC[i].tagName = "a") {
+                    smallScreenMenuTOC[i].addEventListener("click", function(event){ toggleSmallScreenMenu(event); } );
+                }
+            }
+        }
+        
+        function prepareMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            menu.timer1 = setTimeout(function(a){ return function(){thisMenuOnly(a)};}(menu_id), 100);
+            menu.addEventListener("mouseleave", function(a){ return function(){clearTimeout(a.timer1)};}(menu) );
+        }
+        
+        function leaveMenu(menu_id, source) {
+            var menu = document.getElementById(menu_id);
+            menu.timer2 = setTimeout(function(a){ return function(){menuOff(a)};}(menu), 1000);
+            source.addEventListener("mouseenter", function(a){ return function(){clearTimeout(a.timer2)};}(menu) );
+        }
+        
+        function menuOn( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            if(nav_list) navOff();
+            divs[1].className = "on";
+            divs[0].className = "menuButton pushed";
+            menu.active = true;
+        }
+        function menuOff( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            divs[1].className = "off";
+            divs[0].className = "menuButton";
+            menu.active = false;
+        }
+        
+        function thisMenuOnly(menu_id) {
+            var menu = document.getElementById(menu_id);
+            for( var i=0; i<menus.length; i++ )
+                if( i!=menu_id )
+                    menuOff( menus[i] );
+            menuOn( menu );
+        }
+        
+        function toggleMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            if( menu.active ) {
+                menuOff( menu );
+            } else {
+                for( var i=0; i<menus.length; i++ )
+                    if( i!=menu_id )
+                        menuOff( menus[i] );
+                menuOn( menu );
+            }
+        }
+        
+        function openSearch() {
+            for( var i=0; i<menus.length; i++ ) {
+                menuOff( menus[i] );
+                menus[i].style.zIndex = "-1";
+            }
+            searchicon.style.display = "none";
+            closesearchicon.style.display = "block";
+            searchbox.style.display = "block";
+            searchinput.focus();
+        }
+        
+        function closeSearch() {
+            searchicon.style.display = "block";
+            closesearchicon.style.display = "none";
+            searchbox .style.display = "none";
+            for( var i=0; i<menus.length; i++ )
+                menus[i].style.zIndex = "0";
+        }
+        
+        
+        var documentDiv = document.getElementsByClassName("document")[0];
+        documentDiv.addEventListener('click', function (event) {
+            if(nav_list) navOff();
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+        });
+    </script>
+  </body>
+</html>

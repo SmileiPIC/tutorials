@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Search &#8212; Smilei tutorials  unknown documentation</title>
+    <title>Field ionization &#8212; Smilei tutorials  unknown documentation</title>
     <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -13,16 +13,11 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
     <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="_static/searchtools.js"></script>
     <link rel="shortcut icon" href="_static/smileiIcon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-  
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Binary collisions and impact ionization" href="advanced_collisions.html" />
+    <link rel="prev" title="Advanced" href="advanced.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -33,7 +28,6 @@
   });
   </script>
    
-
   </head><body>
 
 <div id="smallScreenMenu" class="off">
@@ -68,9 +62,18 @@
         </ul>
         <hr />
         <ul>
-                <li class="outer">
-                    <a href="advanced_field_ionization.html">Field ionization</a>
-                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Field ionization</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#check-the-input-file-and-run-the-simulation">Check the input file and run the simulation</a></li>
+<li><a class="reference internal" href="#analyse-the-simulation">Analyse the simulation</a></li>
+<li><a class="reference internal" href="#changing-the-reference-angular-frequency">Changing the reference angular frequency</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
                 <li class="outer">
                     <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
                 </li>
@@ -107,8 +110,17 @@
                 Sections
             </div>
             <div id="nav_list" class="toctree-smilei">
-                <div id="nav_title"><a href="#">Search</a></div>
-                
+                <div id="nav_title"><a href="#">Field ionization</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Field ionization</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#check-the-input-file-and-run-the-simulation">Check the input file and run the simulation</a></li>
+<li><a class="reference internal" href="#analyse-the-simulation">Analyse the simulation</a></li>
+<li><a class="reference internal" href="#changing-the-reference-angular-frequency">Changing the reference angular frequency</a></li>
+</ul>
+</li>
+</ul>
+
             </div>
         </div>
     </div>
@@ -185,7 +197,7 @@
         </div>
         <div class="last menu"
             id="menu_Advanced"
-            
+            style="font-weight:bold"
         >
             <div id="menuButton_Advanced" class="menuButton"
                  onmouseenter="prepareMenu('menu_Advanced')"
@@ -198,8 +210,8 @@
             <div class="off" onmouseleave="leaveMenu('menu_Advanced',this)">
                 <div class="toctree-smilei">
                     <ul>
-                        <li class="outer">
-                            <a href="advanced_field_ionization.html">Field ionization</a>
+                        <li >
+                            <a href="#">Field ionization</a>
                         </li>
                         <li class="outer">
                             <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
@@ -240,7 +252,7 @@
         </script>
         
         <div id="searchbox" role="search" style="display:none">
-            <form class="search" action="#" method="get">
+            <form class="search" action="search.html" method="get">
               <input type="text" name="q" placeholder="Search" id="searchinput" />
               <input type="hidden" name="check_keywords" value="yes" />
               <input type="hidden" name="area" value="default" />
@@ -313,10 +325,76 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  
-  <div id="search-results">
-  
-  </div>
+  <div class="section" id="field-ionization">
+<h1>Field ionization<a class="headerlink" href="#field-ionization" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to present a simulation using an advanced physics module,
+namely the field (tunnel) ionization module.
+In the presence of tunnel ionization, one needs to set a reference temporal/spatial scale.
+In <strong class="program">Smilei</strong>, this is done by defining, in SI units, the reference angular
+frequency parameter: <code class="docutils literal notranslate"><span class="pre">reference_angular_frequency_SI</span></code>.</p>
+<p>Briefly, this tutorial will help you:</p>
+<ul class="simple">
+<li><p>use the <code class="docutils literal notranslate"><span class="pre">reference_angular_frequency_SI</span></code></p></li>
+<li><p>use the <code class="docutils literal notranslate"><span class="pre">.getData()</span></code> tool of <strong class="program">happi</strong> to analyse your data and make your own figures.</p></li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Download the input file <a class="reference external" href="tunnel_ionization_1d.py">tunnel_ionization_1d.py</a> as well as
+the analysis scripts <a class="reference external" href="analysis_tunnel_ionization_1d.py">analysis_tunnel_ionization_1d.py</a> and <a class="reference external" href="solve_rate_eqs.py">solve_rate_eqs.py</a>.</p>
+<p>In a 1D cartesian geometry, a thin layer of neutral carbon is irradiated (thus ionized)
+by a linearly-polarized laser pulse with intensity <span class="math notranslate nohighlight">\(I = 5\times 10^{16}~{\rm W/cm^2}\)</span>
+and a gaussian time profile.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="check-the-input-file-and-run-the-simulation">
+<h2>Check the input file and run the simulation<a class="headerlink" href="#check-the-input-file-and-run-the-simulation" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to check that your <cite>input file</cite> is correct.
+To do so, you will run (locally) <strong class="program">Smilei</strong> in test mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./smilei_test tunnel_ionization_1d.py
+</pre></div>
+</div>
+<p>If your simulation <cite>input file</cite> is correct, you can run the simulation.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>For this simulation, we have specified in the input file that only 1 patch is created.
+Therefore, this simulation can be run using a single processor only!</p>
+</div>
+<p>Before going to the analysis of your simulation, check your <code class="docutils literal notranslate"><span class="pre">log</span></code> file!</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="analyse-the-simulation">
+<h2>Analyse the simulation<a class="headerlink" href="#analyse-the-simulation" title="Permalink to this headline">¶</a></h2>
+<p>A <em>python</em> script has been prepared to analyse the simulations results.
+Open the file <code class="docutils literal notranslate"><span class="pre">analysis_tunnel_ionization_1d.py</span></code> and have look at what it does.
+Note that it calls for the <code class="docutils literal notranslate"><span class="pre">solve_rate_eqs.py</span></code> file that is used to compute
+the rate equations (obtained theoretically).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Before running <code class="docutils literal notranslate"><span class="pre">analysis_tunnel_ionization_1d.py</span></code>, give the
+correct path to your simulation results by defining the
+<code class="docutils literal notranslate"><span class="pre">simulation_to_analyse</span></code> variable!</p>
+</div>
+<p>In an <em>ipython</em> prompt, run the analysis file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">run</span> <span class="n">analysis_tunnel_ionization_1d</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>What do you obtain? Check also if any <code class="docutils literal notranslate"><span class="pre">.eps</span></code> file is generated.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some lines containing LateX commands have been commented out.
+If your machine has LateX installed, it may provide higher-quality figures.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="changing-the-reference-angular-frequency">
+<h2>Changing the reference angular frequency<a class="headerlink" href="#changing-the-reference-angular-frequency" title="Permalink to this headline">¶</a></h2>
+<p>As you have seen in the namelist, you have to specify a reference angular frequency in SI units.
+This because the ionization rate is not invariant under the usual normalizations (see tutorial on <code class="docutils literal notranslate"><span class="pre">Units</span></code>).
+What happens to the results if you multiply this frequency by a factor <code class="docutils literal notranslate"><span class="pre">0.5</span></code> or <code class="docutils literal notranslate"><span class="pre">2.0</span></code>?</p>
+</div>
+</div>
+
 
           </div>
         </div>

@@ -1,0 +1,887 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Synchrotron-like radiation reaction &#8212; Smilei tutorials  unknown documentation</title>
+    <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="_static/smileiIcon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Multiphoton Breit-Wheeler pair creation process" href="advanced_breit_wheeler.html" />
+    <link rel="prev" title="Binary collisions and impact ionization" href="advanced_collisions.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      scale: 95,
+      availableFonts: ["TeX"]
+    }
+  });
+  </script>
+   
+  </head><body>
+
+<div id="smallScreenMenu" class="off">
+
+    
+    <div class="toctree-smilei">
+        <ul>
+                <li class="outer">
+                    <a href="basics_setup.html">Setup</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_units.html">Units</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="perfs_parallel_computing.html">Parallel computing</a>
+                </li>
+                <li class="outer">
+                    <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="advanced_field_ionization.html">Field ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Synchrotron-like radiation reaction</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#content-of-the-tutorial">Content of the tutorial</a></li>
+<li><a class="reference internal" href="#first-simulation-the-classical-model-of-landau-lifshitz">First simulation: the classical model of Landau-Lifshitz</a></li>
+<li><a class="reference internal" href="#second-simulation-the-corrected-landau-lifshitz-model">Second simulation: the corrected Landau-Lifshitz model</a></li>
+<li><a class="reference internal" href="#third-simulation-the-stochastic-model-of-niel-et-al">Third simulation: the stochastic model of Niel <em>et al.</em></a></li>
+<li><a class="reference internal" href="#fourth-simulation-the-monte-carlo-model">Fourth simulation: the Monte-Carlo model</a></li>
+<li><a class="reference internal" href="#comparison-of-the-radiation-reaction-models">Comparison of the radiation reaction models</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
+                <li class="outer">
+                    <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                </li>
+        </ul>
+        <hr />
+    </div>
+
+</div>
+<div id="hcontainer">
+    <div id="nav_positioner">
+        <div id="nav">
+            <div id="nav_button" onclick="toggleNav()">
+                Sections
+            </div>
+            <div id="nav_list" class="toctree-smilei">
+                <div id="nav_title"><a href="#">Synchrotron-like radiation reaction</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Synchrotron-like radiation reaction</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#content-of-the-tutorial">Content of the tutorial</a></li>
+<li><a class="reference internal" href="#first-simulation-the-classical-model-of-landau-lifshitz">First simulation: the classical model of Landau-Lifshitz</a></li>
+<li><a class="reference internal" href="#second-simulation-the-corrected-landau-lifshitz-model">Second simulation: the corrected Landau-Lifshitz model</a></li>
+<li><a class="reference internal" href="#third-simulation-the-stochastic-model-of-niel-et-al">Third simulation: the stochastic model of Niel <em>et al.</em></a></li>
+<li><a class="reference internal" href="#fourth-simulation-the-monte-carlo-model">Fourth simulation: the Monte-Carlo model</a></li>
+<li><a class="reference internal" href="#comparison-of-the-radiation-reaction-models">Comparison of the radiation reaction models</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="headercolor">
+    </div>
+    <div class="hpositioner">
+        <div class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img class="logo" src="_static/smileiLogo_tutorials.svg" alt="Logo" />
+            </a>
+        </div>
+        <div class="menu"
+            id="menu_PIC basics"
+            
+        >
+            <div id="menuButton_PIC basics" class="menuButton"
+                 onmouseenter="prepareMenu('menu_PIC basics')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="basics.html">
+                    <span>PIC basics</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_PIC basics',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="basics_setup.html">Setup</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_units.html">Units</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Performances"
+            
+        >
+            <div id="menuButton_Performances" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Performances')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="perfs.html">
+                    <span>Performances</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Performances',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="perfs_parallel_computing.html">Parallel computing</a>
+                        </li>
+                        <li class="outer">
+                            <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="last menu"
+            id="menu_Advanced"
+            style="font-weight:bold"
+        >
+            <div id="menuButton_Advanced" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Advanced')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="advanced.html">
+                    <span>Advanced</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Advanced',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="advanced_field_ionization.html">Field ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                        </li>
+                        <li >
+                            <a href="#">Synchrotron-like radiation reaction</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var es=document.getElementsByClassName("menuButton"), i=0;
+            var evt = "ontouchend" in document ? "touchend" : "click";
+            for( var i=0; i<es.length; i+=1 ) {
+                es[i].addEventListener(evt, function(a){ return function(){toggleMenu(a)};}(es[i].parentNode.id));
+            }
+        </script>
+        
+        <div id="searchbox" role="search" style="display:none">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search" id="searchinput" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        
+        <div id="searchicon" onclick="openSearch()" style="display:block">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g transform="translate(0,-932.36216)" >
+                <circle
+                   r="25" cy="977.51044" cx="38.078663"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <rect
+                   transform="matrix(0.36717877,0.93015039,-0.93427297,0.35655858,0,0)"
+                   rx="4.9996676" ry="7.4995141" x="947.6142" y="316.16959"
+                   height="14.117695" width="46.476151"
+                   style="opacity:1;fill:#ffffff;fill:var(--header_text);fill-opacity:1;stroke:none;" />
+                <path
+                   d="m 41.383282,962.25996 a 15,15 0 0 1 11.660107,11.6355"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+              </g>
+            </svg>
+        </div>
+        <div id="closesearchicon" onclick="closeSearch()" style="display:none">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g
+                 transform="translate(0,-932.36216)"
+                 style="fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none">
+                <path d="m 10,962.36216 60,60.00004" />
+                <path d="M 70,962.36216 10,1022.3622" />
+              </g>
+            </svg>
+        </div>
+        
+        <div id="smallScreenMenuButton" onclick="event.preventDefault(); toggleSmallScreenMenu(event)">
+            <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+               viewBox="-20 -20 140 140">
+              <g  style="fill:#ffffff; fill:var(--header_text);stroke:none;">
+                <circle cx="15" cy="20" r="5" />
+                <circle cx="35" cy="20" r="5" />
+                <circle cx="85" cy="20" r="5" />
+                <rect width="50" height="10" x="35" y="15" rx="0" ry="0" />
+                <circle cx="15" cy="40" r="5" />
+                <circle cx="35" cy="40" r="5" />
+                <circle cx="85" cy="40" r="5" />
+                <rect width="50" height="10" x="35" y="35" rx="0" ry="0" />
+                <circle cx="15" cy="60" r="5" />
+                <circle cx="35" cy="60" r="5" />
+                <circle cx="85" cy="60" r="5" />
+                <rect width="50" height="10" x="35" y="55" rx="0" ry="0" />
+                <circle cx="15" cy="80" r="5" />
+                <circle cx="35" cy="80" r="5" />
+                <circle cx="85" cy="80" r="5" />
+                <rect width="50" height="10" x="35" y="75" rx="0" ry="0" />
+              </g>
+            </svg>
+        </div>
+        
+    </div>
+    
+</div>
+</div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="synchrotron-like-radiation-reaction">
+<h1>Synchrotron-like radiation reaction<a class="headerlink" href="#synchrotron-like-radiation-reaction" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to present how to use the radiative and QED processes in
+<strong class="program">Smilei</strong>.
+The following points will be addressed:</p>
+<ul class="simple">
+<li><p>How to prepare input files for these physical modules</p></li>
+<li><p>How to setup radiation reaction models</p></li>
+<li><p>How to use <strong class="program">Smilei</strong> diagnostics</p></li>
+<li><p>How to read and understand generated outputs</p></li>
+</ul>
+<p>The radiation reaction module implemented in Smilei is described
+<a class="reference external" href="https://smileipic.github.io/Smilei/Understand/radiation_loss.html">in this page</a>.
+It models the radiation emitted by accelerated charges and their subsequent
+loss of energy, which is also known as Inverse Compton Scattering.</p>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>A multi-GeV electron beam is made to collide with a counter-propagating plane wave.
+This configuration is one of the most efficient to trigger radiative and QED effects.
+It maximizes the value of the quantum parameter for a given electron energy and a given
+field strength.</p>
+<p>The simulation is 2D Cartesian with a box size of <span class="math notranslate nohighlight">\(30 \lambda \times 4 \lambda\)</span>
+where <span class="math notranslate nohighlight">\(\lambda\)</span> is the laser wavelength. The laser is injected from the left side
+of the simulation domain while the electron beam is initialized at the extreme right.</p>
+<p>In this initial configuration, the laser has a wavelength of <span class="math notranslate nohighlight">\(\lambda = 1\ \mu \mathrm{m}\)</span>,
+an amplitude of <span class="math notranslate nohighlight">\(10^{22}\ \mathrm{W/cm}^2\)</span> (<span class="math notranslate nohighlight">\(a_0 \simeq 100\)</span>) and is linearly polarized
+in the <span class="math notranslate nohighlight">\(y\)</span> direction. The temporal profile is Gaussian (order 4).
+The full width at half maximum (FWHM) is of 10 laser periods (approximately 33 fs).</p>
+<p>The electron beam has an initial energy of 1 GeV and propagates to the left.
+The beam density <span class="math notranslate nohighlight">\(n_b = 10^{-5} n_c\)</span>, and contains 32 macro-particles per cell
+for a total of 12480 macro-particles. To save computational time, the
+electron beam is frozen until the laser is fully injected in the box. They collide at
+middle of the domain.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="content-of-the-tutorial">
+<h2>Content of the tutorial<a class="headerlink" href="#content-of-the-tutorial" title="Permalink to this headline">¶</a></h2>
+<p>Download <a class="reference external" href="AdvancedTutorial1.tar.gz">AdvancedTutorial1.tar.gz</a> and extract it with the command <code class="docutils literal notranslate"><span class="pre">tar</span> <span class="pre">-xvf</span></code>.
+It contains 2 directories:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Execution</span></code> which contains the input file <code class="docutils literal notranslate"><span class="pre">tst2d_electron_laser_collision.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Analysis</span></code> where you will find <cite>Python</cite> scripts for the analysis and visualization of the simulation outputs.
+Each script has been designed to focus on a specific quantity:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">show_energy_balance.py</span></code>: electron kinetic energy and the radiated energy vs. time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_2d_density.py</span></code>: map of the electron density.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_2d_average_energy.py</span></code>: map of the electron average energy.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_2d_average_chi.py</span></code>: map of the electron local quantum parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show_2d_fields.py</span></code>: maps of the electric field <span class="math notranslate nohighlight">\(E_y\)</span> and the magnetic field <span class="math notranslate nohighlight">\(B_z\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">animate_2d_average_chi.py</span></code>: map of the electron local quantum parameter vs. time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compare_energy_balance_Landau_Lifshitz.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compare_energy_balance_radiation_models.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compare_2d_density_radiation_models.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compare_2d_average_energy_radiation_models.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">compare_2d_average_chi_radiation_models.py</span></code></p></li>
+</ul>
+</li>
+</ol>
+<p>All Python scripts use <em>happi</em>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="first-simulation-the-classical-model-of-landau-lifshitz">
+<h2>First simulation: the classical model of Landau-Lifshitz<a class="headerlink" href="#first-simulation-the-classical-model-of-landau-lifshitz" title="Permalink to this headline">¶</a></h2>
+<p>Let us first use the continuous, classical model of Landau-Lifshitz.
+This radiation-reaction model is valid in the classical regime when
+the particle quantum parameter <code class="docutils literal notranslate"><span class="pre">chi</span></code> is below <span class="math notranslate nohighlight">\(10^{-2}\)</span>.
+The version implemented in <strong class="program">Smilei</strong> is an approximation for high
+gamma factors.</p>
+<ul>
+<li><p>Copy the directory input file into a new directory called <code class="docutils literal notranslate"><span class="pre">Radiation_Landau_Lifshitz</span></code>
+in which we will work:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp -r Execution Radiation_Landau_Lifshitz
+</pre></div>
+</div>
+</li>
+<li><p>Go into this directory and open the input file.</p></li>
+</ul>
+<p>We will now setup the radiation reaction parameters.</p>
+<ul>
+<li><p>Go to the block called <code class="docutils literal notranslate"><span class="pre">RadiationReaction</span></code>. This block is commented.
+Uncomment this block with the parameter called <code class="docutils literal notranslate"><span class="pre">minimum_chi_continuous</span></code> only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RadiationReaction</span><span class="p">(</span>
+     <span class="n">minimum_chi_continuous</span> <span class="o">=</span> <span class="mf">1e-3</span>
+<span class="c1">#     minimum_chi_discontinuous = 1e-2,</span>
+<span class="c1">#     table_path = &quot;&lt;path to some tables&gt;&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>This block is used to setup the general parameters. Only <code class="docutils literal notranslate"><span class="pre">minimum_chi_continuous</span></code>
+is useful for the moment. This parameter corresponds to the minimal value of the
+quantum parameter at which the radiation reaction process is applied.
+Below this value, the particle does not undergo radiation loss.
+To specify this parameter is not compulsory since it is defined by default at <cite>1e-3</cite>.</p>
+</li>
+<li><p>Now go to the block of the first species called <code class="docutils literal notranslate"><span class="pre">electron</span></code>.
+Only this species will be present in the simulation for the moment.</p></li>
+<li><p>Uncomment the parameter <code class="docutils literal notranslate"><span class="pre">radiation_model</span></code>.
+This parameter corresponds to the radiation model you want to use.
+By default, this parameter is set to <code class="docutils literal notranslate"><span class="pre">None</span></code> meaning no radiation loss.
+To use the Landau-Lifshitz radiation model, use:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">radiation_model</span> <span class="o">=</span> <span class="s2">&quot;Landau-Lifshitz&quot;</span>
+</pre></div>
+</div>
+<p>The other commented parameters are not useful for the moment.</p>
+</li>
+<li><p>You may now run the simulation. We recommend you to run it in parallel
+with at least 4 cores. By default, 16 patches have been specified. If you want
+to run this input file with more than 16 MPI tasks and OpenMP threads,
+you have to increase the number of patches accordingly.</p></li>
+</ul>
+<p>At the end of the run, you can see that several files have been generated including
+the particle binning (<code class="docutils literal notranslate"><span class="pre">ParticleBinning*.h5</span></code>), the fields (<code class="docutils literal notranslate"><span class="pre">Fields*.h5</span></code>) and
+the scalar (<code class="docutils literal notranslate"><span class="pre">scalars.txt</span></code>) diagnostics.</p>
+<ul>
+<li><p>We will use the python script <code class="docutils literal notranslate"><span class="pre">show_energy_balance.py</span></code> to plot the time evolution
+of the particle normalized kinetic energy. Copy this file from the Analysis directory
+to the current one:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp ../Analysis/show_energy_balance.py .
+</pre></div>
+</div>
+</li>
+<li><p>Open this file and take the time to read and understand it.
+You can see that the script is decomposed into several sections.
+The section <cite>Smilei general information</cite> will open and scan the result directory
+thanks to <code class="docutils literal notranslate"><span class="pre">S</span> <span class="pre">=</span> <span class="pre">happi.Open(path,</span> <span class="pre">verbose=False)</span></code>.
+The results are read in the section <cite>Scalar diagnostics</cite>.
+The command <code class="docutils literal notranslate"><span class="pre">S.Scalar(&quot;Ukin_electron&quot;)</span></code> enables to select a scalar quantity object
+(for the electron kinetic energy here). We use the method <code class="docutils literal notranslate"><span class="pre">get</span></code> to get the raw data
+contains in the scalar object. We then manually plot the data via <cite>Matplotlib</cite>.
+This method is another approach of using the <strong class="program">Smilei</strong> Python
+library and differs from what you may have seen before.</p></li>
+<li><p>Run the script using Python. For instance, in <em>ipython</em>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">run</span> <span class="n">show_energy_balance</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Or you can also run it directly in your terminal by adding the interactive option:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -i show_energy_balance.py
+</pre></div>
+</div>
+<p>You obtain a plot of the time evolution of the electron normalized energy and
+the radiated energy (purple). There are no positron or macro-photons here.</p>
+</li>
+<li><p>What do you observe? You can see that during the laser interaction
+(starting from <span class="math notranslate nohighlight">\(t = 240 \omega_r^{-1}\)</span>), the electron kinetic energy
+is rapidly converted into radiations via the radiative model.</p></li>
+<li><p>In order to estimate the maximal quantum parameter reached during the simulation.
+you can use the python script <code class="docutils literal notranslate"><span class="pre">Analysis/show_2d_average_chi.py</span></code>.
+Copy this script in the current working directory and run it with Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">i</span> <span class="n">show_2d_average_chi</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>You obtain a 2D colormap of the beam at timestep 5500 when the field is
+almost maximum at the beam location.
+The color corresponds to the local value of the quantum parameter.
+The terminal gives the maximal value.
+What do you think about this value regarding the model validity?</p>
+</li>
+<li><p>You can change the timestep by specifing the number after <code class="docutils literal notranslate"><span class="pre">show_2d_average_chi.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">i</span> <span class="n">show_2d_average_chi</span><span class="o">.</span><span class="n">py</span> <span class="mi">6500</span>
+</pre></div>
+</div>
+<p>Particle binning diagnostics are output every 500 iterations.
+By this way you can see when the beam starts to radiate while entering the laser field.
+The maximal available iteration is 8000.</p>
+<p>You can also generate an animation using the script <code class="docutils literal notranslate"><span class="pre">animate_2d_average_chi.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">i</span> <span class="n">animate_2d_average_chi</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+<li><p>Similarly, use the Python script <code class="docutils literal notranslate"><span class="pre">show_2d_density.py</span></code> (located in <code class="docutils literal notranslate"><span class="pre">Analysis</span></code>)
+to plot a 2D colormap of the electron density and <code class="docutils literal notranslate"><span class="pre">show_2d_average_energy.py</span></code>
+to plot the 2D colormap of the local average kinetic energy.
+Copy these scripts in the current working directory and use <cite>ipython</cite> to run them
+as in the previous item. Change the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> to see how these quantities evolve.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># For instance, to plot the density at timestep 6500</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">i</span> <span class="n">show_2d_density</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="second-simulation-the-corrected-landau-lifshitz-model">
+<h2>Second simulation: the corrected Landau-Lifshitz model<a class="headerlink" href="#second-simulation-the-corrected-landau-lifshitz-model" title="Permalink to this headline">¶</a></h2>
+<p>We will now perform the same simulation with the corrected Landau-Lifshitz model.
+This model includes a quantum correction that extends the domain of validity
+to higher quantum parameters, around <span class="math notranslate nohighlight">\(\chi \sim 10^{-1}\)</span>.</p>
+<ul class="simple">
+<li><p>copy the previous working directory <code class="docutils literal notranslate"><span class="pre">Radiation_Landau_Lifshitz</span></code> into a new directory
+called <code class="docutils literal notranslate"><span class="pre">Radiation_corrected_Landau_Lifshitz</span></code> in which we will now work:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp -r Radiation_Landau_Lifshitz Radiation_corrected_Landau_Lifshitz
+<span class="nb">cd</span> Radiation_corrected_Landau_Lifshitz
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Open the input file script <code class="docutils literal notranslate"><span class="pre">tst2d_electron_laser_collision</span></code>.
+Go to the <code class="docutils literal notranslate"><span class="pre">electron</span></code> species block.
+To use the <code class="docutils literal notranslate"><span class="pre">corrected</span> <span class="pre">Landau-Lifshitz</span></code> radiation model, simply use:</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">radiation_model</span> <span class="o">=</span> <span class="s2">&quot;corrected-Landau-Lifshitz&quot;</span>
+</pre></div>
+</div>
+<p>This radiative model requires the same global setup as the <code class="docutils literal notranslate"><span class="pre">Landau-Lifshitz</span></code> one.</p>
+<ul>
+<li><p>You can run the simulation.</p></li>
+<li><p>Compare the evolution of the energy balance to the <code class="docutils literal notranslate"><span class="pre">Landau-Lifshitz</span></code> model.
+For this aim you can copy the script <code class="docutils literal notranslate"><span class="pre">show_energy_balance.py</span></code> in the current
+working directory and run it using ipython:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">run</span> <span class="n">show_energy_balance</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+<p>Compare the generated plot with the one from the <code class="docutils literal notranslate"><span class="pre">Landau-Lifshitz</span></code> simulation.</p>
+</li>
+<li><p><strong>Optional exercice:</strong> using <code class="docutils literal notranslate"><span class="pre">show_energy_balance.py</span></code>, create you own python script
+to plot on the same figure the time evolution of the energy balance for the
+classical Landau-Lifshitz and the corrected Landau-Lifshitz model.</p>
+<p><strong>Solution:</strong> See the Python script <code class="docutils literal notranslate"><span class="pre">Analysis/compare_energy_balance_Landau-Lifshitz.py</span></code>.</p>
+<img alt="_images/compare_energy_balance_Landau_Lifshitz.png" src="_images/compare_energy_balance_Landau_Lifshitz.png" />
+</li>
+<li><p>Question: What do you observe? You can see that the energy drops less rapidly
+with the corrected Landau-Lifshitz model.
+This means that we are out of the validity scope of the classical Landau-Lifshitz
+model with the current laser and electron parameters.</p></li>
+<li><p><strong>Optional exercice:</strong> as for the previous model, use the Python scripts to
+plot 2D colormap of the density (<code class="docutils literal notranslate"><span class="pre">show_2d_density.py</span></code>), the normalized kinetic
+energy (<code class="docutils literal notranslate"><span class="pre">show_2d_average_energy.py</span></code>) and the quantum parameter (<code class="docutils literal notranslate"><span class="pre">show_2d_average_chi.py</span></code>).</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="third-simulation-the-stochastic-model-of-niel-et-al">
+<h2>Third simulation: the stochastic model of Niel <em>et al.</em><a class="headerlink" href="#third-simulation-the-stochastic-model-of-niel-et-al" title="Permalink to this headline">¶</a></h2>
+<p>The model of Niel <em>et al.</em> is the first stochastic model available in <strong class="program">Smilei</strong>.
+It is an extension of the corrected Landau-Lifshitz model with
+an additional stochastic operator derived from a Fokker-Planck approach.</p>
+<ul>
+<li><p>Copy the previous working directory <code class="docutils literal notranslate"><span class="pre">Radiation_Landau_Lifshitz</span></code> into a new directory
+called <code class="docutils literal notranslate"><span class="pre">Radiation_Niel</span></code> in which we will now work:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp -r Radiation_Landau_Lifshitz Radiation_Niel
+<span class="nb">cd</span> Radiation_Niel
+</pre></div>
+</div>
+</li>
+<li><p>Open the input file <code class="docutils literal notranslate"><span class="pre">tst2d_electron_laser_collision.py</span></code> and
+go to the <code class="docutils literal notranslate"><span class="pre">electron</span></code> species block. Modify the <code class="docutils literal notranslate"><span class="pre">radiation_model</span></code> by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">radiation_model</span> <span class="o">=</span> <span class="s2">&quot;Niel&quot;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p><strong>External tables:</strong> some models such as <cite>Niel</cite> use complex mathematical functions to determine the production rate of
+photons and energy.
+These functions are tabulated because it would be too expensive to compute them on the fly for each macro-particles.
+The <strong class="program">Smilei</strong> code includes default tables.
+It is nonetheless possible to use more accurate external tables.
+This is the purpose of the parameter <cite>table_path</cite> in the block <cite>Radiation</cite>.
+For more information about the tables, see <a class="reference external" href="https://smileipic.github.io/Smilei/Use/tables.html">https://smileipic.github.io/Smilei/Use/tables.html</a>.</p>
+<ul>
+<li><p>You can run the simulation</p>
+<p>By looking at the standart output (the <em>log</em>) that contains the simulation output,
+you can check that the external tables have been well read.</p>
+</li>
+<li><p>Use the script <code class="docutils literal notranslate"><span class="pre">show_energy_balance.py</span></code> to plot the evolution of the energy
+balance for this simulation. Compare the results to the corrected Landau-Lifshitz model.</p></li>
+<li><p><strong>Optional exercice:</strong> as for the previous model, use the Python scripts to
+plot 2D colormap of the density (<code class="docutils literal notranslate"><span class="pre">show_2d_density.py</span></code>), the normalized kinetic
+energy (<code class="docutils literal notranslate"><span class="pre">show_2d_average_energy.py</span></code>) and the quantum parameter (<code class="docutils literal notranslate"><span class="pre">show_2d_average_chi.py</span></code>).</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="fourth-simulation-the-monte-carlo-model">
+<h2>Fourth simulation: the Monte-Carlo model<a class="headerlink" href="#fourth-simulation-the-monte-carlo-model" title="Permalink to this headline">¶</a></h2>
+<p>The Monte-Carlo model is the second stochastic one of the list of implemented models.
+You can have more information about the model and its implementation on the page
+<code class="docutils literal notranslate"><span class="pre">Synchrotron-like</span> <span class="pre">radiation</span> <span class="pre">reaction</span></code> fn the <strong class="program">Smilei</strong> website.</p>
+<ul>
+<li><p>copy the previous working directory <code class="docutils literal notranslate"><span class="pre">Radiation_Niel</span></code> into a new directory
+called <code class="docutils literal notranslate"><span class="pre">Radiation_Monte-Carlo</span></code> in which we will now work:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp -r Radiation_Niel Radiation_Monte_Carlo
+<span class="nb">cd</span> Radiation_Monte_Carlo
+</pre></div>
+</div>
+</li>
+<li><p>Open the input file <code class="docutils literal notranslate"><span class="pre">tst2d_electron_laser_collision.py</span></code> and
+go to the <code class="docutils literal notranslate"><span class="pre">electron</span></code> species block. Modify the <code class="docutils literal notranslate"><span class="pre">radiation_model</span></code> by</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">radiation_model</span> <span class="o">=</span> <span class="s2">&quot;Monte-Carlo&quot;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Like the Niel radiation model, the Monte-Carlo algorithm uses tabulated values.
+The same path needs to be specified in the block <code class="docutils literal notranslate"><span class="pre">RadiationReaction</span></code>.
+In addition, set the parameter <code class="docutils literal notranslate"><span class="pre">minimum_chi_discontinuous</span></code> to <code class="docutils literal notranslate"><span class="pre">1e-2</span></code>
+(uncomment the corresponding line).
+The Monte-Carlo model is built to work with the continuous corrected
+Landau-Lifshitz approach when the particle quantum parameter is too low.
+This parameter corresponds to this threshold.
+Above this value, a particle undergoes radiation reaction via the Monte-Carlo engine.
+Below the continuous approach is used.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">RadiationReaction</span><span class="p">(</span>
+     <span class="n">minimum_chi_continuous</span> <span class="o">=</span> <span class="mf">1e-3</span>
+     <span class="n">minimum_chi_discontinuous</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+<span class="c1">#    table_path = &quot;&lt;path_to_some_tables&gt;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>In fact, the default value of <code class="docutils literal notranslate"><span class="pre">minimum_chi_discontinuous</span></code> is <code class="docutils literal notranslate"><span class="pre">1e-2</span></code>.
+Therefore, it has to be specified only to change the default value.
+The Monte-Carlo radiation reaction is now fully set.</p>
+</li>
+<li><p>You can now run the simulation</p></li>
+<li><p>Use the script <code class="docutils literal notranslate"><span class="pre">show_energy_balance.py</span></code> to plot the evolution of the energy
+balance for this simulation.</p></li>
+<li><p><strong>Optional exercice:</strong> as for the previous model, use the Python scripts to
+plot 2D colormap of the density (<code class="docutils literal notranslate"><span class="pre">show_2d_density.py</span></code>), the normalized kinetic
+energy (<code class="docutils literal notranslate"><span class="pre">show_2d_average_energy.py</span></code>) and the quantum parameter (<code class="docutils literal notranslate"><span class="pre">show_2d_average_chi.py</span></code>).</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="comparison-of-the-radiation-reaction-models">
+<h2>Comparison of the radiation reaction models<a class="headerlink" href="#comparison-of-the-radiation-reaction-models" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p><strong>Optional exercice:</strong> Using <code class="docutils literal notranslate"><span class="pre">show_energy_balance.py</span></code>, create you own python script
+to plot on the same figure the time evolution of the energy balance
+for the corrected Landau-Lifshitz, the Niel and the Monte-Carlo radiative models.
+The solution is given in the next point.</p></li>
+<li><p><strong>Solution:</strong> The solution is the Python script
+<code class="docutils literal notranslate"><span class="pre">Analysis/compare_energy_balance_radiation_models.py</span></code>.
+Go to the directory <code class="docutils literal notranslate"><span class="pre">Analysis</span></code> to run it.
+You should obtain the following figure:</p>
+<img alt="_images/compare_energy_balance_radiation_models.png" src="_images/compare_energy_balance_radiation_models.png" />
+</li>
+<li><p><strong>Optional exercice:</strong> Using the script <code class="docutils literal notranslate"><span class="pre">show_2d_density.py</span></code>, create a
+new script to compare on the same figure the electron density of the corrected Landau-Lifshitz,
+the Niel and the Monte-Carlo radiative simulation cases.
+Observe the shape of the beam after the laser interaction in each case.
+Do the same thing for the average local kinetic energy and the
+average local quantum parameter using <code class="docutils literal notranslate"><span class="pre">show_2d_kinetic_energy.py</span></code> and <code class="docutils literal notranslate"><span class="pre">show_2d_average_chi.py</span></code>.
+See the next point for the solution.</p></li>
+<li><p><strong>Solutions:</strong> Solutions are the Python script <code class="docutils literal notranslate"><span class="pre">Analysis/compare_2d_density_radiation_models.py</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Analysis/compare_2d_kinetic_energy_radiation_models.py</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Analysis/compare_2d_average_chi_radiation_models.py</span></code>.
+Go to the directory <code class="docutils literal notranslate"><span class="pre">Analysis</span></code> to run the solutions.
+The beam density at iteration 6500 at the end of the interaction should look
+like the following figure:</p>
+<img alt="_images/compare_density_radiative_models.png" src="_images/compare_density_radiative_models.png" />
+<p>With the script to compare the quantum parameter space-distribution,
+you can also have the maximum value of the quantum parameter.</p>
+</li>
+<li><p><strong>Optional exercice:</strong> Activate the track particle option to follow trajectories
+of some particles in the corrected Landau-Lifshitz,
+the Niel and the Monte-Carlo simulation cases and run them again.
+Create a python script to read and plot the particle trajectories.
+Describe the difference due to the stochasticity.</p></li>
+<li><p><strong>Optional exercice</strong>: Play with the laser and electron beam parameters
+(laser amplitude, duration, profile and electron energy) to see how
+the different models behave. Use the previous scripts to compute the maximum
+value of the quantum parameter in each case and see the electron beam properties after
+the laser interaction.</p></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      <div>
+        <input type="button" id="themebutton"  value="" onclick="switchTheme('')" />
+      </div>
+      <div>
+      <a href="site.html">Site index</a>
+      </div>
+      <div>
+        Last updated on Mar 12, 2025
+      </div>
+      
+      <div>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      </div>
+      
+    </div>
+    
+    <script type="text/javascript">
+        
+        var nav = document.getElementById("nav");
+        var nav_list = document.getElementById("nav_list");
+        var nav_button = document.getElementById("nav_button");
+        var smallScreenMenu = document.getElementById("smallScreenMenu");
+        var smallScreenMenuButton = document.getElementById("smallScreenMenuButton");
+        var searchicon = document.getElementById("searchicon");
+        var searchbox  = document.getElementById("searchbox");
+        var searchinput= document.getElementById("searchinput");
+        var menus = document.getElementsByClassName("menu");
+        for( var i=0; i<menus.length; i++ )
+            menus[i].active = false;
+        
+        // Manage theme
+        var theme="light";
+        function switchTheme(type) {
+            if( type == "dark" || ( ! type && theme == "light" ) ) {
+                theme = "dark";
+                document.documentElement.setAttribute('theme', 'dark');
+                window.name = "dark_theme"
+                localStorage.setItem("_theme","dark")
+            } else {
+                theme = "light";
+                document.documentElement.setAttribute('theme', 'light');
+                window.name = "light_theme"
+                localStorage.setItem("_theme","light")
+            }
+        }
+        if( window.name && window.name == "light_theme" ) {
+            switchTheme("light");
+        } else if ( window.name && window.name == "dark_theme" ) {
+            switchTheme("dark");
+        } else if( stored_theme = localStorage.getItem("_theme") ) {
+            switchTheme(stored_theme);
+        } else if( window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            switchTheme("dark");
+        }
+        
+        var ul = nav_list.getElementsByTagName("ul")[0], li;
+        var keep_nav = false;
+        if( ul ) {
+            li = ul.firstElementChild;
+            if( li ) {
+                if( li.getElementsByTagName("ul").length > 0 ) keep_nav = true;
+            }
+        }
+        if( keep_nav ) {
+            li.removeChild( li.firstElementChild );
+        } else {
+            document.getElementById("nav_positioner").removeChild( document.getElementById("nav") );
+        }
+        
+        function navOff() {
+            nav_list.style.display = "none";
+            nav_button.className = "";
+            nav.style.overflowY = "visible";
+        }
+        
+        function toggleNav() {
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+            if( nav_list.style.display != "inline-block" ) {
+                nav_list.style.display = "inline-block";
+                nav_button.className = "pushed";
+                nav.style.overflowY = "auto";
+            } else {
+                navOff();
+            }
+        }
+        
+        function toggleSmallScreenMenu(e) {
+            if( smallScreenMenu.className != "on" ) {
+                smallScreenMenu.className = "on";
+                smallScreenMenuButton.className = "pushed";
+                document.documentElement.style.overflow = "hidden";
+            } else {
+                smallScreenMenu.className = "off";
+                smallScreenMenuButton.className = "";
+                document.documentElement.style.overflow = "";
+            }
+        }
+        
+        if (smallScreenMenuAfterTOC = document.getElementById("smallScreenMenuAfterTOC")) {
+            var smallScreenMenuTOC = smallScreenMenuAfterTOC.previousElementSibling
+                .getElementsByTagName("li")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+            for (var i = 0; i < smallScreenMenuTOC.length; i++) {
+                if (smallScreenMenuTOC[i].tagName = "a") {
+                    smallScreenMenuTOC[i].addEventListener("click", function(event){ toggleSmallScreenMenu(event); } );
+                }
+            }
+        }
+        
+        function prepareMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            menu.timer1 = setTimeout(function(a){ return function(){thisMenuOnly(a)};}(menu_id), 100);
+            menu.addEventListener("mouseleave", function(a){ return function(){clearTimeout(a.timer1)};}(menu) );
+        }
+        
+        function leaveMenu(menu_id, source) {
+            var menu = document.getElementById(menu_id);
+            menu.timer2 = setTimeout(function(a){ return function(){menuOff(a)};}(menu), 1000);
+            source.addEventListener("mouseenter", function(a){ return function(){clearTimeout(a.timer2)};}(menu) );
+        }
+        
+        function menuOn( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            if(nav_list) navOff();
+            divs[1].className = "on";
+            divs[0].className = "menuButton pushed";
+            menu.active = true;
+        }
+        function menuOff( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            divs[1].className = "off";
+            divs[0].className = "menuButton";
+            menu.active = false;
+        }
+        
+        function thisMenuOnly(menu_id) {
+            var menu = document.getElementById(menu_id);
+            for( var i=0; i<menus.length; i++ )
+                if( i!=menu_id )
+                    menuOff( menus[i] );
+            menuOn( menu );
+        }
+        
+        function toggleMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            if( menu.active ) {
+                menuOff( menu );
+            } else {
+                for( var i=0; i<menus.length; i++ )
+                    if( i!=menu_id )
+                        menuOff( menus[i] );
+                menuOn( menu );
+            }
+        }
+        
+        function openSearch() {
+            for( var i=0; i<menus.length; i++ ) {
+                menuOff( menus[i] );
+                menus[i].style.zIndex = "-1";
+            }
+            searchicon.style.display = "none";
+            closesearchicon.style.display = "block";
+            searchbox.style.display = "block";
+            searchinput.focus();
+        }
+        
+        function closeSearch() {
+            searchicon.style.display = "block";
+            closesearchicon.style.display = "none";
+            searchbox .style.display = "none";
+            for( var i=0; i<menus.length; i++ )
+                menus[i].style.zIndex = "0";
+        }
+        
+        
+        var documentDiv = document.getElementsByClassName("document")[0];
+        documentDiv.addEventListener('click', function (event) {
+            if(nav_list) navOff();
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+        });
+    </script>
+  </body>
+</html>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Search &#8212; Smilei tutorials  unknown documentation</title>
+    <title>Setup &#8212; Smilei tutorials  unknown documentation</title>
     <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -13,16 +13,11 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
     <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="_static/searchtools.js"></script>
     <link rel="shortcut icon" href="_static/smileiIcon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-  
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Laser Propagation in vacuum" href="basics_laser_vacuum.html" />
+    <link rel="prev" title="PIC basics" href="basics.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -33,7 +28,6 @@
   });
   </script>
    
-
   </head><body>
 
 <div id="smallScreenMenu" class="off">
@@ -41,9 +35,21 @@
     
     <div class="toctree-smilei">
         <ul>
-                <li class="outer">
-                    <a href="basics_setup.html">Setup</a>
-                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Setup</a><ul>
+<li><a class="reference internal" href="#obtain-smilei">Obtain Smilei</a></li>
+<li><a class="reference internal" href="#compile-the-documentation">Compile the documentation</a></li>
+<li><a class="reference internal" href="#prepare-the-environment">Prepare the environment</a></li>
+<li><a class="reference internal" href="#compile-smilei">Compile Smilei</a></li>
+<li><a class="reference internal" href="#run-a-simulation-on-your-machine">Run a simulation on your machine</a></li>
+<li><a class="reference internal" href="#run-a-simulation-on-a-cluster">Run a simulation on a cluster</a></li>
+<li><a class="reference internal" href="#tips">Tips</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
                 <li class="outer">
                     <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
                 </li>
@@ -107,8 +113,20 @@
                 Sections
             </div>
             <div id="nav_list" class="toctree-smilei">
-                <div id="nav_title"><a href="#">Search</a></div>
-                
+                <div id="nav_title"><a href="#">Setup</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Setup</a><ul>
+<li><a class="reference internal" href="#obtain-smilei">Obtain Smilei</a></li>
+<li><a class="reference internal" href="#compile-the-documentation">Compile the documentation</a></li>
+<li><a class="reference internal" href="#prepare-the-environment">Prepare the environment</a></li>
+<li><a class="reference internal" href="#compile-smilei">Compile Smilei</a></li>
+<li><a class="reference internal" href="#run-a-simulation-on-your-machine">Run a simulation on your machine</a></li>
+<li><a class="reference internal" href="#run-a-simulation-on-a-cluster">Run a simulation on a cluster</a></li>
+<li><a class="reference internal" href="#tips">Tips</a></li>
+</ul>
+</li>
+</ul>
+
             </div>
         </div>
     </div>
@@ -124,7 +142,7 @@
         </div>
         <div class="menu"
             id="menu_PIC basics"
-            
+            style="font-weight:bold"
         >
             <div id="menuButton_PIC basics" class="menuButton"
                  onmouseenter="prepareMenu('menu_PIC basics')"
@@ -137,8 +155,8 @@
             <div class="off" onmouseleave="leaveMenu('menu_PIC basics',this)">
                 <div class="toctree-smilei">
                     <ul>
-                        <li class="outer">
-                            <a href="basics_setup.html">Setup</a>
+                        <li >
+                            <a href="#">Setup</a>
                         </li>
                         <li class="outer">
                             <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
@@ -240,7 +258,7 @@
         </script>
         
         <div id="searchbox" role="search" style="display:none">
-            <form class="search" action="#" method="get">
+            <form class="search" action="search.html" method="get">
               <input type="text" name="q" placeholder="Search" id="searchinput" />
               <input type="hidden" name="check_keywords" value="yes" />
               <input type="hidden" name="area" value="default" />
@@ -313,10 +331,157 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  
-  <div id="search-results">
-  
-  </div>
+  <div class="section" id="setup">
+<h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
+<p>In these tutorials, we assume you are running on a UNIX machine that has access to internet
+and can run simulation jobs on several cores. Ideally, it would run on 16 to 32 cores.
+If you are, instead, using a home computer or workstation, we recommend you scale the
+simulations down in order to reduce their execution time.</p>
+<p>We recommend getting some <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/parallelization.html">basic understanding of parallel computing</a> and some basic knowledge
+on UNIX commands.</p>
+<p>You should first open a <cite>terminal</cite> or a <cite>console</cite>, then <code class="docutils literal notranslate"><span class="pre">cd</span></code> to the directory of your
+choice.</p>
+<hr class="docutils" />
+<div class="section" id="obtain-smilei">
+<h2>Obtain Smilei<a class="headerlink" href="#obtain-smilei" title="Permalink to this headline">¶</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">git</span></code> to download the code into a <code class="docutils literal notranslate"><span class="pre">Smilei</span></code> directory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --depth<span class="o">=</span><span class="m">1</span> https://github.com/SmileiPIC/Smilei.git
+<span class="nb">cd</span> Smilei
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="compile-the-documentation">
+<h2>Compile the documentation<a class="headerlink" href="#compile-the-documentation" title="Permalink to this headline">¶</a></h2>
+<p>In the main <code class="docutils literal notranslate"><span class="pre">Smilei</span></code> folder, use the <cite>sphinx</cite> python package to compile
+the documentation (<a class="reference external" href="http://www.sphinx-doc.org/en/stable/install.html">get sphinx here</a>).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make doc
+firefox build/html/index.html <span class="p">&amp;</span>
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">firefox</span></code> by your favorite web browser.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="prepare-the-environment">
+<h2>Prepare the environment<a class="headerlink" href="#prepare-the-environment" title="Permalink to this headline">¶</a></h2>
+<p>The environment should be ready to accomodate for Smilei’s installation.
+Check <a class="reference external" href="https://smileipic.github.io/Smilei/Use/installation.html">this page</a>
+for details.</p>
+<p>In short, you need:</p>
+<ul class="simple">
+<li><p>a <cite>C++11</cite> compiler</p></li>
+<li><p>a compatible <cite>MPI</cite> library (<code class="docutils literal notranslate"><span class="pre">MPI_THREAD_MULTIPLE</span></code> support is strongly recommended)</p></li>
+<li><p>a compatible <cite>HDF5</cite> library</p></li>
+<li><p><cite>python 2.7+</cite></p></li>
+</ul>
+<p>We recommend that your <cite>C++</cite> compiler supports <cite>OpenMP</cite> for efficient
+multi-threading. For best performances, the following environment variables should
+be set, for instance in your <code class="docutils literal notranslate"><span class="pre">.bash_profile</span></code> or
+<code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> configuration files.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">8</span>
+<span class="nb">export</span> <span class="nv">OMP_SCHEDULE</span><span class="o">=</span>dynamic
+<span class="nb">export</span> <span class="nv">OMP_PROC_BIND</span><span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+<p>The number <code class="docutils literal notranslate"><span class="pre">8</span></code> indicates the number of threads per process. For most systems,
+the ideal number is equal to the number of cores contained in one <cite>node</cite> or <cite>socket</cite>.
+For example, if your machine has 12 cores that share the same memory, use
+<code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS=12</span></code>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="compile-smilei">
+<h2>Compile Smilei<a class="headerlink" href="#compile-smilei" title="Permalink to this headline">¶</a></h2>
+<p>Once all dependencies are installed, go to the <code class="docutils literal notranslate"><span class="pre">Smilei</span></code> directory and compile:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make -j <span class="m">8</span>
+</pre></div>
+</div>
+<p>The option <code class="docutils literal notranslate"><span class="pre">-j</span> <span class="pre">8</span></code> provides 8 threads for compilation (faster).
+When the compilation has succeeded, two executables are created: <code class="docutils literal notranslate"><span class="pre">smilei</span></code>
+and <code class="docutils literal notranslate"><span class="pre">smilei_test</span></code>.</p>
+<p>Install also, the post-processing package <code class="docutils literal notranslate"><span class="pre">happi</span></code> :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make happi
+</pre></div>
+</div>
+</div>
+<hr class="docutils" id="runsimulation" />
+<div class="section" id="run-a-simulation-on-your-machine">
+<h2>Run a simulation on your machine<a class="headerlink" href="#run-a-simulation-on-your-machine" title="Permalink to this headline">¶</a></h2>
+<p>The first step for any simulation is to create a new directory to
+contain all the simulation inputs and outputs. Otherwise, the many
+generated files would pollute your current directory.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Make a new folder and go inside</span>
+mkdir mysimulation
+<span class="nb">cd</span> mysimulation
+
+<span class="c1"># Copy necessary executables to the new folder</span>
+cp /path/to/Smilei/smilei .
+cp /path/to/Smilei/smilei_test .
+
+<span class="c1"># Copy the input file as well</span>
+cp /path/to/my_input.py .
+</pre></div>
+</div>
+<p>When running <cite>Smilei</cite> on your own computer, the first possibility
+is to run directly the code in the current terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./smilei my_input.py
+</pre></div>
+</div>
+<p>If you want to use several computing units, you can use the relevant
+<code class="docutils literal notranslate"><span class="pre">MPI</span></code> executable on your machine. For example, with <code class="docutils literal notranslate"><span class="pre">mpirun</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the simulation on 4 processes</span>
+mpirun -n <span class="m">4</span> smilei my_input.py
+</pre></div>
+</div>
+<p>To facilitate this process, a script <code class="docutils literal notranslate"><span class="pre">smilei.sh</span></code> is already available.
+See <a class="reference external" href="https://smileipic.github.io/Smilei/Use/run.html#using-the-provided-script">help here</a>.</p>
+<p>In this example, the simulation will use 4 processes, but remember that the option above
+<code class="docutils literal notranslate"><span class="pre">OMP_NUM_THREADS=8</span></code> will set 8 threads in each process, so a total of 24 threads.
+As a consequence, this example is ideal for 4 nodes containing each 8 cores.
+This parallel computing is studied in <a class="reference internal" href="perfs_parallel_computing.html"><span class="doc">this tutorial</span></a>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="run-a-simulation-on-a-cluster">
+<h2>Run a simulation on a cluster<a class="headerlink" href="#run-a-simulation-on-a-cluster" title="Permalink to this headline">¶</a></h2>
+<p>Most supercomputers provide two different options to run a simulation. Both are relevant
+to this tutorial. You may choose either.</p>
+<ol class="arabic simple">
+<li><p><strong>Run in interactive mode:</strong> you may request a few nodes of the machine for a given amount
+of time. You will have access interactively to the processes, so that the commands above
+can be directly written in the command line to run the simulation.</p></li>
+<li><p><strong>Prepare a submission file</strong> to submit a “job”. You machine administrator should provide
+you with a typical job submission file. It defines the number of nodes and cores that
+you want to reserve. The command lines above have to be included in this file.</p></li>
+</ol>
+</div>
+<hr class="docutils" />
+<div class="section" id="tips">
+<h2>Tips<a class="headerlink" href="#tips" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p>Launch a parallel interactive session:</p>
+<p>One hour with 2 nodes, 8 processors per node, on the <code class="docutils literal notranslate"><span class="pre">default</span></code> queue:</p>
+<ul>
+<li><div class="line-block">
+<div class="line">with the <em>torque</em> (PBS) scheduler:</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">qsub</span> <span class="pre">-I</span> <span class="pre">-l</span> <span class="pre">walltime=01:00:00,nodes=2:ppn=8</span> <span class="pre">-q</span> <span class="pre">default</span></code></div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line">with the <em>slurm</em> scheduler:</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">srun</span> <span class="pre">-p</span> <span class="pre">default</span> <span class="pre">-I</span> <span class="pre">-N</span> <span class="pre">2</span> <span class="pre">-c</span> <span class="pre">8</span> <span class="pre">--pty</span> <span class="pre">-t</span> <span class="pre">0-01:00</span></code></div>
+</div>
+</li>
+<li><p>with intel’s LoadLeveler</p></li>
+</ul>
+</li>
+<li><p>Download a file from this webpage to your machine</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -O http://URL/of/the/file
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+
 
           </div>
         </div>

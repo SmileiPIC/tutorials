@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Search &#8212; Smilei tutorials  unknown documentation</title>
+    <title>Patch arrangement &#8212; Smilei tutorials  unknown documentation</title>
     <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -13,16 +13,11 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
     <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="_static/searchtools.js"></script>
     <link rel="shortcut icon" href="_static/smileiIcon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-  
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Advanced" href="advanced.html" />
+    <link rel="prev" title="Parallel computing" href="perfs_parallel_computing.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -33,7 +28,6 @@
   });
   </script>
    
-
   </head><body>
 
 <div id="smallScreenMenu" class="off">
@@ -62,9 +56,18 @@
                 <li class="outer">
                     <a href="perfs_parallel_computing.html">Parallel computing</a>
                 </li>
-                <li class="outer">
-                    <a href="perfs_patch_arrangement.html">Patch arrangement</a>
-                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Patch arrangement</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#setting-up-the-simulation">Setting up the simulation</a></li>
+<li><a class="reference internal" href="#change-the-patch-arrangement">Change the patch arrangement</a></li>
+<li><a class="reference internal" href="#tuning-the-patch-arrangement">Tuning the patch arrangement</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
         </ul>
         <hr />
         <ul>
@@ -107,8 +110,17 @@
                 Sections
             </div>
             <div id="nav_list" class="toctree-smilei">
-                <div id="nav_title"><a href="#">Search</a></div>
-                
+                <div id="nav_title"><a href="#">Patch arrangement</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Patch arrangement</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#setting-up-the-simulation">Setting up the simulation</a></li>
+<li><a class="reference internal" href="#change-the-patch-arrangement">Change the patch arrangement</a></li>
+<li><a class="reference internal" href="#tuning-the-patch-arrangement">Tuning the patch arrangement</a></li>
+</ul>
+</li>
+</ul>
+
             </div>
         </div>
     </div>
@@ -159,7 +171,7 @@
         </div>
         <div class="menu"
             id="menu_Performances"
-            
+            style="font-weight:bold"
         >
             <div id="menuButton_Performances" class="menuButton"
                  onmouseenter="prepareMenu('menu_Performances')"
@@ -175,8 +187,8 @@
                         <li class="outer">
                             <a href="perfs_parallel_computing.html">Parallel computing</a>
                         </li>
-                        <li class="outer">
-                            <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                        <li >
+                            <a href="#">Patch arrangement</a>
                         </li>
         
                     </ul>
@@ -240,7 +252,7 @@
         </script>
         
         <div id="searchbox" role="search" style="display:none">
-            <form class="search" action="#" method="get">
+            <form class="search" action="search.html" method="get">
               <input type="text" name="q" placeholder="Search" id="searchinput" />
               <input type="hidden" name="check_keywords" value="yes" />
               <input type="hidden" name="area" value="default" />
@@ -313,10 +325,121 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  
-  <div id="search-results">
-  
-  </div>
+  <div class="section" id="patch-arrangement">
+<h1>Patch arrangement<a class="headerlink" href="#patch-arrangement" title="Permalink to this headline">¶</a></h1>
+<p>In some situations with slow particles dynamics, the dynamic load balancing
+may not be relevant to speed-up the simulation.
+Moreover, as it relies on a
+<a class="reference external" href="https://smileipic.github.io/Smilei/Understand/parallelization.html#load-balancing-between-mpi-regions">Hilbert curve</a>,
+it may not be able to split intelligently the plasma in equal parts.</p>
+<p>Typically, this happens when the plasma is contained in a thin slab.
+The Hilbert curve splitting is better replaced by a simple <em>linearized</em> splitting
+that divides the box in slabs of equal size.</p>
+<p>The goal of this tutorial is to learn about these various arrangements of patches,
+and test them in realistic cases.</p>
+<p>We recommand first to run the <a class="reference external" href="https://smileipic.github.io/tutorials/perfs_parallel_computing.html">parallel computing</a> tutorial.</p>
+<hr class="docutils" />
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Starting case :</dt><dd><p><a class="reference external" href="radiation_pressure_acc_hilbert.py">radiation_pressure_acc_hilbert.py</a></p>
+</dd>
+</dl>
+<p>To highlight the phenomenon and to simplify the discussion
+we propose to run on several MPI processes and only 1 thread per process.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="setting-up-the-simulation">
+<h2>Setting up the simulation<a class="headerlink" href="#setting-up-the-simulation" title="Permalink to this headline">¶</a></h2>
+<p>Set your simulation with 16 MPI processes, and only 1 thread per process. Typically:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
+mpirun -np <span class="m">16</span> smilei radiation_pressure_acc_hilbert.py
+</pre></div>
+</div>
+<p>Observe timers and the probe diagnostics results.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Field diagnostics do not work with the alternative <code class="docutils literal notranslate"><span class="pre">patch_arrangement</span></code>
+so we use Probe diagnostics instead.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="change-the-patch-arrangement">
+<h2>Change the patch arrangement<a class="headerlink" href="#change-the-patch-arrangement" title="Permalink to this headline">¶</a></h2>
+<p>Activate the dynamic load balancing to absorb synchronizations overhead</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">LoadBalancing</span><span class="p">(</span>
+    <span class="n">every</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>A look at the plasma shape shows that, at initialization,
+the plasma is located within a thin slab along the Y axis.
+Then, it is pushed along the X axis.
+We propose to enforce an arrangement of patches that splits
+the plasma into slabs along X, so that each region owns an
+equal share of the computational load.
+You may add the following line in the bloc <code class="docutils literal notranslate"><span class="pre">Main()</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">patch_arrangement</span> <span class="o">=</span> <span class="s2">&quot;linearized_YX&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>We can imagine that splitting into slabs along Y would be a
+terrible option, because all the plasma will be contained in
+one process only. All other processes will need to wait and do nothing.
+You can still try it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">patch_arrangement</span> <span class="o">=</span> <span class="s2">&quot;linearized_XY&quot;</span><span class="p">,</span>
+</pre></div>
+</div>
+<p>You may want to stop the simulation before the end!</p>
+<div class="figure align-default" id="id1">
+<img alt="_images/arrangement.png" src="_images/arrangement.png" />
+<p class="caption"><span class="caption-number">Fig. 1 </span><span class="caption-text">Each numbered square represents a patch in an 8 x 8 patches configuration.
+Each color represents one of the 16 MPI processes.
+In this test case, the plasma is located in the 2nd column of the box.
+You can observe how the dynamic load balancing (dlb) makes a coarse splitting
+where there is no plasma.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="tuning-the-patch-arrangement">
+<h2>Tuning the patch arrangement<a class="headerlink" href="#tuning-the-patch-arrangement" title="Permalink to this headline">¶</a></h2>
+<p>In the situation above, there was a maximum of 8 patches in the Y direction,
+so that the plasma could not be split in more than 8 pieces.
+We would like to split it in 16 pieces to make sure that each
+of the 16 processes has something to work on.
+Unfortunatly the patch size, 75 x 125 cells, does not permit to split more in Y.</p>
+<p>Study the following code, which slightly increases the spatial
+resolution in Y to get a number of cells in Y divisible per 16.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">current_ncells_Y</span> <span class="o">=</span> <span class="n">Lsim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">l0</span><span class="o">/</span><span class="n">resx</span><span class="p">)</span>
+<span class="n">target_ncells_Y</span> <span class="o">=</span> <span class="mf">1024.</span>
+<span class="n">target_cell_length_Y</span> <span class="o">=</span> <span class="p">(</span><span class="n">l0</span><span class="o">/</span><span class="n">resx</span><span class="o">*</span><span class="n">current_ncells_Y</span><span class="p">)</span><span class="o">/</span><span class="n">target_ncells_Y</span>
+
+<span class="n">Main</span><span class="p">(</span>
+    <span class="n">cell_length</span> <span class="o">=</span> <span class="p">[</span><span class="n">l0</span><span class="o">/</span><span class="n">resx</span><span class="p">,</span><span class="n">target_cell_length_Y</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>It is available in the input file
+<a class="reference external" href="radiation_pressure_acc_linearized.py">radiation_pressure_acc_linearized.py</a>.</p>
+<p>Run again the <code class="docutils literal notranslate"><span class="pre">linearized_YX</span></code> configuration: the higher resolution
+leads to more particles, thus a slightly higher computation time.</p>
+<p>You can now run the simulation with the 8 x 16 patches:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">number_of_patches</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">16</span> <span class="p">],</span>
+</pre></div>
+</div>
+<p>For a fair comparison, use this configuration with the <code class="docutils literal notranslate"><span class="pre">hilbertian</span></code>
+arrangement (the default value of <code class="docutils literal notranslate"><span class="pre">patch_arrangement</span></code>).
+In this mode, when the number of patches is not the same along all directions,
+the Hilbert pattern is replicated in the larger direction (Y here).
+This can be beneficial here.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The paramater <code class="docutils literal notranslate"><span class="pre">number_of_patches</span></code> must be a power of 2
+with the <code class="docutils literal notranslate"><span class="pre">hilbertian</span></code> arrangement. This is not required with the
+<code class="docutils literal notranslate"><span class="pre">linearized</span></code> arrangement.</p>
+</div>
+</div>
+</div>
+
 
           </div>
         </div>

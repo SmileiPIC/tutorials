@@ -1,0 +1,698 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Units &#8212; Smilei tutorials  unknown documentation</title>
+    <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="_static/smileiIcon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Performances" href="perfs.html" />
+    <link rel="prev" title="Weibel and two-stream instabilities" href="basics_weibel_twostream.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      scale: 95,
+      availableFonts: ["TeX"]
+    }
+  });
+  </script>
+   
+  </head><body>
+
+<div id="smallScreenMenu" class="off">
+
+    
+    <div class="toctree-smilei">
+        <ul>
+                <li class="outer">
+                    <a href="basics_setup.html">Setup</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Units</a><ul>
+<li><a class="reference internal" href="#what-units-are-used-by-the-code">What units are used by the code?</a></li>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#check-input-file-and-run-the-simulation">Check input file and run the simulation</a></li>
+<li><a class="reference internal" href="#normalized-units-in-the-input-namelist">Normalized units in the input namelist</a></li>
+<li><a class="reference internal" href="#units-in-the-postprocessing">Units in the postprocessing</a></li>
+<li><a class="reference internal" href="#si-units-in-the-input-namelist">SI units in the input namelist</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="perfs_parallel_computing.html">Parallel computing</a>
+                </li>
+                <li class="outer">
+                    <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="advanced_field_ionization.html">Field ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                </li>
+        </ul>
+        <hr />
+    </div>
+
+</div>
+<div id="hcontainer">
+    <div id="nav_positioner">
+        <div id="nav">
+            <div id="nav_button" onclick="toggleNav()">
+                Sections
+            </div>
+            <div id="nav_list" class="toctree-smilei">
+                <div id="nav_title"><a href="#">Units</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Units</a><ul>
+<li><a class="reference internal" href="#what-units-are-used-by-the-code">What units are used by the code?</a></li>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#check-input-file-and-run-the-simulation">Check input file and run the simulation</a></li>
+<li><a class="reference internal" href="#normalized-units-in-the-input-namelist">Normalized units in the input namelist</a></li>
+<li><a class="reference internal" href="#units-in-the-postprocessing">Units in the postprocessing</a></li>
+<li><a class="reference internal" href="#si-units-in-the-input-namelist">SI units in the input namelist</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="headercolor">
+    </div>
+    <div class="hpositioner">
+        <div class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img class="logo" src="_static/smileiLogo_tutorials.svg" alt="Logo" />
+            </a>
+        </div>
+        <div class="menu"
+            id="menu_PIC basics"
+            style="font-weight:bold"
+        >
+            <div id="menuButton_PIC basics" class="menuButton"
+                 onmouseenter="prepareMenu('menu_PIC basics')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="basics.html">
+                    <span>PIC basics</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_PIC basics',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="basics_setup.html">Setup</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                        </li>
+                        <li >
+                            <a href="#">Units</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Performances"
+            
+        >
+            <div id="menuButton_Performances" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Performances')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="perfs.html">
+                    <span>Performances</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Performances',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="perfs_parallel_computing.html">Parallel computing</a>
+                        </li>
+                        <li class="outer">
+                            <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="last menu"
+            id="menu_Advanced"
+            
+        >
+            <div id="menuButton_Advanced" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Advanced')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="advanced.html">
+                    <span>Advanced</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Advanced',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="advanced_field_ionization.html">Field ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var es=document.getElementsByClassName("menuButton"), i=0;
+            var evt = "ontouchend" in document ? "touchend" : "click";
+            for( var i=0; i<es.length; i+=1 ) {
+                es[i].addEventListener(evt, function(a){ return function(){toggleMenu(a)};}(es[i].parentNode.id));
+            }
+        </script>
+        
+        <div id="searchbox" role="search" style="display:none">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search" id="searchinput" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        
+        <div id="searchicon" onclick="openSearch()" style="display:block">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g transform="translate(0,-932.36216)" >
+                <circle
+                   r="25" cy="977.51044" cx="38.078663"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <rect
+                   transform="matrix(0.36717877,0.93015039,-0.93427297,0.35655858,0,0)"
+                   rx="4.9996676" ry="7.4995141" x="947.6142" y="316.16959"
+                   height="14.117695" width="46.476151"
+                   style="opacity:1;fill:#ffffff;fill:var(--header_text);fill-opacity:1;stroke:none;" />
+                <path
+                   d="m 41.383282,962.25996 a 15,15 0 0 1 11.660107,11.6355"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+              </g>
+            </svg>
+        </div>
+        <div id="closesearchicon" onclick="closeSearch()" style="display:none">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g
+                 transform="translate(0,-932.36216)"
+                 style="fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none">
+                <path d="m 10,962.36216 60,60.00004" />
+                <path d="M 70,962.36216 10,1022.3622" />
+              </g>
+            </svg>
+        </div>
+        
+        <div id="smallScreenMenuButton" onclick="event.preventDefault(); toggleSmallScreenMenu(event)">
+            <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+               viewBox="-20 -20 140 140">
+              <g  style="fill:#ffffff; fill:var(--header_text);stroke:none;">
+                <circle cx="15" cy="20" r="5" />
+                <circle cx="35" cy="20" r="5" />
+                <circle cx="85" cy="20" r="5" />
+                <rect width="50" height="10" x="35" y="15" rx="0" ry="0" />
+                <circle cx="15" cy="40" r="5" />
+                <circle cx="35" cy="40" r="5" />
+                <circle cx="85" cy="40" r="5" />
+                <rect width="50" height="10" x="35" y="35" rx="0" ry="0" />
+                <circle cx="15" cy="60" r="5" />
+                <circle cx="35" cy="60" r="5" />
+                <circle cx="85" cy="60" r="5" />
+                <rect width="50" height="10" x="35" y="55" rx="0" ry="0" />
+                <circle cx="15" cy="80" r="5" />
+                <circle cx="35" cy="80" r="5" />
+                <circle cx="85" cy="80" r="5" />
+                <rect width="50" height="10" x="35" y="75" rx="0" ry="0" />
+              </g>
+            </svg>
+        </div>
+        
+    </div>
+    
+</div>
+</div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="units">
+<h1>Units<a class="headerlink" href="#units" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to familiarize with the use of physical units in <code class="docutils literal notranslate"><span class="pre">Smilei</span></code>.</p>
+<p>This tutorial will allow you to:</p>
+<ul class="simple">
+<li><p>get familiar with the units of the input namelist</p></li>
+<li><p>postprocess the results displaying units of your choice</p></li>
+</ul>
+<p>This tutorial requires the installation of the <cite>pint</cite> Python package.</p>
+<hr class="docutils" />
+<div class="section" id="what-units-are-used-by-the-code">
+<h2>What units are used by the code?<a class="headerlink" href="#what-units-are-used-by-the-code" title="Permalink to this headline">¶</a></h2>
+<p>Usually, physics codes work with normalized units to simplify the equations and reduce the number
+of multiplications.</p>
+<p>For the electromagnetic PIC method, the system given by Maxwell’s and Vlasov’s equations
+can be easily written in normalized <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/units.html">units</a>,
+normalizing speeds by <span class="math notranslate nohighlight">\(c\)</span>, masses by the electron mass <span class="math notranslate nohighlight">\(m_e\)</span> and charges
+by the unit charge <span class="math notranslate nohighlight">\(e\)</span>.
+However, there is no natural length or time normalization in this system of equations.
+To complete the normalization, one must choose a reference length <span class="math notranslate nohighlight">\(L_r\)</span>, or equivalently
+a reference time <span class="math notranslate nohighlight">\(T_r\)</span>, or equivalently a reference angular frequency <span class="math notranslate nohighlight">\(\omega_r\)</span>.
+In the following, we choose <span class="math notranslate nohighlight">\(\omega_r\)</span> as our normalization quantity (<span class="math notranslate nohighlight">\(L_r\)</span> and
+<span class="math notranslate nohighlight">\(T_r\)</span> are deduced from <span class="math notranslate nohighlight">\(\omega_r\)</span>).</p>
+<p>Importantly, it is not even necessary to choose a value for this last normalization.
+Indeed, it automatically cancels out, so that the system of equations does not depend on
+<span class="math notranslate nohighlight">\(\omega_r\)</span>. This means that the result of the simulation is true for any value of
+<span class="math notranslate nohighlight">\(\omega_r\)</span>! That is why is it usually not necessary to set a value to <span class="math notranslate nohighlight">\(\omega_r\)</span>
+in the simulation input file.</p>
+<p>In practice, we always know our problem in terms of real-world units, but in Smilei’s
+input file, all quantities must be normalized.</p>
+<ol class="arabic simple">
+<li><p>Choose <span class="math notranslate nohighlight">\(\omega_r\)</span> as one important frequency of your problem (i.e. laser frequency,
+plasma frequency, …)</p></li>
+<li><p>Deduce other reference quantities such as <span class="math notranslate nohighlight">\(L_r\)</span> and <span class="math notranslate nohighlight">\(T_r\)</span></p></li>
+<li><p>The parameters in the input file should be normalized accordingly</p></li>
+</ol>
+<p>During post-processing, you will obtain results in terms of normalized quantities,
+but <strong class="program">happi</strong> gives you the possibility to convert to units of your choice.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Download the input file <a class="reference external" href="radiation_pressure_2d.py">radiation_pressure_2d.py</a>.</p>
+<p>In this simulation, a slab of pre-ionized overdense plasma of uniform density <span class="math notranslate nohighlight">\(n_0\)</span>
+is irradiated by a high-intensity laser pulse, triggering electron and ion expansion.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="check-input-file-and-run-the-simulation">
+<h2>Check input file and run the simulation<a class="headerlink" href="#check-input-file-and-run-the-simulation" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to check that your <cite>input file</cite> is correct.
+To do so, you will run (locally) <strong class="program">Smilei</strong> in test mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./smilei_test radiation_pressure_2d.py
+</pre></div>
+</div>
+<p>Take some time to study the namelist, in particular how the physical parameters
+have been defined. For the moment you can ignore the lines of code marked with <code class="docutils literal notranslate"><span class="pre">Choice</span> <span class="pre">2</span></code>
+at the start of the namelist.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="normalized-units-in-the-input-namelist">
+<h2>Normalized units in the input namelist<a class="headerlink" href="#normalized-units-in-the-input-namelist" title="Permalink to this headline">¶</a></h2>
+<p>The blocks of the input namelist will accept only quantities in normalized units.
+As mentioned before, choosing a reference length/time/angular frequency yields
+conversion factors for all physical units involved in a PIC simulation.
+For more details, see the <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/units.html">units</a>
+page in the documentation.</p>
+<p>Therefore, if you are accustomed to work with normalized units, you can directly
+put your physical set-up’s parameters in the input namelist in normalized units.
+We will call this <code class="docutils literal notranslate"><span class="pre">Choice</span> <span class="pre">1</span></code> in the following and in the input namelist.
+The use of SI units will be called <code class="docutils literal notranslate"><span class="pre">Choice</span> <span class="pre">2</span></code> and will be explored in the last section
+of this tutorial.</p>
+<p>The provided input file already has <code class="docutils literal notranslate"><span class="pre">Choice</span> <span class="pre">1</span></code> implemented in the namelist
+(see the initial part of the file). As you can see reading the namelist,
+most of the simulation parameters can be defined starting from the definition
+of the laser wavelength, which will be also our reference wavelength.
+This can be seen in the <code class="docutils literal notranslate"><span class="pre">LaserGaussian2D</span></code> block, where the <code class="docutils literal notranslate"><span class="pre">Laser</span></code> ‘s angular frequency
+<code class="docutils literal notranslate"><span class="pre">omega</span></code> in normalized units is 1, i.e. equal to our reference angular frequency.</p>
+<p>With this choice of normalization:</p>
+<ul class="simple">
+<li><p>a length of <span class="math notranslate nohighlight">\(2\pi\)</span> corresponds to a laser wavelength,</p></li>
+<li><p>a time interval <span class="math notranslate nohighlight">\(2\pi\)</span> corresponds to an optical cycle of the laser,</p></li>
+<li><p>the reference density corresponds to the laser critical density <span class="math notranslate nohighlight">\(n_c=\varepsilon_0 m_e \omega^2/e^2\)</span>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In other set-ups you may want to choose the reference length equal to the Debye length,
+or the plasma electron wave frequency, etc. In this case, if a <code class="docutils literal notranslate"><span class="pre">Laser</span></code> is present,
+remember to redefine the <code class="docutils literal notranslate"><span class="pre">omega</span></code> in the <code class="docutils literal notranslate"><span class="pre">Laser</span></code> block accordingly.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some reference quantities do not change with the choice of reference length/time,
+e.g. the electron charge will be <span class="math notranslate nohighlight">\(-1\)</span>, the electron mass will be <span class="math notranslate nohighlight">\(1\)</span>, since the
+reference charge and mass in our normalized units are those of the electron.
+Also, the reference energy and speed are <span class="math notranslate nohighlight">\(m_ec^2\)</span> and <cite>c</cite>, independently of the choice for
+the reference length/time.</p>
+</div>
+<p><strong>Question</strong>: if we wanted a laser with frequency equal to two times the reference frequency,
+what would be the value of <code class="docutils literal notranslate"><span class="pre">omega</span></code> in the <code class="docutils literal notranslate"><span class="pre">Laser</span></code> block?</p>
+<p><strong>Question</strong>: for a reference length of <span class="math notranslate nohighlight">\(L_r=0.8\)</span> µm what would be
+the reference density? See its definition <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/units.html">here</a>
+(you may use the constants in the module <code class="docutils literal notranslate"><span class="pre">scipy.constants</span></code>).
+Is it equal to <span class="math notranslate nohighlight">\(L_r^{-3}\)</span>?</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>As you have seen, in this namelist there is no need to specify a reference angular frequency
+or a reference length in SI units. However, when using advanced physical operators like
+ionization, collisions, multiphoton Breit Wheeler pair generation, radiation emission
+you will have to do it (see related tutorials and the <code class="docutils literal notranslate"><span class="pre">Main</span></code> block of their namelists).
+This happens because these operators represent an extension of the basic Vlasov-Maxwell system of
+PIC codes, and are not invariant under the described normalization.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="units-in-the-postprocessing">
+<h2>Units in the postprocessing<a class="headerlink" href="#units-in-the-postprocessing" title="Permalink to this headline">¶</a></h2>
+<p>Let’s study the results, without specifying a conversion:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">happi</span><span class="p">;</span> <span class="n">S_normalized</span> <span class="o">=</span> <span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s1">&#39;/path/to/your/simulation&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we plot the laser transverse field on the propagation axis, we can verify
+that indeed a length of <span class="math notranslate nohighlight">\(2\pi\)</span> corresponds to the laser wavelength:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S_normalized</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Ey&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">slide</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, what if we wanted our results in physical units, e.g. SI units? While opening the output with happi,
+we can specify a reference angular frequency in SI. In this case, we can choose it from
+the laser wavelength:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">scipy.constants</span>
+<span class="n">laser_wavelength_um</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="n">c</span>                   <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">constants</span><span class="o">.</span><span class="n">c</span>     <span class="c1"># Lightspeed, m/s</span>
+<span class="n">omega_r_SI</span>          <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">laser_wavelength_um</span><span class="o">*</span><span class="mf">1e-6</span><span class="p">)</span>
+<span class="n">S_SI</span> <span class="o">=</span> <span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s1">&#39;/path/to/your/simulation&#39;</span><span class="p">,</span> <span class="n">reference_angular_frequency_SI</span><span class="o">=</span><span class="n">omega_r_SI</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This allows <code class="docutils literal notranslate"><span class="pre">happi</span></code> to make the necessary conversions for our scale of interest.
+Then, we have to specify the units we want in our plot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S_SI</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Ey&quot;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;um&#39;</span><span class="p">,</span><span class="s1">&#39;fs&#39;</span><span class="p">,</span><span class="s1">&#39;GV/m&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Question</strong>: Does the peak transverse field of the laser correspond to the one in normalized units
+at the same timestep and in the namelist? Compute first the reference electric field as explained <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/units.html">here</a>
+and check the conversion to GV/m.</p>
+<p><strong>Action</strong>: Similarly, try to plot the kinetic energy <code class="docutils literal notranslate"><span class="pre">Ukin</span></code> from the <code class="docutils literal notranslate"><span class="pre">Scalar</span></code> diagnostic
+and the evolution of the electron density <code class="docutils literal notranslate"><span class="pre">Rho_eon</span></code> from the <code class="docutils literal notranslate"><span class="pre">Field</span></code> diagnostic
+in normalized and physical units.</p>
+<p><strong>Note</strong>: Other systems of units can be used, e.g. CGS, or different combinations of units, including <code class="docutils literal notranslate"><span class="pre">inches</span></code>, <code class="docutils literal notranslate"><span class="pre">feet</span></code>.
+For more details, see <a class="reference external" href="https://smileipic.github.io/Smilei/Use/post-processing.html#specifying-units">here</a>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="si-units-in-the-input-namelist">
+<h2>SI units in the input namelist<a class="headerlink" href="#si-units-in-the-input-namelist" title="Permalink to this headline">¶</a></h2>
+<p>If you prefer to work with physical units, e.g. SI units, the use of Python for the input namelist
+allows to easily convert our inputs in SI units to normalized inputs required by
+the code. In the namelist there is a way to do it, marked with <code class="docutils literal notranslate"><span class="pre">Choice</span> <span class="pre">2</span></code>
+and commented for the moment.</p>
+<p><strong>Action</strong>: Comment the two lines marked with the comment <code class="docutils literal notranslate"><span class="pre">Choice</span> <span class="pre">1</span></code> in the input namelist.
+Uncomment the lines marked with <code class="docutils literal notranslate"><span class="pre">Choice</span> <span class="pre">2</span></code> and take some time to read them.</p>
+<p>As you can see, first we use the <code class="docutils literal notranslate"><span class="pre">scipy.constants</span></code> module to define some useful physical constants,
+e.g. the speed of light. Then, we define the reference length, from which we derive some variables useful
+for the conversions.
+With these variables, it is easy to have the necessary quantities in normalized units and vice-versa:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">length_normalized_units</span> <span class="o">=</span> <span class="n">length_SI</span> <span class="o">/</span> <span class="n">L_r</span>
+</pre></div>
+</div>
+<p><strong>Question</strong>: Near the <code class="docutils literal notranslate"><span class="pre">Laser</span></code> block, a variable <code class="docutils literal notranslate"><span class="pre">E_r</span></code> is defined, representing the reference
+electric field. Using this variable, can you convert the normalized peak electric field of the laser <code class="docutils literal notranslate"><span class="pre">a0</span></code>
+to TV/m? Similarly, can you convert the plasma density <code class="docutils literal notranslate"><span class="pre">n0</span></code> to <span class="math notranslate nohighlight">\(\textrm{cm}^{-3}\)</span>? Note that instead of
+defining the density as in the namelist we could have just used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">density_normalized_units</span> <span class="o">=</span> <span class="n">n0_SI</span> <span class="o">/</span> <span class="n">N_r</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      <div>
+        <input type="button" id="themebutton"  value="" onclick="switchTheme('')" />
+      </div>
+      <div>
+      <a href="site.html">Site index</a>
+      </div>
+      <div>
+        Last updated on Mar 12, 2025
+      </div>
+      
+      <div>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      </div>
+      
+    </div>
+    
+    <script type="text/javascript">
+        
+        var nav = document.getElementById("nav");
+        var nav_list = document.getElementById("nav_list");
+        var nav_button = document.getElementById("nav_button");
+        var smallScreenMenu = document.getElementById("smallScreenMenu");
+        var smallScreenMenuButton = document.getElementById("smallScreenMenuButton");
+        var searchicon = document.getElementById("searchicon");
+        var searchbox  = document.getElementById("searchbox");
+        var searchinput= document.getElementById("searchinput");
+        var menus = document.getElementsByClassName("menu");
+        for( var i=0; i<menus.length; i++ )
+            menus[i].active = false;
+        
+        // Manage theme
+        var theme="light";
+        function switchTheme(type) {
+            if( type == "dark" || ( ! type && theme == "light" ) ) {
+                theme = "dark";
+                document.documentElement.setAttribute('theme', 'dark');
+                window.name = "dark_theme"
+                localStorage.setItem("_theme","dark")
+            } else {
+                theme = "light";
+                document.documentElement.setAttribute('theme', 'light');
+                window.name = "light_theme"
+                localStorage.setItem("_theme","light")
+            }
+        }
+        if( window.name && window.name == "light_theme" ) {
+            switchTheme("light");
+        } else if ( window.name && window.name == "dark_theme" ) {
+            switchTheme("dark");
+        } else if( stored_theme = localStorage.getItem("_theme") ) {
+            switchTheme(stored_theme);
+        } else if( window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            switchTheme("dark");
+        }
+        
+        var ul = nav_list.getElementsByTagName("ul")[0], li;
+        var keep_nav = false;
+        if( ul ) {
+            li = ul.firstElementChild;
+            if( li ) {
+                if( li.getElementsByTagName("ul").length > 0 ) keep_nav = true;
+            }
+        }
+        if( keep_nav ) {
+            li.removeChild( li.firstElementChild );
+        } else {
+            document.getElementById("nav_positioner").removeChild( document.getElementById("nav") );
+        }
+        
+        function navOff() {
+            nav_list.style.display = "none";
+            nav_button.className = "";
+            nav.style.overflowY = "visible";
+        }
+        
+        function toggleNav() {
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+            if( nav_list.style.display != "inline-block" ) {
+                nav_list.style.display = "inline-block";
+                nav_button.className = "pushed";
+                nav.style.overflowY = "auto";
+            } else {
+                navOff();
+            }
+        }
+        
+        function toggleSmallScreenMenu(e) {
+            if( smallScreenMenu.className != "on" ) {
+                smallScreenMenu.className = "on";
+                smallScreenMenuButton.className = "pushed";
+                document.documentElement.style.overflow = "hidden";
+            } else {
+                smallScreenMenu.className = "off";
+                smallScreenMenuButton.className = "";
+                document.documentElement.style.overflow = "";
+            }
+        }
+        
+        if (smallScreenMenuAfterTOC = document.getElementById("smallScreenMenuAfterTOC")) {
+            var smallScreenMenuTOC = smallScreenMenuAfterTOC.previousElementSibling
+                .getElementsByTagName("li")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+            for (var i = 0; i < smallScreenMenuTOC.length; i++) {
+                if (smallScreenMenuTOC[i].tagName = "a") {
+                    smallScreenMenuTOC[i].addEventListener("click", function(event){ toggleSmallScreenMenu(event); } );
+                }
+            }
+        }
+        
+        function prepareMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            menu.timer1 = setTimeout(function(a){ return function(){thisMenuOnly(a)};}(menu_id), 100);
+            menu.addEventListener("mouseleave", function(a){ return function(){clearTimeout(a.timer1)};}(menu) );
+        }
+        
+        function leaveMenu(menu_id, source) {
+            var menu = document.getElementById(menu_id);
+            menu.timer2 = setTimeout(function(a){ return function(){menuOff(a)};}(menu), 1000);
+            source.addEventListener("mouseenter", function(a){ return function(){clearTimeout(a.timer2)};}(menu) );
+        }
+        
+        function menuOn( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            if(nav_list) navOff();
+            divs[1].className = "on";
+            divs[0].className = "menuButton pushed";
+            menu.active = true;
+        }
+        function menuOff( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            divs[1].className = "off";
+            divs[0].className = "menuButton";
+            menu.active = false;
+        }
+        
+        function thisMenuOnly(menu_id) {
+            var menu = document.getElementById(menu_id);
+            for( var i=0; i<menus.length; i++ )
+                if( i!=menu_id )
+                    menuOff( menus[i] );
+            menuOn( menu );
+        }
+        
+        function toggleMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            if( menu.active ) {
+                menuOff( menu );
+            } else {
+                for( var i=0; i<menus.length; i++ )
+                    if( i!=menu_id )
+                        menuOff( menus[i] );
+                menuOn( menu );
+            }
+        }
+        
+        function openSearch() {
+            for( var i=0; i<menus.length; i++ ) {
+                menuOff( menus[i] );
+                menus[i].style.zIndex = "-1";
+            }
+            searchicon.style.display = "none";
+            closesearchicon.style.display = "block";
+            searchbox.style.display = "block";
+            searchinput.focus();
+        }
+        
+        function closeSearch() {
+            searchicon.style.display = "block";
+            closesearchicon.style.display = "none";
+            searchbox .style.display = "none";
+            for( var i=0; i<menus.length; i++ )
+                menus[i].style.zIndex = "0";
+        }
+        
+        
+        var documentDiv = document.getElementsByClassName("document")[0];
+        documentDiv.addEventListener('click', function (event) {
+            if(nav_list) navOff();
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+        });
+    </script>
+  </body>
+</html>

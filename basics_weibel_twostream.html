@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Search &#8212; Smilei tutorials  unknown documentation</title>
+    <title>Weibel and two-stream instabilities &#8212; Smilei tutorials  unknown documentation</title>
     <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -13,16 +13,11 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
     <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="_static/searchtools.js"></script>
     <link rel="shortcut icon" href="_static/smileiIcon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-  
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Units" href="basics_units.html" />
+    <link rel="prev" title="Thermal plasma" href="basics_thermal_plasma.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -33,7 +28,6 @@
   });
   </script>
    
-
   </head><body>
 
 <div id="smallScreenMenu" class="off">
@@ -50,9 +44,18 @@
                 <li class="outer">
                     <a href="basics_thermal_plasma.html">Thermal plasma</a>
                 </li>
-                <li class="outer">
-                    <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
-                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Weibel and two-stream instabilities</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#check-input-file-and-run-the-simulation">Check input file and run the simulation</a></li>
+<li><a class="reference internal" href="#weibel-instability-analysis">Weibel instability: analysis</a></li>
+<li><a class="reference internal" href="#two-stream-instability-analysis">Two-stream instability: analysis</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
                 <li class="outer">
                     <a href="basics_units.html">Units</a>
                 </li>
@@ -107,8 +110,17 @@
                 Sections
             </div>
             <div id="nav_list" class="toctree-smilei">
-                <div id="nav_title"><a href="#">Search</a></div>
-                
+                <div id="nav_title"><a href="#">Weibel and two-stream instabilities</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Weibel and two-stream instabilities</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#check-input-file-and-run-the-simulation">Check input file and run the simulation</a></li>
+<li><a class="reference internal" href="#weibel-instability-analysis">Weibel instability: analysis</a></li>
+<li><a class="reference internal" href="#two-stream-instability-analysis">Two-stream instability: analysis</a></li>
+</ul>
+</li>
+</ul>
+
             </div>
         </div>
     </div>
@@ -124,7 +136,7 @@
         </div>
         <div class="menu"
             id="menu_PIC basics"
-            
+            style="font-weight:bold"
         >
             <div id="menuButton_PIC basics" class="menuButton"
                  onmouseenter="prepareMenu('menu_PIC basics')"
@@ -146,8 +158,8 @@
                         <li class="outer">
                             <a href="basics_thermal_plasma.html">Thermal plasma</a>
                         </li>
-                        <li class="outer">
-                            <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                        <li >
+                            <a href="#">Weibel and two-stream instabilities</a>
                         </li>
                         <li class="outer">
                             <a href="basics_units.html">Units</a>
@@ -240,7 +252,7 @@
         </script>
         
         <div id="searchbox" role="search" style="display:none">
-            <form class="search" action="#" method="get">
+            <form class="search" action="search.html" method="get">
               <input type="text" name="q" placeholder="Search" id="searchinput" />
               <input type="hidden" name="check_keywords" value="yes" />
               <input type="hidden" name="area" value="default" />
@@ -313,10 +325,103 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  
-  <div id="search-results">
-  
-  </div>
+  <div class="section" id="weibel-and-two-stream-instabilities">
+<h1>Weibel and two-stream instabilities<a class="headerlink" href="#weibel-and-two-stream-instabilities" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to run to physics simulations relating to streaming instabilities,
+and in particular to the electron Weibel and two-stream instabilities.</p>
+<p>This tutorial will also allow you to:</p>
+<ul class="simple">
+<li><p>get familiar with the <code class="docutils literal notranslate"><span class="pre">happi.streak</span></code> tool</p></li>
+<li><p>extract instability growth rates</p></li>
+<li><p>construct and extract phase-space distribution using the <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostics</p></li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Download the two input files <a class="reference external" href="weibel_1d.py">weibel_1d.py</a> and
+<a class="reference external" href="two_stream_1d.py">two_stream_1d.py</a>.</p>
+<p>In both simulations, a plasma with density <span class="math notranslate nohighlight">\(n_0\)</span> is initialized (<span class="math notranslate nohighlight">\(n_0 = 1\)</span>).
+This makes code units equal to plasma units, i.e. times are normalized to the inverse of
+the electron plasma frequency <span class="math notranslate nohighlight">\(\omega_{p0} = \sqrt{e^2 n_0/(\epsilon_0 m_e)}\)</span>,
+distances to the electron skin-depth <span class="math notranslate nohighlight">\(c/\omega_{p0}\)</span>, etc…</p>
+<p>Ions are frozen during the whole simulation and just provide a neutralizing background.
+Two electron species are initialized with density <span class="math notranslate nohighlight">\(n_0/2\)</span> and
+a mean velocity <span class="math notranslate nohighlight">\(\pm \bf{v_0}\)</span>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="check-input-file-and-run-the-simulation">
+<h2>Check input file and run the simulation<a class="headerlink" href="#check-input-file-and-run-the-simulation" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to check that your <cite>input files</cite> are correct.
+To do so, you will run (locally) <strong class="program">Smilei</strong> in test mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./smilei_test weibel_1d.py
+./smilei_test two_stream_1d.py
+</pre></div>
+</div>
+<p>If your simulation <cite>input files</cite> are correct, you can run the simulations.</p>
+<p>Before going to the analysis, check your <em>logs</em>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="weibel-instability-analysis">
+<h2>Weibel instability: analysis<a class="headerlink" href="#weibel-instability-analysis" title="Permalink to this headline">¶</a></h2>
+<p>In an <strong class="program">ipython</strong> terminal, open the simulation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s1">&#39;/path/to/your/simulation/weibel_1d&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">streak</span></code> function of <strong class="program">happi</strong> can plot any 1D diagnostic as a function of time.
+Let’s look at the time evolution of the total the current density <span class="math notranslate nohighlight">\(J_z\)</span> and
+the magnetic field <span class="math notranslate nohighlight">\(B_y\)</span>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Jz&#39;</span>  <span class="p">)</span><span class="o">.</span><span class="n">streak</span><span class="p">(</span><span class="n">vsym</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;By_m&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">streak</span><span class="p">(</span><span class="n">vsym</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Do you have any clue what is going on?
+You can get another view using an animation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">jz</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Jz&#39;</span><span class="p">,</span><span class="n">vsym</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">by</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;By_m&#39;</span><span class="p">,</span><span class="n">vsym</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">side</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">)</span>
+<span class="n">happi</span><span class="o">.</span><span class="n">multiSlide</span><span class="p">(</span><span class="n">jz</span><span class="p">,</span><span class="n">by</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, using the <code class="docutils literal notranslate"><span class="pre">Scalar</span></code> diagnostics, check the temporal evolution of the energies
+in the magnetic (<span class="math notranslate nohighlight">\(B_y\)</span>) and electrostatic (<span class="math notranslate nohighlight">\(E_z\)</span>) fields.
+Can you distinguish the linear and non-linear phase of the instability?</p>
+<p>Have a closer look at the growth rates. Use the <code class="docutils literal notranslate"><span class="pre">data_log=True</span></code> options when loading
+your scalar diagnostics, then use <code class="docutils literal notranslate"><span class="pre">happi.multiPlot()</span></code> to plot both energies as a
+function of time. Can you extract the growth rates? What do they tell you?</p>
+<p>If you have time, run the simulation for different wavenumbers <span class="math notranslate nohighlight">\(k\)</span>.
+Check the growth rate as a function of <span class="math notranslate nohighlight">\(k\)</span>.</p>
+<p>For those interested, you will find more in:
+<a class="reference external" href="https://journals.aps.org/pre/abstract/10.1103/PhysRevE.95.023203">Grassi et al., Phys. Rev. E 95, 023203 (2017)</a>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="two-stream-instability-analysis">
+<h2>Two-stream instability: analysis<a class="headerlink" href="#two-stream-instability-analysis" title="Permalink to this headline">¶</a></h2>
+<p>In an <strong class="program">ipython</strong> terminal, open the simulation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s1">&#39;/path/to/your/simulation/two_stream_1d&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>then, have a first look at your simulation results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">uel</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Scalar</span><span class="p">(</span><span class="s1">&#39;Uelm&#39;</span><span class="p">,</span><span class="n">data_log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">9</span><span class="p">,</span><span class="n">vmax</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ne</span>  <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;-Rho_eon1-Rho_eon2&#39;</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.05</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">ex</span>  <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Ex&#39;</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmax</span><span class="o">=</span><span class="mf">1.05</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">phs</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">ParticleBinning</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;smilei_r&quot;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+<span class="n">happi</span><span class="o">.</span><span class="n">multiSlide</span><span class="p">(</span><span class="n">uel</span><span class="p">,</span><span class="n">ne</span><span class="p">,</span><span class="n">ex</span><span class="p">,</span><span class="n">phs</span><span class="p">,</span><span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Any clue what’s going on?</p>
+<p>Let’s have a look at the energy in the electrostatic field <span class="math notranslate nohighlight">\(E_x\)</span>:</p>
+<ul class="simple">
+<li><p>Can you distinguish the linear and non-linear phase of the instability?</p></li>
+<li><p>Check the <span class="math notranslate nohighlight">\((x,p_x)\)</span>-phase-space distribution (and energy in the electromagnetic fields),
+can you get any clue on what leads the instability to saturate?</p></li>
+</ul>
+<p>Try changing the simulation box size (which is also the wavelength of the considered
+perturbation), e.g. taking: <span class="math notranslate nohighlight">\(L_x =\)</span> 0.69, 1.03 or 1.68 <span class="math notranslate nohighlight">\(c/\omega_{p0}\)</span>.
+What do you observe?</p>
+<p>Now, take <span class="math notranslate nohighlight">\(L_x =\)</span> 0.6, 0.31 or 0.16 <span class="math notranslate nohighlight">\(c/\omega_{p0}\)</span>. What are the differences?
+Can you explain them?</p>
+</div>
+</div>
+
 
           </div>
         </div>

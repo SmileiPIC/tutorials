@@ -1,0 +1,843 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Field initialization for a relativistic electron bunch &#8212; Smilei tutorials  unknown documentation</title>
+    <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="_static/smileiIcon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Envelope model for laser wakefield acceleration" href="advanced_wakefield_envelope.html" />
+    <link rel="prev" title="Azimuthal-mode-decomposition cylindrical geometry" href="advanced_wakefield_AMcylindrical.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      scale: 95,
+      availableFonts: ["TeX"]
+    }
+  });
+  </script>
+   
+  </head><body>
+
+<div id="smallScreenMenu" class="off">
+
+    
+    <div class="toctree-smilei">
+        <ul>
+                <li class="outer">
+                    <a href="basics_setup.html">Setup</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_units.html">Units</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="perfs_parallel_computing.html">Parallel computing</a>
+                </li>
+                <li class="outer">
+                    <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="advanced_field_ionization.html">Field ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Field initialization for a relativistic electron bunch</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#preparing-the-case-study">Preparing the case study</a></li>
+<li><a class="reference internal" href="#conversion-to-si-units">Conversion to SI units</a></li>
+<li><a class="reference internal" href="#relativistic-field-initialization">Relativistic field initialization</a></li>
+<li><a class="reference internal" href="#nonlinear-beam-driven-plasma-oscillations">Nonlinear, beam-driven plasma oscillations</a></li>
+<li><a class="reference internal" href="#particle-binning-diagnostic">Particle Binning diagnostic</a></li>
+<li><a class="reference internal" href="#track-particles-diagnostic">Track Particles diagnostic</a></li>
+<li><a class="reference internal" href="#perfectly-matched-layers">Perfectly Matched Layers</a></li>
+<li><a class="reference internal" href="#acceleration-of-a-witness-bunch">Acceleration of a witness bunch</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
+                <li class="outer">
+                    <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                </li>
+        </ul>
+        <hr />
+    </div>
+
+</div>
+<div id="hcontainer">
+    <div id="nav_positioner">
+        <div id="nav">
+            <div id="nav_button" onclick="toggleNav()">
+                Sections
+            </div>
+            <div id="nav_list" class="toctree-smilei">
+                <div id="nav_title"><a href="#">Field initialization for a relativistic electron bunch</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Field initialization for a relativistic electron bunch</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#preparing-the-case-study">Preparing the case study</a></li>
+<li><a class="reference internal" href="#conversion-to-si-units">Conversion to SI units</a></li>
+<li><a class="reference internal" href="#relativistic-field-initialization">Relativistic field initialization</a></li>
+<li><a class="reference internal" href="#nonlinear-beam-driven-plasma-oscillations">Nonlinear, beam-driven plasma oscillations</a></li>
+<li><a class="reference internal" href="#particle-binning-diagnostic">Particle Binning diagnostic</a></li>
+<li><a class="reference internal" href="#track-particles-diagnostic">Track Particles diagnostic</a></li>
+<li><a class="reference internal" href="#perfectly-matched-layers">Perfectly Matched Layers</a></li>
+<li><a class="reference internal" href="#acceleration-of-a-witness-bunch">Acceleration of a witness bunch</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="headercolor">
+    </div>
+    <div class="hpositioner">
+        <div class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img class="logo" src="_static/smileiLogo_tutorials.svg" alt="Logo" />
+            </a>
+        </div>
+        <div class="menu"
+            id="menu_PIC basics"
+            
+        >
+            <div id="menuButton_PIC basics" class="menuButton"
+                 onmouseenter="prepareMenu('menu_PIC basics')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="basics.html">
+                    <span>PIC basics</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_PIC basics',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="basics_setup.html">Setup</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_units.html">Units</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Performances"
+            
+        >
+            <div id="menuButton_Performances" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Performances')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="perfs.html">
+                    <span>Performances</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Performances',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="perfs_parallel_computing.html">Parallel computing</a>
+                        </li>
+                        <li class="outer">
+                            <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="last menu"
+            id="menu_Advanced"
+            style="font-weight:bold"
+        >
+            <div id="menuButton_Advanced" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Advanced')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="advanced.html">
+                    <span>Advanced</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Advanced',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="advanced_field_ionization.html">Field ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                        </li>
+                        <li >
+                            <a href="#">Field initialization for a relativistic electron bunch</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var es=document.getElementsByClassName("menuButton"), i=0;
+            var evt = "ontouchend" in document ? "touchend" : "click";
+            for( var i=0; i<es.length; i+=1 ) {
+                es[i].addEventListener(evt, function(a){ return function(){toggleMenu(a)};}(es[i].parentNode.id));
+            }
+        </script>
+        
+        <div id="searchbox" role="search" style="display:none">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search" id="searchinput" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        
+        <div id="searchicon" onclick="openSearch()" style="display:block">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g transform="translate(0,-932.36216)" >
+                <circle
+                   r="25" cy="977.51044" cx="38.078663"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <rect
+                   transform="matrix(0.36717877,0.93015039,-0.93427297,0.35655858,0,0)"
+                   rx="4.9996676" ry="7.4995141" x="947.6142" y="316.16959"
+                   height="14.117695" width="46.476151"
+                   style="opacity:1;fill:#ffffff;fill:var(--header_text);fill-opacity:1;stroke:none;" />
+                <path
+                   d="m 41.383282,962.25996 a 15,15 0 0 1 11.660107,11.6355"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+              </g>
+            </svg>
+        </div>
+        <div id="closesearchicon" onclick="closeSearch()" style="display:none">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g
+                 transform="translate(0,-932.36216)"
+                 style="fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none">
+                <path d="m 10,962.36216 60,60.00004" />
+                <path d="M 70,962.36216 10,1022.3622" />
+              </g>
+            </svg>
+        </div>
+        
+        <div id="smallScreenMenuButton" onclick="event.preventDefault(); toggleSmallScreenMenu(event)">
+            <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+               viewBox="-20 -20 140 140">
+              <g  style="fill:#ffffff; fill:var(--header_text);stroke:none;">
+                <circle cx="15" cy="20" r="5" />
+                <circle cx="35" cy="20" r="5" />
+                <circle cx="85" cy="20" r="5" />
+                <rect width="50" height="10" x="35" y="15" rx="0" ry="0" />
+                <circle cx="15" cy="40" r="5" />
+                <circle cx="35" cy="40" r="5" />
+                <circle cx="85" cy="40" r="5" />
+                <rect width="50" height="10" x="35" y="35" rx="0" ry="0" />
+                <circle cx="15" cy="60" r="5" />
+                <circle cx="35" cy="60" r="5" />
+                <circle cx="85" cy="60" r="5" />
+                <rect width="50" height="10" x="35" y="55" rx="0" ry="0" />
+                <circle cx="15" cy="80" r="5" />
+                <circle cx="35" cy="80" r="5" />
+                <circle cx="85" cy="80" r="5" />
+                <rect width="50" height="10" x="35" y="75" rx="0" ry="0" />
+              </g>
+            </svg>
+        </div>
+        
+    </div>
+    
+</div>
+</div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="field-initialization-for-a-relativistic-electron-bunch">
+<h1>Field initialization for a relativistic electron bunch<a class="headerlink" href="#field-initialization-for-a-relativistic-electron-bunch" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to give an introduction to the use of the the
+relativistic-species field initialization with <strong class="program">Smilei</strong>.</p>
+<p>With 8 MPI processes and 5 OpenMP threads the simulation of this tutorial should take a few minutes
+(remember to set the number of OpenMP threads as explained in <a class="reference internal" href="basics_setup.html"><span class="doc">Setup</span></a>).
+The relativistic Poisson solver is parallelized through MPI but not with OpenMP,
+sometimes for larger simulations a larger number of MPI processes is necessary
+to reduce the time spent in field initialization.</p>
+<p>The following features will be addressed:</p>
+<ul class="simple">
+<li><p>Automatic conversion of the output to SI units (<code class="docutils literal notranslate"><span class="pre">pint</span></code> Python module required)</p></li>
+<li><p>Initialization of a <cite>Species</cite> through a <cite>numpy</cite> array</p></li>
+<li><p>Initialization of the electromagnetic field with relativistic species</p></li>
+<li><p>Observation of the plasma wakefield driven by a relativistic electron bunch</p></li>
+<li><p>Analysis of the bunch evolution with the <code class="docutils literal notranslate"><span class="pre">DiagParticleBinning</span></code> diagnostic</p></li>
+<li><p>Analysis of the bunch evolution with the <code class="docutils literal notranslate"><span class="pre">TrackParticles</span></code> diagnostic</p></li>
+<li><p>Observation of the effect of Perfectly Matched Layers</p></li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>A relativistic electron bunch enters a plasma in a <code class="docutils literal notranslate"><span class="pre">AMcylindrical</span></code> geometry. It propagates in
+the plasma and creates a non linear plasma wave in its wake.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This tutorial is done in <code class="docutils literal notranslate"><span class="pre">AMcylindrical</span></code> with one azimuthal mode, thus assuming perfect cylindrical geometry in the fields (see also the related tutorial).</p>
+</div>
+<p>Initializing our bunch through a plasma density and a Maxwell-Jüttner momentum distribution
+would not allow us to set a certain emittance for the bunch
+(this parameter is related to the transverse phase space distribution of the bunch particles).
+Also, initializing a converging/diverging bunch or a particle distribution obtained from a beam
+transport code would not be possible with this kind of initialization.</p>
+<p>To manage these situations, an initialization of a <code class="docutils literal notranslate"><span class="pre">Species</span></code> with a <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array is more suitable.
+The <code class="docutils literal notranslate"><span class="pre">Species</span></code> called <code class="docutils literal notranslate"><span class="pre">electron_bunch</span></code> in our input file the input file <a class="reference external" href="advanced_beam_driven_wake.py">advanced_beam_driven_wake.py</a>
+will receive two <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays, <code class="docutils literal notranslate"><span class="pre">array_position</span></code> and <cite>array_momentum</cite> in the <code class="docutils literal notranslate"><span class="pre">position_initialization</span></code> and <code class="docutils literal notranslate"><span class="pre">momentum_initialization</span></code>
+arguments.</p>
+<p>Our bunch has <code class="docutils literal notranslate"><span class="pre">npart</span></code> particles, thus the shapes of these arrays will be <code class="docutils literal notranslate"><span class="pre">(4,npart)</span></code>
+and <code class="docutils literal notranslate"><span class="pre">(3,npart)</span></code> respectively. The <code class="docutils literal notranslate"><span class="pre">array_position</span></code> contains the coordinates of our bunch particles.
+Remember that the origin of the axes is set on the propagation axis in <code class="docutils literal notranslate"><span class="pre">AMcylindrical</span></code> geometry,
+so the transverse coordinates may be positive or negative. Each of the first three rows represents the <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code>
+coordinates of the particles, while each column represents a particle.
+The last row represents the weight given to each particle, related to the macro-particle charge.
+Similarly, the <code class="docutils literal notranslate"><span class="pre">array_momentum</span></code> contains the particles momenta <code class="docutils literal notranslate"><span class="pre">px</span></code>, <code class="docutils literal notranslate"><span class="pre">py</span></code>, <code class="docutils literal notranslate"><span class="pre">pz</span></code>.
+With this initialization the density profile of the <code class="docutils literal notranslate"><span class="pre">Species</span></code> will be computed from the position of the
+particles, and not from a profile given in the <code class="docutils literal notranslate"><span class="pre">Species</span></code> block as in other tutorials.</p>
+<p>In our case, we generate the particles and momenta distribution of the electron bunch
+assuming a gaussian distribution in the momentum space, with custom average energy, emittance, rms sizes, etc.
+The bunch is assumed as waist (i.e. not converging, nor diverging), but manipulating the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays of the
+bunch particles it is easy to generate a more realistic electron bunch.</p>
+<p>More details on the initialization through numpy arrays or from a file can be
+found <a class="reference external" href="https://smileipic.github.io/Smilei/Use/particle_initialization.html">here</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The simulation in this tutorial uses a few macro-particles per cell and a coarse mesh too keep the
+computational time reasonable. Physically relevant simulations of the considered phenomena would
+require more macro-particles and a finer mesh. Apart from the numerical artefacts whose
+mitigation will be addressed in this tutorial, the noise in the grid quantities will be caused
+also by the small number of macro-particles.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="preparing-the-case-study">
+<h2>Preparing the case study<a class="headerlink" href="#preparing-the-case-study" title="Permalink to this headline">¶</a></h2>
+<p>Download the input file <a class="reference external" href="advanced_beam_driven_wake.py">advanced_beam_driven_wake.py</a> and open it with your
+favorite editor. Note how the physical quantities are defined.
+First the physical constants for conversions and then used to convert the physical quantities
+of interest, e.g. the bunch size, from SI units to normalized units.</p>
+<p>The plasma electrons are initialized in a block <code class="docutils literal notranslate"><span class="pre">Species</span></code> named <code class="docutils literal notranslate"><span class="pre">plasmaelectrons</span></code>.
+The electron bunch driving the plasma wave is initalized in
+a block <code class="docutils literal notranslate"><span class="pre">Species</span></code> named <code class="docutils literal notranslate"><span class="pre">electronbunch</span></code>.</p>
+<p>The flag <code class="docutils literal notranslate"><span class="pre">relativistic_field_initialization</span> <span class="pre">=</span> <span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">electronbunch</span></code> <cite>Species</cite>
+means that its self-consistent electromagnetic fields will be computed at the time when
+this <code class="docutils literal notranslate"><span class="pre">Species</span></code> starts to move, in this case at <code class="docutils literal notranslate"><span class="pre">t=0</span></code> because <code class="docutils literal notranslate"><span class="pre">time_frozen=0</span></code>.
+The procedure used in <strong class="program">Smilei</strong> for this field initialization is detailed
+<a class="reference external" href="https://smileipic.github.io/Smilei/Understand/relativistic_fields_initialization.html">here</a>.</p>
+<p>These electromagnetic fields will propagate with the bunch and push away the plasma electrons
+(just like an intense laser pulse would do with its ponderomotive force)
+triggering a plasma oscillation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You will see that the plasma does not fill all the simulation window.
+This is because we want to include the electron bunch field in the window, but the plasma particles creating the plasma oscillations
+are only those radially near to the electron beam. Plasma particles at greater radial distances would not contribute to the relevant physics, but they would
+require additional computational time. Thus we can omit them to perform the simulation more quickly without losing relevant phenomena.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The moving window in the namelist has been set to contain the electron bunch and the first wake period in the simulation window.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="conversion-to-si-units">
+<h2>Conversion to SI units<a class="headerlink" href="#conversion-to-si-units" title="Permalink to this headline">¶</a></h2>
+<p>We have specified the <code class="docutils literal notranslate"><span class="pre">reference_angular_frequency_SI</span></code> in the <code class="docutils literal notranslate"><span class="pre">Main</span></code> block
+of our input namelist. Therefore, if you have built <code class="docutils literal notranslate"><span class="pre">happi</span></code> with the <code class="docutils literal notranslate"><span class="pre">pint</span></code> Python module,
+you should be able to automatically convert the normalized units of the outputs
+towards SI units, as will be shown in the commands of this tutorial.</p>
+<p>To do this, while opening the diagnostic you will <a class="reference external" href="https://smileipic.github.io/Smilei/Use/post-processing.html#specifying-units">specify the units in your plot</a>,
+e.g. <code class="docutils literal notranslate"><span class="pre">units</span> <span class="pre">=</span> <span class="pre">[&quot;um&quot;,&quot;GV/m&quot;]</span></code>. If <code class="docutils literal notranslate"><span class="pre">happi</span></code> was not built with the <code class="docutils literal notranslate"><span class="pre">pint</span></code> module
+or if you want to see the results in normalized units, just omit these units
+and remember to adjust the <code class="docutils literal notranslate"><span class="pre">vmin</span></code> and <code class="docutils literal notranslate"><span class="pre">vmax</span></code> of your plot commands.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="relativistic-field-initialization">
+<h2>Relativistic field initialization<a class="headerlink" href="#relativistic-field-initialization" title="Permalink to this headline">¶</a></h2>
+<p>Run the simulation and open the results with <code class="docutils literal notranslate"><span class="pre">happi</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">happi</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;example/of/path/to/the/simulation&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To visualize the initial bunch density and transverse electric field on the <code class="docutils literal notranslate"><span class="pre">xy</span></code> plane, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;-Rho&quot;</span><span class="p">,</span><span class="n">timesteps</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;pC/cm^3&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;Ey&quot;</span><span class="p">,</span><span class="n">timesteps</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;GV/m&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="mf">1.6</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mf">1.6</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the bunch is initially in vacuum. If a <code class="docutils literal notranslate"><span class="pre">Species</span></code> is initialized inside the plasma,
+activating the initialization of its field creates non-physical forces.</p>
+<p>The bunch will move in the positive <code class="docutils literal notranslate"><span class="pre">x</span></code> (longitudinal) direction towards the plasma.
+The field <code class="docutils literal notranslate"><span class="pre">Ex</span></code> is much lower than the transverse field <code class="docutils literal notranslate"><span class="pre">Ey</span></code> as for a relativistic moving charge.
+The field <code class="docutils literal notranslate"><span class="pre">Ey</span></code> is the field that pushes the plasma electrons away from the bunch’s path and triggers the plasma oscillations
+in the bunch wake.</p>
+<p><strong>Action</strong>: What happens to the fields if you increase the number of bunch particles <code class="docutils literal notranslate"><span class="pre">npart</span></code>?
+Are the fields more or less noisy?</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You will see from the simulation log that the iterative relativistic Poisson solver
+does not converge in this simulation with the chosen maximum number of iterations
+(<code class="docutils literal notranslate"><span class="pre">relativistic_poisson_max_iteration</span></code> in the <code class="docutils literal notranslate"><span class="pre">Main</span></code> block).
+However, the field obtained from this initialization will be accurate enough to
+see a plasma wave driven by the electron beam’s field and learn from this tutorial.
+A more accurate initialization would probably require more iterations, increasing
+the initialization time. There is no value for <code class="docutils literal notranslate"><span class="pre">relativistic_poisson_max_iteration</span></code>
+or for the acceptable error <code class="docutils literal notranslate"><span class="pre">relativistic_poisson_max_error</span></code> suited
+for all physical problems. The user should find the values suited to their
+case of interest through careful trial and error.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="nonlinear-beam-driven-plasma-oscillations">
+<h2>Nonlinear, beam-driven plasma oscillations<a class="headerlink" href="#nonlinear-beam-driven-plasma-oscillations" title="Permalink to this headline">¶</a></h2>
+<p>The plasma electrons pushed away from the bunch path will be attracted back to their original positions
+by the immobile ions and start to oscillate.</p>
+<p>Visualize the nonlinear plasma wave forming in the wake of the electron bunch:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;-Rho&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;pC/cm^3&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;-Rho&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;pC/cm^3&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The evolution of the longitudinal electric field on axis, very important for acceleration of another particle bunch,
+can be visualized through:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe0</span><span class="p">(</span><span class="s2">&quot;Ex&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;GV/m&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">S</span><span class="o">.</span><span class="n">Probe</span><span class="o">.</span><span class="n">Probe1</span><span class="p">(</span><span class="s2">&quot;Ex&quot;</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;GV/m&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">figure</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;seismic&quot;</span><span class="p">,</span><span class="n">vmin</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The wave form has a shape of a sawtooth wave,
+since the set-up is in the so-called nonlinear regime.</p>
+<p>Try to change the total bunch charge <code class="docutils literal notranslate"><span class="pre">Q_bunch</span></code> and rerun the simulation, for example multiplying it by a factor
+<code class="docutils literal notranslate"><span class="pre">0.05</span></code> (a linear regime), <code class="docutils literal notranslate"><span class="pre">0.75</span></code> (a weakly nonlinear regime). What happens to the <code class="docutils literal notranslate"><span class="pre">Ex</span></code> waveform?</p>
+<p><strong>Action</strong>: What happens to the fields if you increase the number of particles in the plasma?
+Are the fields more or less noisy?</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="particle-binning-diagnostic">
+<h2>Particle Binning diagnostic<a class="headerlink" href="#particle-binning-diagnostic" title="Permalink to this headline">¶</a></h2>
+<p>Let’s study in detail the evolution of the electron bunch.
+To start, the energy spectrum can be found using the first <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostic defined in the namelist:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">ParticleBinning</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MeV&quot;</span><span class="p">,</span><span class="s2">&quot;1/cm^3/MeV&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note how the bunch energy spread is increasing and the average energy is decreasing as it drives the plasma waves in its propagation.</p>
+<p>The longitudinal phase space can be seen through the second <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostic of the namelist:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">ParticleBinning</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">units</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;um&quot;</span><span class="p">,</span><span class="s2">&quot;MeV&quot;</span><span class="p">,</span><span class="s2">&quot;1/cm^3/MeV&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">slide</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note how the bunch tail is losing its energy. That zone of the bunch is where the decelerating electric field
+is generated.</p>
+<p><strong>Action</strong>: Study the remaining <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostics, which contain the bunch distribution in transverse phase space
+(<code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">z</span></code> phase space planes respectively). Note how the transverse coordinates can be negative in cylindrical geometry.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="track-particles-diagnostic">
+<h2>Track Particles diagnostic<a class="headerlink" href="#track-particles-diagnostic" title="Permalink to this headline">¶</a></h2>
+<p>Note how we had to specify the limits of the axes of our <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostics.
+This can be a considerable constraint when these boundaries are not known.
+Furthermore, if we wanted to compute more complex quantities derived from the
+positions and momenta of the electron bunch, e.g. the energy spread of its longitudinal
+slices, it would have not been easy to do with <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostics.
+Finally, sometimes we want to export the final bunch distribution in the phase space,
+i.e. the 3D positions and 3D momenta of all particles, e.g. to use them as input of
+a beam dynamics code to design a magnetic transport line, so we would need the coordinates
+of each macro-particle.</p>
+<p>For these reasons, often in wakefield simulations it is preferrable to use the
+<code class="docutils literal notranslate"><span class="pre">TrackParticles</span></code> diagnostic. This diagnostic allows to select a <code class="docutils literal notranslate"><span class="pre">Species</span></code>
+and optionally a filter (e.g. macro-particles above a certain energy). The diagnostic
+can give the id numbers, position, momentum and weight of the macro-particles of
+that <code class="docutils literal notranslate"><span class="pre">Species</span></code> satisfying the filter.</p>
+<p><strong>Note</strong> Specifying a filter can be essential to avoid exporting exceedingly large amount of
+data. For example, in a laser wakefield acceleration where the accelerated electron
+beam comes from the plasma itself, not specifying a filter would export the
+data of all the plasma species macro-particles. In this case, using a filter e.g.
+select only the  macro-particles above a certain energy, would likely export the
+macro-particles of interest for typical laser wakefield acceleration studies.</p>
+<p>In this simulation’s namelist, a <code class="docutils literal notranslate"><span class="pre">TrackParticles</span></code> block is specified
+to export the data of all the electron bunch macro-particles.
+The bunch does not have many macro-particles, so we don’t need to specify a filter.</p>
+<p>You can extract the <code class="docutils literal notranslate"><span class="pre">TrackParticles</span></code> data of a given <code class="docutils literal notranslate"><span class="pre">timestep</span></code> with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read the DiagTrackParticles data</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">chunk_size</span>   <span class="o">=</span> <span class="mi">60000</span>
+<span class="n">species_name</span> <span class="o">=</span> <span class="s2">&quot;electronbunch&quot;</span>
+<span class="n">timestep</span>     <span class="o">=</span> <span class="mf">0.</span>
+<span class="n">track</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">TrackParticles</span><span class="p">(</span><span class="n">species</span> <span class="o">=</span> <span class="n">species_name</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">particle_chunk</span> <span class="ow">in</span> <span class="n">track</span><span class="o">.</span><span class="n">iterParticles</span><span class="p">(</span><span class="n">timestep</span><span class="p">,</span> <span class="n">chunksize</span><span class="o">=</span><span class="n">chunk_size</span><span class="p">):</span>
+
+
+  <span class="c1"># positions</span>
+  <span class="n">x</span>            <span class="o">=</span> <span class="n">particle_chunk</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span>
+  <span class="n">y</span>            <span class="o">=</span> <span class="n">particle_chunk</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+  <span class="n">z</span>            <span class="o">=</span> <span class="n">particle_chunk</span><span class="p">[</span><span class="s2">&quot;z&quot;</span><span class="p">]</span>
+
+  <span class="c1"># momenta</span>
+  <span class="n">px</span>           <span class="o">=</span> <span class="n">particle_chunk</span><span class="p">[</span><span class="s2">&quot;px&quot;</span><span class="p">]</span>
+  <span class="n">py</span>           <span class="o">=</span> <span class="n">particle_chunk</span><span class="p">[</span><span class="s2">&quot;py&quot;</span><span class="p">]</span>
+  <span class="n">pz</span>           <span class="o">=</span> <span class="n">particle_chunk</span><span class="p">[</span><span class="s2">&quot;pz&quot;</span><span class="p">]</span>
+  <span class="n">p</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">px</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">py</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">pz</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+  <span class="c1"># weights, proportional to che macro-particle charge</span>
+  <span class="n">w</span>            <span class="o">=</span> <span class="n">particle_chunk</span><span class="p">[</span><span class="s2">&quot;w&quot;</span><span class="p">]</span>
+
+  <span class="c1"># energy</span>
+  <span class="n">E</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mf">1.</span><span class="o">+</span><span class="n">p</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+  <span class="n">Nparticles</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+  <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Read &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Nparticles</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; macro-particles from the file&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This way, you will have some numpy arrays, with the coordinates, momenta etc of all
+the electron bunch macro-particles at the timestep <code class="docutils literal notranslate"><span class="pre">timestep</span></code>, in normalized units.
+In this case we exported the first timestep. You can find a list of the available
+timesteps with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">timesteps</span> <span class="o">=</span> <span class="n">track</span><span class="o">.</span><span class="n">getAvailableTimesteps</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Each array has a size equal to the number of macro-particles.
+The argument <code class="docutils literal notranslate"><span class="pre">chunksize</span></code> denotes the maximum number macro-particles per chunk
+you are reading. Extracting data in chunks avoids reading all the macro-particles at once,
+which can be useful with large amounts of data. In this case we just need to read one chunk.</p>
+<p>Using these numpy arrays, you can easily compute derived quantities, e.g.
+you can obtain the electron bunch charge by summing the weights of all the
+macro-particles (which can in principle vary between macro-particles) and using
+the appropriate conversion factor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.constants</span>
+<span class="n">total_weight</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">weight_to_pC</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">e</span> <span class="o">*</span> <span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">ncrit</span>
+<span class="n">weight_to_pC</span> <span class="o">=</span> <span class="n">weight_to_pC</span> <span class="o">*</span> <span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">c_over_omega0</span><span class="p">)</span><span class="o">**</span><span class="mi">3</span>
+<span class="n">Q_pC</span>         <span class="o">=</span> <span class="n">total_weight</span> <span class="o">*</span> <span class="n">weight_to_pC</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Total bunch charge = &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Q_pC</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot; pC&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Action</strong> Check that this is the bunch charge set in the input namelist.</p>
+<p><strong>Action</strong> Try to extract the evolution of the bunch parameters during the simulation.
+Remember that you can extract the available timesteps and then loop the extraction
+of the macro-particle arrays over the timesteps.</p>
+<p><strong>Action</strong> plot the energy spectrum, i.e. the histogram of the macro-particles energies,
+and check that the result is the same obtained with the <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostic.
+Pay attention to the normalizations of the axes!</p>
+<p><strong>Action</strong> Adapting this <a class="reference external" href="https://github.com/SmileiPIC/TP-M2-GI/blob/main/Postprocessing_Scripts/Follow_electron_bunch_evolution.py">script</a>,
+study the evolution of the bunch parameters, e.g. its emittance, energy spread, etc.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="perfectly-matched-layers">
+<h2>Perfectly Matched Layers<a class="headerlink" href="#perfectly-matched-layers" title="Permalink to this headline">¶</a></h2>
+<p>Imperfect boundary conditions may cause unphysical effects when the bunch’s intense
+electromagnetic fields arrive at the boundaries of the simulation window.
+A larger box (transversally) could help fields decay near the boundaries.
+However this can easily increase the simulation time beyond an acceptable level,
+and only to avoid reflections, adding to the domain some physical regions where
+no phenomenon of interest happens.</p>
+<p>Therefore, to avoid this inefficient approach, this namelist uses improved
+boundary conditions called <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/PML.html">Perfectly Matched Layers</a>,
+which add some cells to the simulation borders filled with a fictious medium
+where the fields are damped and not reflected back inside the physical simulation window.
+Note that these additional cells are not visible to the user.</p>
+<p>The Perfectly Matched Layers are activated in the <code class="docutils literal notranslate"><span class="pre">Main</span></code> block through:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EM_boundary_conditions</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;PML&quot;</span><span class="p">,</span><span class="s2">&quot;PML&quot;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;PML&quot;</span><span class="p">,</span><span class="s2">&quot;PML&quot;</span><span class="p">],</span>
+<span class="p">],</span>
+
+<span class="n">number_of_pml_cells</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">],[</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">]],</span>
+</pre></div>
+</div>
+<p><strong>Action</strong>: How do the results change if you decrease the number of PML cells
+from 20 to 5? Are the fields more or less noisy?</p>
+<p><strong>Action</strong>: What happens if instead of the <code class="docutils literal notranslate"><span class="pre">&quot;PML&quot;</span></code> boundary conditions you use
+the more classic following conditions?:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">EM_boundary_conditions</span>  <span class="o">=</span>  <span class="p">[[</span><span class="s2">&quot;silver-muller&quot;</span><span class="p">,</span><span class="s2">&quot;silver-muller&quot;</span><span class="p">],[</span><span class="s2">&quot;buneman&quot;</span><span class="p">,</span><span class="s2">&quot;buneman&quot;</span><span class="p">],]</span>
+</pre></div>
+</div>
+<p>How large should the simulation window be to avoid reflections without a Perfectly
+Matched Layers?</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="acceleration-of-a-witness-bunch">
+<h2>Acceleration of a witness bunch<a class="headerlink" href="#acceleration-of-a-witness-bunch" title="Permalink to this headline">¶</a></h2>
+<p>Now you know everything necessary to simulate beam-driven plasma acceleration: try to define
+a second, smaller electron bunch, with the same energy of the driver bunch, smaller charge and small enough to fit
+in the plasma wave and injected in the accelerating phase of the plasma wave (i.e. negative <code class="docutils literal notranslate"><span class="pre">Ex</span></code>).</p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array initialization method as you have done for the bunch driving the waves.
+Study the evolution of the energy spectrum of this witness bunch and check that its average energy is increasing.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      <div>
+        <input type="button" id="themebutton"  value="" onclick="switchTheme('')" />
+      </div>
+      <div>
+      <a href="site.html">Site index</a>
+      </div>
+      <div>
+        Last updated on Mar 12, 2025
+      </div>
+      
+      <div>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      </div>
+      
+    </div>
+    
+    <script type="text/javascript">
+        
+        var nav = document.getElementById("nav");
+        var nav_list = document.getElementById("nav_list");
+        var nav_button = document.getElementById("nav_button");
+        var smallScreenMenu = document.getElementById("smallScreenMenu");
+        var smallScreenMenuButton = document.getElementById("smallScreenMenuButton");
+        var searchicon = document.getElementById("searchicon");
+        var searchbox  = document.getElementById("searchbox");
+        var searchinput= document.getElementById("searchinput");
+        var menus = document.getElementsByClassName("menu");
+        for( var i=0; i<menus.length; i++ )
+            menus[i].active = false;
+        
+        // Manage theme
+        var theme="light";
+        function switchTheme(type) {
+            if( type == "dark" || ( ! type && theme == "light" ) ) {
+                theme = "dark";
+                document.documentElement.setAttribute('theme', 'dark');
+                window.name = "dark_theme"
+                localStorage.setItem("_theme","dark")
+            } else {
+                theme = "light";
+                document.documentElement.setAttribute('theme', 'light');
+                window.name = "light_theme"
+                localStorage.setItem("_theme","light")
+            }
+        }
+        if( window.name && window.name == "light_theme" ) {
+            switchTheme("light");
+        } else if ( window.name && window.name == "dark_theme" ) {
+            switchTheme("dark");
+        } else if( stored_theme = localStorage.getItem("_theme") ) {
+            switchTheme(stored_theme);
+        } else if( window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            switchTheme("dark");
+        }
+        
+        var ul = nav_list.getElementsByTagName("ul")[0], li;
+        var keep_nav = false;
+        if( ul ) {
+            li = ul.firstElementChild;
+            if( li ) {
+                if( li.getElementsByTagName("ul").length > 0 ) keep_nav = true;
+            }
+        }
+        if( keep_nav ) {
+            li.removeChild( li.firstElementChild );
+        } else {
+            document.getElementById("nav_positioner").removeChild( document.getElementById("nav") );
+        }
+        
+        function navOff() {
+            nav_list.style.display = "none";
+            nav_button.className = "";
+            nav.style.overflowY = "visible";
+        }
+        
+        function toggleNav() {
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+            if( nav_list.style.display != "inline-block" ) {
+                nav_list.style.display = "inline-block";
+                nav_button.className = "pushed";
+                nav.style.overflowY = "auto";
+            } else {
+                navOff();
+            }
+        }
+        
+        function toggleSmallScreenMenu(e) {
+            if( smallScreenMenu.className != "on" ) {
+                smallScreenMenu.className = "on";
+                smallScreenMenuButton.className = "pushed";
+                document.documentElement.style.overflow = "hidden";
+            } else {
+                smallScreenMenu.className = "off";
+                smallScreenMenuButton.className = "";
+                document.documentElement.style.overflow = "";
+            }
+        }
+        
+        if (smallScreenMenuAfterTOC = document.getElementById("smallScreenMenuAfterTOC")) {
+            var smallScreenMenuTOC = smallScreenMenuAfterTOC.previousElementSibling
+                .getElementsByTagName("li")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+            for (var i = 0; i < smallScreenMenuTOC.length; i++) {
+                if (smallScreenMenuTOC[i].tagName = "a") {
+                    smallScreenMenuTOC[i].addEventListener("click", function(event){ toggleSmallScreenMenu(event); } );
+                }
+            }
+        }
+        
+        function prepareMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            menu.timer1 = setTimeout(function(a){ return function(){thisMenuOnly(a)};}(menu_id), 100);
+            menu.addEventListener("mouseleave", function(a){ return function(){clearTimeout(a.timer1)};}(menu) );
+        }
+        
+        function leaveMenu(menu_id, source) {
+            var menu = document.getElementById(menu_id);
+            menu.timer2 = setTimeout(function(a){ return function(){menuOff(a)};}(menu), 1000);
+            source.addEventListener("mouseenter", function(a){ return function(){clearTimeout(a.timer2)};}(menu) );
+        }
+        
+        function menuOn( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            if(nav_list) navOff();
+            divs[1].className = "on";
+            divs[0].className = "menuButton pushed";
+            menu.active = true;
+        }
+        function menuOff( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            divs[1].className = "off";
+            divs[0].className = "menuButton";
+            menu.active = false;
+        }
+        
+        function thisMenuOnly(menu_id) {
+            var menu = document.getElementById(menu_id);
+            for( var i=0; i<menus.length; i++ )
+                if( i!=menu_id )
+                    menuOff( menus[i] );
+            menuOn( menu );
+        }
+        
+        function toggleMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            if( menu.active ) {
+                menuOff( menu );
+            } else {
+                for( var i=0; i<menus.length; i++ )
+                    if( i!=menu_id )
+                        menuOff( menus[i] );
+                menuOn( menu );
+            }
+        }
+        
+        function openSearch() {
+            for( var i=0; i<menus.length; i++ ) {
+                menuOff( menus[i] );
+                menus[i].style.zIndex = "-1";
+            }
+            searchicon.style.display = "none";
+            closesearchicon.style.display = "block";
+            searchbox.style.display = "block";
+            searchinput.focus();
+        }
+        
+        function closeSearch() {
+            searchicon.style.display = "block";
+            closesearchicon.style.display = "none";
+            searchbox .style.display = "none";
+            for( var i=0; i<menus.length; i++ )
+                menus[i].style.zIndex = "0";
+        }
+        
+        
+        var documentDiv = document.getElementsByClassName("document")[0];
+        documentDiv.addEventListener('click', function (event) {
+            if(nav_list) navOff();
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,731 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Laser Propagation in vacuum &#8212; Smilei tutorials  unknown documentation</title>
+    <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="_static/smileiIcon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Thermal plasma" href="basics_thermal_plasma.html" />
+    <link rel="prev" title="Setup" href="basics_setup.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      scale: 95,
+      availableFonts: ["TeX"]
+    }
+  });
+  </script>
+   
+  </head><body>
+
+<div id="smallScreenMenu" class="off">
+
+    
+    <div class="toctree-smilei">
+        <ul>
+                <li class="outer">
+                    <a href="basics_setup.html">Setup</a>
+                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Laser Propagation in vacuum</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#setup-the-tutorial">Setup the tutorial</a></li>
+<li><a class="reference internal" href="#checking-your-input-file-in-test-mode">Checking your input file in test mode</a></li>
+<li><a class="reference internal" href="#running-the-simulation">Running the simulation</a></li>
+<li><a class="reference internal" href="#preparing-the-post-processing-tool">Preparing the post-processing tool</a></li>
+<li><a class="reference internal" href="#get-basic-info-on-the-simulation">Get basic info on the simulation</a></li>
+<li><a class="reference internal" href="#check-laser-using-scalar">Check laser using <code class="docutils literal notranslate"><span class="pre">Scalar</span></code></a></li>
+<li><a class="reference internal" href="#more-scalar-diagnostics">More <code class="docutils literal notranslate"><span class="pre">Scalar</span></code> diagnostics</a></li>
+<li><a class="reference internal" href="#plot-laser-using-field">Plot laser using <code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+<li><a class="reference internal" href="#compare-the-laser-profile-with-the-theory">Compare the laser profile with the theory</a></li>
+<li><a class="reference internal" href="#testing-the-cfl-condition">Testing the CFL condition</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
+                <li class="outer">
+                    <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_units.html">Units</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="perfs_parallel_computing.html">Parallel computing</a>
+                </li>
+                <li class="outer">
+                    <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="advanced_field_ionization.html">Field ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                </li>
+        </ul>
+        <hr />
+    </div>
+
+</div>
+<div id="hcontainer">
+    <div id="nav_positioner">
+        <div id="nav">
+            <div id="nav_button" onclick="toggleNav()">
+                Sections
+            </div>
+            <div id="nav_list" class="toctree-smilei">
+                <div id="nav_title"><a href="#">Laser Propagation in vacuum</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Laser Propagation in vacuum</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#setup-the-tutorial">Setup the tutorial</a></li>
+<li><a class="reference internal" href="#checking-your-input-file-in-test-mode">Checking your input file in test mode</a></li>
+<li><a class="reference internal" href="#running-the-simulation">Running the simulation</a></li>
+<li><a class="reference internal" href="#preparing-the-post-processing-tool">Preparing the post-processing tool</a></li>
+<li><a class="reference internal" href="#get-basic-info-on-the-simulation">Get basic info on the simulation</a></li>
+<li><a class="reference internal" href="#check-laser-using-scalar">Check laser using <code class="docutils literal notranslate"><span class="pre">Scalar</span></code></a></li>
+<li><a class="reference internal" href="#more-scalar-diagnostics">More <code class="docutils literal notranslate"><span class="pre">Scalar</span></code> diagnostics</a></li>
+<li><a class="reference internal" href="#plot-laser-using-field">Plot laser using <code class="docutils literal notranslate"><span class="pre">Field</span></code></a></li>
+<li><a class="reference internal" href="#compare-the-laser-profile-with-the-theory">Compare the laser profile with the theory</a></li>
+<li><a class="reference internal" href="#testing-the-cfl-condition">Testing the CFL condition</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="headercolor">
+    </div>
+    <div class="hpositioner">
+        <div class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img class="logo" src="_static/smileiLogo_tutorials.svg" alt="Logo" />
+            </a>
+        </div>
+        <div class="menu"
+            id="menu_PIC basics"
+            style="font-weight:bold"
+        >
+            <div id="menuButton_PIC basics" class="menuButton"
+                 onmouseenter="prepareMenu('menu_PIC basics')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="basics.html">
+                    <span>PIC basics</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_PIC basics',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="basics_setup.html">Setup</a>
+                        </li>
+                        <li >
+                            <a href="#">Laser Propagation in vacuum</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_units.html">Units</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Performances"
+            
+        >
+            <div id="menuButton_Performances" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Performances')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="perfs.html">
+                    <span>Performances</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Performances',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="perfs_parallel_computing.html">Parallel computing</a>
+                        </li>
+                        <li class="outer">
+                            <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="last menu"
+            id="menu_Advanced"
+            
+        >
+            <div id="menuButton_Advanced" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Advanced')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="advanced.html">
+                    <span>Advanced</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Advanced',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="advanced_field_ionization.html">Field ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var es=document.getElementsByClassName("menuButton"), i=0;
+            var evt = "ontouchend" in document ? "touchend" : "click";
+            for( var i=0; i<es.length; i+=1 ) {
+                es[i].addEventListener(evt, function(a){ return function(){toggleMenu(a)};}(es[i].parentNode.id));
+            }
+        </script>
+        
+        <div id="searchbox" role="search" style="display:none">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search" id="searchinput" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        
+        <div id="searchicon" onclick="openSearch()" style="display:block">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g transform="translate(0,-932.36216)" >
+                <circle
+                   r="25" cy="977.51044" cx="38.078663"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <rect
+                   transform="matrix(0.36717877,0.93015039,-0.93427297,0.35655858,0,0)"
+                   rx="4.9996676" ry="7.4995141" x="947.6142" y="316.16959"
+                   height="14.117695" width="46.476151"
+                   style="opacity:1;fill:#ffffff;fill:var(--header_text);fill-opacity:1;stroke:none;" />
+                <path
+                   d="m 41.383282,962.25996 a 15,15 0 0 1 11.660107,11.6355"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+              </g>
+            </svg>
+        </div>
+        <div id="closesearchicon" onclick="closeSearch()" style="display:none">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g
+                 transform="translate(0,-932.36216)"
+                 style="fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none">
+                <path d="m 10,962.36216 60,60.00004" />
+                <path d="M 70,962.36216 10,1022.3622" />
+              </g>
+            </svg>
+        </div>
+        
+        <div id="smallScreenMenuButton" onclick="event.preventDefault(); toggleSmallScreenMenu(event)">
+            <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+               viewBox="-20 -20 140 140">
+              <g  style="fill:#ffffff; fill:var(--header_text);stroke:none;">
+                <circle cx="15" cy="20" r="5" />
+                <circle cx="35" cy="20" r="5" />
+                <circle cx="85" cy="20" r="5" />
+                <rect width="50" height="10" x="35" y="15" rx="0" ry="0" />
+                <circle cx="15" cy="40" r="5" />
+                <circle cx="35" cy="40" r="5" />
+                <circle cx="85" cy="40" r="5" />
+                <rect width="50" height="10" x="35" y="35" rx="0" ry="0" />
+                <circle cx="15" cy="60" r="5" />
+                <circle cx="35" cy="60" r="5" />
+                <circle cx="85" cy="60" r="5" />
+                <rect width="50" height="10" x="35" y="55" rx="0" ry="0" />
+                <circle cx="15" cy="80" r="5" />
+                <circle cx="35" cy="80" r="5" />
+                <circle cx="85" cy="80" r="5" />
+                <rect width="50" height="10" x="35" y="75" rx="0" ry="0" />
+              </g>
+            </svg>
+        </div>
+        
+    </div>
+    
+</div>
+</div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="laser-propagation-in-vacuum">
+<h1>Laser Propagation in vacuum<a class="headerlink" href="#laser-propagation-in-vacuum" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to run your first simulation with <strong class="program">Smilei</strong>.
+The following points will be addressed:</p>
+<ul class="simple">
+<li><p>How to prepare an input file</p></li>
+<li><p>How to check your input file using the <code class="docutils literal notranslate"><span class="pre">test</span> <span class="pre">mode</span></code></p></li>
+<li><p>How to access your simulation results</p></li>
+<li><p>Get familiar with the <cite>Courant-Friedrich-Lewy</cite> (CFL) condition.</p></li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Download the input file <a class="reference external" href="laser_propagation_2d.py">laser_propagation_2d.py</a>.
+Note that this file is written in the <em>python</em> language.</p>
+<p>Read through this file and try to understand the contents of the <code class="docutils literal notranslate"><span class="pre">Main(...)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">LaserGaussian2D(...)</span></code> blocks. You can obtain details on the meaning of all keywords
+in this <a class="reference external" href="https://smileipic.github.io/Smilei/Use/namelist.html">documentation page</a>.
+Note that all units are normalized according to
+<a class="reference external" href="https://smileipic.github.io/Smilei/Understand/units.html">these conventions</a>.</p>
+<p>A Gaussian (in both space and time) laser pulse enters in the simulation box from
+the <code class="docutils literal notranslate"><span class="pre">xmin</span></code> side and propagates through the box.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="setup-the-tutorial">
+<h2>Setup the tutorial<a class="headerlink" href="#setup-the-tutorial" title="Permalink to this headline">¶</a></h2>
+<p>As explained in the <a class="reference internal" href="basics_setup.html#runsimulation"><span class="std std-ref">setup page</span></a>, you should make a new directory
+to run your simulation. This directory should contain the input file that you just downloaded
+and the executables <code class="docutils literal notranslate"><span class="pre">smilei</span></code> and <code class="docutils literal notranslate"><span class="pre">smilei_test</span></code>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="checking-your-input-file-in-test-mode">
+<h2>Checking your input file in test mode<a class="headerlink" href="#checking-your-input-file-in-test-mode" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to check that your <cite>input file</cite> is correct.
+To do so, you will run (locally) <strong class="program">Smilei</strong> in test mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./smilei_test laser_propagation_2d.py
+</pre></div>
+</div>
+<p>This <em>test mode</em> does the same initialization as the normal mode but does not enter the PIC loop.
+It provides you with a <em>log</em> (what appears on your screen).
+What does this <em>log</em> tells you? Do you spot any <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> message?</p>
+<p>If you did spot an <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, can you correct it? If so, correct it, and try again!</p>
+<p>Once you have no more <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> message. Do you get <code class="docutils literal notranslate"><span class="pre">WARNING</span></code> messages?</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="running-the-simulation">
+<h2>Running the simulation<a class="headerlink" href="#running-the-simulation" title="Permalink to this headline">¶</a></h2>
+<p>Once your simulation <cite>input file</cite> is correct, you can
+<a class="reference internal" href="basics_setup.html#runsimulation"><span class="std std-ref">run the simulation</span></a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./smilei laser_propagation_2d.py
+</pre></div>
+</div>
+<p>Before going to the analysis of your simulation, check the output on the screen (the <em>log</em>).</p>
+<ul class="simple">
+<li><p>What did change compared to the <cite>test mode</cite>?</p></li>
+<li><p>Did your run complete correctly?</p></li>
+<li><p>Check what output files have been generated: what are they?</p></li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="preparing-the-post-processing-tool">
+<h2>Preparing the post-processing tool<a class="headerlink" href="#preparing-the-post-processing-tool" title="Permalink to this headline">¶</a></h2>
+<p>Let’s now turn to analysing the output of your run with the python post-processing
+package <strong class="program">happi</strong>.
+To do so, <strong>open a new terminal window</strong>, and start <em>ipython</em>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ipython
+</pre></div>
+</div>
+<p>From <em>ipython</em>, import the happi module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">happi</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="get-basic-info-on-the-simulation">
+<h2>Get basic info on the simulation<a class="headerlink" href="#get-basic-info-on-the-simulation" title="Permalink to this headline">¶</a></h2>
+<p>Open the simulation that you have just run:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">=</span><span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;/path/to/the/simulation&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Use the correct path to the simulation folder.</p>
+</div>
+<p>See what is available from the simulation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span>  <span class="c1"># then press &lt;tab&gt;</span>
+</pre></div>
+</div>
+<p>When pressing <code class="docutils literal notranslate"><span class="pre">&lt;tab&gt;</span></code>, <em>ipython</em> display the content of the simulation.
+You can explore all these items. They should all be exactly the same as the ones
+that were defined earlier in the namelist <code class="docutils literal notranslate"><span class="pre">laser_propagation_2d.py</span></code>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="check-laser-using-scalar">
+<h2>Check laser using <code class="docutils literal notranslate"><span class="pre">Scalar</span></code><a class="headerlink" href="#check-laser-using-scalar" title="Permalink to this headline">¶</a></h2>
+<p>Read the namelist again and spot the line where the <code class="docutils literal notranslate"><span class="pre">Scalar</span></code> diagnostic has been defined.
+You may get more information on this diagnostic
+<a class="reference external" href="https://smileipic.github.io/Smilei/Use/namelist.html#scalar-diagnostics">on this page</a>.</p>
+<p>Obtain a list of <code class="docutils literal notranslate"><span class="pre">Scalar</span></code> diagnostics:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Scalar</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Open the <code class="docutils literal notranslate"><span class="pre">Uelm</span></code> scalar and plot:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diag</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Scalar</span><span class="p">(</span><span class="s1">&#39;Uelm&#39;</span><span class="p">)</span>
+<span class="n">diag</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This scalar represents the electromagnetic energy in the box. The plot we just obtained
+should represent its evolution with time.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="more-scalar-diagnostics">
+<h2>More <code class="docutils literal notranslate"><span class="pre">Scalar</span></code> diagnostics<a class="headerlink" href="#more-scalar-diagnostics" title="Permalink to this headline">¶</a></h2>
+<p>Check the evolution of the <code class="docutils literal notranslate"><span class="pre">total</span> <span class="pre">energy</span></code> in the simulation box:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Scalar</span><span class="p">(</span><span class="s1">&#39;Utot&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Check the evolution of the <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">balance</span></code> in the simulation box:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Scalar</span><span class="p">(</span><span class="s1">&#39;Ubal&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also compare the last two quantities on the same plot:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">happi</span><span class="o">.</span><span class="n">multiPlot</span><span class="p">(</span>
+    <span class="n">S</span><span class="o">.</span><span class="n">Scalar</span><span class="p">(</span><span class="s1">&#39;Utot&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Total energy&quot;</span><span class="p">),</span>
+    <span class="n">S</span><span class="o">.</span><span class="n">Scalar</span><span class="p">(</span><span class="s1">&#39;Ubal&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Balance&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="plot-laser-using-field">
+<h2>Plot laser using <code class="docutils literal notranslate"><span class="pre">Field</span></code><a class="headerlink" href="#plot-laser-using-field" title="Permalink to this headline">¶</a></h2>
+<p>Read the namelist again and spot the line where the <code class="docutils literal notranslate"><span class="pre">Field</span></code> diagnostic has been defined.</p>
+<p>Open the <code class="docutils literal notranslate"><span class="pre">Ey</span></code> field and plot:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diag</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Ey&quot;</span><span class="p">)</span>
+<span class="n">diag</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">vsym</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This new function <code class="docutils literal notranslate"><span class="pre">slide()</span></code> makes a sliding bar to explore the time-evolution
+of the simulation.</p>
+<p>Now, open the field with an average, and compare to the previous profile.
+The following calculates the laser amplitude envelope using <code class="docutils literal notranslate"><span class="pre">&quot;Ey**2+Ez**2&quot;</span></code>.
+Then, using the argument <code class="docutils literal notranslate"><span class="pre">average</span></code>, it makes an average of this envelope for x
+close to 0 and y at 100.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Ey**2+Ez**2&quot;</span><span class="p">,</span> <span class="n">average</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x&quot;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span><span class="s2">&quot;y&quot;</span><span class="p">:</span><span class="mi">100</span><span class="p">})</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="compare-the-laser-profile-with-the-theory">
+<h2>Compare the laser profile with the theory<a class="headerlink" href="#compare-the-laser-profile-with-the-theory" title="Permalink to this headline">¶</a></h2>
+<p>We are going to overlay the previous plot of the laser profile with
+the theoretical laser profile.</p>
+<p>Get the <code class="docutils literal notranslate"><span class="pre">Laser</span></code> block from the namelist:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">laser</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">Laser</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">laser</span>
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">laser</span></code> is an object of type <code class="docutils literal notranslate"><span class="pre">&lt;Smilei</span> <span class="pre">Laser&gt;</span></code>.</p>
+<p>See what is available in this laser object:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">laser</span><span class="o">.</span>  <span class="c1"># then press &lt;tab&gt;</span>
+        <span class="c1"># This should display all info on the laser</span>
+
+<span class="n">laser</span><span class="o">.</span><span class="n">time_envelope</span>
+</pre></div>
+</div>
+<p>Note that this quantity is a python function: what function is it?
+Some help is available <a class="reference external" href="https://smileipic.github.io/Smilei/Use/namelist.html#profiles">here</a>.</p>
+<p>To plot the laser profile as a function of time, a list of times is necessary.
+In the following, we use the package <em>numpy</em> to generate a list of times from 0 to
+the end of the simulation, separated by the timestep.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">arange</span>
+<span class="n">tstop</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">Main</span><span class="o">.</span><span class="n">simulation_time</span> <span class="c1"># simulation final time</span>
+<span class="n">tstep</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">namelist</span><span class="o">.</span><span class="n">Main</span><span class="o">.</span><span class="n">timestep</span>        <span class="c1"># simulation timestep</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="n">tstop</span><span class="p">,</span> <span class="n">tstep</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You may type <code class="docutils literal notranslate"><span class="pre">times</span></code> in order to see what is the list of times that we have created.</p>
+<p>Now, we execute the <code class="docutils literal notranslate"><span class="pre">laser.time_envelope</span></code> function on each of the times that we just created.
+We obtain a list of values of the laser envelope corresponding to each time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">laser_profile</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">laser</span><span class="o">.</span><span class="n">time_envelope</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">times</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Plot the profile using the <em>matplotlib</em> package:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="n">pylab</span>
+<span class="n">plot</span><span class="p">(</span> <span class="n">times</span><span class="o">+</span><span class="mi">5</span><span class="p">,</span> <span class="n">laser_profile</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">2</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="testing-the-cfl-condition">
+<h2>Testing the CFL condition<a class="headerlink" href="#testing-the-cfl-condition" title="Permalink to this headline">¶</a></h2>
+<p>Now change the <cite>input file</cite> and increase the time-step e.g. using <span class="math notranslate nohighlight">\(\Delta t = 0.95\,\Delta x\)</span>.</p>
+<p>Re-run <strong class="program">Smilei</strong> and check the total energy and/or energy balance.</p>
+<p>What is going on?</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      <div>
+        <input type="button" id="themebutton"  value="" onclick="switchTheme('')" />
+      </div>
+      <div>
+      <a href="site.html">Site index</a>
+      </div>
+      <div>
+        Last updated on Mar 12, 2025
+      </div>
+      
+      <div>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      </div>
+      
+    </div>
+    
+    <script type="text/javascript">
+        
+        var nav = document.getElementById("nav");
+        var nav_list = document.getElementById("nav_list");
+        var nav_button = document.getElementById("nav_button");
+        var smallScreenMenu = document.getElementById("smallScreenMenu");
+        var smallScreenMenuButton = document.getElementById("smallScreenMenuButton");
+        var searchicon = document.getElementById("searchicon");
+        var searchbox  = document.getElementById("searchbox");
+        var searchinput= document.getElementById("searchinput");
+        var menus = document.getElementsByClassName("menu");
+        for( var i=0; i<menus.length; i++ )
+            menus[i].active = false;
+        
+        // Manage theme
+        var theme="light";
+        function switchTheme(type) {
+            if( type == "dark" || ( ! type && theme == "light" ) ) {
+                theme = "dark";
+                document.documentElement.setAttribute('theme', 'dark');
+                window.name = "dark_theme"
+                localStorage.setItem("_theme","dark")
+            } else {
+                theme = "light";
+                document.documentElement.setAttribute('theme', 'light');
+                window.name = "light_theme"
+                localStorage.setItem("_theme","light")
+            }
+        }
+        if( window.name && window.name == "light_theme" ) {
+            switchTheme("light");
+        } else if ( window.name && window.name == "dark_theme" ) {
+            switchTheme("dark");
+        } else if( stored_theme = localStorage.getItem("_theme") ) {
+            switchTheme(stored_theme);
+        } else if( window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            switchTheme("dark");
+        }
+        
+        var ul = nav_list.getElementsByTagName("ul")[0], li;
+        var keep_nav = false;
+        if( ul ) {
+            li = ul.firstElementChild;
+            if( li ) {
+                if( li.getElementsByTagName("ul").length > 0 ) keep_nav = true;
+            }
+        }
+        if( keep_nav ) {
+            li.removeChild( li.firstElementChild );
+        } else {
+            document.getElementById("nav_positioner").removeChild( document.getElementById("nav") );
+        }
+        
+        function navOff() {
+            nav_list.style.display = "none";
+            nav_button.className = "";
+            nav.style.overflowY = "visible";
+        }
+        
+        function toggleNav() {
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+            if( nav_list.style.display != "inline-block" ) {
+                nav_list.style.display = "inline-block";
+                nav_button.className = "pushed";
+                nav.style.overflowY = "auto";
+            } else {
+                navOff();
+            }
+        }
+        
+        function toggleSmallScreenMenu(e) {
+            if( smallScreenMenu.className != "on" ) {
+                smallScreenMenu.className = "on";
+                smallScreenMenuButton.className = "pushed";
+                document.documentElement.style.overflow = "hidden";
+            } else {
+                smallScreenMenu.className = "off";
+                smallScreenMenuButton.className = "";
+                document.documentElement.style.overflow = "";
+            }
+        }
+        
+        if (smallScreenMenuAfterTOC = document.getElementById("smallScreenMenuAfterTOC")) {
+            var smallScreenMenuTOC = smallScreenMenuAfterTOC.previousElementSibling
+                .getElementsByTagName("li")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+            for (var i = 0; i < smallScreenMenuTOC.length; i++) {
+                if (smallScreenMenuTOC[i].tagName = "a") {
+                    smallScreenMenuTOC[i].addEventListener("click", function(event){ toggleSmallScreenMenu(event); } );
+                }
+            }
+        }
+        
+        function prepareMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            menu.timer1 = setTimeout(function(a){ return function(){thisMenuOnly(a)};}(menu_id), 100);
+            menu.addEventListener("mouseleave", function(a){ return function(){clearTimeout(a.timer1)};}(menu) );
+        }
+        
+        function leaveMenu(menu_id, source) {
+            var menu = document.getElementById(menu_id);
+            menu.timer2 = setTimeout(function(a){ return function(){menuOff(a)};}(menu), 1000);
+            source.addEventListener("mouseenter", function(a){ return function(){clearTimeout(a.timer2)};}(menu) );
+        }
+        
+        function menuOn( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            if(nav_list) navOff();
+            divs[1].className = "on";
+            divs[0].className = "menuButton pushed";
+            menu.active = true;
+        }
+        function menuOff( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            divs[1].className = "off";
+            divs[0].className = "menuButton";
+            menu.active = false;
+        }
+        
+        function thisMenuOnly(menu_id) {
+            var menu = document.getElementById(menu_id);
+            for( var i=0; i<menus.length; i++ )
+                if( i!=menu_id )
+                    menuOff( menus[i] );
+            menuOn( menu );
+        }
+        
+        function toggleMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            if( menu.active ) {
+                menuOff( menu );
+            } else {
+                for( var i=0; i<menus.length; i++ )
+                    if( i!=menu_id )
+                        menuOff( menus[i] );
+                menuOn( menu );
+            }
+        }
+        
+        function openSearch() {
+            for( var i=0; i<menus.length; i++ ) {
+                menuOff( menus[i] );
+                menus[i].style.zIndex = "-1";
+            }
+            searchicon.style.display = "none";
+            closesearchicon.style.display = "block";
+            searchbox.style.display = "block";
+            searchinput.focus();
+        }
+        
+        function closeSearch() {
+            searchicon.style.display = "block";
+            closesearchicon.style.display = "none";
+            searchbox .style.display = "none";
+            for( var i=0; i<menus.length; i++ )
+                menus[i].style.zIndex = "0";
+        }
+        
+        
+        var documentDiv = document.getElementsByClassName("document")[0];
+        documentDiv.addEventListener('click', function (event) {
+            if(nav_list) navOff();
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+        });
+    </script>
+  </body>
+</html>

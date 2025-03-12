@@ -1,0 +1,808 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Parallel computing &#8212; Smilei tutorials  unknown documentation</title>
+    <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="shortcut icon" href="_static/smileiIcon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Patch arrangement" href="perfs_patch_arrangement.html" />
+    <link rel="prev" title="Performances" href="perfs.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": {
+      scale: 95,
+      availableFonts: ["TeX"]
+    }
+  });
+  </script>
+   
+  </head><body>
+
+<div id="smallScreenMenu" class="off">
+
+    
+    <div class="toctree-smilei">
+        <ul>
+                <li class="outer">
+                    <a href="basics_setup.html">Setup</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                </li>
+                <li class="outer">
+                    <a href="basics_units.html">Units</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Parallel computing</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#setup-the-tutorial">Setup the tutorial</a></li>
+<li><a class="reference internal" href="#splitting-the-box">Splitting the box</a></li>
+<li><a class="reference internal" href="#introduce-smileis-parallelism">Introduce Smilei’s parallelism</a></li>
+<li><a class="reference internal" href="#imbalance">Imbalance</a></li>
+<li><a class="reference internal" href="#imbalance-and-distributed-memory">Imbalance and distributed memory</a></li>
+<li><a class="reference internal" href="#balancing-the-load-between-processes">Balancing the load between processes</a></li>
+<li><a class="reference internal" href="#realistic-configuration">Realistic configuration</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
+                <li class="outer">
+                    <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                </li>
+        </ul>
+        <hr />
+        <ul>
+                <li class="outer">
+                    <a href="advanced_field_ionization.html">Field ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                </li>
+                <li class="outer">
+                    <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                </li>
+        </ul>
+        <hr />
+    </div>
+
+</div>
+<div id="hcontainer">
+    <div id="nav_positioner">
+        <div id="nav">
+            <div id="nav_button" onclick="toggleNav()">
+                Sections
+            </div>
+            <div id="nav_list" class="toctree-smilei">
+                <div id="nav_title"><a href="#">Parallel computing</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Parallel computing</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#setup-the-tutorial">Setup the tutorial</a></li>
+<li><a class="reference internal" href="#splitting-the-box">Splitting the box</a></li>
+<li><a class="reference internal" href="#introduce-smileis-parallelism">Introduce Smilei’s parallelism</a></li>
+<li><a class="reference internal" href="#imbalance">Imbalance</a></li>
+<li><a class="reference internal" href="#imbalance-and-distributed-memory">Imbalance and distributed memory</a></li>
+<li><a class="reference internal" href="#balancing-the-load-between-processes">Balancing the load between processes</a></li>
+<li><a class="reference internal" href="#realistic-configuration">Realistic configuration</a></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="headercolor">
+    </div>
+    <div class="hpositioner">
+        <div class="header">
+        <div class="logo">
+            <a href="index.html">
+                <img class="logo" src="_static/smileiLogo_tutorials.svg" alt="Logo" />
+            </a>
+        </div>
+        <div class="menu"
+            id="menu_PIC basics"
+            
+        >
+            <div id="menuButton_PIC basics" class="menuButton"
+                 onmouseenter="prepareMenu('menu_PIC basics')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="basics.html">
+                    <span>PIC basics</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_PIC basics',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="basics_setup.html">Setup</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
+                        </li>
+                        <li class="outer">
+                            <a href="basics_units.html">Units</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="menu"
+            id="menu_Performances"
+            style="font-weight:bold"
+        >
+            <div id="menuButton_Performances" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Performances')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="perfs.html">
+                    <span>Performances</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Performances',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li >
+                            <a href="#">Parallel computing</a>
+                        </li>
+                        <li class="outer">
+                            <a href="perfs_patch_arrangement.html">Patch arrangement</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="last menu"
+            id="menu_Advanced"
+            
+        >
+            <div id="menuButton_Advanced" class="menuButton"
+                 onmouseenter="prepareMenu('menu_Advanced')"
+                 onmousedown="event.preventDefault()"
+            >
+                <a href="advanced.html">
+                    <span>Advanced</span>
+                </a>
+            </div>
+            <div class="off" onmouseleave="leaveMenu('menu_Advanced',this)">
+                <div class="toctree-smilei">
+                    <ul>
+                        <li class="outer">
+                            <a href="advanced_field_ionization.html">Field ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_breit_wheeler.html">Multiphoton Breit-Wheeler pair creation process</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield.html">2D laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_AMcylindrical.html">Azimuthal-mode-decomposition cylindrical geometry</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_electron_beam.html">Field initialization for a relativistic electron bunch</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_wakefield_envelope.html">Envelope model for laser wakefield acceleration</a>
+                        </li>
+                        <li class="outer">
+                            <a href="advanced_vtk.html">Export to VTK and 3D visualization</a>
+                        </li>
+        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            var es=document.getElementsByClassName("menuButton"), i=0;
+            var evt = "ontouchend" in document ? "touchend" : "click";
+            for( var i=0; i<es.length; i+=1 ) {
+                es[i].addEventListener(evt, function(a){ return function(){toggleMenu(a)};}(es[i].parentNode.id));
+            }
+        </script>
+        
+        <div id="searchbox" role="search" style="display:none">
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" placeholder="Search" id="searchinput" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+        
+        <div id="searchicon" onclick="openSearch()" style="display:block">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g transform="translate(0,-932.36216)" >
+                <circle
+                   r="25" cy="977.51044" cx="38.078663"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <rect
+                   transform="matrix(0.36717877,0.93015039,-0.93427297,0.35655858,0,0)"
+                   rx="4.9996676" ry="7.4995141" x="947.6142" y="316.16959"
+                   height="14.117695" width="46.476151"
+                   style="opacity:1;fill:#ffffff;fill:var(--header_text);fill-opacity:1;stroke:none;" />
+                <path
+                   d="m 41.383282,962.25996 a 15,15 0 0 1 11.660107,11.6355"
+                   style="opacity:1;fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:3;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+              </g>
+            </svg>
+        </div>
+        <div id="closesearchicon" onclick="closeSearch()" style="display:none">
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               viewBox="0 0 80 120">
+              <g
+                 transform="translate(0,-932.36216)"
+                 style="fill:none;stroke:#ffffff;stroke:var(--header_text);stroke-width:10;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none">
+                <path d="m 10,962.36216 60,60.00004" />
+                <path d="M 70,962.36216 10,1022.3622" />
+              </g>
+            </svg>
+        </div>
+        
+        <div id="smallScreenMenuButton" onclick="event.preventDefault(); toggleSmallScreenMenu(event)">
+            <svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+               viewBox="-20 -20 140 140">
+              <g  style="fill:#ffffff; fill:var(--header_text);stroke:none;">
+                <circle cx="15" cy="20" r="5" />
+                <circle cx="35" cy="20" r="5" />
+                <circle cx="85" cy="20" r="5" />
+                <rect width="50" height="10" x="35" y="15" rx="0" ry="0" />
+                <circle cx="15" cy="40" r="5" />
+                <circle cx="35" cy="40" r="5" />
+                <circle cx="85" cy="40" r="5" />
+                <rect width="50" height="10" x="35" y="35" rx="0" ry="0" />
+                <circle cx="15" cy="60" r="5" />
+                <circle cx="35" cy="60" r="5" />
+                <circle cx="85" cy="60" r="5" />
+                <rect width="50" height="10" x="35" y="55" rx="0" ry="0" />
+                <circle cx="15" cy="80" r="5" />
+                <circle cx="35" cy="80" r="5" />
+                <circle cx="85" cy="80" r="5" />
+                <rect width="50" height="10" x="35" y="75" rx="0" ry="0" />
+              </g>
+            </svg>
+        </div>
+        
+    </div>
+    
+</div>
+</div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="parallel-computing">
+<h1>Parallel computing<a class="headerlink" href="#parallel-computing" title="Permalink to this headline">¶</a></h1>
+<p>As supercomputers become larger, we can explore new domains of plasma physics
+with more expensive simulations. However, this type of computer requires the
+computation to be made by many computing cores at the same time, <em>in parallel</em>.</p>
+<p>Optimizing parallel algorithms on these new machines becomes increasingly difficult,
+because their architecture complexity grows together with their power.
+See this <a class="reference external" href="https://smileipic.github.io/Smilei/Understand/parallelization.html#decomposition-of-the-box">introduction to parallelism</a>.</p>
+<p class="rubric">Basic architecture of supercomputers:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Many <strong>nodes</strong> communicate through a <em>network</em>. Each node owns its own memory.</p></li>
+<li><p>Nodes are composed of many <strong>computing units</strong> (most often <em>cores</em>) which share the memory of the node.</p></li>
+</ul>
+<a class="reference internal image-reference" href="_images/node.svg"><img alt="_images/node.svg" class="align-center" src="_images/node.svg" width="50%" /></a>
+</div></blockquote>
+<blockquote>
+<div><p>This defines two levels of parallelism:</p>
+<ul class="simple">
+<li><p><em>“Distributed memory”</em>: Communicating information between nodes that do not access the same memory.</p></li>
+<li><p><em>“Shared memory”</em>: Synchronizing the operations of the cores that share the same memory.</p></li>
+</ul>
+</div></blockquote>
+<p class="rubric">Distributed memory</p>
+<blockquote>
+<div><p>The protocol that handles the communication of data between different nodes is called MPI.
+Smilei will run independently on each of those locations, and we call each of these instances an <strong>MPI process</strong>
+(sometimes also called <strong>task</strong>). One MPI process is usually associated to many cores inside one single node,
+but it does not necessarily occupy all the cores in this node.</p>
+<p>The data is split into small pieces, called <strong>patches</strong>, so that it can be distributed to those MPI processes.
+This is called <em>domain decomposition</em>.</p>
+<p>Each <strong>MPI process</strong> executes all the computation necessary to handle the patches he has been given using the ressources he has access to.
+The main difficulty is to provide an equal amount of work to each MPI process. This is called <strong>load balancing</strong>. We will see how
+Smilei distributes the patches to MPI processes in order to have a uniform load.</p>
+</div></blockquote>
+<p class="rubric">Shared memory</p>
+<blockquote>
+<div><p>Inside a given MPI process, where the shared memory contains many patches to be computed,
+the work must be synchronized between available cores.
+This is handled by the <strong>OpenMP</strong> protocol.</p>
+<p>OpenMP creates <strong>threads</strong> which are sequences of instructions to be executed by cores, and schedules
+the parallel work of all available cores accordingly.</p>
+<p>Each thread will be assigned to successive patches, in parallel with other threads.
+This is an effective way to balance the load inside the MPI process: when a patch is done, a core will automatically
+work on the next patch withtout having to wait for another core that might still be working.</p>
+</div></blockquote>
+<p class="rubric">Summary</p>
+<blockquote>
+<div><p>The simulation domain should be divided into many patches for two reasons:</p>
+<ul class="simple">
+<li><p>to distribute the computational load and feed all threads associated to each MPI process</p></li>
+<li><p>to be able to manage the load imbalance by moving patches between different MPI processes</p></li>
+</ul>
+<p>But, be careful: an excessively refined decomposition (with too many small patches) will
+produce a large overhead due to communications and synchronizations.</p>
+<p>The goal of this tutorial is to understand how to setup a simulation to get good performances.
+The following features will be addressed:</p>
+<ul class="simple">
+<li><p>Decomposition of the simulation box into patches</p></li>
+<li><p>Choice of the number of MPI processes and OpenMP threads</p></li>
+<li><p>Smilei’s <em>load balancing</em> feature</p></li>
+<li><p>Performance analysis with the <code class="docutils literal notranslate"><span class="pre">DiagPerformances</span></code></p></li>
+</ul>
+</div></blockquote>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Download the input file <a class="reference external" href="beam_2d.py">beam_2d.py</a>.
+A small plasma ball is set with an initial velocity <span class="math notranslate nohighlight">\(v_x=0.3\)</span>
+and traverses the box.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="setup-the-tutorial">
+<h2>Setup the tutorial<a class="headerlink" href="#setup-the-tutorial" title="Permalink to this headline">¶</a></h2>
+<p>As explained in the <a class="reference internal" href="basics_setup.html#runsimulation"><span class="std std-ref">setup page</span></a>, you should make a new directory
+to run your simulation. This directory should contain the input file that you just downloaded
+and the executables <code class="docutils literal notranslate"><span class="pre">smilei</span></code> and <code class="docutils literal notranslate"><span class="pre">smilei_test</span></code>.</p>
+<p>We introduce this tutorial talking about supercomputers but we will run here single node simulations.
+It could seems out of context but the idea is to illustrate how works the code parallelism and its limits.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="splitting-the-box">
+<h2>Splitting the box<a class="headerlink" href="#splitting-the-box" title="Permalink to this headline">¶</a></h2>
+<p>In a first test, we will use a single core with in a single MPI process to focus on the box splitting.
+Launch the simulation with 1 MPI and 1 thread only. For instance, you could use commands similar to:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
+mpirun -np <span class="m">1</span> smilei beam_2d.py
+</pre></div>
+</div>
+<p>The input file suggests to use 32x32 patches:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Main</span><span class="p">(</span>
+     <span class="n">number_of_patches</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">32</span> <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Run the simulation for various number of patches,
+and compare the computation time:</p>
+<ul class="simple">
+<li><p>32 x 32 patches</p></li>
+<li><p>16 x 16 patches</p></li>
+<li><p>8 x 8 patches</p></li>
+<li><p>a single patch</p></li>
+</ul>
+<p>Computation times are provided at the end of the simulation:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Time</span> <span class="pre">in</span> <span class="pre">time</span> <span class="pre">loop</span></code>: the whole PIC loop</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Particles</span></code>        : all particles operations except collisions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Maxwell</span></code>          : Maxwell equations and the electromagnetic boundary conditions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Diagnostics</span></code>      : all <code class="docutils literal notranslate"><span class="pre">Diag</span></code> blocks defined in the namelist</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sync</span> <span class="pre">Particles</span></code>   : particle exchange between patches</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sync</span> <span class="pre">Fields</span></code>      : <code class="docutils literal notranslate"><span class="pre">E</span></code>, <code class="docutils literal notranslate"><span class="pre">B</span></code> exchange between patches</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sync</span> <span class="pre">Densities</span></code>   : <code class="docutils literal notranslate"><span class="pre">J</span></code> exchange between patches</p></li>
+</ul>
+<p class="rubric">Details about timers</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Sync</span></code> timers concern exchange between patches owned by <strong>a single MPI processes and/or by many</strong>.
+In this case, these timers could contain waiting times due to load imbalance inherent to PIC simulations.</p>
+<p>Whatever the case, <code class="docutils literal notranslate"><span class="pre">Particles</span></code> and  <code class="docutils literal notranslate"><span class="pre">Maxwell</span></code> do not contain MPI waiting time,
+they only accumulate pure computation time.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">balancing</span></code>, <code class="docutils literal notranslate"><span class="pre">Mov</span> <span class="pre">window</span></code> or <code class="docutils literal notranslate"><span class="pre">Diagnostics</span></code> (which can be seen like a disk synchronization)
+are global operations which require communications, they can contain waiting time.</p>
+<p>For many MPI processes simulation, these times are averaged on all processes.
+Some detailed timing elements, such as minimum or maximum times on all processes
+are provided in the file <code class="docutils literal notranslate"><span class="pre">profil.txt</span></code> and a full report can be obtained using the <code class="docutils literal notranslate"><span class="pre">DiagPerformances</span></code>.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="introduce-smileis-parallelism">
+<h2>Introduce Smilei’s parallelism<a class="headerlink" href="#introduce-smileis-parallelism" title="Permalink to this headline">¶</a></h2>
+<p>Let’s make the first step to introduce parallel processing of all the patches.
+We will use several OpenMP threads in a single MPI process.</p>
+<p>Use a good patch configuration found in the previous step: 8x8 patches.
+The single patch simulation is maybe slightly faster but it cannot exhibit any parallelism.</p>
+<p>Setup 1 MPI process, and 16 threads per process.
+You may need to adjust these settings according to your machine. TypicallyL</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">16</span>
+<span class="nb">export</span> <span class="nv">OMP_SCHEDULE</span><span class="o">=</span>dynamic
+mpirun -np <span class="m">1</span> smilei beam_2d.py
+</pre></div>
+</div>
+<p>Make sure that, in the output log, it specifies the correct number of
+processes and threads.</p>
+<p>Even though 16 threads are used, the speed-up is very poor.</p>
+<p>Let us now use <code class="docutils literal notranslate"><span class="pre">happi</span></code> to analyse the simulation.
+Open an <code class="docutils literal notranslate"><span class="pre">ipython</span></code> prompt, then run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">happi</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s2">&quot;/path/to/beam_2d/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can have a quick understanding of what happens in the simulation using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">ParticleBinning</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">slide</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>A ball of plasma (30 cells radius) is moving through the box (256x256 cells):</p>
+<ul class="simple">
+<li><p>With 8 x 8 patches, the size of a patch is 32 x 32 cells.
+The plasma, which represents the main time cost,
+occupies only a few patches of the simulation.
+This means many threads are doing nothing.</p></li>
+<li><p>With 16 x 16 patches, the size of a patch is 16 x 16 cells,
+an order of magnitude is earned regarding the number of patches loaded with particles.
+Verify the speedup.</p></li>
+<li><p>With 32 x 32 patches, the size of a patch is 8 x 8 cells,
+even more patches are loaded with particles, but with a synchronization overhead.</p></li>
+</ul>
+<p>Check the behavior of these three configurations running 16 threads.</p>
+<p>For this test, in the best case configuration,
+an additionnal speed-up of 2 is obtained.
+This is modest, but accelerating computations requires to split the particle load.
+With a such local plasma, it is hard to achieve.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="imbalance">
+<h2>Imbalance<a class="headerlink" href="#imbalance" title="Permalink to this headline">¶</a></h2>
+<p>You applied some load balancing using OpenMP threading.
+Indeed, the threads will keep working patch after patch in parallel on all the available patches
+until all patches are done.
+This is called <em>dynamic scheduling</em>.</p>
+<p>The <em>static scheduling</em>, instead, assigns an exclusive pool of patches
+to each thread. In this situation, threads will only work on their own pool,
+even if it is an empty region. This obviously prevents load balancing between threads.
+It is used on grids computing function of Smilei which is naturraly balanced.</p>
+<p>To choose the type of OpenMP scheduling, you can set the environment
+variable <code class="docutils literal notranslate"><span class="pre">OMP_SCHEDULE</span></code> to <code class="docutils literal notranslate"><span class="pre">static</span></code>. Typically:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">16</span>
+<span class="nb">export</span> <span class="nv">OMP_SCHEDULE</span><span class="o">=</span>static
+mpirun -np <span class="m">1</span> smilei beam_2d.py
+</pre></div>
+</div>
+<p>OpenMP offers intermediary solutions but regarding the granularity of
+the level of parallelism, we advice the <code class="docutils literal notranslate"><span class="pre">dynamic</span></code> scheduling.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="imbalance-and-distributed-memory">
+<h2>Imbalance and distributed memory<a class="headerlink" href="#imbalance-and-distributed-memory" title="Permalink to this headline">¶</a></h2>
+<p>Run the 16 x 16 patches simulation but with a MPI-only configuration.
+Typically, you can write:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span>
+mpirun -np <span class="m">12</span> smilei beam_2d.py
+</pre></div>
+</div>
+<p>This is technically similar to the <code class="docutils literal notranslate"><span class="pre">static</span></code> scheduling of the previous section:
+the pool of patches is explicitly distributed over MPI processes starting the simulation.
+Compare the time spent in the PIC loop to that previous case.</p>
+<p>We are now going to use the <code class="docutils literal notranslate"><span class="pre">Performances</span></code> diagnostic.
+The list of available quantities can be obtained with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Performances</span>
+</pre></div>
+</div>
+<p>Let us try:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Performances</span><span class="p">(</span><span class="nb">map</span><span class="o">=</span><span class="s2">&quot;hindex&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You should obtain a map of the simulation box with one distinct color for
+each memory region (i.e. each MPI process). There are 16 regions, as we requested
+initially. You can see that these regions do not have necessarily the same shape.</p>
+<p>Now plot the number of particles in each region:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Performances</span><span class="p">(</span><span class="nb">map</span><span class="o">=</span><span class="s2">&quot;number_of_particles&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;smilei_r&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Clearly, at every given time, no more than only a few regions contain particles.
+This is a typical situation where almost all processes have nothing to do
+and wait for a single process to finish its computation.</p>
+<p>You can also visualize the time taken for computing particles using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">S</span><span class="o">.</span><span class="n">Performances</span><span class="p">(</span><span class="nb">map</span><span class="o">=</span><span class="s2">&quot;timer_particles&quot;</span><span class="p">,</span><span class="n">cumulative</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">slide</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;smilei_r&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="balancing-the-load-between-processes">
+<h2>Balancing the load between processes<a class="headerlink" href="#balancing-the-load-between-processes" title="Permalink to this headline">¶</a></h2>
+<p>Smilei has an automated load-balancing feature that can move patches from one
+process to another in order to ensure they all have a similar load. Activate it
+in the input file using:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LoadBalancing</span><span class="p">(</span>
+    <span class="n">every</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Then run the simulation again with 16 processes and
+have a look at the <code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">balancing</span></code> timer.
+Observe differences in the computation time,
+compare it to the time saved regarding the simulation without dynamic load balancing.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">Sync</span></code> timers are impacted by the imbalance of the
+algorithm part which precedes it:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Particles</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sync</span> <span class="pre">Densities</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Maxwell</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sync</span> <span class="pre">Particles</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Sync</span> <span class="pre">Fields</span></code></p></li>
+</ul>
+</div>
+<p>Use again the performances diagnostic to monitor the evolution of the
+regions and their computational load.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="realistic-configuration">
+<h2>Realistic configuration<a class="headerlink" href="#realistic-configuration" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To get familiar with Smilei’s domain decomposition, distributed and shared memory parallelism,
+we did not consider the NUMA (non uniform memory access) aspect of most supercomputers.
+Indeed, a node is generally composed of several <em>sockets</em> which own many cores each.
+Cores have privileged access to the memory associated to it socket.</p>
+</div>
+<p>In general, supercomputers should be adressed with both:</p>
+<ul class="simple">
+<li><p>MPI: to go through nodes <strong>and</strong> sockets (to enhance memory affinity),</p></li>
+<li><p>OpenMP: to feed threads and minimize imbalance</p></li>
+</ul>
+<p>The following example uses 2 MPI processes with 8 threads each:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">8</span>
+mpirun -np <span class="m">2</span> smilei beam_2d.py
+</pre></div>
+</div>
+<p>Between processes, threads, and the number of patches, there are many ways the
+simulation performances can be modified. There is no general rule for finding
+the optimal configuration, so we recommend trying several options.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      <div>
+        <input type="button" id="themebutton"  value="" onclick="switchTheme('')" />
+      </div>
+      <div>
+      <a href="site.html">Site index</a>
+      </div>
+      <div>
+        Last updated on Mar 12, 2025
+      </div>
+      
+      <div>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.4.4</a>
+      </div>
+      
+    </div>
+    
+    <script type="text/javascript">
+        
+        var nav = document.getElementById("nav");
+        var nav_list = document.getElementById("nav_list");
+        var nav_button = document.getElementById("nav_button");
+        var smallScreenMenu = document.getElementById("smallScreenMenu");
+        var smallScreenMenuButton = document.getElementById("smallScreenMenuButton");
+        var searchicon = document.getElementById("searchicon");
+        var searchbox  = document.getElementById("searchbox");
+        var searchinput= document.getElementById("searchinput");
+        var menus = document.getElementsByClassName("menu");
+        for( var i=0; i<menus.length; i++ )
+            menus[i].active = false;
+        
+        // Manage theme
+        var theme="light";
+        function switchTheme(type) {
+            if( type == "dark" || ( ! type && theme == "light" ) ) {
+                theme = "dark";
+                document.documentElement.setAttribute('theme', 'dark');
+                window.name = "dark_theme"
+                localStorage.setItem("_theme","dark")
+            } else {
+                theme = "light";
+                document.documentElement.setAttribute('theme', 'light');
+                window.name = "light_theme"
+                localStorage.setItem("_theme","light")
+            }
+        }
+        if( window.name && window.name == "light_theme" ) {
+            switchTheme("light");
+        } else if ( window.name && window.name == "dark_theme" ) {
+            switchTheme("dark");
+        } else if( stored_theme = localStorage.getItem("_theme") ) {
+            switchTheme(stored_theme);
+        } else if( window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            switchTheme("dark");
+        }
+        
+        var ul = nav_list.getElementsByTagName("ul")[0], li;
+        var keep_nav = false;
+        if( ul ) {
+            li = ul.firstElementChild;
+            if( li ) {
+                if( li.getElementsByTagName("ul").length > 0 ) keep_nav = true;
+            }
+        }
+        if( keep_nav ) {
+            li.removeChild( li.firstElementChild );
+        } else {
+            document.getElementById("nav_positioner").removeChild( document.getElementById("nav") );
+        }
+        
+        function navOff() {
+            nav_list.style.display = "none";
+            nav_button.className = "";
+            nav.style.overflowY = "visible";
+        }
+        
+        function toggleNav() {
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+            if( nav_list.style.display != "inline-block" ) {
+                nav_list.style.display = "inline-block";
+                nav_button.className = "pushed";
+                nav.style.overflowY = "auto";
+            } else {
+                navOff();
+            }
+        }
+        
+        function toggleSmallScreenMenu(e) {
+            if( smallScreenMenu.className != "on" ) {
+                smallScreenMenu.className = "on";
+                smallScreenMenuButton.className = "pushed";
+                document.documentElement.style.overflow = "hidden";
+            } else {
+                smallScreenMenu.className = "off";
+                smallScreenMenuButton.className = "";
+                document.documentElement.style.overflow = "";
+            }
+        }
+        
+        if (smallScreenMenuAfterTOC = document.getElementById("smallScreenMenuAfterTOC")) {
+            var smallScreenMenuTOC = smallScreenMenuAfterTOC.previousElementSibling
+                .getElementsByTagName("li")[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
+            for (var i = 0; i < smallScreenMenuTOC.length; i++) {
+                if (smallScreenMenuTOC[i].tagName = "a") {
+                    smallScreenMenuTOC[i].addEventListener("click", function(event){ toggleSmallScreenMenu(event); } );
+                }
+            }
+        }
+        
+        function prepareMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            menu.timer1 = setTimeout(function(a){ return function(){thisMenuOnly(a)};}(menu_id), 100);
+            menu.addEventListener("mouseleave", function(a){ return function(){clearTimeout(a.timer1)};}(menu) );
+        }
+        
+        function leaveMenu(menu_id, source) {
+            var menu = document.getElementById(menu_id);
+            menu.timer2 = setTimeout(function(a){ return function(){menuOff(a)};}(menu), 1000);
+            source.addEventListener("mouseenter", function(a){ return function(){clearTimeout(a.timer2)};}(menu) );
+        }
+        
+        function menuOn( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            if(nav_list) navOff();
+            divs[1].className = "on";
+            divs[0].className = "menuButton pushed";
+            menu.active = true;
+        }
+        function menuOff( menu ) {
+            var divs = menu.getElementsByTagName("div");
+            divs[1].className = "off";
+            divs[0].className = "menuButton";
+            menu.active = false;
+        }
+        
+        function thisMenuOnly(menu_id) {
+            var menu = document.getElementById(menu_id);
+            for( var i=0; i<menus.length; i++ )
+                if( i!=menu_id )
+                    menuOff( menus[i] );
+            menuOn( menu );
+        }
+        
+        function toggleMenu(menu_id) {
+            var menu = document.getElementById(menu_id);
+            if( menu.active ) {
+                menuOff( menu );
+            } else {
+                for( var i=0; i<menus.length; i++ )
+                    if( i!=menu_id )
+                        menuOff( menus[i] );
+                menuOn( menu );
+            }
+        }
+        
+        function openSearch() {
+            for( var i=0; i<menus.length; i++ ) {
+                menuOff( menus[i] );
+                menus[i].style.zIndex = "-1";
+            }
+            searchicon.style.display = "none";
+            closesearchicon.style.display = "block";
+            searchbox.style.display = "block";
+            searchinput.focus();
+        }
+        
+        function closeSearch() {
+            searchicon.style.display = "block";
+            closesearchicon.style.display = "none";
+            searchbox .style.display = "none";
+            for( var i=0; i<menus.length; i++ )
+                menus[i].style.zIndex = "0";
+        }
+        
+        
+        var documentDiv = document.getElementsByClassName("document")[0];
+        documentDiv.addEventListener('click', function (event) {
+            if(nav_list) navOff();
+            for( var i=0; i<menus.length; i++ )
+                menuOff( menus[i] );
+        });
+    </script>
+  </body>
+</html>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Search &#8212; Smilei tutorials  unknown documentation</title>
+    <title>Binary collisions and impact ionization &#8212; Smilei tutorials  unknown documentation</title>
     <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -13,16 +13,11 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
     <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="_static/searchtools.js"></script>
     <link rel="shortcut icon" href="_static/smileiIcon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-  
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Synchrotron-like radiation reaction" href="advanced_radiation_reaction.html" />
+    <link rel="prev" title="Field ionization" href="advanced_field_ionization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -33,7 +28,6 @@
   });
   </script>
    
-
   </head><body>
 
 <div id="smallScreenMenu" class="off">
@@ -71,9 +65,23 @@
                 <li class="outer">
                     <a href="advanced_field_ionization.html">Field ionization</a>
                 </li>
-                <li class="outer">
-                    <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
-                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Binary collisions and impact ionization</a><ul>
+<li><a class="reference internal" href="#beam-relaxation">Beam relaxation</a></li>
+<li><a class="reference internal" href="#thermalization">Thermalization</a></li>
+<li><a class="reference internal" href="#temperature-isotropization">Temperature isotropization</a></li>
+<li><a class="reference internal" href="#maxwellianization">Maxwellianization</a></li>
+<li><a class="reference internal" href="#stopping-power">Stopping power</a></li>
+<li><a class="reference internal" href="#ionization-rate">Ionization rate</a></li>
+<li><a class="reference internal" href="#inelastic-stopping-power">Inelastic stopping power</a></li>
+<li><a class="reference internal" href="#multiple-ionization">Multiple ionization</a></li>
+<li><a class="reference internal" href="#effect-of-neglecting-recombination">Effect of neglecting recombination</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
                 <li class="outer">
                     <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
                 </li>
@@ -107,8 +115,22 @@
                 Sections
             </div>
             <div id="nav_list" class="toctree-smilei">
-                <div id="nav_title"><a href="#">Search</a></div>
-                
+                <div id="nav_title"><a href="#">Binary collisions and impact ionization</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Binary collisions and impact ionization</a><ul>
+<li><a class="reference internal" href="#beam-relaxation">Beam relaxation</a></li>
+<li><a class="reference internal" href="#thermalization">Thermalization</a></li>
+<li><a class="reference internal" href="#temperature-isotropization">Temperature isotropization</a></li>
+<li><a class="reference internal" href="#maxwellianization">Maxwellianization</a></li>
+<li><a class="reference internal" href="#stopping-power">Stopping power</a></li>
+<li><a class="reference internal" href="#ionization-rate">Ionization rate</a></li>
+<li><a class="reference internal" href="#inelastic-stopping-power">Inelastic stopping power</a></li>
+<li><a class="reference internal" href="#multiple-ionization">Multiple ionization</a></li>
+<li><a class="reference internal" href="#effect-of-neglecting-recombination">Effect of neglecting recombination</a></li>
+</ul>
+</li>
+</ul>
+
             </div>
         </div>
     </div>
@@ -185,7 +207,7 @@
         </div>
         <div class="last menu"
             id="menu_Advanced"
-            
+            style="font-weight:bold"
         >
             <div id="menuButton_Advanced" class="menuButton"
                  onmouseenter="prepareMenu('menu_Advanced')"
@@ -201,8 +223,8 @@
                         <li class="outer">
                             <a href="advanced_field_ionization.html">Field ionization</a>
                         </li>
-                        <li class="outer">
-                            <a href="advanced_collisions.html">Binary collisions and impact ionization</a>
+                        <li >
+                            <a href="#">Binary collisions and impact ionization</a>
                         </li>
                         <li class="outer">
                             <a href="advanced_radiation_reaction.html">Synchrotron-like radiation reaction</a>
@@ -240,7 +262,7 @@
         </script>
         
         <div id="searchbox" role="search" style="display:none">
-            <form class="search" action="#" method="get">
+            <form class="search" action="search.html" method="get">
               <input type="text" name="q" placeholder="Search" id="searchinput" />
               <input type="hidden" name="check_keywords" value="yes" />
               <input type="hidden" name="area" value="default" />
@@ -313,10 +335,144 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  
-  <div id="search-results">
-  
-  </div>
+  <div class="section" id="binary-collisions-and-impact-ionization">
+<h1>Binary collisions and impact ionization<a class="headerlink" href="#binary-collisions-and-impact-ionization" title="Permalink to this headline">¶</a></h1>
+<p>Smilei includes binary collisions between various species, which can also generate
+ionization when one of the species is ions and the other one electrons.
+<a class="reference external" href="https://smileipic.github.io/Smilei/Understand/collisions.html">Smilei’s website</a>
+already gives a description of the approach, and provides results from various benchmarks.</p>
+<p>The list of benchmarks, located in the <code class="docutils literal notranslate"><span class="pre">benchmarks/collisions/</span></code> folder is briefly
+described below. You may run any of these benchmarks depending on your interests.</p>
+<div class="section" id="beam-relaxation">
+<h2>Beam relaxation<a class="headerlink" href="#beam-relaxation" title="Permalink to this headline">¶</a></h2>
+<p>An electron beam encounters a thermal ion population; <em>e-i</em> collisions slow the beam down
+and make it spread. Various electron velocities and ion charges are considered. For each
+case, the ratios of weights between electrons and ions is varied.</p>
+<p class="rubric">1.  initial velocity = 0.05, ion charge = 1</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">beam_relaxation1.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">beam_relaxation2.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">beam_relaxation3.py</span></code></div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">beam_relaxation123.py</span></code></div>
+</div>
+<p class="rubric">2.  initial velocity = 0.01, ion charge = 1</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">beam_relaxation4.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">beam_relaxation5.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">beam_relaxation6.py</span></code></div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">beam_relaxation456.py</span></code></div>
+</div>
+<p class="rubric">3.  initial velocity = 0.01, ion charge = 3</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">beam_relaxation7.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">beam_relaxation8.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">beam_relaxation9.py</span></code></div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">beam_relaxation789.py</span></code></div>
+</div>
+</div>
+<div class="section" id="thermalization">
+<h2>Thermalization<a class="headerlink" href="#thermalization" title="Permalink to this headline">¶</a></h2>
+<p>Thermal electrons start with a different temperature from that of ions.
+The thermalization due to <em>e-i</em> collisions is monitored for three different weight ratios.</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">thermalisation_ei1.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">thermalisation_ei2.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">thermalisation_ei3.py</span></code></div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">thermalisation_ei123.py</span></code></div>
+</div>
+</div>
+<div class="section" id="temperature-isotropization">
+<h2>Temperature isotropization<a class="headerlink" href="#temperature-isotropization" title="Permalink to this headline">¶</a></h2>
+<p>Non-isotropic thermal electrons are isotropized with <em>e-e</em> collisions.</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">temperature_isotropization1.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">temperature_isotropization2.py</span></code></div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">temperature_isotropization.py</span></code></div>
+</div>
+</div>
+<div class="section" id="maxwellianization">
+<h2>Maxwellianization<a class="headerlink" href="#maxwellianization" title="Permalink to this headline">¶</a></h2>
+<p>An electron population starting with a rectangular velocity distribution becomes
+maxwellian due to <em>e-e</em> collisions.</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Maxwellianization1.py</span></code></div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">Maxwellianization.py</span></code></div>
+</div>
+</div>
+<div class="section" id="stopping-power">
+<h2>Stopping power<a class="headerlink" href="#stopping-power" title="Permalink to this headline">¶</a></h2>
+<p>The <em>e-e</em> slowing rate of test electrons passing through an electron plasma is monitored
+<em>vs.</em> time and compared to a theoretical stopping power.</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Stopping_power1.py</span></code> : projectiles from 10 to 30 keV</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Stopping_power2.py</span></code> : projectiles from 100 to 300 keV</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">Stopping_power3.py</span></code> : projectiles from 1 to 10 MeV</div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">Stopping_power123.py</span></code></div>
+</div>
+</div>
+<div class="section" id="ionization-rate">
+<h2>Ionization rate<a class="headerlink" href="#ionization-rate" title="Permalink to this headline">¶</a></h2>
+<p>Drifting electrons in a cold Al plasma cause <em>e-i</em> impact ionization at a rate compared
+to theoretical values. The three inputs below correspond to various weight ratios
+between electrons and ions.</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_rate1.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_rate2.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_rate3.py</span></code></div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">ionization_rate.py</span></code></div>
+</div>
+</div>
+<div class="section" id="inelastic-stopping-power">
+<h2>Inelastic stopping power<a class="headerlink" href="#inelastic-stopping-power" title="Permalink to this headline">¶</a></h2>
+<p>The ionizing <em>e-i</em> slowing rate of test electrons passing through an Al plasma
+is monitored <em>vs.</em> time and compared to a theoretical stopping power.</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_stopping_power1.py</span></code> : measurement for electrons at various energies</div>
+</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_stopping_power2.py</span></code> :</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_stopping_power3.py</span></code> : three examples to show the stopping dynamics</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_stopping_power4.py</span></code> :</div>
+</div>
+<div class="line-block">
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">ionization_stopping_power.py</span></code></div>
+</div>
+</div>
+<div class="section" id="multiple-ionization">
+<h2>Multiple ionization<a class="headerlink" href="#multiple-ionization" title="Permalink to this headline">¶</a></h2>
+<p>The capability to ionize several times in one timestep is illustrated for five different
+materials. For each material, two cases are provided: the first is well resolved, while
+the second has a low time resolution requiring multiple ionization.</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleC1.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleC2.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleAl1.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleAl2.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleZn1.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleZn2.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleSn1.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleSn2.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleAu1.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_multipleAu2.py</span></code></div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">ionization_multiple.py</span></code></div>
+</div>
+</div>
+<div class="section" id="effect-of-neglecting-recombination">
+<h2>Effect of neglecting recombination<a class="headerlink" href="#effect-of-neglecting-recombination" title="Permalink to this headline">¶</a></h2>
+<p>As recombination is not accounted for, we can expect excess ionization to occur
+indefinitely without being balanced to equilibrium. For picosecond laser interaction,
+we illustrate here that the recombination rate can be neglected, thus providing
+reasonable ionization state <em>vs.</em> temperature, in various materials.</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_equilibriumH.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_equilibriumAl.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_equilibriumZn.py</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ionization_equilibriumAu.py</span></code></div>
+<div class="line">Analysis and plotting provided in <code class="docutils literal notranslate"><span class="pre">ionization_equilibrium.py</span></code></div>
+</div>
+</div>
+</div>
+
 
           </div>
         </div>

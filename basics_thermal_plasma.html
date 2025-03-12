@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Search &#8212; Smilei tutorials  unknown documentation</title>
+    <title>Thermal plasma &#8212; Smilei tutorials  unknown documentation</title>
     <link rel="stylesheet" href="_static/smilei_theme.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -13,16 +13,11 @@
     <script src="_static/doctools.js"></script>
     <script src="_static/language_data.js"></script>
     <script async="async" src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="_static/searchtools.js"></script>
     <link rel="shortcut icon" href="_static/smileiIcon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" />
-  <script type="text/javascript">
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script type="text/javascript" id="searchindexloader"></script>
-  
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Weibel and two-stream instabilities" href="basics_weibel_twostream.html" />
+    <link rel="prev" title="Laser Propagation in vacuum" href="basics_laser_vacuum.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -33,7 +28,6 @@
   });
   </script>
    
-
   </head><body>
 
 <div id="smallScreenMenu" class="off">
@@ -47,9 +41,20 @@
                 <li class="outer">
                     <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
                 </li>
-                <li class="outer">
-                    <a href="basics_thermal_plasma.html">Thermal plasma</a>
-                </li>
+        </ul>
+                <ul>
+<li><a class="reference internal" href="#">Thermal plasma</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#check-input-file-and-run-the-simulation">Check input file and run the simulation</a></li>
+<li><a class="reference internal" href="#preparing-the-post-processing-tool">Preparing the post-processing tool</a></li>
+<li><a class="reference internal" href="#the-field-diagnostics-using-happi-multiplot">The <code class="docutils literal notranslate"><span class="pre">Field</span></code> diagnostics using <code class="docutils literal notranslate"><span class="pre">happi.multiPlot</span></code></a></li>
+<li><a class="reference internal" href="#the-particlebinning-diagnostics">The <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostics</a></li>
+<li><a class="reference internal" href="#effect-of-spatial-resolution">Effect of spatial resolution</a></li>
+</ul>
+</li>
+</ul>
+
+        <ul id="smallScreenMenuAfterTOC">
                 <li class="outer">
                     <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
                 </li>
@@ -107,8 +112,19 @@
                 Sections
             </div>
             <div id="nav_list" class="toctree-smilei">
-                <div id="nav_title"><a href="#">Search</a></div>
-                
+                <div id="nav_title"><a href="#">Thermal plasma</a></div>
+                <ul>
+<li><a class="reference internal" href="#">Thermal plasma</a><ul>
+<li><a class="reference internal" href="#physical-configuration">Physical configuration</a></li>
+<li><a class="reference internal" href="#check-input-file-and-run-the-simulation">Check input file and run the simulation</a></li>
+<li><a class="reference internal" href="#preparing-the-post-processing-tool">Preparing the post-processing tool</a></li>
+<li><a class="reference internal" href="#the-field-diagnostics-using-happi-multiplot">The <code class="docutils literal notranslate"><span class="pre">Field</span></code> diagnostics using <code class="docutils literal notranslate"><span class="pre">happi.multiPlot</span></code></a></li>
+<li><a class="reference internal" href="#the-particlebinning-diagnostics">The <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostics</a></li>
+<li><a class="reference internal" href="#effect-of-spatial-resolution">Effect of spatial resolution</a></li>
+</ul>
+</li>
+</ul>
+
             </div>
         </div>
     </div>
@@ -124,7 +140,7 @@
         </div>
         <div class="menu"
             id="menu_PIC basics"
-            
+            style="font-weight:bold"
         >
             <div id="menuButton_PIC basics" class="menuButton"
                  onmouseenter="prepareMenu('menu_PIC basics')"
@@ -143,8 +159,8 @@
                         <li class="outer">
                             <a href="basics_laser_vacuum.html">Laser Propagation in vacuum</a>
                         </li>
-                        <li class="outer">
-                            <a href="basics_thermal_plasma.html">Thermal plasma</a>
+                        <li >
+                            <a href="#">Thermal plasma</a>
                         </li>
                         <li class="outer">
                             <a href="basics_weibel_twostream.html">Weibel and two-stream instabilities</a>
@@ -240,7 +256,7 @@
         </script>
         
         <div id="searchbox" role="search" style="display:none">
-            <form class="search" action="#" method="get">
+            <form class="search" action="search.html" method="get">
               <input type="text" name="q" placeholder="Search" id="searchinput" />
               <input type="hidden" name="check_keywords" value="yes" />
               <input type="hidden" name="area" value="default" />
@@ -313,10 +329,113 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  
-  <div id="search-results">
-  
-  </div>
+  <div class="section" id="thermal-plasma">
+<h1>Thermal plasma<a class="headerlink" href="#thermal-plasma" title="Permalink to this headline">¶</a></h1>
+<p>The goal of this tutorial is to get familiar with:</p>
+<ul class="simple">
+<li><p>the <code class="docutils literal notranslate"><span class="pre">Species</span></code> block that allows you to define a particle species,</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostics to obtain particle energy spectra,</p></li>
+<li><p>the problem of <cite>numerical heating</cite> and the necessity to correctly <cite>resolve the electron dynamics</cite>
+in explicit PIC codes.</p></li>
+</ul>
+<hr class="docutils" />
+<div class="section" id="physical-configuration">
+<h2>Physical configuration<a class="headerlink" href="#physical-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Download the input file <a class="reference external" href="thermal_plasma_1d.py">thermal_plasma_1d.py</a>.</p>
+<p>An <cite>infinite</cite> electron-ion plasma is let free to evolve in a 1D cartesian
+geometry with periodic boundary conditions.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="check-input-file-and-run-the-simulation">
+<h2>Check input file and run the simulation<a class="headerlink" href="#check-input-file-and-run-the-simulation" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to check that your <cite>input file</cite> is correct.
+To do so, you will run (locally) <strong class="program">Smilei</strong> in test mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./smilei_test thermal_plasma_1d.py
+</pre></div>
+</div>
+<p>If your simulation <cite>input file</cite> is correct, you can now run the simulation.
+Before going to the analysis of your simulation, check your <em>log</em> and/or
+<em>error</em> output.</p>
+<p>Check what output files have been generated: what are they?</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="preparing-the-post-processing-tool">
+<h2>Preparing the post-processing tool<a class="headerlink" href="#preparing-the-post-processing-tool" title="Permalink to this headline">¶</a></h2>
+<p>Let’s now turn to analysing the output of your run with <strong class="program">happi</strong>.
+To do so, open an <code class="docutils literal notranslate"><span class="pre">ipython</span></code> session:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ipython
+</pre></div>
+</div>
+<p>In <em>ipython</em>, import the <strong class="program">happi</strong> package:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">happi</span>
+</pre></div>
+</div>
+<p>then open your simulation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">S</span> <span class="o">=</span> <span class="n">happi</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="s1">&#39;/path/to/the/simulation&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Use the correct simulation path.</p>
+</div>
+<p>You are now ready to take a look at your simulation’s results.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="the-field-diagnostics-using-happi-multiplot">
+<h2>The <code class="docutils literal notranslate"><span class="pre">Field</span></code> diagnostics using <code class="docutils literal notranslate"><span class="pre">happi.multiPlot</span></code><a class="headerlink" href="#the-field-diagnostics-using-happi-multiplot" title="Permalink to this headline">¶</a></h2>
+<p>To have a quick access at your data and <cite>check</cite> what is going on, you will plot
+the electron and ion densities together with the electrostatic field <span class="math notranslate nohighlight">\(E_x\)</span>.</p>
+<p>First, <cite>prepare</cite> the data:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># minus the electron density</span>
+<span class="n">ne</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;-Rho_eon&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;e- density&quot;</span><span class="p">)</span>
+
+<span class="c1"># ion density</span>
+<span class="n">ni</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Rho_ion&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ion density&quot;</span><span class="p">)</span>
+
+<span class="c1"># Ex field</span>
+<span class="n">ex</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Ex&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Ex field&quot;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">0.25</span><span class="p">,</span><span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You may plot all these quantities independently using <code class="docutils literal notranslate"><span class="pre">ex.plot()</span></code> or <code class="docutils literal notranslate"><span class="pre">ex.slide()</span></code>,
+but you can also use the <code class="docutils literal notranslate"><span class="pre">multiSlide</span></code> function of <strong class="program">happi</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">happi</span><span class="o">.</span><span class="n">multiSlide</span><span class="p">(</span><span class="n">ne</span><span class="p">,</span><span class="n">ni</span><span class="p">,</span><span class="n">ex</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="the-particlebinning-diagnostics">
+<h2>The <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostics<a class="headerlink" href="#the-particlebinning-diagnostics" title="Permalink to this headline">¶</a></h2>
+<p>Now, have a look at the <code class="docutils literal notranslate"><span class="pre">ParticleBinning</span></code> diagnostics in the input file.
+What kind of data will this diagnostic provide?</p>
+<p>You can compare the results at the beginning and at the end of the simulation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Nt</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">ParticleBinning</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">getTimesteps</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># the last timestep</span>
+<span class="n">f_initial</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">ParticleBinning</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timesteps</span><span class="o">=</span><span class="mi">0</span> <span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;initial&quot;</span><span class="p">)</span>
+<span class="n">f_final</span>   <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">ParticleBinning</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">data_log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timesteps</span><span class="o">=</span><span class="n">Nt</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;final&quot;</span><span class="p">)</span>
+<span class="n">happi</span><span class="o">.</span><span class="n">multiPlot</span><span class="p">(</span><span class="n">f_initial</span><span class="p">,</span> <span class="n">f_final</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What can you conclude?</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="effect-of-spatial-resolution">
+<h2>Effect of spatial resolution<a class="headerlink" href="#effect-of-spatial-resolution" title="Permalink to this headline">¶</a></h2>
+<p>Have a look at the total energy and energy balance in your simulation
+(remember the <code class="docutils literal notranslate"><span class="pre">Utot</span></code> and <code class="docutils literal notranslate"><span class="pre">Ubal</span></code> scalars).
+Note the level of energy imbalance at the end of this simulation for which
+the spatial resolution is equal to the Debye Length (<span class="math notranslate nohighlight">\(\Delta x = \lambda_{\rm De}\)</span>).</p>
+<p>Increase your spatial resolution to <span class="math notranslate nohighlight">\(\Delta x = 16 \times \lambda_{\rm De}\)</span>.
+Run the simulation again, and check the energy imbalance at the end of the simulation.
+What do you observe?
+Can you check the electron spectrum at the beginning and end of the simulation?
+What is going on?</p>
+<p>Finally, increase your spatial resolution to
+<span class="math notranslate nohighlight">\(\Delta x = 2\,c/\omega_{pe} = 2\,c\lambda_{\rm De}/v_{\rm th}\)</span> (you will need to extend
+your simulation box size to have enough cells).
+Check the evolution of the total energy.
+What do you observe?</p>
+</div>
+</div>
+
 
           </div>
         </div>
