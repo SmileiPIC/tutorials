@@ -11,20 +11,21 @@ Ly           = 10.*l0
 Tsim         = 10.*t0  # duration of the simulation
 
 # ### Choice 2: Physical Inputs in normalized units, converted from SI units #######
-
 # from scipy.constants import c, epsilon_0, e, m_e # constants in SI units
-# wavelength_SI= 0.8e-6 # laser wavelength, m
-# # Normalization quantities
-# L_r          = wavelength_SI       # reference length is the wavelength
-# T_r          = L_r / c             # reference time
-# omega_r      = 2*pi*c/L_r          # reference angular frequency
+# wavelength_SI= 0.8e-6                 # laser wavelength, m
+# # Reference quantities for normalizations
+# omega_r      = 2.*pi*c/wavelength_SI  # reference angular frequency
+# L_r          = c/omega_r              # reference length is the wavelength
+# T_r          = 1./omega_r             # reference time
+# 
 # # Laser wavelength and period in normalized units
-# l0           = wavelength_SI / L_r
-# t0           = wavelength_SI/c / T_r
+# l0           = wavelength_SI/ L_r
+# t0           = wavelength_SI/c/ T_r
 # # Grid size and total simulated time in normalized units
 # Lx           = 6. *wavelength_SI / L_r
 # Ly           = 10.*wavelength_SI / L_r
 # Tsim         = 10.*wavelength_SI/c / T_r   # duration of the simulation
+# N_r          = epsilon_0*omega_r**2*m_e/e**2 # Reference density, m-3
 
 
 ####################  Simulated domain and time interval #######################
@@ -58,10 +59,8 @@ Main(
 # laser parameters
 laser_a0    = 150.        # normalized laser peak field
 laser_waist = 2.0*l0      # laser waist
-# eps0        = scipy.constants.epsilon_0 # Vacuum permittivity, F/m
-# e           = scipy.constants.e         # Elementary charge, C
-# me          = scipy.constants.m_e       # Electron mass, kg
-# E_r         = me*omega_r*c/e            # Reference electric field, V/m
+# E_r         = m_e*omega_r*c/e            # Reference electric field, V/m
+# With Choice 2, you can define the a0 as the maximum field in SI units divided by E_r
 
 LaserGaussian2D(
    box_side        = "xmin",
@@ -74,10 +73,11 @@ LaserGaussian2D(
 )
 
 # plasma parameters
-# N_r          = eps0*omega0**2*me/e**2 # Reference density, m-3
 n0             = 100         # initial plasma density, normalized units
 vacuum_length  = l0          # distance between Xmin and the plasma, normalized units
 plateau_length = 0.44*l0     # length of plateau of plasma density profile, normalized units
+# With Choice 2, you can define the vacuum_length and the plateau_length by dividing their SI values by L_r
+# With Choice 2, you can define the n0 as the density in SI units divided by N_r
 
 Species(
     name = 'ion',

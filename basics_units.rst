@@ -23,13 +23,15 @@ can be easily written in normalized `units <https://smileipic.github.io/Smilei/U
 normalizing speeds by :math:`c`, masses by the electron mass :math:`m_e` and charges
 by the unit charge :math:`e`.
 However, there is no natural length or time normalization in this system of equations.
-To complete the normalization, one must choose a reference length :math:`L_r`, or equivalently
-a reference time :math:`T_r`, or equivalently a reference angular frequency :math:`\omega_r`.
+To complete the normalization, one must choose a reference angular frequency :math:`\omega_r`,
+or equivalently a reference time :math:`T_r=1/\omega_r`, or equivalently
+a reference length :math:`L_r=c/\omega_r`.
 In the following, we choose :math:`\omega_r` as our normalization quantity (:math:`L_r` and
 :math:`T_r` are deduced from :math:`\omega_r`).
 
-Importantly, it is not even necessary to choose a value for this last normalization.
-Indeed, it automatically cancels out, so that the system of equations does not depend on
+Importantly, it is not even necessary to choose a value for this last normalization when running a simulation
+using only these equations.
+Indeed, unless these physical phenomena are present, this normalized system of equations does not depend on
 :math:`\omega_r`. This means that the result of the simulation is true for any value of
 :math:`\omega_r`! That is why is it usually not necessary to set a value to :math:`\omega_r`
 in the simulation input file.
@@ -44,6 +46,15 @@ input file, all quantities must be normalized.
 
 During post-processing, you will obtain results in terms of normalized quantities, 
 but :program:`happi` gives you the possibility to convert to units of your choice.
+
+.. warning::
+
+  When using advanced physical operators like ionization, collisions, 
+  multiphoton Breit Wheeler pair generation, radiation emission, 
+  you will have to specify a ``reference_angular_frequency_SI`` 
+  (see related tutorials and the ``Main`` block of their namelists).
+  This happens because these operators represent an extension of the basic Vlasov-Maxwell system of
+  PIC codes, and are not invariant under the described normalization.
 
 
 ----
@@ -74,11 +85,11 @@ at the start of the namelist.
 
 ----
 
-Normalized units in the input namelist
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Choice 1: normalized units in the input namelist
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The blocks of the input namelist will accept only quantities in normalized units.
-As mentioned before, choosing a reference length/time/angular frequency yields 
+The blocks of the input namelist will always accept only quantities in normalized units.
+As mentioned before, choosing a reference angular frequency yields 
 conversion factors for all physical units involved in a PIC simulation. 
 For more details, see the `units <https://smileipic.github.io/Smilei/Understand/units.html>`_
 page in the documentation.
@@ -92,7 +103,7 @@ of this tutorial.
 The provided input file already has ``Choice 1`` implemented in the namelist 
 (see the initial part of the file). As you can see reading the namelist,
 most of the simulation parameters can be defined starting from the definition 
-of the laser wavelength, which will be also our reference wavelength.
+of the laser reference angular frequency.
 This can be seen in the ``LaserGaussian2D`` block, where the ``Laser`` 's angular frequency 
 ``omega`` in normalized units is 1, i.e. equal to our reference angular frequency.
 
@@ -102,11 +113,12 @@ With this choice of normalization:
 * a time interval :math:`2\pi` corresponds to an optical cycle of the laser,
 * the reference density corresponds to the laser critical density :math:`n_c=\varepsilon_0 m_e \omega^2/e^2`.
 
-.. note:: In other set-ups you may want to choose the reference length equal to the Debye length,
-  or the plasma electron wave frequency, etc. In this case, if a ``Laser`` is present,
+.. note:: In other set-ups you may want to choose the reference angular frequency equal to 
+  e.g. the plasma electron wave angular frequency, etc. In this case, if a ``Laser`` is present,
   remember to redefine the ``omega`` in the ``Laser`` block accordingly.
 
-.. note:: Some reference quantities do not change with the choice of reference length/time,
+.. note:: As explained in the `units documentation <https://smileipic.github.io/Smilei/Understand/units.html>`_,
+  some reference quantities do not change with the choice of reference length/time,
   e.g. the electron charge will be :math:`-1`, the electron mass will be :math:`1`, since the 
   reference charge and mass in our normalized units are those of the electron. 
   Also, the reference energy and speed are :math:`m_ec^2` and `c`, independently of the choice for
@@ -115,19 +127,11 @@ With this choice of normalization:
 **Question**: if we wanted a laser with frequency equal to two times the reference frequency,
 what would be the value of ``omega`` in the ``Laser`` block?
 
-**Question**: for a reference length of :math:`L_r=0.8` µm what would be 
-the reference density? See its definition `here <https://smileipic.github.io/Smilei/Understand/units.html>`_
+**Question**: for a reference angular frequency corresponding to a spatial period of :math:`0.8` µm 
+(therefore to a reference length :math:`L_r=0.8/(2\pi)` µm, what would be 
+the reference density? See `here <https://smileipic.github.io/Smilei/Understand/units.html>`_
 (you may use the constants in the module ``scipy.constants``).
 Is it equal to :math:`L_r^{-3}`?
-
-.. warning::
-
-  As you have seen, in this namelist there is no need to specify a reference angular frequency 
-  or a reference length in SI units. However, when using advanced physical operators like
-  ionization, collisions, multiphoton Breit Wheeler pair generation, radiation emission 
-  you will have to do it (see related tutorials and the ``Main`` block of their namelists).
-  This happens because these operators represent an extension of the basic Vlasov-Maxwell system of
-  PIC codes, and are not invariant under the described normalization.
 
 
 ----
@@ -161,7 +165,8 @@ Then, we have to specify the units we want in our plot::
   S_SI.Probe.Probe0("Ey", units=['um','fs','GV/m']).slide(figure=2)
 
 **Question**: Does the peak transverse field of the laser correspond to the one in normalized units
-at the same timestep and in the namelist? Compute first the reference electric field as explained `here <https://smileipic.github.io/Smilei/Understand/units.html>`_
+at the same timestep and in the namelist (i.e. the ``a0``)? 
+Compute first the reference electric field as explained `here <https://smileipic.github.io/Smilei/Understand/units.html>`_
 and check the conversion to GV/m.
 
 **Action**: Similarly, try to plot the kinetic energy ``Ukin`` from the ``Scalar`` diagnostic
@@ -173,8 +178,8 @@ For more details, see `here <https://smileipic.github.io/Smilei/Use/post-process
 
 ----
 
-SI units in the input namelist
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Choice 2: SI units in the input namelist
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you prefer to work with physical units, e.g. SI units, the use of Python for the input namelist 
 allows to easily convert our inputs in SI units to normalized inputs required by
@@ -185,11 +190,14 @@ and commented for the moment.
 Uncomment the lines marked with ``Choice 2`` and take some time to read them.
 
 As you can see, first we use the ``scipy.constants`` module to define some useful physical constants,
-e.g. the speed of light. Then, we define the reference length, from which we derive some variables useful
+e.g. the speed of light. Then, we define the reference angular frequency in SI units, from which we derive some variables useful
 for the conversions.
-With these variables, it is easy to have the necessary quantities in normalized units and vice-versa::
+With these variables, it is easy to have the necessary quantities in normalized units and vice-versa, e.g.::
 
   length_normalized_units = length_SI / L_r
+  time_normalized_units   = time_SI   / T_r
+
+**Question**: What would be the value of the reference density ``N_r``?
 
 **Question**: Near the ``Laser`` block, a variable ``E_r`` is defined, representing the reference
 electric field. Using this variable, can you convert the normalized peak electric field of the laser ``a0``
