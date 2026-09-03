@@ -3,8 +3,8 @@ Envelope model for laser wakefield acceleration
 
 The goal of this tutorial is to give an introduction to the use of the laser
 envelope model with :program:`Smilei`. Before starting with this tutorial, we
-recommend to complete first the tutorial on :doc:`advanced_wakefield_AMcylindrical`. In that
-Tutorial, Laser Wakefield Acceleration is simulated in a standard way, i.e. the
+recommend to complete first the tutorial on :doc:`advanced_wakefield_AMcylindrical`. 
+In that tutorial, laser wakefield acceleration is simulated in a standard way, i.e. the
 laser is defined through its electromagnetic fields defined on the grid.
 We recommend also to complete the tutorial :doc:`advanced_wakefield_electron_beam`
 to familiarize with the diagnostics involving the macro-particle quantities.
@@ -28,7 +28,7 @@ The following features will be addressed:
 Physical configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-An ultra high intensity laser enters an under dense plasma. It propagates in
+An ultra high intensity laser pulse is focused onto an under dense plasma. It propagates in
 the plasma and creates a non linear plasma wave in its wake.
 The start of the plasma is made of a mixture of hydrogen and nitrogen, while the
 rest of the plasma is made of pure hydrogen. The laser field is strong enough to 
