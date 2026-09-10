@@ -14,8 +14,8 @@ Tsim         = 10.*t0  # duration of the simulation
 # from scipy.constants import c, epsilon_0, e, m_e # constants in SI units
 # wavelength_SI= 0.8e-6                 # laser wavelength, m
 # # Reference quantities for normalizations
-# omega_r      = 2.*pi*c/wavelength_SI  # reference angular frequency
-# L_r          = c/omega_r              # reference length is the wavelength
+# omega_r      = 2.*pi*c/wavelength_SI  # reference frequency, chosen here as the laser angular frequency
+# L_r          = c/omega_r              # reference length
 # T_r          = 1./omega_r             # reference time
 # 
 # # Laser wavelength and period in normalized units
